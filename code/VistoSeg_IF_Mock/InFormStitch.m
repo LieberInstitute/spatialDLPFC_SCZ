@@ -27,7 +27,7 @@ disp(['Stitching ', O{C}])
 tic
 Iy = [];
 for x1 = 1:numel(X)
-myfilesx = dir(fullfile(myfiles(1).folder,['*',num2str(X(x1)),',*component_data.tif']));
+myfilesx = dir(fullfile(myfiles(1).folder,['*',num2str(X(x1)),',*PNN_segmented.tif']));
 Ix = [];
 for K = 1:numel(myfilesx)
 fname1 = fullfile(myfilesx(K).folder,myfilesx(K).name);
