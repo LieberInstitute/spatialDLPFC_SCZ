@@ -1,8 +1,8 @@
 %filename =
-%'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/Mock_tile_annotation_DLAlgorithm/20220712_VIF_MockPNN_Strong_SCZ_Scan1/';
+%'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/Mock_tile_annotation_DLAlgorithm/20220712_VIF_MockPNN_Strong_NTC_Scan1/';
 %P = 7;
 temp = dir(filename);
-myfiles = temp(3:end);
+myfiles = temp(5:end);
 
 disp('Extracting coordinates')
 tic
