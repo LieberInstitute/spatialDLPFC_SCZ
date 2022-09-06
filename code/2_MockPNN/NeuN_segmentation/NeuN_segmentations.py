@@ -52,11 +52,34 @@ neun = cv2.normalize(np.array(img_neun, dtype = 'float32'), np.zeros(np.array(im
 
 
 # Increasing the contrast --this step might not be necessary
-neun[neun <= neun.mean()] = 0.0
-neun[neun >= neun.mean()] = 1.0
+# neun[neun <= neun.mean()] = 0.0
+# neun[neun >= neun.mean()] = 1.0
 
 # Plot the normalized/pre-processed image
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(neun)
 fig.show()
+
+# Find contours/segmentations for NeuN layer
+neun_gray = skimage.color.rgb2gray(neun) # convert to gray to find contours
+neun_clr = skimage.color.gray2rgb(np.array((neun * 255), dtype = np.uint8)) # convert to color to draw colored bb
+hierachy, img_threshold = cv2.threshold((np.array((neun * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
+contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR
+for cnt in contours:
+      x,y,w,h = cv2.boundingRect(cnt)
+      print(x,y,w,h)
+      out_img1_neun = cv2.rectangle(neun_clr, (x,y), (x+w+5, y+h+5), (255,0,0), 2)
+      rect = cv2.minAreaRect(cnt)
+      box = cv2.boxPoints(rect)
+      box = np.int0(box)
+      out_img2_neun = cv2.drawContours(out_img1_neun,[box],0,(0,0,255),1)
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(out_img2_neun)
+fig.show()
+
+
+
+
 
