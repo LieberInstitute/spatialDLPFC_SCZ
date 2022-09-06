@@ -53,11 +53,30 @@ dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(im
 
 # Increasing the contrast (merges the dapi--this step might not be necessary)
 dapi[dapi <= dapi.mean()] = 0.0
-dapi[dapi >= 0.001] = 1.0
+dapi[dapi >= 0.0005] = 1.0
 
 # Plot the normalized/pre-processed image
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi)
 fig.show()
 
+# Find contours/segmentations for DAPI layer
+dapi_gray = skimage.color.rgb2gray(dapi) # convert to gray to find contours
+dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
+hierachy, img_threshold = cv2.threshold((np.array((dapi * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
+contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR
+for cnt in contours:
+      x,y,w,h = cv2.boundingRect(cnt)
+      print(w*h)
+      if(w*h >= 100):
+            out_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w+5, y+h+5), (255,0,0), 2)
+            rect = cv2.minAreaRect(cnt)
+            box = cv2.boxPoints(rect)
+            box = np.int0(box)
+            out_img_cnt = cv2.drawContours(out_img_bb,[box],0,(0,0,255),1)
 
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(out_img_cnt)
+fig.show()
