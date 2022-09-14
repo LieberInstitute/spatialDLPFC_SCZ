@@ -66,19 +66,33 @@ neun_clr = skimage.color.gray2rgb(np.array((neun * 255), dtype = np.uint8)) # co
 hierachy, img_threshold = cv2.threshold((np.array((neun * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
 contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 # cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR
+nux, nuy, nuw, nuh = [],[],[],[]
 for cnt in contours:
       x,y,w,h = cv2.boundingRect(cnt)
-      print(x,y,w,h)
-      out_img1_neun = cv2.rectangle(neun_clr, (x,y), (x+w+5, y+h+5), (255,0,0), 2)
-      rect = cv2.minAreaRect(cnt)
-      box = cv2.boxPoints(rect)
-      box = np.int0(box)
-      out_img2_neun = cv2.drawContours(out_img1_neun,[box],0,(0,0,255),1)
+      if(w*h >= 100):
+            print(x,y,w,h)
+            nux.append(x)
+            nuy.append(y)
+            nuw.append(w)
+            nuh.append(h)
+            print(x,y,w,h)
+            out_img1_neun = cv2.rectangle(neun_clr, (x,y), (x+w+5, y+h+5), (255,0,0), 2)
+            rect = cv2.minAreaRect(cnt)
+            box = cv2.boxPoints(rect)
+            box = np.int0(box)
+            out_img2_neun = cv2.drawContours(out_img1_neun,[box],0,(0,0,255),1)
 
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(out_img2_neun)
 fig.show()
 
+# Populate the data in the dataframe
+col_names = ['img_file_name','type_of_object_str', 'X', 'Y', 'W', 'H', 'no_of_neun']
+object_name = 'NeuN' # name of the objects stored in the dataframe
+file_name = '20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.tif' # image file name
+
+dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: nux, col_names[3]: nuy, col_names[4]: nuw, col_names[5]: nuh, col_names[6]: len(nux)}
+img_info_neun = pd.DataFrame(dict, columns = col_names)
 
 
 

@@ -66,10 +66,15 @@ dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # 
 hierachy, img_threshold = cv2.threshold((np.array((dapi * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
 contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 # cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR
+dpx,dpy,dpw,dph = [],[],[],[]
 for cnt in contours:
       x,y,w,h = cv2.boundingRect(cnt)
       print(w*h)
       if(w*h >= 100):
+            dpx.append(x)
+            dpy.append(y)
+            dpw.append(w)
+            dph.append(h)
             out_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w+5, y+h+5), (255,0,0), 2)
             rect = cv2.minAreaRect(cnt)
             box = cv2.boxPoints(rect)
@@ -80,3 +85,12 @@ for cnt in contours:
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(out_img_cnt)
 fig.show()
+
+
+# Populate the data in the dataframe
+col_names = ['img_file_name','type_of_object_str', 'X', 'Y', 'W', 'H', 'no_of_DAPI']
+object_name = 'DAPI' # name of the objects stored in the dataframe
+file_name = '20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.tif' # image file name
+
+dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: dpx, col_names[3]: dpy, col_names[4]: dpw, col_names[5]: dph, col_names[6]: len(dpx)}
+img_info_dapi = pd.DataFrame(dict, columns = col_names)
