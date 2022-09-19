@@ -83,14 +83,24 @@ for cnt in contours:
 
 
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(out_img_cnt)
+fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
+ax[0].imshow(dapi)
+ax[0].title.set_text('Original')
+ax[1].imshow(out_img_cnt)
+ax[1].title.set_text('Segemented')
 fig.show()
 
 
 # Populate the data in the dataframe
-col_names = ['img_file_name','type_of_object_str', 'X', 'Y', 'W', 'H', 'no_of_DAPI']
+col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_dapi']
 object_name = 'DAPI' # name of the objects stored in the dataframe
-file_name = '20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.tif' # image file name
+file_name = os.path.basename(img_test) # image file name
 
 dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: dpx, col_names[3]: dpy, col_names[4]: dpw, col_names[5]: dph, col_names[6]: len(dpx)}
 img_info_dapi = pd.DataFrame(dict, columns = col_names)
+# compute the rest of the coordinates of the BB
+img_info_dapi['x2'] = img_info_dapi['x1'] + img_info_dapi['Width']
+img_info_dapi['y2'], img_info_dapi['x3'] = img_info_dapi['y1'], img_info_dapi['x1']
+img_info_dapi['y3'] = img_info_dapi['y1'] + img_info_dapi['Height']
+img_info_dapi['x4'], img_info_dapi['y4'] = img_info_dapi['x2'], img_info_dapi['y3']
+img_info_dapi = img_info_dapi[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_dapi']]
