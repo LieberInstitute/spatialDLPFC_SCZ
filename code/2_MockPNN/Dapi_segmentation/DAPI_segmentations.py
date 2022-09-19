@@ -11,6 +11,8 @@ Channel5 = Thumbnail
 
 import numpy as np
 import numpy.ma as ma
+import pyhere
+from pathlib import Path
 import pandas as pd
 import PIL
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
@@ -40,10 +42,11 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 
-img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/'
-img_dir_NTC = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining/'
-img_NTC = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining/20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif'
-img_SCZ = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining/20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif'
+img_dir = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
+img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining')
+img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
+img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
+img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[6925,49106]_component_data_24.tif')
 
 # Read and normalize the image
 img_dapi = Image.open(img_NTC)
