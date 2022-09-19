@@ -56,8 +56,19 @@ claudin = cv2.normalize(np.array(img_claudin, dtype = 'float32'), np.zeros(np.ar
 
 # read the manual annotations csv into dataframe
 df_manual_test = pd.read_csv(csv_test)
-# convert x,y,bx,by from floating point to integers
-df_manual_test['X'], df_manual_test['Y'], df_manual_test['BX'], df_manual_test['BY'] = np.int0(np.ceil(df_manual_test['X'])), np.int0(np.ceil(df_manual_test['Y'])), np.int0(np.ceil(df_manual_test['BX'])), np.int0(np.ceil(df_manual_test['BY']))
+
+# Calculating all 4 coordinates of the BB
+df_manual_test = df_manual_test.rename(columns = {'BX': 'x1', 'BY': 'y1'})
+df_manual_test['x2'] = df_manual_test['x1'] + df_manual_test['Width']
+df_manual_test['y2'] = df_manual_test['y1']
+df_manual_test['x3'] = df_manual_test['x1']
+df_manual_test['y3'] = df_manual_test['y1'] + df_manual_test['Height']
+df_manual_test['x4'] = df_manual_test['x2']
+df_manual_test['y4'] = df_manual_test['y3']
+
+# convert x,y,bx,by from floating point to integers (doing it after, reduces round off errors)
+df_manual_test['X'], df_manual_test['Y'], df_manual_test['x1'], df_manual_test['y1'] = np.int0(np.ceil(df_manual_test['X'])), np.int0(np.ceil(df_manual_test['Y'])), np.int0(np.ceil(df_manual_test['x1'])), np.int0(np.ceil(df_manual_test['y1']))
+df_manual_test['x2'], df_manual_test['y2'], df_manual_test['x3'], df_manual_test['y3'], df_manual_test['x4'], df_manual_test['y4'] = np.int0(np.ceil(df_manual_test['x2'])), np.int0(np.ceil(df_manual_test['y2'])), np.int0(np.ceil(df_manual_test['x3'])), np.int0(np.ceil(df_manual_test['y3'])), np.int0(np.ceil(df_manual_test['x4'])), np.int0(np.ceil(df_manual_test['y4']))
 
 # Increasing the contrast
 claudin[claudin <= claudin.mean()] = 0.0
