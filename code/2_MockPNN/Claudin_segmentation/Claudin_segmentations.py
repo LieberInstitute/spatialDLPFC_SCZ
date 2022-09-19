@@ -82,26 +82,27 @@ for cnt in contours:
             box = np.int0(box)
             out_img_cnt = cv2.drawContours(out_img_bb,[box],0,(0,255,0),1)
 
+cv2.imwrite('/users/ukaipa/PNN/One_img/Images/Cla_seg.tif', out_img_cnt) # save the image if needed
 
 fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
-ax[0].imshow(out_img_cnt1)
+ax[0].imshow(claudin)
 ax[0].title.set_text('Original')
 ax[1].imshow(out_img_cnt)
 ax[1].title.set_text('Segemented')
 fig.show()
 
 # Put the BB details in the csv
-col_names = ['img_file_name','type_of_object_str', 'X', 'Y', 'W', 'H', 'no_of_claudin']
+col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_claudin']
 object_name = 'Claudin5' # name of the objects stored in the dataframe
-file_name = '20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.tif' # image file name
+file_name = os.path.basename(img_test) # image file name
 
 dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: clx, col_names[3]: cly, col_names[4]: clw, col_names[5]: clh, col_names[6]: len(clx)}
 img_info_claudin = pd.DataFrame(dict, columns = col_names)
-
-
-
-
-
-
+# compute the rest of the coordinates of the BB
+img_info_claudin['x2'] = img_info_claudin['x1'] + img_info_claudin['Width']
+img_info_claudin['y2'], img_info_claudin['x3'] = img_info_claudin['y1'], img_info_claudin['x1']
+img_info_claudin['y3'] = img_info_claudin['y1'] + img_info_claudin['Height']
+img_info_claudin['x4'], img_info_claudin['y4'] = img_info_claudin['x2'], img_info_claudin['y3']
+img_info_claudin = img_info_claudin[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_claudin']]
 
 
