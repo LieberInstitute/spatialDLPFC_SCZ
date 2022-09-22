@@ -47,9 +47,8 @@ img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_S
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.tif')
 csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv')
-csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv'
-img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif'
-
+csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01.csv'
+img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01.tif'
 
 
 # read the tile and the manual annotation csv
@@ -98,21 +97,7 @@ for cnt in contours:
 # out_img now has black colored on most of the blood vessels; out has changed contrast pixels where PNNs are highlighted
 # so now we find contours for the PNNs using the out_img
 
-col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_claudin']
-object_name = 'Blood_vessels' # name of the objects stored in the dataframe
-file_name = os.path.basename(img_test) # image file name
-
-
-dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: clx, col_names[3]: cly, col_names[4]:
-    clw, col_names[5]: clh, col_names[6]: len(clx)}
-df_claudin_ml = pd.DataFrame(dict, columns = col_names)
-
-df_claudin_ml['x2'] = df_claudin_ml['x1'] + df_claudin_ml['Width']
-df_claudin_ml['y2'], df_claudin_ml['x3'] = df_claudin_ml['y1'], df_claudin_ml['x1']
-df_claudin_ml['y3'] = df_claudin_ml['y1'] + df_claudin_ml['Height']
-df_claudin_ml['x4'], df_claudin_ml['y4'] = df_claudin_ml['x2'], df_claudin_ml['y3']
-df_claudin_ml = df_claudin_ml[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_claudin']]
-
+####################
 fig,ax = plt.subplots(nrows = 1, ncols = 2,figsize = (20,20))
 ax[0].imshow(claudin)
 ax[1].imshow(out_img)
@@ -127,6 +112,7 @@ out_img_gry = skimage.color.rgb2gray(out_img) # convert to gray to find contours
 # ax[1].imshow(out_img_gry)
 # fig.show()
 
+
 out_img255 = np.array(out_img_gry * 255, dtype = np.uint8) # change scale to 0-255 for find contours
 out_img_clr = skimage.color.gray2rgb(np.array(out_img_gry * 255, dtype = np.uint8)) # convert to color to draw colored bb
 hierachy1, img_threshold1 = cv2.threshold(np.array(out_img_gry * 255, dtype = np.uint8), 100, 255, cv2.THRESH_BINARY) # ADAPTIVE_THRESH_MEAN_C
@@ -137,7 +123,7 @@ for cnt in contours1:
     x1,y1,w1,h1 = cv2.boundingRect(cnt)
     area = cv2.contourArea(cnt)
     print(area)
-    if area >= 300 and area <= 20000:
+    if area >= 100 and area <= 20000:
         # print(x1,y1,w1,h1)
         wfx.append(x1)
         wfy.append(y1)
@@ -150,51 +136,18 @@ for cnt in contours1:
         box = np.int0(box)
         out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,255),3) # comment out if contour box is not needed
 
+# for 11: area = 268.973 xc = 840.782	yc = 80.548 X = 832.329	y = 72.593	w = 16.905	h = 15.911
 
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(out_img1)
 fig.show()
 
-# Populate the data in the dataframe
-col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'Area', 'total_number_pnns']
-object_name = 'PNN' # name of the objects stored in the dataframe
-file_name = os.path.basename(img_test) # image file name
-
-dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: wfx, col_names[3]: wfy, col_names[4]: wfw, col_names[5]: wfh, col_names[6]: pnn_area, col_names[7]: len(wfx)}
-df_wfa_ml = pd.DataFrame(dict, columns = col_names)
-
-df_wfa_ml['x2'] = df_wfa_ml['x1'] + df_wfa_ml['Width']
-df_wfa_ml['y2'], df_wfa_ml['x3'] = df_wfa_ml['y1'], df_wfa_ml['x1']
-df_wfa_ml['y3'] = df_wfa_ml['y1'] + df_wfa_ml['Height']
-df_wfa_ml['x4'], df_wfa_ml['y4'] = df_wfa_ml['x2'], df_wfa_ml['y3']
-df_wfa_ml = df_wfa_ml[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'Area', 'total_number_pnns']]
-
-# FOUND boxes that may actually overlap
-count = 0
-for i1, rows1 in df_manual_test['x1'].iteritems():
-    for i2, rows2 in df_wfa_ml['x1'].iteritems():
-         # print(i1, rows1, i2, rows2, rows1-rows2)
-         if (rows1-rows2) >= 0 and (rows1-rows2) <= 50:  # and (df_manual_test['y1'][i1]-df_wfa_ml['y1'][i2]) >= 0 and  (df_manual_test['y1'][i1]-df_wfa_ml['y1'][i2]) <= 50:
-            # print(i1, rows1, i2, rows2, rows1-rows2) # 20 718 35 716 2
-            print("Manual", i1, df_manual_test['x1'][i1], df_manual_test['y1'][i1], df_manual_test['x4'][i1], df_manual_test['y4'][i1])
-            print("ML", i2, df_wfa_ml['x1'][i2], df_wfa_ml['y1'][i2], df_wfa_ml['x4'][i2], df_wfa_ml['y4'][i2])
-            count += 1
-            l = df_manual_test.iloc[i1]
-            box1 = [[l['x1'], l['y1']], [l['x2'], l['y2']],
-                    [l['x3'], l['y3']], [l['x4'], l['y4']]]
-            ml = df_wfa_ml.iloc[i2]
-            box2 = [[ml['x1'], ml['y1']], [ml['x2'], ml['y2']],
-                    [ml['x3'], ml['y3']], [ml['x4'], ml['y4']]]
-            poly_1 = Polygon(box1)
-            poly_2 = Polygon(box2)
-            print(poly_1, poly_2, poly_1.intersection(poly_2).area, poly_1.union(poly_2).area)
-            # print(calculate_iou(box1, box2))
+#########-----------
 
 
+##########==============
 
-# For visual verification, the next steps are:
-# to compare the # (i1,i2) to manual v/s predicted bb
-# look at fiji for the coordinates of predicted bb and the marked number in the screenshot of manual annotations
+
 
 def calculate_iou(box_1, box_2):
     poly_1 = Polygon(box_1)
@@ -212,5 +165,3 @@ box1 = [[l['x1'], l['y1']], [l['x2'], l['y2']],
 ml = df_wfa_ml.iloc[17]
 box2 = [[ml['x1'], ml['y1']], [ml['x2'], ml['y2']],
         [ml['x3'], ml['y3']], [ml['x4'], ml['y4']]]
-
-print(calculate_iou(box1, box2))
