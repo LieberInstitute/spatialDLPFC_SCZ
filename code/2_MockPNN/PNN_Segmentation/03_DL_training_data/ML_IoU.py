@@ -171,7 +171,27 @@ df_wfa_ml['x4'], df_wfa_ml['y4'] = df_wfa_ml['x2'], df_wfa_ml['y3']
 df_wfa_ml = df_wfa_ml[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'Area', 'total_number_pnns']]
 
 
-##########==============
+# Find boxes that may actually overlap
+count = 0
+for i1, rows1 in df_manual_test['x1'].iteritems():
+    for i2, rows2 in df_wfa_ml['x1'].iteritems():
+         # print(i1, rows1, i2, rows2, rows1-rows2)
+         if (rows1-rows2) >= 0 and (rows1-rows2) <= 50:  # and (df_manual_test['y1'][i1]-df_wfa_ml['y1'][i2]) >= 0 and  (df_manual_test['y1'][i1]-df_wfa_ml['y1'][i2]) <= 50:
+            # print(i1, rows1, i2, rows2, rows1-rows2) # 20 718 35 716 2
+            print("Manual", i1, df_manual_test['x1'][i1], df_manual_test['y1'][i1], df_manual_test['x4'][i1], df_manual_test['y4'][i1])
+            print("ML", i2, df_wfa_ml['x1'][i2], df_wfa_ml['y1'][i2], df_wfa_ml['x4'][i2], df_wfa_ml['y4'][i2])
+            count += 1
+            l = df_manual_test.iloc[i1]
+            box1 = [[l['x1'], l['y1']], [l['x2'], l['y2']],
+                    [l['x3'], l['y3']], [l['x4'], l['y4']]]
+            ml = df_wfa_ml.iloc[i2]
+            box2 = [[ml['x1'], ml['y1']], [ml['x2'], ml['y2']],
+                    [ml['x3'], ml['y3']], [ml['x4'], ml['y4']]]
+            poly_1 = Polygon(box1)
+            poly_2 = Polygon(box2)
+            print(poly_1, poly_2, poly_1.intersection(poly_2).area, poly_1.union(poly_2).area)
+            # print(calculate_iou(box1, box2))
+
 
 
 
