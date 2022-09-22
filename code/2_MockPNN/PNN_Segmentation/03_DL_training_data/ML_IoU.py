@@ -156,7 +156,19 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(out_img1)
 fig.show()
 
-#########-----------
+# Populate the data in the dataframe
+col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'Area', 'total_number_pnns']
+object_name = 'PNN' # name of the objects stored in the dataframe
+file_name = os.path.basename(img_test) # image file name
+
+dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: wfx, col_names[3]: wfy, col_names[4]: wfw, col_names[5]: wfh, col_names[6]: pnn_area, col_names[7]: len(wfx)}
+df_wfa_ml = pd.DataFrame(dict, columns = col_names)
+
+df_wfa_ml['x2'] = df_wfa_ml['x1'] + df_wfa_ml['Width']
+df_wfa_ml['y2'], df_wfa_ml['x3'] = df_wfa_ml['y1'], df_wfa_ml['x1']
+df_wfa_ml['y3'] = df_wfa_ml['y1'] + df_wfa_ml['Height']
+df_wfa_ml['x4'], df_wfa_ml['y4'] = df_wfa_ml['x2'], df_wfa_ml['y3']
+df_wfa_ml = df_wfa_ml[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'Area', 'total_number_pnns']]
 
 
 ##########==============
