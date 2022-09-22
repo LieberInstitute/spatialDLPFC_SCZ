@@ -97,7 +97,21 @@ for cnt in contours:
 # out_img now has black colored on most of the blood vessels; out has changed contrast pixels where PNNs are highlighted
 # so now we find contours for the PNNs using the out_img
 
-####################
+col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_claudin']
+object_name = 'Blood_vessels' # name of the objects stored in the dataframe
+file_name = os.path.basename(img_test) # image file name
+
+
+dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: clx, col_names[3]: cly, col_names[4]:
+    clw, col_names[5]: clh, col_names[6]: len(clx)}
+df_claudin_ml = pd.DataFrame(dict, columns = col_names)
+
+df_claudin_ml['x2'] = df_claudin_ml['x1'] + df_claudin_ml['Width']
+df_claudin_ml['y2'], df_claudin_ml['x3'] = df_claudin_ml['y1'], df_claudin_ml['x1']
+df_claudin_ml['y3'] = df_claudin_ml['y1'] + df_claudin_ml['Height']
+df_claudin_ml['x4'], df_claudin_ml['y4'] = df_claudin_ml['x2'], df_claudin_ml['y3']
+df_claudin_ml = df_claudin_ml[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_claudin']]
+
 fig,ax = plt.subplots(nrows = 1, ncols = 2,figsize = (20,20))
 ax[0].imshow(claudin)
 ax[1].imshow(out_img)
