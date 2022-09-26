@@ -50,20 +50,23 @@ for tile_name in os.listdir(training_tiles_path):
 
 
 # This works for one image
-im, ann = '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif', '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.csv'#'20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.csv'
-img = Image.open(os.path.join(training_tiles_path, im))
-img.seek(3)
-pnn = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-annot = pd.read_csv(os.path.join(tile_annotations, ann))
-x,y,w,h = np.int0(np.ceil(annot['BX'])), np.int0(np.ceil(annot['BY'])), np.int0(np.ceil(annot['Width'])), np.int0(np.ceil(annot['Height']))
-print(x,y,w,h)
-i = 0
-for ct in range(len(x)):
-    print(x[ct], y[ct], w[ct], h[ct], w[ct]*h[ct])
-    big_arr = np.zeros((100,100))
-    small_arr = pnn[y[ct]:y[ct]+h[ct],x[ct]:x[ct]+w[ct]]
-    big_arr[5:small_arr.shape[0] + 5, 5:small_arr.shape[1] + 5] = small_arr
-    cv2.imwrite('/users/ukaipa/PNN/One_img/Cropped_annotations/img_pnn_big_{}.tif'.format(i), big_arr) # if you want the annotations to be cropped out and saved
-    i += 1
+def cropping_pnns(img_file_name, csv_file_name):
+    img = Image.open(os.path.join(training_tiles_path, img_file_name))
+    img.seek(3)
+    pnn = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+    annot = pd.read_csv(os.path.join(tile_annotations, csv_file_name))
+    x,y,w,h = np.int0(np.ceil(annot['BX'])), np.int0(np.ceil(annot['BY'])), np.int0(np.ceil(annot['Width'])), np.int0(np.ceil(annot['Height']))
+    print(x,y,w,h)
+    i = 0
+    for ct in range(len(x)):
+        print(x[ct], y[ct], w[ct], h[ct], w[ct]*h[ct])
+        big_arr = np.zeros((100,100))
+        small_arr = pnn[y[ct]:y[ct]+h[ct],x[ct]:x[ct]+w[ct]]
+        big_arr[5:small_arr.shape[0] + 5, 5:small_arr.shape[1] + 5] = small_arr
+        cv2.imwrite('/users/ukaipa/PNN/One_img/Cropped_annotations/img_pnn_big_{}.tif'.format(i), big_arr) # if you want the annotations to be cropped out and saved
+        i += 1
 
 
+# run the function
+img_file_name, csv_file_name = '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif', '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.csv'#'20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.csv'
+cropping_pnns(img_file_name, csv_file_name)
