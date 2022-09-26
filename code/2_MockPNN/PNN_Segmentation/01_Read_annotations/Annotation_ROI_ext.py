@@ -50,7 +50,7 @@ for tile_name in os.listdir(training_tiles_path):
 
 
 # This works for one image
-def cropping_pnns(img_file_name, csv_file_name):
+def cropping_pnns(img_file_name, csv_file_name, dst_file_pth):
     img = Image.open(os.path.join(training_tiles_path, img_file_name))
     img.seek(3)
     pnn = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
@@ -63,10 +63,11 @@ def cropping_pnns(img_file_name, csv_file_name):
         big_arr = np.zeros((100,100))
         small_arr = pnn[y[ct]:y[ct]+h[ct],x[ct]:x[ct]+w[ct]]
         big_arr[5:small_arr.shape[0] + 5, 5:small_arr.shape[1] + 5] = small_arr
-        cv2.imwrite('/users/ukaipa/PNN/One_img/Cropped_annotations/img_pnn_big_{}.tif'.format(i), big_arr) # if you want the annotations to be cropped out and saved
+        cv2.imwrite(dst_file_pth + img_file_name + '_pnn_cropped_{}.tif'.format(i), big_arr) # if you want the annotations to be cropped out and saved
         i += 1
 
-
+cv2.imwrite(dst_folder + os.path.basename(file_name).split('.')[0] +'_PNN_segmented' + '.tif', PNN_segmented)
 # run the function
 img_file_name, csv_file_name = '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif', '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.csv'#'20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.csv'
-cropping_pnns(img_file_name, csv_file_name)
+dst_file_pth = '/users/ukaipa/PNN/One_img/Cropped_annotations/'
+cropping_pnns(img_file_name, csv_file_name, dst_file_pth)
