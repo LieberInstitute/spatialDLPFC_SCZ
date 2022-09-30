@@ -1,32 +1,17 @@
 import numpy as np
-import numpy.ma as ma
 import pandas as pd
 import csv
 import PIL
-from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
+from PIL import Image
 import os
-import matplotlib
 import matplotlib.pyplot as plt
-import mpldatacursor
-import glob
 import sys
 import cv2
-import math
 import scipy
-from scipy.spatial.distance import *
-# from scipy import ndimage, distance
-import imageio
-import skimage
 from skimage import *
-from skimage import feature, segmentation, draw, measure, morphology
-from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
 from skimage.draw import polygon_perimeter
-import tifffile as tif
-import imagecodecs
 import itertools
 import re
-from itertools import product
-from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
@@ -34,7 +19,7 @@ training_tiles_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-dat
 tile_annotations = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
 
 
-# crop all the manual annotations
+# crop all the manual annotations -- doesnt fill up the actual values in the big array (maybe a for loop will help)
 def cropping_pnns(img_file_name, csv_file_name, dst_file_pth):
     img = Image.open(os.path.join(training_tiles_path, img_file_name))
     img.seek(3)
@@ -47,17 +32,35 @@ def cropping_pnns(img_file_name, csv_file_name, dst_file_pth):
         # print(x[ct], y[ct], w[ct], h[ct], w[ct]*h[ct])
         big_arr = np.zeros((100,100))
         small_arr = pnn[y[ct]:y[ct]+h[ct],x[ct]:x[ct]+w[ct]]
-        big_arr[25:small_arr.shape[0]+25, 25:small_arr.shape[1]+25] = small_arr
+        temp = big_arr[25:small_arr.shape[0]+25, 25:small_arr.shape[1]+25]
+        temp = small_arr
         # cv2.imwrite(dst_file_pth + img_file_name + '_pnn_cropped_{}.tif'.format(i), big_arr) # if the annotations need to be saved
         i += 1
-    print("\n {} PNNs found in {}".format(i, os.path.basename(img_file_name)))
+    print("\n {} PNN found in {}".format(i, os.path.basename(img_file_name)))
+
+np.set_printoptions(threshold=sys.maxsize)
+
+
+# WORKS -- introduce a counter to track which position this is being assigned in the big array (need the coordinates to draw a box)
+big_arr = np.zeros((100,100))
+for i in range(0, small_arr.shape[0]):
+    for j in range(0, small_arr.shape[1]):
+        big_arr[i,j] = small_arr[i,j]
+        print(small_arr[i,j], big_arr[i,j])
+
+
+
+
+
+
+
 
 # run the function for one image
 img_file_name, csv_file_name = '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif', '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.csv'#'20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.csv'
 dst_file_pth = '/users/ukaipa/PNN/One_img/Cropped_annotations/' # change this
 cropping_pnns(img_file_name, csv_file_name, dst_file_pth)
 
-
+big_arr[25:small_arr.shape[0]+25] = pnn[y[ct]:y[ct]+h[ct]]
 # run the function for all training images
 training_tiles_path = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
 tile_annotations = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations')
