@@ -38,15 +38,7 @@ def cropping_pnns(img_file_name, csv_file_name, dst_file_pth):
         # cv2.imwrite(dst_file_pth + img_file_name + '_pnn_cropped_{}.tif'.format(i), big_arr) # if the annotations need to be saved
         i += 1
     print("\n {} PNN found in {}".format(i, os.path.basename(img_file_name)))
-    return small_arr, big_arr
-
-op = np.nonzero(bg)
-
-
-
-
-
-
+    # return small_arr, big_arr # if you need to verify the positions of the images : np.nonzero(big_arr)
 
 # run the function for one image
 img_file_name, csv_file_name = '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif', '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.csv'#'20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.csv'
