@@ -32,7 +32,19 @@ def segment(normalised_img, color_img):
             box = cv2.boxPoints(rect)
             box = np.int0(box)
             cnt_img = cv2.drawContours(out_img1_neun,[box],0,(0,0,255),1)
-return(cnt_img)
+
+    col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number']
+    object_name = obj_name # name of the objects stored in the dataframe
+    file_name = os.path.basename(img_test) # image file name
+    dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: x, col_names[3]: y, col_names[4]: w, col_names[5]: h, col_names[6]: len(x)}
+    img_info_df = pd.DataFrame(dict, columns = col_names)
+    img_info_df['x2'] = img_info_df['x1'] + img_info_df['Width']
+    img_info_df['y2'], img_info_df['x3'] = img_info_df['y1'], img_info_df['x1']
+    img_info_df['y3'] = img_info_df['y1'] + img_info_df['Height']
+    img_info_df['x4'], img_info_df['y4'] = img_info_df['x2'], img_info_df['y3']
+    img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number']]
+    return(cnt_img, img_info_df)
+
 
 
 def plot_seg_img(original_img, segmented_img):
