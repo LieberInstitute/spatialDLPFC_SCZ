@@ -68,3 +68,17 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(ws_img_bb)
 ax.title.set_text('Watershed Segmentation')
 fig.show()
+
+
+# Populate the data in the dataframe
+col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_dapi']
+object_name = 'DAPI' # name of the objects stored in the dataframe
+file_name = os.path.basename(img_test) # image file name
+
+dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: nux, col_names[3]: nuy, col_names[4]: nuw, col_names[5]: nuh, col_names[6]: len(nux)}
+img_info_dapi = pd.DataFrame(dict, columns = col_names)
+img_info_dapi['x2'] = img_info_dapi['x1'] + img_info_dapi['Width']
+img_info_dapi['y2'], img_info_dapi['x3'] = img_info_dapi['y1'], img_info_dapi['x1']
+img_info_dapi['y3'] = img_info_dapi['y1'] + img_info_dapi['Height']
+img_info_dapi['x4'], img_info_dapi['y4'] = img_info_dapi['x2'], img_info_dapi['y3']
+img_info_dapi = img_info_dapi[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_neun']]
