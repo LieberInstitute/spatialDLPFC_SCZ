@@ -51,6 +51,7 @@ labels = watershed(-D, markers, mask=thresh)
 print("[INFO] {} unique segments found".format(len(np.unique(labels)) - 1))
 
 # extract the watershed algorithm labels
+dpx, dpy, dpw, dph = [], [], [], []
 for label in np.unique(labels):
 	if label == 0: # label marked 0 are background
 		continue
@@ -61,6 +62,10 @@ for label in np.unique(labels):
 	cnts = imutils.grab_contours(cnts) # extract only the contours
 	c = max(cnts, key=cv2.contourArea) # get the area
 	x,y,w,h = cv2.boundingRect(c) # BB coordinates
+	dpx.append(x)
+	dpy.append(y)
+	dpw.append(w)
+	dph.append(h)
 	ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
 
 # Plot the segmentation result
@@ -75,10 +80,10 @@ col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height'
 object_name = 'DAPI' # name of the objects stored in the dataframe
 file_name = os.path.basename(img_test) # image file name
 
-dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: nux, col_names[3]: nuy, col_names[4]: nuw, col_names[5]: nuh, col_names[6]: len(nux)}
+dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: dpx, col_names[3]: dpy, col_names[4]: dpw, col_names[5]: dph, col_names[6]: len(dpx)}
 img_info_dapi = pd.DataFrame(dict, columns = col_names)
 img_info_dapi['x2'] = img_info_dapi['x1'] + img_info_dapi['Width']
 img_info_dapi['y2'], img_info_dapi['x3'] = img_info_dapi['y1'], img_info_dapi['x1']
 img_info_dapi['y3'] = img_info_dapi['y1'] + img_info_dapi['Height']
 img_info_dapi['x4'], img_info_dapi['y4'] = img_info_dapi['x2'], img_info_dapi['y3']
-img_info_dapi = img_info_dapi[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_neun']]
+img_info_dapi = img_info_dapi[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_dapi']]
