@@ -48,6 +48,15 @@ x4_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x4']]))
 y4_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y4']])))
 
 # convert list to features
+img_name = tf.train.Feature(bytes_list = img_name_list)
+x1 = tf.train.Feature(int64_list = x1_list)
+y1 = tf.train.Feature(int64_list = y1_list)
+x2 = tf.train.Feature(int64_list = x2_list)
+y2 = tf.train.Feature(int64_list = y2_list)
+x3 = tf.train.Feature(int64_list = x3_list)
+y3 = tf.train.Feature(int64_list = y3_list)
+x4 = tf.train.Feature(int64_list = x4_list)
+y4 = tf.train.Feature(int64_list = y4_list)
 
 # write a loop for this process
 # create a function for one file
