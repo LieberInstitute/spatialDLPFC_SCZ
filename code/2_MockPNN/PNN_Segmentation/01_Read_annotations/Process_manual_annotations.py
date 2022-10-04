@@ -20,12 +20,9 @@ csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_M
 
 # function to extract all the coordinates from the csv
 def extracting_coords(csv_path, object_name):
-    print("hi")
     img_info_df = pd.read_csv(csv_path)
     col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height']
-    print(col_names)
     object_name = object_name # name of the objects stored in the dataframe
-    print(object_name)
     file_name = os.path.basename(csv_path).split('.')[0] # image file name
     dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: np.int0(np.ceil(img_info_df['X'])), col_names[3]: np.int0(np.ceil(img_info_df['Y'])), col_names[4]: np.int0(np.ceil(img_info_df['Width'])), col_names[5]: np.int0(np.ceil(img_info_df['Height']))}
     img_info_df = pd.DataFrame(dict, columns = col_names)
