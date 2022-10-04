@@ -33,9 +33,22 @@ def extracting_coords(csv_path, object_name):
     img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height']]
     return(img_info_df)
 
-
+# run this for a single file
+file17 = extracting_coords(csv_test, 'PNN')
 
 # create the tf train object for each individual row
+img_name_list = tf.train.BytesList(value = [b'20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17'])
+x1_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x1']])))
+y1_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y1']])))
+x2_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x2']])))
+y2_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y2']])))
+x3_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x3']])))
+y3_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y3']])))
+x4_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x4']])))
+y4_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y4']])))
+
+# convert list to features
+
 # write a loop for this process
 # create a function for one file
 # call the function for all the csvs
