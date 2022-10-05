@@ -58,6 +58,11 @@ y3 = tf.train.Feature(int64_list = y3_list)
 x4 = tf.train.Feature(int64_list = x4_list)
 y4 = tf.train.Feature(int64_list = y4_list)
 
+# create a dictionary of the features
+csv_dict = {'img_name' : img_name, 'x1':x1, 'y1':y1, 'x2':x2, 'y2':y2, 'x3':x3, 'y3':y3, 'x4':x4, 'y4':y4}
+tensor_feat = tf.train.Features(feature = csv_dict)
+
+
 # write a loop for this process
 # create a function for one file
 # call the function for all the csvs
