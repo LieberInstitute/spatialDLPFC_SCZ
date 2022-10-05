@@ -65,6 +65,11 @@ tensor_feat = tf.train.Features(feature = csv_dict)
 # create a train example
 ex = tf.train.Example(features = tensor_feat)
 
+# writing into a tf record
+with tf.io.TFRecordWriter('x1.tfrecord') as writer:
+  writer.write(ex.SerializeToString())
+
+
 # write a loop for this process
 # create a function for one file
 # call the function for all the csvs
