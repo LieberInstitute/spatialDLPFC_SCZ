@@ -13,6 +13,7 @@ import argparse
 import imutils
 import cv2
 import tensorflow as tf
+import tensorflow.compat.v1 as tfc
 import keras
 
 # import one of the manual annotation csvs--pref which has lesser rows
@@ -41,8 +42,10 @@ file17 = extracting_coords(csv_test, 'PNN')
 with tf.io.TFRecordWriter('x1.tfrecord') as writer:
   writer.write(ex.SerializeToString())
 
-
+tf.compat.v1.disable_eager_execution() # only if eager execution is not needed (eager execution is enabled by default in tf2)
+tf.compat.v1.disable_v2_behavior() # if using a tf1 function
 # write a loop for this process
+tf.compat.v1.enable_eager_execution()
 obj_name = b'PNN'
 example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.train.Feature(bytes_list = tf.train.BytesList(value = [m.encode('utf-8') for m in file17['img_file_name']])),
                                                                'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [obj_name])),
@@ -51,8 +54,30 @@ example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.tr
                                                                'w':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['Width']])))),
                                                                'h':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['Height']]))))}))
 
+# writing into a tf record
+with tf.io.TFRecordWriter('csv1.tfrecord') as writer:
+  writer.write(example.SerializeToString())
+  print(tf.train.Example.FromString(example))
+
+# start a tf sess
+sess = tf.compat.v1.InteractiveSession()
+
+# read the tf record file
+tf.compat.v1.enable_eager_execution()
+reader = tfc.compat.v1.TFRecordReader()
+filename_queue = tf.data.TFRecordDataset(['csv1.tfrecord'])
+tf.compat.v1.enable_eager_execution()
+for raw_record in filename_queue.take(1):
+    exampl = tf.train.Example()
+    exampl.ParseFromString(raw_record.numpy())
+    print(exampl)
+
+tf.compat.v1.disable_v2_behavior()
+_, serialized_example = reader.read(filename_queue)
+
+
 # for loop to create the format of label,x,y,w,h
-for x,y,w,h in zip(file17['x1'], file17['y1'], file17['w'], file17['h']):
+for x,y,w,h in zip(file17['x1'], file17['y1'], file17['Width'], file17['Height']):
     print(x,y,w,h)
 # import the df for blood vessels
 # create the feature objects for blood vessels
