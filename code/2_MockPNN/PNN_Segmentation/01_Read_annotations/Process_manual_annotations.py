@@ -42,13 +42,19 @@ file17 = extracting_coords(csv_test, 'PNN')
 # tf.compat.v1.disable_v2_behavior() # if using a tf1 function
 # write a loop for this process
 # tf.compat.v1.enable_eager_execution()
-obj_name = b'PNN'
-example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.train.Feature(bytes_list = tf.train.BytesList(value = [m.encode('utf-8') for m in file17['img_file_name']])),
-                                                               'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [obj_name])),
-                                                               'x1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x1']])))),
-                                                               'y1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y1']])))),
-                                                               'w':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['Width']])))),
-                                                               'h':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['Height']]))))}))
+def create_tf_example(object_label, data_frame):
+    object_label = b'PNN'
+    example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.train.Feature(bytes_list = tf.train.BytesList(value = [m.encode('utf-8') for m in data_frame['img_file_name']])),
+                                                               'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [object_label])),
+                                                               'x1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in data_frame['x1']])))),
+                                                               'y1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in data_frame['y1']])))),
+                                                               'w':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in data_frame['Width']])))),
+                                                               'h':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in data_frame['Height']]))))}))
+    return example
+
+# create a tfexample for blood vessels
+claudin_csv_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17_claudin.csv'
+claudin_csv = pd.read_csv(claudin_csv_path)
 
 # writing into a tf record
 with tf.io.TFRecordWriter('csv1.tfrecord') as writer:
@@ -62,12 +68,14 @@ sess = tf.compat.v1.InteractiveSession()
 tf.compat.v1.enable_eager_execution()
 reader = tf.compat.v1.TFRecordReader()
 filename_queue = tf.data.TFRecordDataset(['csv1.tfrecord'])
-# tf.compat.v1.enable_eager_execution()
+
+# displays the tfrecords
 for raw_record in filename_queue.take(1):
     exampl = tf.train.Example()
     exampl.ParseFromString(raw_record.numpy())
     print(exampl)
 
+# fix this!
 tf.compat.v1.disable_v2_behavior()
 _, serialized_example = reader.read(filename_queue)
 
