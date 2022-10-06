@@ -38,14 +38,10 @@ def extracting_coords(csv_path, object_name):
 # run this for a single file
 file17 = extracting_coords(csv_test, 'PNN')
 
-# writing into a tf record
-with tf.io.TFRecordWriter('x1.tfrecord') as writer:
-  writer.write(ex.SerializeToString())
-
-tf.compat.v1.disable_eager_execution() # only if eager execution is not needed (eager execution is enabled by default in tf2)
-tf.compat.v1.disable_v2_behavior() # if using a tf1 function
+# tf.compat.v1.disable_eager_execution() # only if eager execution is not needed (eager execution is enabled by default in tf2)
+# tf.compat.v1.disable_v2_behavior() # if using a tf1 function
 # write a loop for this process
-tf.compat.v1.enable_eager_execution()
+# tf.compat.v1.enable_eager_execution()
 obj_name = b'PNN'
 example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.train.Feature(bytes_list = tf.train.BytesList(value = [m.encode('utf-8') for m in file17['img_file_name']])),
                                                                'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [obj_name])),
@@ -57,16 +53,16 @@ example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.tr
 # writing into a tf record
 with tf.io.TFRecordWriter('csv1.tfrecord') as writer:
   writer.write(example.SerializeToString())
-  print(tf.train.Example.FromString(example))
+  # print(tf.train.Example.FromString(example))
 
 # start a tf sess
 sess = tf.compat.v1.InteractiveSession()
 
 # read the tf record file
 tf.compat.v1.enable_eager_execution()
-reader = tfc.compat.v1.TFRecordReader()
+reader = tf.compat.v1.TFRecordReader()
 filename_queue = tf.data.TFRecordDataset(['csv1.tfrecord'])
-tf.compat.v1.enable_eager_execution()
+# tf.compat.v1.enable_eager_execution()
 for raw_record in filename_queue.take(1):
     exampl = tf.train.Example()
     exampl.ParseFromString(raw_record.numpy())
