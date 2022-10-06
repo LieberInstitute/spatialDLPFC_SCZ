@@ -3,6 +3,7 @@ from skimage.feature import peak_local_max
 from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
 import numpy as np
+import pandas as pd
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
 import skimage
@@ -36,41 +37,25 @@ def extracting_coords(csv_path, object_name):
 # run this for a single file
 file17 = extracting_coords(csv_test, 'PNN')
 
-# create the tf train object for each individual row
-img_name_list = tf.train.BytesList(value = [b'20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17'])
-x1_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x1']])))
-y1_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y1']])))
-x2_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x2']])))
-y2_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y2']])))
-x3_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x3']])))
-y3_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y3']])))
-x4_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x4']])))
-y4_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y4']])))
-
-# convert list to features
-img_name = tf.train.Feature(bytes_list = img_name_list)
-x1 = tf.train.Feature(int64_list = x1_list)
-y1 = tf.train.Feature(int64_list = y1_list)
-x2 = tf.train.Feature(int64_list = x2_list)
-y2 = tf.train.Feature(int64_list = y2_list)
-x3 = tf.train.Feature(int64_list = x3_list)
-y3 = tf.train.Feature(int64_list = y3_list)
-x4 = tf.train.Feature(int64_list = x4_list)
-y4 = tf.train.Feature(int64_list = y4_list)
-
-# create a dictionary of the features
-csv_dict = {'img_name' : img_name, 'x1':x1, 'y1':y1, 'x2':x2, 'y2':y2, 'x3':x3, 'y3':y3, 'x4':x4, 'y4':y4}
-tensor_feat = tf.train.Features(feature = csv_dict)
-
-# create a train example
-ex = tf.train.Example(features = tensor_feat)
-
 # writing into a tf record
 with tf.io.TFRecordWriter('x1.tfrecord') as writer:
   writer.write(ex.SerializeToString())
 
 
 # write a loop for this process
+obj_name = b'PNN'
+example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.train.Feature(bytes_list = tf.train.BytesList(value = [m.encode('utf-8') for m in file17['img_file_name']])),
+                                                               'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [obj_name])),
+                                                               'x1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x1']])))),
+                                                               'y1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y1']])))),
+                                                               'x2':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x2']])))),
+                                                               'y2':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y2']])))),
+                                                               'x3':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x3']])))),
+                                                               'y3':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y3']])))),
+                                                               'x4':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in file17['x4']])))),
+                                                               'y4':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in file17['y4']]))))}))
+
+
 # create a function for one file
 # call the function for all the csvs
 # check if this works
