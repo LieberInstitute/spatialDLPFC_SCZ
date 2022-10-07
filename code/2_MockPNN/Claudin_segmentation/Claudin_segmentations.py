@@ -47,6 +47,8 @@ img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockP
 img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[6925,49106]_component_data_24.tif')
+img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif'
+
 
 # Read and normalize the image
 img_claudin = Image.open(img_test)
@@ -72,7 +74,6 @@ contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX
 clx, cly, clw, clh = [],[],[],[]
 for cnt in contours:
       x,y,w,h = cv2.boundingRect(cnt)
-      print(w*h)
       if(w*h >= 100):
             clx.append(x)
             cly.append(y)
@@ -95,16 +96,18 @@ fig.show()
 
 # Put the BB details in the csv
 col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_claudin']
-object_name = 'Claudin5' # name of the objects stored in the dataframe
+object_name = 'Blood_vessels' # name of the objects stored in the dataframe
 file_name = os.path.basename(img_test) # image file name
 
-dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: clx, col_names[3]: cly, col_names[4]: clw, col_names[5]: clh, col_names[6]: len(clx)}
+dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: clx, col_names[3]: cly, col_names[4]: clw, col_names[5]: clh}
 img_info_claudin = pd.DataFrame(dict, columns = col_names)
 # compute the rest of the coordinates of the BB
 img_info_claudin['x2'] = img_info_claudin['x1'] + img_info_claudin['Width']
 img_info_claudin['y2'], img_info_claudin['x3'] = img_info_claudin['y1'], img_info_claudin['x1']
 img_info_claudin['y3'] = img_info_claudin['y1'] + img_info_claudin['Height']
 img_info_claudin['x4'], img_info_claudin['y4'] = img_info_claudin['x2'], img_info_claudin['y3']
-img_info_claudin = img_info_claudin[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_claudin']]
+img_info_claudin = img_info_claudin[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height']]
 
+# export the dataframe to csv
+img_info_claudin.to_csv("/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17_claudin.csv")
 
