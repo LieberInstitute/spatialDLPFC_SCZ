@@ -36,7 +36,7 @@ def extracting_coords(csv_path, object_name):
     return(img_info_df)
 
 # run this for a single file
-file17 = extracting_coords(csv_test, 'PNN')
+pnn_df = extracting_coords(csv_test, 'PNN')
 
 # tf.compat.v1.disable_eager_execution() # only if eager execution is not needed (eager execution is enabled by default in tf2)
 # tf.compat.v1.disable_v2_behavior() # if using a tf1 function
@@ -48,14 +48,14 @@ def create_tf_example(object_label, data_frame):
                                                                'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [object_label])),
                                                                'x1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in data_frame['x1']])))),
                                                                'y1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in data_frame['y1']])))),
-                                                               'w':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in data_frame['Width']])))),
-                                                               'h':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in data_frame['Height']]))))}))
+                                                               'w':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([w for w in data_frame['Width']])))),
+                                                               'h':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([h for h in data_frame['Height']]))))}))
     return example
 
 # create a tfexample for blood vessels
-claudin_csv_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17_claudin.csv'
-claudin_csv = pd.read_csv(claudin_csv_path)
-create_tf_example(b'blood_vessels', claudin_csv) # --commit this!
+claudin_csv = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17_claudin.csv'
+claudin_df = pd.read_csv(claudin_csv)
+cla_ex = create_tf_example(b'blood_vessels', claudin_df)
 
 
 # writing into a tf record
@@ -81,14 +81,32 @@ for raw_record in filename_queue.take(1):
 tf.compat.v1.disable_v2_behavior()
 _, serialized_example = reader.read(filename_queue)
 
+# nested dict for tf features in the right order
+dict_list=[]
+object_label = 'PNN'
+for i in range(len(pnn_df['x1'])):
+    dict = {'boxes': {'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [b'PNN'])),
+                      'x': tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([pnn_df['x1'][i]])))),
+                      'y': tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([pnn_df['y1'][i]])))),
+                      'w':  tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([pnn_df['Width'][i]])))),
+                      'h': tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([pnn_df['Height'][i]]))))}}
+    dict_list.append(dict)
 
-# for loop to create the format of label,x,y,w,h
-for x,y,w,h in zip(file17['x1'], file17['y1'], file17['Width'], file17['Height']):
-    print(x,y,w,h)
-# import the df for blood vessels
+exm = tf.train.Example(features = tf.train.Feature(bytes_list = tf.train.BytesList(value = [dict_list])))
 
-# create the feature objects for blood vessels
-# then create 1 example object for 1 tile
+
+
+
+
+example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.train.Feature(bytes_list = tf.train.BytesList(value = [m.encode('utf-8') for m in data_frame['img_file_name']])),
+                                                               'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [object_label])),
+                                                               'x1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in data_frame['x1']])))),
+                                                               'y1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([y for y in data_frame['y1']])))),
+                                                               'w':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([w for w in data_frame['Width']])))),
+                                                               'h':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([h for h in data_frame['Height']]))))}))
+
+
+
 # loop through the rest of the manual annotations slides
 # sanity check
 # convert to Pascal-VOC
