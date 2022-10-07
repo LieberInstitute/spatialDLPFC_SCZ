@@ -42,8 +42,8 @@ file17 = extracting_coords(csv_test, 'PNN')
 # tf.compat.v1.disable_v2_behavior() # if using a tf1 function
 # write a loop for this process
 # tf.compat.v1.enable_eager_execution()
+object_label = b'PNN'
 def create_tf_example(object_label, data_frame):
-    object_label = b'PNN'
     example = tf.train.Example(features=tf.train.Features(feature={'img_name': tf.train.Feature(bytes_list = tf.train.BytesList(value = [m.encode('utf-8') for m in data_frame['img_file_name']])),
                                                                'label': tf.train.Feature(bytes_list = tf.train.BytesList(value = [object_label])),
                                                                'x1':tf.train.Feature(int64_list = tf.train.Int64List(value = np.int0(np.ceil([x for x in data_frame['x1']])))),
@@ -55,6 +55,8 @@ def create_tf_example(object_label, data_frame):
 # create a tfexample for blood vessels
 claudin_csv_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17_claudin.csv'
 claudin_csv = pd.read_csv(claudin_csv_path)
+create_tf_example(b'blood_vessels', claudin_csv) # --commit this!
+
 
 # writing into a tf record
 with tf.io.TFRecordWriter('csv1.tfrecord') as writer:
@@ -84,6 +86,7 @@ _, serialized_example = reader.read(filename_queue)
 for x,y,w,h in zip(file17['x1'], file17['y1'], file17['Width'], file17['Height']):
     print(x,y,w,h)
 # import the df for blood vessels
+
 # create the feature objects for blood vessels
 # then create 1 example object for 1 tile
 # loop through the rest of the manual annotations slides
