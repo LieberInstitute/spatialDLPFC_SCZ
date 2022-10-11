@@ -70,7 +70,7 @@ fig.show()
 claudin_clr = skimage.color.gray2rgb((np.array((claudin * 255), dtype = np.uint8))) # convert to color to draw colored bb
 hierachy, img_threshold = cv2.threshold((np.array((claudin * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
 contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-# cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR
+# cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR len(contours)
 clx, cly, clw, clh = [],[],[],[]
 for cnt in contours:
       x,y,w,h = cv2.boundingRect(cnt)
