@@ -40,7 +40,7 @@ img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_M
 dst_folder = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Images/Original/'
 # dst_folder_WFA = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/WFA_normalized/'
 
-for file_name in os.listdir(src_folder):
+for file_name in os.listdir(img_dir):
     images = Image.open(os.path.join(img_dir, file_name))
     print("Filename", os.path.basename(file_name))
     images.seek(1) # seek the frame of interest #1=Claudin
@@ -53,6 +53,7 @@ for file_name in os.listdir(src_folder):
     wfac = skimage.color.gray2rgb(wfa)
     hierachy, img_threshold = cv2.threshold(np.array(cla * 255, dtype = np.uint8), 10, 255, cv2.THRESH_BINARY)
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    print(len(contours))
     for cnt in contours:
         x,y,w,h = cv2.boundingRect(cnt)
         # print("CLAUDIN CONTOURS", x,y,w,h)
