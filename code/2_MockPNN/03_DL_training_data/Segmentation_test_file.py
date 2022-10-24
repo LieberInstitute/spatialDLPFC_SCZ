@@ -41,14 +41,15 @@ from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
-
+# cd dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code
 img_dir = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
 img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining')
 img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
-img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[6925,49106]_component_data_24.tif')
+img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif')
+                       # '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[6925,49106]_component_data_24.tif')
 
-
+img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif'
 # WFA channel
 img_wfa = Image.open(img_test)
 img_wfa.seek(3) # channel 1 = Claudin 5
@@ -105,7 +106,7 @@ for cnt in contours1:
     coords = cv2.boundingRect(cnt) # x,y,w,h
     x1,y1,w1,h1 = cv2.boundingRect(cnt)
     if (w1*h1) >= 300:
-        print(x1,y1,w1,h1)
+        print((x1-10,y1-10), (x1+w1+10, y1+h1+10))
         out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,255,0), 1) # change the color to black (0,0,0) if bb is not needed
         rect = cv2.minAreaRect(cnt)
         box = cv2.boxPoints(rect)
@@ -118,5 +119,10 @@ ax.imshow(out_img1)
 fig.show()
 
 # print(os.path.basename(file_name).split('.')[0].split('_')[6])
-
+n,m =
+# draw a rectangle from the manual annotations csv on the contour detected image
+rect = cv2.rectangle(out_img1, (841,1860-81), (858,1860-97), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(out_img1)
+fig.show()
 
