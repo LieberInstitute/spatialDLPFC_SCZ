@@ -20,6 +20,7 @@ import keras
 # import one of the manual annotation csvs--pref which has lesser rows
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif')
 csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.csv')
+csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv'
 
 # function to extract all the coordinates from the csv
 def extracting_coords(csv_path, object_name):
