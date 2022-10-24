@@ -119,26 +119,3 @@ ax.imshow(out_img1)
 fig.show()
 
 # print(os.path.basename(file_name).split('.')[0].split('_')[6])
-# draw a rectangle from the manual annotations csv on the contour detected image
-rect = cv2.rectangle(out_img1, (841,1860-81), (858,1860-97), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(out_img1)
-fig.show()
-
-####### contours
-# (1435, 866) (1512, 960)  840.782  80.548 16.905  15.911
-rowp,colp = (1396,1860)
-rect = cv2.rectangle(out_img1, (1435, colp-866), (1512, colp-960), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(out_img1)
-fig.show()
-
-# (1726, 158) (1780, 206)
-# (1645, 140) (1718, 206)
-
-# 841,81  841+17=858, 81+16=97
-rowp,colp = (1396,1860)
-rect = cv2.rectangle(out_img1, (1726, colp-158), (1780, colp-206), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(out_img1)
-fig.show()
