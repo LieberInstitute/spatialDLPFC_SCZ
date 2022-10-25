@@ -10,7 +10,6 @@ Channel5 = Thumbnail
 
 
 import numpy as np
-import numpy.ma as ma
 import pyhere
 from pathlib import Path
 import pandas as pd
@@ -19,22 +18,16 @@ from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
 import matplotlib
 import matplotlib.pyplot as plt
-import mpldatacursor
-import glob
 import sys
 import cv2
 import math
 import scipy
 from scipy.spatial.distance import *
-# from scipy import ndimage, distance
-import imageio
 import skimage
 from skimage import *
 from skimage import feature, segmentation, draw, measure, morphology
 from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
 from skimage.draw import polygon_perimeter
-import tifffile as tif
-import imagecodecs
 import itertools
 from itertools import product
 from collections import defaultdict
