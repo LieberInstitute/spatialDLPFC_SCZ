@@ -45,9 +45,10 @@ img_dir = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
 img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining')
 img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
-img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.tif') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
+img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 
+img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif'
 
 # read the tile and the manual annotation csv
 img_wfa = Image.open(img_test)
@@ -58,8 +59,10 @@ img_claudin.seek(1)
 claudin = cv2.normalize(np.array(img_claudin, dtype = 'float32'), np.zeros(np.array(img_claudin, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 
 # Preprocessing the csv
+conv_factor = 2.0112375738 # the fiji annotations are measured in microns and they need to be translated to pixels (1860/924.81)
 df_manual_test = pd.read_csv(csv_test) # read the manual annotations csv into dataframe
 df_manual_test = df_manual_test.rename(columns = {'X': 'xc', 'Y': 'yc', 'BX': 'x1', 'BY': 'y1', 'Perim.': 'Perimeter'}) # xc,yc are the centroids of the BB
+df_manual_test.loc[:,['xc']], df_manual_test.loc[:,['yc']], df_manual_test.loc[:,['x1']], df_manual_test.loc[:,['y1']], df_manual_test['Width'], df_manual_test['Height'] = df_manual_test['xc']*conv_factor, df_manual_test['yc']*conv_factor, df_manual_test['x1']*conv_factor, df_manual_test['y1']*conv_factor, df_manual_test['Width']*conv_factor, df_manual_test['Height']*conv_factor
 df_manual_test['x2'] = (df_manual_test['x1'] + df_manual_test['Width'])
 df_manual_test['y2'], df_manual_test['x3'] = df_manual_test['y1'], df_manual_test['x1']
 df_manual_test['y3'] = (df_manual_test['y1'] + df_manual_test['Height'])
@@ -125,6 +128,8 @@ out_img_gry = skimage.color.rgb2gray(out_img) # convert to gray to find contours
 # fig.show()
 
 
+
+# for 11: area = 268.973 xc = 840.782	yc = 80.548 X = 832.329	y = 72.593	w = 16.905	h = 15.911
 out_img255 = np.array(out_img_gry * 255, dtype = np.uint8) # change scale to 0-255 for find contours
 out_img_clr = skimage.color.gray2rgb(np.array(out_img_gry * 255, dtype = np.uint8)) # convert to color to draw colored bb
 hierachy1, img_threshold1 = cv2.threshold(np.array(out_img_gry * 255, dtype = np.uint8), 100, 255, cv2.THRESH_BINARY) # ADAPTIVE_THRESH_MEAN_C
@@ -141,14 +146,12 @@ for cnt in contours1:
         wfy.append(y1)
         wfw.append(w1)
         wfh.append(h1)
-        pnn_area.append(area)
+        # pnn_area.append(area)
         out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,255,0), 1) # change the color to black (0,0,0) if bb is not needed
         rect = cv2.minAreaRect(cnt)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
         out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,255),3) # comment out if contour box is not needed
-
-# for 11: area = 268.973 xc = 840.782	yc = 80.548 X = 832.329	y = 72.593	w = 16.905	h = 15.911
 
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(out_img1)
@@ -231,7 +234,11 @@ fig.show()
 
 # 841,81  841+17=858, 81+16=97
 rowp,colp = (1396,1860)
-rect = cv2.rectangle(out_img1, (1726, colp-158), (1780, colp-206), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
+rect = cv2.rectangle(out_img1, (1675,147), (1709,179), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(out_img1)
 fig.show()
+
+
+# 0  268.973     65.632  2.215  0.39  4.976  841  81  833  73  850  73  833  89  850  89  16.905  15.911   4
+# 0  268.973     65.632  2.215  0.39  4.976  1692  163  1675  147  1691  147  1675  162  1691  162  16.905  15.911   4
