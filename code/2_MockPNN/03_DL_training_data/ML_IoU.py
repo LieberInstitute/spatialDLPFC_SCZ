@@ -45,11 +45,12 @@ img_dir = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
 img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining')
 img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
-img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
-csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
+img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6925,51188]_component_data_02.tif') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
+csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[6925,51188]_component_data_02.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 
-img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif'
-
+'20220712_VIF_MockPNN_Strong_Scan1_[12480,49800]_component_data_22'
+'20220712_VIF_MockPNN_Strong_Scan1_[11939,48892]_component_data_07'
+'20220712_VIF_MockPNN_Strong_Scan1_[6925,51188]_component_data_02'
 # read the tile and the manual annotation csv
 img_wfa = Image.open(img_test)
 img_wfa.seek(3)
@@ -139,7 +140,7 @@ wfx, wfy, wfw, wfh, pnn_area = [], [], [], [], []
 for cnt in contours1:
     x1,y1,w1,h1 = cv2.boundingRect(cnt)
     area = cv2.contourArea(cnt)
-    print(area)
+    # print(area)
     if area >= 100 and area <= 20000:
         # print(x1,y1,w1,h1)
         wfx.append(x1)
@@ -147,7 +148,7 @@ for cnt in contours1:
         wfw.append(w1)
         wfh.append(h1)
         # pnn_area.append(area)
-        out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,255,0), 1) # change the color to black (0,0,0) if bb is not needed
+        out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), 1) # change the color to black (0,0,0) if bb is not needed
         rect = cv2.minAreaRect(cnt)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
@@ -214,31 +215,15 @@ box2 = [[ml['x1'], ml['y1']], [ml['x2'], ml['y2']],
         [ml['x3'], ml['y3']], [ml['x4'], ml['y4']]]
 
 
-# correcting the coordinates
+
 # draw a rectangle from the manual annotations csv on the contour detected image
-rect = cv2.rectangle(out_img1, (841,1860-81), (858,1860-97), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(out_img1)
-fig.show()
-
-####### contours
-# (1435, 866) (1512, 960)  840.782  80.548 16.905  15.911
-rowp,colp = (1396,1860)
-rect = cv2.rectangle(out_img1, (1435, colp-866), (1512, colp-960), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(out_img1)
-fig.show()
-
-# (1726, 158) (1780, 206)
-# (1645, 140) (1718, 206)
-
-# 841,81  841+17=858, 81+16=97
-rowp,colp = (1396,1860)
-rect = cv2.rectangle(out_img1, (1675,147), (1709,179), (255,0,0), 3) # (pnn_df['x1'], pnn_df['y1']), (pnn_df['x4'], pnn_df['y4']), (255,0,0), 3)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(out_img1)
-fig.show()
+def draw_rect(df_manual_test, contour_img):
+    for box in range(len(df_manual_test['x1'])):
+        print(box)
+        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,0,0), 3)
+    fig,ax = plt.subplots(figsize = (20,20))
+    ax.imshow(out_img1)
+    fig.show()
+    return contour_img
 
 
-# 0  268.973     65.632  2.215  0.39  4.976  841  81  833  73  850  73  833  89  850  89  16.905  15.911   4
-# 0  268.973     65.632  2.215  0.39  4.976  1692  163  1675  147  1691  147  1675  162  1691  162  16.905  15.911   4
