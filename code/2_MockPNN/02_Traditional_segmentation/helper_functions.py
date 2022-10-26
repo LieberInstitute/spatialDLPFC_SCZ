@@ -29,6 +29,14 @@
 #     return(contour_img, img_info_df)
 
 
+# read and normalise the image
+def read_norm(filepath, ch_num):
+    img = Image.open(filepath)
+    img.seek(ch_num)
+    img = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+    return img
+
+
 # detect contours in the normalised_img
 def detect_contours(normalised_img):
     hierachy, img_threshold = cv2.threshold((np.array((normalised_img * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
@@ -55,9 +63,9 @@ def draw_contours(contours, normalised_img):
     return (x,y,w,h, area, contour_img)
 
 # populate a dataframe with the coordinates info
-def create_df(x,y,w,h, area, img_test):
+def create_df(x,y,w,h, area, filepath):
     col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'area']
-    file_name = os.path.basename(img_test) # image file name
+    file_name = os.path.basename(filepath) # image file name
     dict = {col_names[0]: file_name, col_names[1]: label, col_names[2]: x, col_names[3]: y, col_names[4]: w, col_names[5]: h, col_names[6]: area}
     img_info_df = pd.DataFrame(dict, columns = col_names)
     img_info_df['x2'] = img_info_df['x1'] + img_info_df['Width']
