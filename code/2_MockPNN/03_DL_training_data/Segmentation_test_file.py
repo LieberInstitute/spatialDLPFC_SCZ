@@ -40,18 +40,10 @@ img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockP
 img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif')
-                       # '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[6925,49106]_component_data_24.tif')
 
-img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif'
-# WFA channel
-img_wfa = Image.open(img_test)
-img_wfa.seek(3) # channel 1 = Claudin 5
-wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-
-# Claudin channel
-img_claudin = Image.open(img_test)
-img_claudin.seek(1) # channel 1 = Claudin 5
-claudin = cv2.normalize(np.array(img_claudin, dtype = 'float32'), np.zeros(np.array(img_claudin, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+# read and normalise images
+wfa = read_norm(img_test, 3)
+claudin = read_norm(img_test, 1)
 
 # Increasing the contrast
 claudin[claudin <= claudin.mean()] = 0.0
@@ -62,6 +54,26 @@ fig,ax = plt.subplots(nrows = 1, ncols = 2,figsize = (20,20))
 ax[0].imshow(claudin)
 ax[1].imshow(wfa)
 fig.show()
+
+# detect contours
+contour_list = detect_contours(claudin)
+# draw contours
+x,y,w,h,area,claudin_contours = draw_contours(contour_list, claudin)
+
+claudin_df = create_df(x,y,w,h,area,img_test)
+
+
+# WFA channel
+# img_wfa = Image.open(img_test)
+# img_wfa.seek(3) # channel 1 = Claudin 5
+# wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+#
+# # Claudin channel
+# img_claudin = Image.open(img_test)
+# img_claudin.seek(1) # channel 1 = Claudin 5
+# claudin = cv2.normalize(np.array(img_claudin, dtype = 'float32'), np.zeros(np.array(img_claudin, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+
+
 
 # Detecting contours
 wfa255 = np.array(wfa * 255, dtype = np.uint8)
