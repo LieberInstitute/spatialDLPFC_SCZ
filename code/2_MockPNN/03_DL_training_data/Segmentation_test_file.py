@@ -80,27 +80,30 @@ for i in range(0, img_height):
 # Morphology transformation
 kernel = np.ones((5,5),np.uint8)
 erosion = cv2.erode(wfa, kernel, iterations = 1)
+th =  cv2.adaptiveThreshold(wfa.astype('uint8'),255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,3,2)
+wfa255 = wfa*255
+thresh = cv2.threshold(wfa255, 10, 200, cv2.THRESH_BINARY_INV)[1]
+
 se=cv2.getStructuringElement(cv2.MORPH_RECT , (8,8))
 bg=cv2.morphologyEx(wfa, cv2.MORPH_DILATE, se)
 out_gray=cv2.divide(wfa, bg, scale=255)
 out_binary=cv2.threshold(out_gray, 0, 255, cv2.THRESH_OTSU )[1]
+im = cv2.fastNlMeansDenoising(wfa255.astype('uint8'))
 
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(out_gray)
+ax.imshow(im)
 fig.show()
 
-
+######################################
 # WFA channel
-# img_wfa = Image.open(img_test)
-# img_wfa.seek(3) # channel 1 = Claudin 5
-# wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-#
-# # Claudin channel
-# img_claudin = Image.open(img_test)
-# img_claudin.seek(1) # channel 1 = Claudin 5
-# claudin = cv2.normalize(np.array(img_claudin, dtype = 'float32'), np.zeros(np.array(img_claudin, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+img_wfa = Image.open(img_test)
+img_wfa.seek(3) # channel 1 = Claudin 5
+wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 
-
+# Claudin channel
+img_claudin = Image.open(img_test)
+img_claudin.seek(1) # channel 1 = Claudin 5
+claudin = cv2.normalize(np.array(img_claudin, dtype = 'float32'), np.zeros(np.array(img_claudin, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 
 # Detecting contours
 wfa255 = np.array(wfa * 255, dtype = np.uint8)
