@@ -77,6 +77,19 @@ for i in range(0, img_height):
         histogram[claudin_gry[i, j]] +=1
 
 
+# Morphology transformation
+kernel = np.ones((5,5),np.uint8)
+erosion = cv2.erode(wfa, kernel, iterations = 1)
+se=cv2.getStructuringElement(cv2.MORPH_RECT , (8,8))
+bg=cv2.morphologyEx(wfa, cv2.MORPH_DILATE, se)
+out_gray=cv2.divide(wfa, bg, scale=255)
+out_binary=cv2.threshold(out_gray, 0, 255, cv2.THRESH_OTSU )[1]
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(out_gray)
+fig.show()
+
+
 # WFA channel
 # img_wfa = Image.open(img_test)
 # img_wfa.seek(3) # channel 1 = Claudin 5
