@@ -35,7 +35,7 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 # cd dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code
-img_dir = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
+# img_dir = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
 img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining')
 img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
@@ -59,8 +59,22 @@ fig.show()
 contour_list = detect_contours(claudin)
 # draw contours
 x,y,w,h,area,claudin_contours = draw_contours(contour_list, claudin)
-
 claudin_df = create_df(x,y,w,h,area,img_test)
+
+
+# plot the avg background and PNN intensities
+# calculate histogram
+claudin_clr = skimage.color.gray2rgb((np.array((claudin * 255), dtype = np.uint8)))
+claudin_gry = skimage.color.rgb2gray(claudin_clr)
+claudin_256 = claudin * 256
+img_height = claudin_gry.shape[0]
+img_width = claudin_gry.shape[1]
+plt.hist(claudin.ravel(), 256, (0,1))
+plt.show()
+histogram = np.zeros([256], np.int32)
+for i in range(0, img_height):
+    for j in range(0, img_width):
+        histogram[claudin_gry[i, j]] +=1
 
 
 # WFA channel
