@@ -98,6 +98,11 @@ fig.show()
 # WFA channel
 img_wfa = Image.open(img_test)
 img_wfa.seek(3) # channel 1 = Claudin 5
+wfa_arr = np.array(img_wfa, dtype = 'float32')
+wfa_arr[wfa_arr <= wfa_arr.mean()] = 0.0
+wfa_arr[wfa_arr >= 1.0] = wfa_arr.max()
+wfa = cv2.normalize(wfa_arr, np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+
 wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 
 # Claudin channel
