@@ -67,7 +67,7 @@ def draw_contours(contours, normalised_img, color, thickness):
             area.append(area_)
             bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
             box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
-            contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
+            contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),-1) # change the color and thickness here if contours need to be visible
     return (x,y,w,h, area, contour_img)
 
 # populate a dataframe with the coordinates info
