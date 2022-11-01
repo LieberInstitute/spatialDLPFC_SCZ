@@ -9,7 +9,6 @@ Channel5 = Thumbnail
 '''
 
 import numpy as np
-import numpy.ma as ma
 import pandas as pd
 import PIL
 import pyhere
@@ -18,22 +17,16 @@ from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
 import matplotlib
 import matplotlib.pyplot as plt
-import mpldatacursor
-import glob
 import sys
 import cv2
 import math
 import scipy
 from scipy.spatial.distance import *
 from scipy.signal import convolve2d
-import imageio
 import skimage
-from skimage import *
 from skimage import feature, segmentation, draw, measure, morphology
 from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
 from skimage.draw import polygon_perimeter
-import tifffile as tif
-import imagecodecs
 import itertools
 from itertools import product
 from collections import defaultdict
@@ -48,9 +41,6 @@ img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_S
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6925,51188]_component_data_02.tif') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[6925,51188]_component_data_02.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 
-'20220712_VIF_MockPNN_Strong_Scan1_[12480,49800]_component_data_22'
-'20220712_VIF_MockPNN_Strong_Scan1_[11939,48892]_component_data_07'
-'20220712_VIF_MockPNN_Strong_Scan1_[6925,51188]_component_data_02'
 # read the tile and the manual annotation csv
 img_wfa = Image.open(img_test)
 img_wfa.seek(3)
