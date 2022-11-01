@@ -52,7 +52,7 @@ def detect_contours(normalised_img):
     return contours
 
 # draw the extracted contours onto the image
-def draw_contours(contours, normalised_img):
+def draw_contours(contours, normalised_img, color, thickness):
     color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
     x, y, w, h, area = [],[],[],[],[]
     for cnt in contours:
@@ -65,9 +65,9 @@ def draw_contours(contours, normalised_img):
             w.append(w_)
             h.append(h_)
             area.append(area_)
-            bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+5, y_+h_+5), (255,0,0), 2)
+            bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
             box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
-            contour_img = cv2.drawContours(bb_img,[box],0,(0,0,255),1)
+            contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
     return (x,y,w,h, area, contour_img)
 
 # populate a dataframe with the coordinates info
