@@ -34,7 +34,7 @@ from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
-# cd dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code
+# cd /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code
 # img_dir = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
 img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining')
 img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
@@ -45,9 +45,6 @@ img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '202
 wfa = read_norm(img_test, 3)
 claudin = read_norm(img_test, 1)
 
-# Increasing the contrast
-claudin[claudin <= claudin.mean()] = 0.0
-claudin[claudin >= claudin.mean()] = 1.0
 
 # Plot the normalized/pre-processed image
 fig,ax = plt.subplots(nrows = 1, ncols = 2,figsize = (20,20))
@@ -59,22 +56,21 @@ fig.show()
 contour_list = detect_contours(claudin)
 # draw contours
 x,y,w,h,area,claudin_contours = draw_contours(contour_list, claudin)
-claudin_df = create_df(x,y,w,h,area,img_test)
+claudin_df = create_df(x,y,w,h,area,img_test, 'blood_vessels')
 
+
+print("Detected {} {}".format(len(x)), label)
 
 # plot the avg background and PNN intensities
 # calculate histogram
-claudin_clr = skimage.color.gray2rgb((np.array((claudin * 255), dtype = np.uint8)))
-claudin_gry = skimage.color.rgb2gray(claudin_clr)
-claudin_256 = claudin * 256
-img_height = claudin_gry.shape[0]
-img_width = claudin_gry.shape[1]
-plt.hist(claudin.ravel(), 256, (0,1))
+histogram, bin_edges = np.histogram(wfa1, bins=256, range=(0, 1))
+plt.figure()
+plt.title("Grayscale Histogram - Claudin for img1")
+plt.xlabel("grayscale value")
+plt.ylabel("pixel count")
+plt.xlim([0.0, 1.0])
+plt.plot(bin_edges[0:-1], histogram)
 plt.show()
-histogram = np.zeros([256], np.int32)
-for i in range(0, img_height):
-    for j in range(0, img_width):
-        histogram[claudin_gry[i, j]] +=1
 
 
 # Morphology transformation
@@ -103,12 +99,15 @@ wfa_arr[wfa_arr <= wfa_arr.mean()] = 0.0
 wfa_arr[wfa_arr >= 1.0] = wfa_arr.max()
 wfa = cv2.normalize(wfa_arr, np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 
-wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+# wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 
 # Claudin channel
 img_claudin = Image.open(img_test)
 img_claudin.seek(1) # channel 1 = Claudin 5
 claudin = cv2.normalize(np.array(img_claudin, dtype = 'float32'), np.zeros(np.array(img_claudin, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+
+claudin[claudin <= claudin.mean()] = 0.0
+claudin[claudin >= claudin.mean()] = 1.0
 
 # Detecting contours
 wfa255 = np.array(wfa * 255, dtype = np.uint8)
