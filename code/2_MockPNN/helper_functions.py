@@ -32,23 +32,24 @@
 def read_norm(filepath, ch_num):
     img = Image.open(filepath)
     img.seek(ch_num)
-    if ch_num == 1: # if claudin,
+    if ch_num == 1: # claudin
         img_claudin = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         img_claudin[img_claudin <= img_claudin.mean()] = 0.0
         img_claudin[img_claudin >= img_claudin.mean()] = 1.0
-    else:
+        return img_claudin
+    else: # wfa
         img_arr = np.array(img, dtype = 'float32')
         img_arr[img_arr <= img_arr.mean()] = 0.0
         img_arr[img_arr >= 1.0] = img_arr.max()
         img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-    return img_claudin, img_wfa
+        return img_wfa
 
 
 # detect contours in the normalised_img
 def detect_contours(normalised_img):
     hierachy, img_threshold = cv2.threshold((np.array((normalised_img * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    return contours_
+    return contours
 
 # draw the extracted contours onto the image
 def draw_contours(contours, normalised_img):
@@ -70,7 +71,8 @@ def draw_contours(contours, normalised_img):
     return (x,y,w,h, area, contour_img)
 
 # populate a dataframe with the coordinates info
-def create_df(x,y,w,h, area, img_test):
+def create_df(x,y,w,h, area, img_test, label):
+    print("Detected {0} {1}".format(len(x), label))
     col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'area']
     file_name = os.path.basename(img_test) # image file name
     dict = {col_names[0]: file_name, col_names[1]: label, col_names[2]: x, col_names[3]: y, col_names[4]: w, col_names[5]: h, col_names[6]: area}
