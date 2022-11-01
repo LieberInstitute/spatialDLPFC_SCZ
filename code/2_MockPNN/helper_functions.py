@@ -108,3 +108,15 @@ def plot_img(original_img, segmented_img):
     ax[1].title.set_text('Segmented')
     fig.show()
 
+# plot histogram
+def hist_plot(img):
+    range = (img.min(), img.max())
+    histogram, bin_edges = np.histogram(img, bins=256, range=range)
+    plt.figure()
+    plt.title("Grayscale Histogram")
+    plt.xlabel("grayscale value")
+    plt.ylabel("pixel count")
+    plt.xlim([img.min(), img.max()])
+    plt.plot(bin_edges[0:-1], histogram)
+    plt.show()
+
