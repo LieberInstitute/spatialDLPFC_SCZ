@@ -24,10 +24,12 @@ import cv2
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.tif')
 
 # load and preprocess the image
-img_dapi = Image.open(img_test)
-img_dapi.seek(0) # channel 0 = DAPI
-dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
+# img_dapi = Image.open(img_test)
+# img_dapi.seek(0) # channel 0 = DAPI
+# dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+# dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
+
+dapi = read_norm(img_test, 0)
 
 # perform pyramid mean shifting
 shifted = cv2.pyrMeanShiftFiltering(dapi_clr, 21, 51)
