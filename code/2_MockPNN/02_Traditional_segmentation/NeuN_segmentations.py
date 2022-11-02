@@ -50,10 +50,11 @@ img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '202
 
 
 # Read and normalize the image
-img_neun = Image.open(img_NTC)
-img_neun.seek(2) # channel 0 = DAPI
-neun = cv2.normalize(np.array(img_neun, dtype = 'float32'), np.zeros(np.array(img_neun, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+# img_neun = Image.open(img_NTC)
+# img_neun.seek(2) # channel 0 = DAPI
+# neun = cv2.normalize(np.array(img_neun, dtype = 'float32'), np.zeros(np.array(img_neun, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 
+neun = read_norm(img_test, 2)
 
 # Increasing the contrast --this step might not be necessary
 # neun[neun <= neun.mean()] = 0.0
