@@ -59,7 +59,7 @@ def find_labels(threshold):
 	return labels
 
 # extract the watershed algorithm labels
-def draw_rect(labels):
+def draw_rect(labels): # add area
 	dpx, dpy, dpw, dph = [], [], [], []
 	for label in np.unique(labels):
 		if label == 0: # label marked 0 are background
@@ -76,7 +76,7 @@ def draw_rect(labels):
 		dpw.append(w)
 		dph.append(h)
 		ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
-	return ws_img_bb
+	return dpx, dpy, dpw, dph, ws_img_bb
 
 # Plot the segmentation result
 fig,ax = plt.subplots(figsize = (20,20))
@@ -86,6 +86,7 @@ fig.show()
 
 
 # Populate the data in the dataframe
+create_df(dpx, dpy, dpw, dph, area, img_test, label)
 col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_dapi']
 object_name = 'DAPI' # name of the objects stored in the dataframe
 file_name = os.path.basename(img_test) # image file name
