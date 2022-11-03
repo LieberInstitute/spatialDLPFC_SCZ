@@ -50,29 +50,33 @@ def morph_transform(image):
 
 
 # find labels in the image
-D = ndimage.distance_transform_edt(thresh) # Euclidean distance from binary to nearest 0-pixel
-localMax = peak_local_max(D, indices=False, min_distance=5, labels=thresh) # find the local maxima for all the individual objects
-markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
-labels = watershed(-D, markers, mask=thresh)
-print("[INFO] {} unique segments found".format(len(np.unique(labels)) - 1))
+def find_labels(threshold):
+	D = ndimage.distance_transform_edt(thresh) # Euclidean distance from binary to nearest 0-pixel
+	localMax = peak_local_max(D, indices=False, min_distance=5, labels=thresh) # find the local maxima for all the individual objects
+	markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
+	labels = watershed(-D, markers, mask=thresh)
+	print("[INFO] {} unique segments found".format(len(np.unique(labels)) - 1))
+	return labels
 
 # extract the watershed algorithm labels
-dpx, dpy, dpw, dph = [], [], [], []
-for label in np.unique(labels):
-	if label == 0: # label marked 0 are background
-		continue
-	mask = np.zeros(gray.shape, dtype="uint8") # create masks that only have the detected labels as foreground and 0 as background
-	mask[labels == label] = 255
-	# detect contours in the mask and grab the largest one
-	cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # detect the watershed contours
-	cnts = imutils.grab_contours(cnts) # extract only the contours
-	c = max(cnts, key=cv2.contourArea) # get the area
-	x,y,w,h = cv2.boundingRect(c) # BB coordinates
-	dpx.append(x)
-	dpy.append(y)
-	dpw.append(w)
-	dph.append(h)
-	ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
+def draw_rect(labels):
+	dpx, dpy, dpw, dph = [], [], [], []
+	for label in np.unique(labels):
+		if label == 0: # label marked 0 are background
+			continue
+		mask = np.zeros(gray.shape, dtype="uint8") # create masks that only have the detected labels as foreground and 0 as background
+		mask[labels == label] = 255
+		# detect contours in the mask and grab the largest one
+		cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # detect the watershed contours
+		cnts = imutils.grab_contours(cnts) # extract only the contours
+		c = max(cnts, key=cv2.contourArea) # get the area
+		x,y,w,h = cv2.boundingRect(c) # BB coordinates
+		dpx.append(x)
+		dpy.append(y)
+		dpw.append(w)
+		dph.append(h)
+		ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
+	return ws_img_bb
 
 # Plot the segmentation result
 fig,ax = plt.subplots(figsize = (20,20))
