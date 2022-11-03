@@ -86,7 +86,7 @@ fig.show()
 
 
 # Populate the data in the dataframe
-create_df(dpx, dpy, dpw, dph, area, img_test, label)
+create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_dapi']
 object_name = 'DAPI' # name of the objects stored in the dataframe
 file_name = os.path.basename(img_test) # image file name
