@@ -32,17 +32,21 @@ img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '202
 dapi = read_norm(img_test, 0)
 
 # perform pyramid mean shifting
-shifted = cv2.pyrMeanShiftFiltering(dapi_clr, 21, 51)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(dapi_clr)
-fig.show()
+def morph_transform(image):
+	shifted = cv2.pyrMeanShiftFiltering(image, 21, 51) #dapi_clr
+	gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
+	thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+	fig,ax = plt.subplots(figsize = (20,20))
+	ax.imshow(dapi_clr)
+	fig.show()
+	return shifted, thresh
 
 # Otsu's thresholding
-gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
-thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(thresh)
-fig.show()
+# gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
+# thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(thresh)
+# fig.show()
 
 
 # find labels in the image
