@@ -43,7 +43,7 @@ def read_norm(filepath, ch_num):
         img_claudin[img_claudin >= img_claudin.mean()] = 1.0
         return img_claudin
     if ch_num == 2: #NeuN
-        img_neun = cv2.normalize(np.array(img_neun, dtype = 'float32'), np.zeros(np.array(img_neun, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        img_neun = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         return img_neun
     else: # wfa
         img_arr = np.array(img, dtype = 'float32')
