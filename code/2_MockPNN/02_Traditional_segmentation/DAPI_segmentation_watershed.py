@@ -38,13 +38,13 @@ fig.show()
 
 # perform pyramid mean shifting
 def morph_transform(image_clr):
-	shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
-	gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
-	thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-	fig,ax = plt.subplots(figsize = (20,20))
-	ax.imshow(image_clr)
-	fig.show()
-	return shifted, thresh, gray
+    shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
+    gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
+    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    fig,ax = plt.subplots(figsize = (20,20))
+    ax.imshow(image_clr)
+    fig.show()
+    return shifted, thresh, gray
 
 shifted, thresh, gray = morph_transform(dapi_clr)
 
@@ -58,35 +58,35 @@ shifted, thresh, gray = morph_transform(dapi_clr)
 
 # find labels in the image
 def find_labels(threshold):
-	D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
-	localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
-	markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
-	labels = watershed(-D, markers, mask=threshold)
-	print("[INFO] {} unique segments found".format(len(np.unique(labels)) - 1))
-	return labels
+    D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
+    localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
+    markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
+    labels = watershed(-D, markers, mask=threshold)
+    print("[INFO] {} unique segments found".format(len(np.unique(labels)) - 1))
+    return labels
 
 labels = find_labels(thresh)
 
 # extract the watershed algorithm labels
 def draw_rect(labels, gray, dapi): # add area
-	dpx, dpy, dpw, dph, area = [], [], [], [], []
-	for label in np.unique(labels):
-		if label == 0: # label marked 0 are background
-			continue
-		mask = np.zeros(gray.shape, dtype="uint8") # create masks that only have the detected labels as foreground and 0 as background
-		mask[labels == label] = 255
-		# detect contours in the mask and grab the largest one
-		cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # detect the watershed contours
-		cnts = imutils.grab_contours(cnts) # extract only the contours
-		c = max(cnts, key=cv2.contourArea) # get the area
-		x,y,w,h = cv2.boundingRect(c) # BB coordinates
-		area.append(cv2.contourArea(c))
-		dpx.append(x)
-		dpy.append(y)
-		dpw.append(w)
-		dph.append(h)
-		ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
-	return dpx, dpy, dpw, dph, area, ws_img_bb
+    dpx, dpy, dpw, dph, area = [], [], [], [], []
+    for label in np.unique(labels):
+        if label == 0: # label marked 0 are background
+            continue
+        mask = np.zeros(gray.shape, dtype="uint8") # create masks that only have the detected labels as foreground and 0 as background
+        mask[labels == label] = 255
+        # detect contours in the mask and grab the largest one
+        cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # detect the watershed contours
+        cnts = imutils.grab_contours(cnts) # extract only the contours
+        c = max(cnts, key=cv2.contourArea) # get the area
+        x,y,w,h = cv2.boundingRect(c) # BB coordinates
+        area.append(cv2.contourArea(c))
+        dpx.append(x)
+        dpy.append(y)
+        dpw.append(w)
+        dph.append(h)
+        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
+    return dpx, dpy, dpw, dph, area, ws_img_bb
 
 dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect(labels, gray, dapi_clr)
 
@@ -98,41 +98,43 @@ fig.show()
 
 
 # Populate the data in the dataframe
-create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
-col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_dapi']
-object_name = 'DAPI' # name of the objects stored in the dataframe
-file_name = os.path.basename(img_test) # image file name
-
-dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: dpx, col_names[3]: dpy, col_names[4]: dpw, col_names[5]: dph, col_names[6]: len(dpx)}
-img_info_dapi = pd.DataFrame(dict, columns = col_names)
-img_info_dapi['x2'] = img_info_dapi['x1'] + img_info_dapi['Width']
-img_info_dapi['y2'], img_info_dapi['x3'] = img_info_dapi['y1'], img_info_dapi['x1']
-img_info_dapi['y3'] = img_info_dapi['y1'] + img_info_dapi['Height']
-img_info_dapi['x4'], img_info_dapi['y4'] = img_info_dapi['x2'], img_info_dapi['y3']
-img_info_dapi = img_info_dapi[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_dapi']]
+img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
+# col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_dapi']
+# object_name = 'DAPI' # name of the objects stored in the dataframe
+# file_name = os.path.basename(img_test) # image file name
+#
+# dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: dpx, col_names[3]: dpy, col_names[4]: dpw, col_names[5]: dph, col_names[6]: len(dpx)}
+# img_info_dapi = pd.DataFrame(dict, columns = col_names)
+# img_info_dapi['x2'] = img_info_dapi['x1'] + img_info_dapi['Width']
+# img_info_dapi['y2'], img_info_dapi['x3'] = img_info_dapi['y1'], img_info_dapi['x1']
+# img_info_dapi['y3'] = img_info_dapi['y1'] + img_info_dapi['Height']
+# img_info_dapi['x4'], img_info_dapi['y4'] = img_info_dapi['x2'], img_info_dapi['y3']
+# img_info_dapi = img_info_dapi[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_dapi']]
 
 # find the average pixel intensity of dapi within the BB
 new_im = np.zeros(dapi.shape, np.double)
 rect_img = draw_rect(img_info_dapi, new_im)
 
 # for loop for looping through the total num of BB/len of the csv
+dapi_box_means = []
 for bb in range(len(img_info_dapi)):
-	print("entered the loop")
-	new_im = np.zeros(dapi.shape, np.double)
-	print("created a new image")
-	rect_img = draw_rect(img_info_dapi, new_im)
-	print("drew a rectangle")
-	locs = np.where(rect_img == 255)
-	print("found pix == 255")
-	print(np.mean(pixels), len(locs[0]))
-	dapi_box = []
-	print("entering 2nd loop")
-	for x,y in zip(locs[0], locs[1]):
-    	if rect_img[x, y] == 255:
-        	print(x,y, dapi[x,y])
-        	dapi_box.append(dapi[x,y])
-	dapi_box = np.array(dapi_box)
-	print(dapi_box.mean())
+    print("entered the loop")
+    new_im = np.zeros(dapi.shape, np.double)
+    print("created a new image")
+    rect_img = draw_rect(img_info_dapi, new_im)
+    print("drew a rectangle")
+    locs = np.where(rect_img == 255)
+    print("found pix == 255")
+    print(np.mean(pixels), len(locs[0]))
+    dapi_box = []
+    print("entering 2nd loop")
+    for x,y in zip(locs[0], locs[1]):
+        if rect_img[x, y] == 255:
+            print(x,y, dapi[x,y])
+            dapi_box.append(dapi[x,y])
+    dapi_box = np.array(dapi_box)
+    print(dapi_box.mean())
+    dapi_box_means.append(dapi_box.mean())
 
 
 
