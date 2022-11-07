@@ -36,10 +36,12 @@ def morph_transform(image):
 	shifted = cv2.pyrMeanShiftFiltering(image, 21, 51) #dapi_clr
 	gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
 	thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-	fig,ax = plt.subplots(figsize = (20,20))
-	ax.imshow(dapi_clr)
-	fig.show()
-	return shifted, thresh
+	# fig,ax = plt.subplots(figsize = (20,20))
+	# ax.imshow(image)
+	# fig.show()
+	return shifted, thresh, gray
+
+shifted, thresh, gray = morph_transform(dapi)
 
 # Otsu's thresholding
 # gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
@@ -51,15 +53,17 @@ def morph_transform(image):
 
 # find labels in the image
 def find_labels(threshold):
-	D = ndimage.distance_transform_edt(thresh) # Euclidean distance from binary to nearest 0-pixel
-	localMax = peak_local_max(D, indices=False, min_distance=5, labels=thresh) # find the local maxima for all the individual objects
+	D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
+	localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
 	markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
-	labels = watershed(-D, markers, mask=thresh)
+	labels = watershed(-D, markers, mask=threshold)
 	print("[INFO] {} unique segments found".format(len(np.unique(labels)) - 1))
 	return labels
 
+labels = find_labels(thresh)
+
 # extract the watershed algorithm labels
-def draw_rect(labels): # add area
+def draw_rect(labels, gray, dapi): # add area
 	dpx, dpy, dpw, dph = [], [], [], []
 	for label in np.unique(labels):
 		if label == 0: # label marked 0 are background
@@ -75,8 +79,10 @@ def draw_rect(labels): # add area
 		dpy.append(y)
 		dpw.append(w)
 		dph.append(h)
-		ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
+		ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
 	return dpx, dpy, dpw, dph, ws_img_bb
+
+dpx, dpy, dpw, dph, ws_img_bb = draw_rect(labels, gray, dapi)
 
 # Plot the segmentation result
 fig,ax = plt.subplots(figsize = (20,20))
