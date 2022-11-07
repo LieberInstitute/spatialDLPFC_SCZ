@@ -21,7 +21,8 @@ import cv2
 # args = vars(ap.parse_args())
 
 # define the image path
-img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6925,49106]_component_data_24.tif')
+img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif')
+csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv'
 
 # load and preprocess the image
 # img_dapi = Image.open(img_test)
@@ -29,19 +30,23 @@ img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '202
 # dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 # dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
 
-dapi = read_norm(img_test, 0)
+dapi, dapi_clr = read_norm(img_test, 0)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(dapi)
+fig.show()
+
 
 # perform pyramid mean shifting
-def morph_transform(image):
-	shifted = cv2.pyrMeanShiftFiltering(image, 21, 51) #dapi_clr
+def morph_transform(image_clr):
+	shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
 	gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
 	thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-	# fig,ax = plt.subplots(figsize = (20,20))
-	# ax.imshow(image)
-	# fig.show()
+	fig,ax = plt.subplots(figsize = (20,20))
+	ax.imshow(image_clr)
+	fig.show()
 	return shifted, thresh, gray
 
-shifted, thresh, gray = morph_transform(dapi)
+shifted, thresh, gray = morph_transform(dapi_clr)
 
 # Otsu's thresholding
 # gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
@@ -64,7 +69,7 @@ labels = find_labels(thresh)
 
 # extract the watershed algorithm labels
 def draw_rect(labels, gray, dapi): # add area
-	dpx, dpy, dpw, dph = [], [], [], []
+	dpx, dpy, dpw, dph, area = [], [], [], [], []
 	for label in np.unique(labels):
 		if label == 0: # label marked 0 are background
 			continue
@@ -75,18 +80,19 @@ def draw_rect(labels, gray, dapi): # add area
 		cnts = imutils.grab_contours(cnts) # extract only the contours
 		c = max(cnts, key=cv2.contourArea) # get the area
 		x,y,w,h = cv2.boundingRect(c) # BB coordinates
+		area.append(cv2.contourArea(c))
 		dpx.append(x)
 		dpy.append(y)
 		dpw.append(w)
 		dph.append(h)
 		ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
-	return dpx, dpy, dpw, dph, ws_img_bb
+	return dpx, dpy, dpw, dph, area, ws_img_bb
 
-dpx, dpy, dpw, dph, ws_img_bb = draw_rect(labels, gray, dapi)
+dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect(labels, gray, dapi_clr)
 
 # Plot the segmentation result
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(ws_img_bb)
+ax.imshow(segmented_dapi)
 ax.title.set_text('Watershed Segmentation')
 fig.show()
 
@@ -104,3 +110,41 @@ img_info_dapi['y2'], img_info_dapi['x3'] = img_info_dapi['y1'], img_info_dapi['x
 img_info_dapi['y3'] = img_info_dapi['y1'] + img_info_dapi['Height']
 img_info_dapi['x4'], img_info_dapi['y4'] = img_info_dapi['x2'], img_info_dapi['y3']
 img_info_dapi = img_info_dapi[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_dapi']]
+
+# find the average pixel intensity of dapi within the BB
+new_im = np.zeros(dapi.shape, np.double)
+rect_img = draw_rect(img_info_dapi, new_im)
+
+# for loop for looping through the total num of BB/len of the csv
+for bb in range(len(img_info_dapi)):
+	print("entered the loop")
+	new_im = np.zeros(dapi.shape, np.double)
+	print("created a new image")
+	rect_img = draw_rect(img_info_dapi, new_im)
+	print("drew a rectangle")
+	locs = np.where(rect_img == 255)
+	print("found pix == 255")
+	print(np.mean(pixels), len(locs[0]))
+	dapi_box = []
+	print("entering 2nd loop")
+	for x,y in zip(locs[0], locs[1]):
+    	if rect_img[x, y] == 255:
+        	print(x,y, dapi[x,y])
+        	dapi_box.append(dapi[x,y])
+	dapi_box = np.array(dapi_box)
+	print(dapi_box.mean())
+
+
+
+
+
+
+# within the csv, for each row, on the new img, draw a filled white rect and get all those pixels
+# print the mean intensity for all of those pixels for 1 rectangle in the dapi image
+# do this same thing for each of the BBs of the dapi image
+
+
+locs = np.where(rect_img == 255)
+pixels = new_im[locs]
+print(np.mean(pixels), len(locs[0]))
+
