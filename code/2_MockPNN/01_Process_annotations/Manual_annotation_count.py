@@ -69,11 +69,14 @@ pixels = new_im[locs]
 print(np.mean(pixels), len(locs[0]))
 
 # get the pixel values of those coordinates to find if dapi signal is present
-img = cv2.imread('image.jpg')
-mask = cv2.imread('mask.png', 0)
+dapi_box = []
+for x,y in zip(locs[0], locs[1]):
+    if rect_img[x, y] == 255:
+        print(x,y, dapi[x,y])
+        dapi_box.append(dapi[x,y])
 
-
-
+dapi_box = np.array(dapi_box)
+print(dapi_box.mean())
 
 
 fig,ax = plt.subplots(figsize = (20,20))
