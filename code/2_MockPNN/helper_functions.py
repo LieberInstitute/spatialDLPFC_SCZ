@@ -36,7 +36,7 @@ def read_norm(filepath, ch_num):
         img_dapi = Image.open(img_test)
         dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
-        return dapi_clr
+        return dapi, dapi_clr
     if ch_num == 1: # claudin
         img_claudin = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         img_claudin[img_claudin <= img_claudin.mean()] = 0.0
