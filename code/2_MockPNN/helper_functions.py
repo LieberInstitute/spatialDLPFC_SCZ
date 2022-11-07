@@ -78,6 +78,13 @@ def draw_contours(contours, normalised_img, color, thickness):
             contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),-1) # change the color and thickness here if contours need to be visible
     return (x,y,w,h, area, contour_img)
 
+def draw_rect(df_manual_test, contour_img):
+    for box in range(len(df_manual_test['x1'])):
+        print(box)
+        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,255,255), -1)
+    return contour_img
+
+
 # populate a dataframe with the coordinates info
 def create_df(x,y,w,h, area, img_test, label):
     print("Detected {0} {1}".format(len(x), label))
