@@ -4,6 +4,7 @@ from skimage.feature import peak_local_max
 from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
 import numpy as np
+import pandas as pd
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
 import skimage
@@ -12,7 +13,7 @@ import matplotlib.pyplot as plt
 import argparse
 import imutils
 import cv2
-
+import pyhere
 
 # construct the argument parse and parse the arguments
 # ap = argparse.ArgumentParser()
