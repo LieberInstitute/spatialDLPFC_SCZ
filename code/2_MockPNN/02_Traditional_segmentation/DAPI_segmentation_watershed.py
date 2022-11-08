@@ -56,7 +56,7 @@ def find_labels(threshold):
     localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
     markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
     labels = watershed(-D, markers, mask=threshold)
-    print("[INFO] {} unique segments found".format(len(np.unique(labels)) - 1))
+    print("{} unique segments found".format(len(np.unique(labels)) - 1))
     return labels
 
 labels = find_labels(thresh)
@@ -94,26 +94,23 @@ fig.show()
 # Populate the data in the dataframe
 img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 
-# find the average pixel intensity of dapi within the BB
-new_im = np.zeros(dapi.shape, np.double)
-rect_img = draw_rect(img_info_dapi, new_im)
 
 # for loop for looping through the total num of BB/len of the csv
-dapi_box_means = []
+dapi_box_means = [] # not looping through all of the BBs
 for bb in range(len(img_info_dapi)):
-    print("entered the loop")
+    print("entered the loop", bb)
     new_im = np.zeros(dapi.shape, np.double)
-    print("created a new image")
+    print("created a new image", bb)
     rect_img = draw_rect(img_info_dapi, new_im)
-    print("drew a rectangle")
+    print("drew a rectangle", bb)
     locs = np.where(rect_img == 255)
-    print("found pix == 255")
-    print(np.mean(pixels), len(locs[0]))
+    print("found pix == 255", bb)
+    print("Number of DAPI",len(locs[0]))
     dapi_box = []
-    print("entering 2nd loop")
+    # print("entering 2nd loop")
     for x,y in zip(locs[0], locs[1]):
         if rect_img[x, y] == 255:
-            print(x,y, dapi[x,y])
+            # print(x,y, dapi[x,y])
             dapi_box.append(dapi[x,y])
     dapi_box = np.array(dapi_box)
     print(dapi_box.mean())
