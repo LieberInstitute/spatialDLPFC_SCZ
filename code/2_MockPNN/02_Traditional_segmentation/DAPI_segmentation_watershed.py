@@ -63,7 +63,7 @@ def find_labels(threshold):
 labels = find_labels(thresh)
 
 # extract the watershed algorithm labels
-def draw_rect(labels, gray, dapi): # add area
+def draw_rect_dapi(labels, gray, dapi): # add area
     dpx, dpy, dpw, dph, area = [], [], [], [], []
     for label in np.unique(labels):
         if label == 0: # label marked 0 are background
@@ -83,7 +83,7 @@ def draw_rect(labels, gray, dapi): # add area
         ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
-dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect(labels, gray, dapi_clr)
+dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect_dapi(labels, gray, dapi_clr)
 
 # Plot the segmentation result
 fig,ax = plt.subplots(figsize = (20,20))
@@ -95,14 +95,13 @@ fig.show()
 # Populate the data in the dataframe
 img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 
-
 # for loop for looping through the total num of BB/len of the csv
 dapi_box_means = [] # not looping through all of the BBs
 for bb in range(len(img_info_dapi)):
     print("entered the loop", bb)
     new_im = np.zeros(dapi.shape, np.double)
     print("created a new image", bb)
-    rect_img = draw_rect(img_info_dapi, new_im)
+    rect_img = draw_single_rect(img_info_dapi.iloc[bb], new_im)
     print("drew a rectangle", bb)
     locs = np.where(rect_img == 255)
     print("found pix == 255", bb)
@@ -116,5 +115,3 @@ for bb in range(len(img_info_dapi)):
     dapi_box = np.array(dapi_box)
     print(dapi_box.mean())
     dapi_box_means.append(dapi_box.mean())
-
-
