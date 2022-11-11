@@ -42,9 +42,9 @@ def morph_transform(image_clr):
     shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
     gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    fig,ax = plt.subplots(figsize = (20,20))
-    ax.imshow(image_clr)
-    fig.show()
+    # fig,ax = plt.subplots(figsize = (20,20))
+    # ax.imshow(image_clr)
+    # fig.show()
     return shifted, thresh, gray
 
 shifted, thresh, gray = morph_transform(dapi_clr)
@@ -96,22 +96,31 @@ fig.show()
 img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 
 # for loop for looping through the total num of BB/len of the csv
-dapi_box_means = [] # not looping through all of the BBs
-for bb in range(len(img_info_dapi)):
-    print("entered the loop", bb)
+dapi_box_means = []
+for bb in range(len(img_info_dapi)-191):
+    # print("entered the loop", bb)
     new_im = np.zeros(dapi.shape, np.double)
-    print("created a new image", bb)
+    # print("created a new image", bb)
     rect_img = draw_single_rect(img_info_dapi.iloc[bb], new_im)
-    print("drew a rectangle", bb)
+    # print("drew a rectangle", bb)
     locs = np.where(rect_img == 255)
-    print("found pix == 255", bb)
-    print("Number of DAPI",len(locs[0]))
-    dapi_box = []
+    # print("found pix == 255", bb)
+    # print("Number of DAPI",len(locs[0]))
+    dapi_box, x_, y_ = [], [], []
     # print("entering 2nd loop")
     for x,y in zip(locs[0], locs[1]):
         if rect_img[x, y] == 255:
             # print(x,y, dapi[x,y])
+            x_.append(x)
+            y_.append(y)
+            print("appending", bb)
+            coords = np.array((x_,y_))
             dapi_box.append(dapi[x,y])
     dapi_box = np.array(dapi_box)
-    print(dapi_box.mean())
+    print("final appending", bb)
+    coords.append(coords)
+    # print(dapi_box.mean())
     dapi_box_means.append(dapi_box.mean())
+
+# convert dapi means from list to array
+dapi_box_mean = np.array(dapi_box_means)
