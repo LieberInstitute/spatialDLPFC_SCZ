@@ -111,12 +111,12 @@ fig.show()
 
 
 out_img_gry = skimage.color.rgb2gray(out_img) # convert to gray to find contours and increase contrast
-# out_img_gry[out_img_gry <= 0.2] = 0.0 # decrease contrast of background
-# out_img_gry[out_img_gry >= 0.3] = 1.0 # increase the contrast of PNNs
-# fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
-# ax[0].imshow(out_img)
-# ax[1].imshow(out_img_gry)
-# fig.show()
+out_img_gry[out_img_gry <= 0.2] = 0.0 # decrease contrast of background
+out_img_gry[out_img_gry >= 0.3] = 1.0 # increase the contrast of PNNs
+fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
+ax[0].imshow(out_img)
+ax[1].imshow(out_img_gry)
+fig.show()
 
 
 
