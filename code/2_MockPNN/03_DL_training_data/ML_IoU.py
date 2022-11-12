@@ -112,7 +112,7 @@ fig.show()
 
 out_img_gry = skimage.color.rgb2gray(out_img) # convert to gray to find contours and increase contrast
 out_img_gry[out_img_gry <= 0.2] = 0.0 # decrease contrast of background
-out_img_gry[out_img_gry >= 0.3] = 1.0 # increase the contrast of PNNs
+out_img_gry[out_img_gry >= 0.2] = 1.0 # increase the contrast of PNNs
 fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
 ax[0].imshow(out_img)
 ax[1].imshow(out_img_gry)
@@ -138,11 +138,11 @@ for cnt in contours1:
         wfw.append(w1)
         wfh.append(h1)
         pnn_area.append(area)
-        out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), 1) # change the color to black (0,0,0) if bb is not needed
+        out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,255,0), 2) # change the color to black (0,0,0) if bb is not needed
         rect = cv2.minAreaRect(cnt)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
-        out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,255),3) # comment out if contour box is not needed
+        out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,0),1) # comment out if contour box is not needed
 
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(out_img1)
