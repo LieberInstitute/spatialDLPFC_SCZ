@@ -36,8 +36,8 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif')
-img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif'
-csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.csv'
+img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[10087,53057]_component_data_23.tif'
+csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[10087,53057]_component_data_23.csv'
 
 # read and normalise images
 dapi, dapi_clr = read_norm(img_test, 0)
@@ -74,25 +74,24 @@ dapi_box_mean # from the dapi segmentation code
 df_wfa_ml # from ML_IoU code
 
 # compare the IoU for the dapi overlaps in the traditional segmentation code
-box1 = (xmin1, xmax1)
-box2 = (xmin2, xmax2)
-isOverlapping1D(box1,box2) = xmax1 >= xmin2 and xmax2 >= xmin1
-
 count = 0
-for i in range(len(file_11)): # PNN
+for i in range(len(df_wfa_ml)): # PNN
     for j in range(len(img_info_dapi)): # DAPI
-        # print(i,j)
-        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][j], img_info_dapi['x4'][j]
-        xmin1, xmax1, xmin2, xmax2 = file_11['x1'][i], file_11['x4'][i], img_info_dapi['x1'][j], img_info_dapi['x4'][j]
-        ymin1, ymax1, ymin2, ymax2 = file_11['y1'][i], file_11['y4'][i], img_info_dapi['y1'][j], img_info_dapi['y4'][j]
-        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][j], img_info_dapi['y4'][j]
-        # print(xmin1, xmax1, xmin2, xmax2)
-        # box1 = (df_wfa_ml['x1'], df_wfa_ml['x4']) # PNNs box
-        # box2 = (img_info_dapi['x1'], img_info_dapi['x4']) # DAPI box
-        if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
-            print(xmin1, xmax1, xmin2, xmax2, i, j)
-            count = count +1
-            cv2.rectangle(out_img1, (img_info_dapi['x1'][j], img_info_dapi['y1'][j]), (img_info_dapi['x4'][j], img_info_dapi['y4'][j]), (255,0,0), 2)
+        for k in range(len(file_11)):
+            # print(i,j)
+            xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][j], img_info_dapi['x4'][j]
+            # xmin1, xmax1, xmin2, xmax2 = file_11['x1'][i], file_11['x4'][i], img_info_dapi['x1'][j], img_info_dapi['x4'][j]
+            # ymin1, ymax1, ymin2, ymax2 = file_11['y1'][i], file_11['y4'][i], img_info_dapi['y1'][j], img_info_dapi['y4'][j]
+            ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][j], img_info_dapi['y4'][j]
+            # print(xmin1, xmax1, xmin2, xmax2)
+            # box1 = (df_wfa_ml['x1'], df_wfa_ml['x4']) # PNNs box
+            # box2 = (img_info_dapi['x1'], img_info_dapi['x4']) # DAPI box
+            rect1 = cv2.rectangle(out_img1, (file_11['x1'][k], file_11['y1'][k]), (file_11['x4'][k], file_11['y4'][k]), (0,0,255), 2)
+            if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
+                print(xmin1, xmax1, xmin2, xmax2, i, j)
+                count = count +1
+                rect2 = cv2.rectangle(out_img1, (img_info_dapi['x1'][j], img_info_dapi['y1'][j]), (img_info_dapi['x4'][j], img_info_dapi['y4'][j]), (255,0,0), 2)
+
 
 
 fig,ax = plt.subplots(figsize = (20,20))
