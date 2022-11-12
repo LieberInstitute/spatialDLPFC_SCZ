@@ -137,7 +137,7 @@ for cnt in contours1:
         wfy.append(y1)
         wfw.append(w1)
         wfh.append(h1)
-        # pnn_area.append(area)
+        pnn_area.append(area)
         out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), 1) # change the color to black (0,0,0) if bb is not needed
         rect = cv2.minAreaRect(cnt)
         box = cv2.boxPoints(rect)
@@ -149,7 +149,7 @@ ax.imshow(out_img1)
 fig.show()
 
 # Populate the data in the dataframe
-col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'Area', 'total_number_pnns']
+col_names = ['img_file_name','type_of_object', 'x1', 'y1', 'Width', 'Height', 'Area', 'total_number_pnns']
 object_name = 'PNN' # name of the objects stored in the dataframe
 file_name = os.path.basename(img_test) # image file name
 
@@ -160,7 +160,7 @@ df_wfa_ml['x2'] = df_wfa_ml['x1'] + df_wfa_ml['Width']
 df_wfa_ml['y2'], df_wfa_ml['x3'] = df_wfa_ml['y1'], df_wfa_ml['x1']
 df_wfa_ml['y3'] = df_wfa_ml['y1'] + df_wfa_ml['Height']
 df_wfa_ml['x4'], df_wfa_ml['y4'] = df_wfa_ml['x2'], df_wfa_ml['y3']
-df_wfa_ml = df_wfa_ml[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'Area', 'total_number_pnns']]
+df_wfa_ml = df_wfa_ml[['img_file_name', 'type_of_object', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'Area', 'total_number_pnns']]
 
 
 # Find boxes that may actually overlap
