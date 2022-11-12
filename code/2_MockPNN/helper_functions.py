@@ -85,7 +85,7 @@ def draw_rect(df_manual_test, contour_img):
     return contour_img
 
 def draw_single_rect(df_manual_test, contour_img):
-    cv2.rectangle(contour_img, (df_manual_test['x1'], df_manual_test['y1']), (df_manual_test['x4'], df_manual_test['y4']), (255,255,255), -1)
+    cv2.rectangle(contour_img, (df_manual_test['x1'], df_manual_test['y1']), (df_manual_test['x4'], df_manual_test['y4']), (255,0,0), 2)
     return contour_img
 
 
