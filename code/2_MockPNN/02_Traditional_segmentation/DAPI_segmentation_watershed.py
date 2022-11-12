@@ -32,6 +32,7 @@ csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_M
 # dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
 
 dapi, dapi_clr = read_norm(img_test, 0)
+
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi)
 fig.show()
