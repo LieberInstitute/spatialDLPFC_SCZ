@@ -81,7 +81,11 @@ def draw_contours(contours, normalised_img, color, thickness):
 def draw_rect(df_manual_test, contour_img):
     for box in range(len(df_manual_test['x1'])):
         # print(box)
-        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,255,255), -1)
+        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,0,0), 2)
+    return contour_img
+
+def draw_single_rect(df_manual_test, contour_img):
+    cv2.rectangle(contour_img, (df_manual_test['x1'], df_manual_test['y1']), (df_manual_test['x4'], df_manual_test['y4']), (255,255,255), -1)
     return contour_img
 
 
