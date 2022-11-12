@@ -48,7 +48,7 @@ claudin = read_norm(img_test, 1)
 
 # Plot the normalized/pre-processed image
 fig,ax = plt.subplots(nrows = 1, ncols = 2,figsize = (20,20))
-ax[0].imshow(wfa_contours)
+ax[0].imshow(claudin_contours)
 ax[1].imshow(wfa)
 fig.show()
 
