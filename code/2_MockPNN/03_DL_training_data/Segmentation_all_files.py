@@ -42,7 +42,7 @@ dst_folder = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2
 
 for file_name in os.listdir(img_dir):
     images = Image.open(os.path.join(img_dir, file_name))
-    print("Filename", os.path.basename(file_name))
+    print(os.path.basename(file_name)) #"Filename",
     images.seek(1) # seek the frame of interest #1=Claudin
     cla = cv2.normalize(np.array(images, dtype = 'float32'), np.zeros(np.array(images, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX) # normalisation using local min_max
     img_cla = Image.fromarray(cla) # reconstruct the image
@@ -72,7 +72,7 @@ for file_name in os.listdir(img_dir):
       coords = cv2.boundingRect(cnt) # x,y,w,h
       x1,y1,w1,h1 = cv2.boundingRect(cnt)
       if (w1*h1) >= 300:
-            out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), 1) # change the color to black (0,0,0) if bb is not needed
+            out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,255,0), 2) # change the color to black (0,0,0) if bb is not needed
             rect = cv2.minAreaRect(cnt)
             box = cv2.boxPoints(rect)
             box = np.int0(box)
