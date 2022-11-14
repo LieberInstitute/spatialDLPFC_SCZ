@@ -43,3 +43,22 @@ csv_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_Mo
 csv_dir = pyhere.here('processed-data', '2_Mock_PNN', 'Training_tiles', 'Manual_annotations', 'Annotations')
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif')
 csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv'
+
+
+# read manual annotation files as well for the corresponding image file
+for img_name in os.listdir(img_dir):
+    for csv_name in os.listdir(csv_dir):
+        if int(img_name.split('_')[8].split('.')[0]) == int(csv_name.split('_')[8].split('.')[0]):
+            # print(int(img_name.split('_')[8].split('.')[0]), int(csv_name.split('_')[8].split('.')[0]))
+            print(img_name, csv_name)
+            images = Image.open(os.path.join(img_dir, img_name))
+            csv = manual_annot(os.path.join(csv_dir, csv_name))
+            print(len(csv))
+            images.seek(1) # seek the frame of interest #1=Claudin
+            cla = cv2.normalize(np.array(images, dtype = 'float32'), np.zeros(np.array(images, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX) # normalisation using local min_max
+            img_cla = Image.fromarray(cla) # reconstruct the image
+            images.seek(3) # seek the frame of interest #3=WFA
+            wfa = cv2.normalize(np.array(images, dtype = 'float32'), np.zeros(np.array(images, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX) # normalisation using local min_max
+            img_wfa = Image.fromarray(wfa) # reconstruct the image
+            wfa255 = np.array(wfa * 255, dtype = np.uint8)
+            wfac = skimage.color.gray2rgb(wfa)
