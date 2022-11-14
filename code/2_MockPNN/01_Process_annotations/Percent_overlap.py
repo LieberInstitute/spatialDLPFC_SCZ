@@ -98,12 +98,14 @@ for img_name in os.listdir(img_dir):
             draw_rect(csv, out_img1)
             df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
             for i in range(len(df_wfa_ml)): # PNN
-                for j in range(len(img_info_dapi)): # DAPI
-                    for k in range(len(csv)):
-                        xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][j], img_info_dapi['x4'][j]
-                        ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][j], img_info_dapi['y4'][j]
+                for k in range(len(csv)):
+                    for j in range(len(img_info_dapi)): # DAPI
+                        xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], csv['x1'][k], csv['x4'][k]
+                        ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], csv['y1'][k], csv['y4'][k]
+                        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
+                        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
                         if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
-                            print(xmin1, xmax1, xmin2, xmax2, i, j)
+                            print(xmin1, xmax1, xmin2, xmax2, i, k)
             fig,ax = plt.subplots(figsize = (20,20))
             ax.imshow(out_img1)
             fig.show()
