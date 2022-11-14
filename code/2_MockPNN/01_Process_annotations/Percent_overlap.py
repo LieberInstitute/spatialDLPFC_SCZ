@@ -97,6 +97,13 @@ for img_name in os.listdir(img_dir):
                     out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,0),1) # comment out if contour box is not needed
             draw_rect(csv, out_img1)
             df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
+            for i in range(len(df_wfa_ml)): # PNN
+                for j in range(len(img_info_dapi)): # DAPI
+                    for k in range(len(csv)):
+                        xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][j], img_info_dapi['x4'][j]
+                        ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][j], img_info_dapi['y4'][j]
+                        if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
+                            print(xmin1, xmax1, xmin2, xmax2, i, j)
             fig,ax = plt.subplots(figsize = (20,20))
             ax.imshow(out_img1)
             fig.show()
