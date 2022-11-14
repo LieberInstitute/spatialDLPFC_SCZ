@@ -96,3 +96,8 @@ for img_name in os.listdir(img_dir):
                     box = np.int0(box)
                     out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,0),1) # comment out if contour box is not needed
             draw_rect(csv, out_img1)
+            df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
+            fig,ax = plt.subplots(figsize = (20,20))
+            ax.imshow(out_img1)
+            fig.show()
+
