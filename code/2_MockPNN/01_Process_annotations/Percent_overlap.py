@@ -62,3 +62,12 @@ for img_name in os.listdir(img_dir):
             img_wfa = Image.fromarray(wfa) # reconstruct the image
             wfa255 = np.array(wfa * 255, dtype = np.uint8)
             wfac = skimage.color.gray2rgb(wfa)
+            hierachy, img_threshold = cv2.threshold(np.array(cla * 255, dtype = np.uint8), 10, 255, cv2.THRESH_BINARY)
+            contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            print(len(contours))
+            for cnt in contours:
+                x,y,w,h = cv2.boundingRect(cnt)
+                # print("CLAUDIN CONTOURS", x,y,w,h)
+                out_img = cv2.rectangle(wfac, (x-10,y-10), (x+w+10, y+h+10), (0,0,0), -1)
+                # out_img now has black colored on most of the blood vessels; out has changed contrast pixels where PNNs are highlighted
+                # so now we find contours for the PNNs using the out_img
