@@ -95,3 +95,4 @@ for img_name in os.listdir(img_dir):
                     box = cv2.boxPoints(rect)
                     box = np.int0(box)
                     out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,0),1) # comment out if contour box is not needed
+            draw_rect(csv, out_img1)
