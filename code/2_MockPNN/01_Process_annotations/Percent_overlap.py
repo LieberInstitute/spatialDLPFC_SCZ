@@ -76,3 +76,22 @@ for img_name in os.listdir(img_dir):
             out_img_gry[out_img_gry >= 0.3] = 1.0 # increase the contrast of PNNs
             out_img255 = np.array(out_img_gry * 255, dtype = np.uint8) # change scale to 0-255 for find contours
             out_img_clr = skimage.color.gray2rgb(np.array(out_img_gry * 255, dtype = np.uint8)) # convert to color to draw colored bb
+            hierachy1, img_threshold1 = cv2.threshold(np.array(out_img_gry * 255, dtype = np.uint8), 100, 255, cv2.ADAPTIVE_THRESH_MEAN_C)
+            contours1,_ = cv2.findContours(img_threshold1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            # cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR
+            x,y,w,h,area = [], [], [], [], []
+            for cnt in contours1:
+                coords = cv2.boundingRect(cnt) # x,y,w,h
+                x1,y1,w1,h1 = cv2.boundingRect(cnt)
+                area1 = cv2.contourArea(cnt)
+                if (w1*h1) >= 300:
+                    x.append(x1)
+                    y.append(y1)
+                    w.append(w1)
+                    h.append(h1)
+                    area.append(area1)
+                    out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,255,0), 2) # change the color to black (0,0,0) if bb is not needed
+                    rect = cv2.minAreaRect(cnt)
+                    box = cv2.boxPoints(rect)
+                    box = np.int0(box)
+                    out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,0),1) # comment out if contour box is not needed
