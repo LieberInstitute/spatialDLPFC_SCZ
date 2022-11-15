@@ -33,8 +33,7 @@ def read_norm(filepath, ch_num):
     img = Image.open(filepath)
     img.seek(ch_num)
     if ch_num == 0: # DAPI
-        img_dapi = Image.open(img_test)
-        dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        dapi = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
         return dapi, dapi_clr
     if ch_num == 1: # claudin
@@ -83,11 +82,11 @@ def draw_rect(df_manual_test, contour_img):
     for box in range(len(df_manual_test['x1'])):
         # print(box)
         rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,0,0), 2)
-    return contour_img
+    # return contour_img
 
 def draw_single_rect(df_manual_test, contour_img):
     cv2.rectangle(contour_img, (df_manual_test['x1'], df_manual_test['y1']), (df_manual_test['x4'], df_manual_test['y4']), (255,0,0), 2)
-    return contour_img
+    # return contour_img
 
 
 # populate a dataframe with the coordinates info
