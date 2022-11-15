@@ -36,8 +36,9 @@ from skimage.draw import polygon_perimeter
 import tifffile as tif
 import imagecodecs
 import itertools
+import collections
 from itertools import product
-from collections import defaultdict
+from collections import defaultdict, Counter
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
@@ -125,6 +126,7 @@ for img_name in os.listdir(img_dir):
             nx,ny,nw,nh,narea, neun_segmented = draw_contours(neun_contours, neun, (0,255,0), 2)
             df_ml_neun = create_df(nx,ny,nw,nh, narea,os.path.join(img_dir, img_name) , 'NeuN')
             draw_rect(csv, neun_segmented)
+            box_lists_neun = []
             for i in range(len(df_ml_neun)): # PNN
                 for k in range(len(csv)):
                     # for j in range(len(img_info_dapi)): # DAPI
@@ -135,10 +137,16 @@ for img_name in os.listdir(img_dir):
                         # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
                         # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
                         if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
-                            print(xmin1, xmax1, xmin2, xmax2, i, k)
+                            # print(xmin1, xmax1, xmin2, xmax2, i, k)
+                            box_lists_neun.append(k)
+            print(Counter(box_lists_neun))
+
             fig,ax = plt.subplots(figsize = (20,20))
             ax.imshow(neun_segmented)
             fig.show()
 
 
 
+mylist = [1,7,7,7,3,9,9,9,7,9,10,0]
+print(sorted(set([i for i in mylist if mylist.count(i)<=1])))
+print(sorted(set([i for i in mylist if mylist.count(i)>2])))
