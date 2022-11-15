@@ -44,8 +44,8 @@ def read_norm(filepath, ch_num):
         return img_claudin
     if ch_num == 2: #NeuN
         img_neun = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        neun_gray = skimage.color.rgb2gray(img_neun) # convert to gray to find contours
-        return img_neun, neun_gray
+        # neun_gray = skimage.color.rgb2gray(img_neun) # convert to gray to find contours
+        return img_neun
     else: # wfa
         img_arr = np.array(img, dtype = 'float32')
         img_arr[img_arr <= img_arr.mean()] = 0.0
