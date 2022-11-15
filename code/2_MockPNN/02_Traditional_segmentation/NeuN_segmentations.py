@@ -109,5 +109,16 @@ img_info_neun['x4'], img_info_neun['y4'] = img_info_neun['x2'], img_info_neun['y
 img_info_neun = img_info_neun[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'total_number_neun']]
 
 
+# loop through the whole directory
+img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/'
+csv_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
+
+for img_name in os.listdir(img_dir):
+    for csv_name in os.listdir(csv_dir):
+        if int(img_name.split('_')[8].split('.')[0]) == int(csv_name.split('_')[8].split('.')[0]):
+            # print(int(img_name.split('_')[8].split('.')[0]), int(csv_name.split('_')[8].split('.')[0]))
+            print(img_name, csv_name)
+            neun, neun_gray = read_norm(os.path.join(img_dir, img_name), 2)
+            npx,npy,npw,nph,area, neun_segmented = detect_contours(neun)
 
 
