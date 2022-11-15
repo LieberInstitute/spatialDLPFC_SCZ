@@ -118,10 +118,27 @@ for img_name in os.listdir(img_dir):
         if int(img_name.split('_')[8].split('.')[0]) == int(csv_name.split('_')[8].split('.')[0]):
             # print(int(img_name.split('_')[8].split('.')[0]), int(csv_name.split('_')[8].split('.')[0]))
             print(img_name, csv_name)
+            csv = manual_annot(os.path.join(csv_dir, csv_name))
+            print(len(csv))
             neun= read_norm(os.path.join(img_dir, img_name), 2)
             neun_contours = detect_contours(neun)
             nx,ny,nw,nh,narea, neun_segmented = draw_contours(neun_contours, neun, (0,255,0), 2)
             df_ml_neun = create_df(nx,ny,nw,nh, narea,os.path.join(img_dir, img_name) , 'NeuN')
-            print(len(df_ml_neun))
+            draw_rect(csv, neun_segmented)
+            for i in range(len(df_ml_neun)): # PNN
+                for k in range(len(csv)):
+                    # for j in range(len(img_info_dapi)): # DAPI
+                        xmin1, xmax1, xmin2, xmax2 = df_ml_neun['x1'][i], df_ml_neun['x4'][i], csv['x1'][k], csv['x4'][k]
+                        ymin1, ymax1, ymin2, ymax2 = df_ml_neun['y1'][i], df_ml_neun['y4'][i], csv['y1'][k], csv['y4'][k]
+                        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
+                        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
+                        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
+                        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
+                        if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
+                            print(xmin1, xmax1, xmin2, xmax2, i, k)
+            fig,ax = plt.subplots(figsize = (20,20))
+            ax.imshow(neun_segmented)
+            fig.show()
+
 
 
