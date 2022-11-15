@@ -118,7 +118,10 @@ for img_name in os.listdir(img_dir):
         if int(img_name.split('_')[8].split('.')[0]) == int(csv_name.split('_')[8].split('.')[0]):
             # print(int(img_name.split('_')[8].split('.')[0]), int(csv_name.split('_')[8].split('.')[0]))
             print(img_name, csv_name)
-            neun, neun_gray = read_norm(os.path.join(img_dir, img_name), 2)
-            npx,npy,npw,nph,area, neun_segmented = detect_contours(neun)
+            neun= read_norm(os.path.join(img_dir, img_name), 2)
+            neun_contours = detect_contours(neun)
+            nx,ny,nw,nh,narea, neun_segmented = draw_contours(neun_contours, neun, (0,255,0), 2)
+            df_ml_neun = create_df(nx,ny,nw,nh, narea,os.path.join(img_dir, img_name) , 'NeuN')
+            print(len(df_ml_neun))
 
 
