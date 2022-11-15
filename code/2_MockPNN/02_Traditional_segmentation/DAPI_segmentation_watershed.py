@@ -91,6 +91,7 @@ for img_name in os.listdir(img_dir):
             img_info_dapi = create_df(dpx, dpy, dpw, dph, area, os.path.join(img_dir, img_name), 'DAPI')
             draw_rect(csv, segmented_dapi)
             # df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
+            box_lists_dapi = []
             for i in range(len(img_info_dapi)): # PNN
                 for k in range(len(csv)):
                     # for j in range(len(img_info_dapi)): # DAPI
@@ -101,7 +102,13 @@ for img_name in os.listdir(img_dir):
                         # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
                         # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
                         if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
-                            print(xmin1, xmax1, xmin2, xmax2, i, k)
+                            # print(xmin1, xmax1, xmin2, xmax2, i, k)
+                            box_lists_dapi.append(k)
+            print(Counter(box_lists_dapi))
+
+            fig,ax = plt.subplots(figsize = (20,20))
+            ax.imshow(segmented_dapi)
+            fig.show()
 
 
 
