@@ -66,7 +66,7 @@ def draw_rect_dapi(labels, gray, dapi): # add area
         dpy.append(y)
         dpw.append(w)
         dph.append(h)
-        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
+        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,0,255), 2) # draw BB
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
 
@@ -90,14 +90,16 @@ for img_name in os.listdir(img_dir):
             dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect_dapi(labels, gray, dapi_clr)
             img_info_dapi = create_df(dpx, dpy, dpw, dph, area, os.path.join(img_dir, img_name), 'DAPI')
             draw_rect(csv, segmented_dapi)
-            df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
-            for i in range(len(df_wfa_ml)): # PNN
+            # df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
+            for i in range(len(img_info_dapi)): # PNN
                 for k in range(len(csv)):
-                    for j in range(len(img_info_dapi)): # DAPI
-                        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], csv['x1'][k], csv['x4'][k]
-                        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], csv['y1'][k], csv['y4'][k]
-                        xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
-                        ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
+                    # for j in range(len(img_info_dapi)): # DAPI
+                        xmin1, xmax1, xmin2, xmax2 = img_info_dapi['x1'][i], img_info_dapi['x4'][i], csv['x1'][k], csv['x4'][k]
+                        ymin1, ymax1, ymin2, ymax2 = img_info_dapi['y1'][i], img_info_dapi['y4'][i], csv['y1'][k], csv['y4'][k]
+                        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
+                        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
+                        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
+                        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
                         if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
                             print(xmin1, xmax1, xmin2, xmax2, i, k)
 
