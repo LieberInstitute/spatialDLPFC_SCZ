@@ -45,7 +45,7 @@ def find_labels(threshold):
     localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
     markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
     labels = watershed(-D, markers, mask=threshold)
-    print("{} unique segments found".format(len(np.unique(labels)) - 1))
+    # print("{} unique segments found".format(len(np.unique(labels)) - 1))
     return labels
 
 # extract the watershed algorithm labels
