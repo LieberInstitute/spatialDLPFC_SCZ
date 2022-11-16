@@ -78,20 +78,20 @@ def draw_contours(contours, normalised_img, color, thickness):
             contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),-1) # change the color and thickness here if contours need to be visible
     return (x,y,w,h, area, contour_img)
 
-def draw_rect(df_manual_test, contour_img):
+def draw_rect(df_manual_test, contour_img, color):
     for box in range(len(df_manual_test['x1'])):
         # print(box)
-        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,0,0), 2)
+        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), color, 2)
     # return contour_img
 
 def draw_single_rect(df_manual_test, contour_img):
-    cv2.rectangle(contour_img, (df_manual_test['x1'], df_manual_test['y1']), (df_manual_test['x4'], df_manual_test['y4']), (255,0,0), 2)
+    cv2.rectangle(contour_img, (df_manual_test['x1'], df_manual_test['y1']), (df_manual_test['x4'], df_manual_test['y4']), (255,211,155), 2)
     # return contour_img
 
 
 # populate a dataframe with the coordinates info
 def create_df(x,y,w,h, area, img_test, label):
-    print("Detected {0} {1}".format(len(x), label))
+    print("Segmented {0} {1}".format(len(x), label))
     col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'area']
     file_name = os.path.basename(img_test) # image file name
     dict = {col_names[0]: file_name, col_names[1]: label, col_names[2]: x, col_names[3]: y, col_names[4]: w, col_names[5]: h, col_names[6]: area}
