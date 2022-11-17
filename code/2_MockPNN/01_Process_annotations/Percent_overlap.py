@@ -73,9 +73,26 @@ for img_name in os.listdir(img_dir):
                 # out_img now has black colored on most of the blood vessels; out has changed contrast pixels where PNNs are highlighted
                 # so now we find contours for the PNNs using the out_img
             out_img_gry = skimage.color.rgb2gray(out_img) # convert to gray to find contours and increase contrast
+            # fig,ax = plt.subplots(figsize = (20,20))
+            # ax.imshow(out_img_gry)
+            # fig.show()
             # hist_plot(out_img)
-            out_img_gry[out_img_gry > 0.2] = 0.0 # decrease contrast of background
-            out_img_gry[out_img_gry <= 0.2] = 1.0 # increase the contrast of PNNs
+            for row in range(out_img_gry.shape[0]):
+                for col in range(out_img_gry.shape[1]):
+                    if out_img_gry[row][col] > 0.02:
+                        out_img_gry[row][col] = 0.0
+                    else:
+                        out_img_gry[row][col] = 1.0
+            fig,ax = plt.subplots(figsize = (20,20))
+            ax.imshow(out_img_gry)
+            fig.show()
+
+            # out_img_gry[out_img_gry > 0.2] = 0.0 # decrease contrast of background
+            # out_img_gry[out_img_gry <= 0.2] = 1.0 # increase the contrast of PNNs
+            fig,ax = plt.subplots(figsize = (20,20))
+            ax.imshow(out_img_gry)
+            fig.show()
+
             out_img255 = np.array(out_img_gry * 255, dtype = np.uint8) # change scale to 0-255 for find contours
             out_img_clr = skimage.color.gray2rgb(np.array(out_img_gry * 255, dtype = np.uint8)) # convert to color to draw colored bb
             hierachy1, img_threshold1 = cv2.threshold(np.array(out_img_gry * 255, dtype = np.uint8), 100, 255, cv2.ADAPTIVE_THRESH_MEAN_C)
