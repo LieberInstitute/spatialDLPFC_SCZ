@@ -38,8 +38,8 @@ img_dir = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles')
 img_dir_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining')
 img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_NTC_C1_Br5182_MLtraining', '20220712_VIF_MockPNN_Strong_NTC_Scan1_[11013,50974]_component_data.tif')
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
-img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6925,51188]_component_data_02.tif') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
-csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[6925,51188]_component_data_02.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
+img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[7851,47718]_component_data_12.tif') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
+csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[7851,47718]_component_data_12.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 
 # read the tile and the manual annotation csv
 img_wfa = Image.open(img_test)
@@ -113,6 +113,7 @@ fig.show()
 out_img_gry = skimage.color.rgb2gray(out_img) # convert to gray to find contours and increase contrast
 out_img_gry[out_img_gry <= 0.2] = 0.0 # decrease contrast of background
 out_img_gry[out_img_gry >= 0.2] = 1.0 # increase the contrast of PNNs
+
 fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
 ax[0].imshow(out_img)
 ax[1].imshow(out_img_gry)
@@ -131,7 +132,7 @@ for cnt in contours1:
     x1,y1,w1,h1 = cv2.boundingRect(cnt)
     area = cv2.contourArea(cnt)
     # print(area)
-    if area >= 100 and area <= 20000:
+    if area >= 2000: # area >= 100 and area <= 2000
         # print(x1,y1,w1,h1)
         wfx.append(x1)
         wfy.append(y1)
