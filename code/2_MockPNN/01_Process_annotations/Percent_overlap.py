@@ -77,22 +77,20 @@ for img_name in os.listdir(img_dir):
             # ax.imshow(out_img_gry)
             # fig.show()
             # hist_plot(out_img)
-            for row in range(out_img_gry.shape[0]):
-                for col in range(out_img_gry.shape[1]):
-                    if out_img_gry[row][col] > 0.02:
-                        out_img_gry[row][col] = 0.0
-                    else:
-                        out_img_gry[row][col] = 1.0
-            fig,ax = plt.subplots(figsize = (20,20))
-            ax.imshow(out_img_gry)
-            fig.show()
-
+            # for row in range(out_img_gry.shape[0]):
+            #     for col in range(out_img_gry.shape[1]):
+            #         if out_img_gry[row][col] > 0.02:
+            #             out_img_gry[row][col] = 0.0
+            #         else:
+            #             out_img_gry[row][col] = 1.0
+            # fig,ax = plt.subplots(figsize = (20,20))
+            # ax.imshow(out_img_gry)
+            # fig.show()
             # out_img_gry[out_img_gry > 0.2] = 0.0 # decrease contrast of background
             # out_img_gry[out_img_gry <= 0.2] = 1.0 # increase the contrast of PNNs
-            fig,ax = plt.subplots(figsize = (20,20))
-            ax.imshow(out_img_gry)
-            fig.show()
-
+            # fig,ax = plt.subplots(figsize = (20,20))
+            # ax.imshow(out_img_gry)
+            # fig.show()
             out_img255 = np.array(out_img_gry * 255, dtype = np.uint8) # change scale to 0-255 for find contours
             out_img_clr = skimage.color.gray2rgb(np.array(out_img_gry * 255, dtype = np.uint8)) # convert to color to draw colored bb
             hierachy1, img_threshold1 = cv2.threshold(np.array(out_img_gry * 255, dtype = np.uint8), 100, 255, cv2.ADAPTIVE_THRESH_MEAN_C)
@@ -103,7 +101,10 @@ for img_name in os.listdir(img_dir):
                 coords = cv2.boundingRect(cnt) # x,y,w,h
                 x1,y1,w1,h1 = cv2.boundingRect(cnt)
                 area1 = cv2.contourArea(cnt)
-                if (w1*h1) >= 300:
+                if area1 >= 1000:
+                    out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), -1) # eliminating all the big objects
+                elif area1 >= 100 and area1 < 2000:
+                    # if (w1*h1) >= 300:
                     x.append(x1)
                     y.append(y1)
                     w.append(w1)
@@ -114,6 +115,10 @@ for img_name in os.listdir(img_dir):
                     box = cv2.boxPoints(rect)
                     box = np.int0(box)
                     out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,0),1) # comment out if contour box is not needed
+            fig,ax = plt.subplots(figsize = (20,20))
+            ax.imshow(out_img1)
+            fig.show()
+
             draw_rect(csv, out_img1, (0,255,0)) # draw manual annotations BB on PNN segmented image GREEN
             df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
             overlap_ml_ann = []
