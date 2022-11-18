@@ -79,6 +79,17 @@ def draw_contours(contours, normalised_img, color, thickness):
             contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),-1) # change the color and thickness here if contours need to be visible
     return (x,y,w,h, area, contour_img)
 
+def draw_rect(df_manual_test, contour_img, color):
+    for box in range(len(df_manual_test['x1'])):
+        # print(box)
+        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), color, 2)
+    # return contour_img
+
+def draw_single_rect(df_manual_test, contour_img):
+    cv2.rectangle(contour_img, (df_manual_test['x1'], df_manual_test['y1']), (df_manual_test['x4'], df_manual_test['y4']), (255,211,155), 2)
+    # return contour_img
+
+
 
 def plot_img(original_img, segmented_img):
     fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
