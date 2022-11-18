@@ -115,10 +115,10 @@ for img_name in os.listdir(img_dir):
                     box = cv2.boxPoints(rect)
                     box = np.int0(box)
                     out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,0),1) # comment out if contour box is not needed
-            fig,ax = plt.subplots(figsize = (20,20))
-            ax.imshow(out_img1)
-            fig.show()
-
+            print("total number of PNNs in ", img_name, "is", len(x))
+            # fig,ax = plt.subplots(figsize = (20,20))
+            # ax.imshow(out_img1)
+            # fig.show()
             draw_rect(csv, out_img1, (0,255,0)) # draw manual annotations BB on PNN segmented image GREEN
             df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
             overlap_ml_ann = []
