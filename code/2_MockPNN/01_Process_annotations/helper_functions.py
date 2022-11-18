@@ -54,6 +54,32 @@ def read_norm(filepath, ch_num):
         return img_wfa
 
 
+# detect contours in the normalised_img
+def detect_contours(normalised_img):
+    hierachy, img_threshold = cv2.threshold((np.array((normalised_img * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
+    contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    return contours
+
+# draw the extracted contours onto the image
+def draw_contours(contours, normalised_img, color, thickness):
+    color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
+    x, y, w, h, area = [],[],[],[],[]
+    for cnt in contours:
+        x_, y_, w_, h_ = cv2.boundingRect(cnt)
+        if(w_*h_ >= 100):
+            area_ = cv2.contourArea(cnt)
+            # print(ax,ay,aw,ah)
+            x.append(x_)
+            y.append(y_)
+            w.append(w_)
+            h.append(h_)
+            area.append(area_)
+            bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
+            box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
+            contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),-1) # change the color and thickness here if contours need to be visible
+    return (x,y,w,h, area, contour_img)
+
+
 def plot_img(original_img, segmented_img):
     fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
     ax[0].imshow(original_img)
