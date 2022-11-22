@@ -72,7 +72,7 @@ def draw_rect_dapi(labels, gray, dapi): # add area
 
 
 
-# loop through the whole directory
+# loop through the whole directory to find the overlaps between WFA and DAPI
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/'
 csv_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
 
@@ -113,7 +113,7 @@ for img_name in os.listdir(img_dir):
 
 
 
-# loop through the whole directory
+# loop through the whole directory to segment only DAPI
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S2_SCZ/'
 csv_dst = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/DAPI_segmentations/Image_csvs/'
 img_dst = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/DAPI_segmentations/Images'
