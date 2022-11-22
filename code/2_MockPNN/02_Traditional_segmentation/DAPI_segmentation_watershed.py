@@ -131,7 +131,8 @@ for img_name in os.listdir(img_dir):
         dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect_dapi(labels, gray, dapi_clr)
         img_info_dapi = create_df(dpx, dpy, dpw, dph, area, os.path.join(img_dir, img_name), 'DAPI')
         img_info_dapi.to_csv(path_or_buf = (csv_dst + os.basename(img_name)[0] + '.csv')) # df to csv and save it in the csv_dst folder
-        
+        cv2.imwrite((csv_dst + os.basename(img_name)[0] + '.tif'), segmented_dapi)
+
 
         # save the segmented images in the img_dst folder
 
