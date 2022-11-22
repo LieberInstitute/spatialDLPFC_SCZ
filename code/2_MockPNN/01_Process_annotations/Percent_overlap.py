@@ -120,6 +120,9 @@ for img_name in os.listdir(img_dir):
             # ax.imshow(out_img1)
             # fig.show()
             draw_rect(csv, out_img1, (0,255,0)) # draw manual annotations BB on PNN segmented image GREEN
+            fig,ax = plt.subplots(figsize = (20,20))
+            ax.imshow(out_img1)
+            fig.show()
             df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
             overlap_ml_ann = []
             for pnn in range(len(df_wfa_ml)):
