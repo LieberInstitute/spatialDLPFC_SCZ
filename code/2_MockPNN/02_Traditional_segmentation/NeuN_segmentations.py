@@ -146,7 +146,18 @@ for img_name in os.listdir(img_dir):
             fig.show()
 
 
+# loop through the whole directory to segment only NeuN
+img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S2_SCZ/'
+csv_dst = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/NeuN_segmentations/Image_csvs/'
+img_dst = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/NeuN_segmentations/Image_segmentations'
 
-mylist = [1,7,7,7,3,9,9,9,7,9,10,0]
-print(sorted(set([i for i in mylist if mylist.count(i)<=1])))
-print(sorted(set([i for i in mylist if mylist.count(i)>2])))
+for img_name in os.listdir(img_dir):
+    if img_name.endswith('.tif'):
+        print(img_name)
+        neun= read_norm(os.path.join(img_dir, img_name), 2)
+        neun_contours = detect_contours(neun)
+        nx,ny,nw,nh,narea, neun_segmented = draw_contours(neun_contours, neun, (0,255,0), 2)
+        df_ml_neun = create_df(nx,ny,nw,nh, narea,os.path.join(img_dir, img_name) , 'NeuN')
+        df_ml_neun.to_csv(path_or_buf = (csv_dst + img_name.split('.')[0] + '.csv')) # df to csv and save it in the csv_dst folder
+        cv2.imwrite((img_dst + img_name.split('.')[0] + '.tif'), neun_segmented)
+
