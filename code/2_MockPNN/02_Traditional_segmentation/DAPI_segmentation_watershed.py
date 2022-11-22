@@ -116,7 +116,7 @@ for img_name in os.listdir(img_dir):
 # loop through the whole directory to segment only DAPI
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S2_SCZ/'
 csv_dst = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/DAPI_segmentations/Image_csvs/'
-img_dst = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/DAPI_segmentations/Images'
+img_dst = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/DAPI_segmentations/Image_segmentations/'
 
 for img_name in os.listdir(img_dir):
     if img_name.endswith('.tif'):
