@@ -66,7 +66,7 @@ def draw_rect_dapi(labels, gray, dapi): # add area
         dpy.append(y)
         dpw.append(w)
         dph.append(h)
-        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,0,255), 2) # draw BB
+        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,0,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
 
@@ -123,15 +123,14 @@ for img_name in os.listdir(img_dir):
         # print(int(img_name.split('_')[8].split('.')[0]), int(csv_name.split('_')[8].split('.')[0]))
         print(img_name)
         dapi, dapi_clr = read_norm(os.path.join(img_dir, img_name), 0)
-        print(img_name)
         # csv = manual_annot(os.path.join(csv_dir, csv_name))
         # print(len(csv))
         shifted, thresh, gray = morph_transform(dapi_clr)
         labels = find_labels(thresh)
         dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect_dapi(labels, gray, dapi_clr)
         img_info_dapi = create_df(dpx, dpy, dpw, dph, area, os.path.join(img_dir, img_name), 'DAPI')
-        img_info_dapi.to_csv(path_or_buf = (csv_dst + os.path.basename(img_name)[0] + '.csv')) # df to csv and save it in the csv_dst folder
-        cv2.imwrite((csv_dst + os.path.basename(img_name)[0] + '.tif'), segmented_dapi)
+        img_info_dapi.to_csv(path_or_buf = (csv_dst + img_name.split('.')[0] + '.csv')) # df to csv and save it in the csv_dst folder
+        cv2.imwrite((img_dst + img_name.split('.')[0] + '.tif'), segmented_dapi)
 
 
         # save the segmented images in the img_dst folder
