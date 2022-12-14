@@ -2,11 +2,11 @@
 #$ -cwd
 #$ -l mem_free=8G,h_vmem=8G,h_fsize=100G
 #$ -pe local 8
-#$ -N spatial_NAc
+#$ -N spatialDLPFC_SCZ
 #$ -o logs/spaceranger.$TASK_ID.txt
 #$ -e logs/spaceranger.$TASK_ID.txt
 #$ -m e
-#$ -t 17-18
+#$ -t 1-2
 #$ -tc 10
 
 echo "**** Job starts ****"
@@ -59,8 +59,8 @@ spaceranger count \
 ## Move output
 echo "Moving results to new location"
 date
-mkdir -p ../../processed-data/01_spaceranger/
-mv ${SAMPLE} ../../processed-data/01_spaceranger/
+mkdir -p ../../processed-data/spaceranger/
+mv ${SAMPLE} ../../processed-data/spaceranger/
 
 echo "**** Job ends ****"
 date
