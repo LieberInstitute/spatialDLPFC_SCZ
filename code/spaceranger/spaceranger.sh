@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -cwd
 #$ -l mem_free=8G,h_vmem=8G,h_fsize=100G
-#$ -pe local 8
+#$ -pe local 9
 #$ -N spatialDLPFC_SCZ
 #$ -o logs/spaceranger.$TASK_ID.txt
 #$ -e logs/spaceranger.$TASK_ID.txt
@@ -20,7 +20,7 @@ echo "Hostname: ${HOSTNAME}"
 echo "Task id: ${SGE_TASK_ID}"
 
 ## load SpaceRanger
-module load spaceranger/1.3.1
+module load spaceranger/2.0.0
 
 ## List current modules for reproducibility
 module list
