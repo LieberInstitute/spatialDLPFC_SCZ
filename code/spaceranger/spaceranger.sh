@@ -1,6 +1,6 @@
 #!/bin/bash
 #$ -cwd
-#$ -l mem_free=8G,h_vmem=8G,h_fsize=100G
+#$ -l mem_free=9G,h_vmem=9G,h_fsize=100G
 #$ -pe local 9
 #$ -N spatialDLPFC_SCZ
 #$ -o logs/spaceranger.$TASK_ID.txt
@@ -53,8 +53,8 @@ spaceranger count \
     --area=${CAPTUREAREA} \
     --loupe-alignment=${LOUPEPATH} \
     --jobmode=local \
-    --localcores=8 \
-    --localmem=64
+    --localcores=9 \
+    --localmem=81
 
 ## Move output
 echo "Moving results to new location"
