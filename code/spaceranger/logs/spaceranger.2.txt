@@ -1,0 +1,229 @@
+Adding LIBD modules
+Loading git
+Loading LIBD module for git-status-size/github
+Loading LIBD module for git-lfs/2.8.0
+Loading LIBD module for rmate/1.5.9
+Loading LIBD module for ruby/2.6.4p104
+Loading conda_R/4.2
+**** Job starts ****
+Thu Dec 15 10:13:03 EST 2022
+**** JHPCE info ****
+User: hdivecha
+Job id: 1321453
+Job name: spatialDLPFC_SCZ
+Hostname: compute-115.cm.cluster
+Task id: 2
+Loading LIBD module for spaceranger/2.0.0
+Reference files, for use with the '--transcriptome' argument, can be accessed
+or downloaded into /dcs04/lieber/lcolladotor/annotationFiles_LIBD001/10x. 
+
+Currently Loaded Modules:
+  1) matlab/R2019a     6) COMMUNITY_CENTOS7_DEFAULT_ENV  11) ruby/2.6.4p104
+  2) stata/17          7) JHPCE_CENTOS7_DEFAULT_ENV      12) rmate/1.5.9
+  3) JHPCE_tools/1.0   8) git-status-size/github         13) conda/3-4.11.0
+  4) sge/8.1.9         9) git/2.28.0                     14) conda_R/4.2
+  5) gcc/4.4.7        10) git-lfs/2.8.0                  15) spaceranger/2.0.0
+
+ 
+
+Processing sample Br2039_D1 from slide V12F14-057 and capture area D1 with image /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif and aligned with /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V12F14-057_D1.json with FASTQs: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/FASTQ/Br2039_D1
+Thu Dec 15 10:13:04 EST 2022
+-rw-rwx--- 1 ukaipa lieber_marmaypag 886M Nov  9 18:36 /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
+-rw-rwx--- 1 ukaipa lieber_marmaypag 559K Nov 17 16:16 /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V12F14-057_D1.json
+Martian Runtime - v4.0.9
+2022-12-15 10:13:04 [jobmngr] WARNING: The current virtual address space size
+                              limit is too low.
+	Limiting virtual address space size interferes with the operation of many
+	common libraries and programs, and is not recommended.
+	Contact your system administrator to remove this limit.
+Serving UI at http://compute-115.cm.cluster:36068?auth=MU4f13Pg9IsTrsZGB5lgEs1zp9cq-PCo-Qt1XZ6TwEk
+
+Running preflight checks (please wait)...
+runtime/cgo: pthread_create failed: Resource temporarily unavailable
+SIGABRT: abort
+PC=0x7f395d03b207 m=18 sigcode=18446744073709551610
+
+goroutine 0 [idle]:
+runtime: unknown pc 0x7f395d03b207
+stack: frame={sp:0x7f2fefffe938, fp:0x0} stack=[0x7f2f5ffff298,0x7f2fefffee98)
+0x00007f2fefffe838:  0x0000000000000005  0xffffffff00004aa6 
+0x00007f2fefffe848:  0x00000000006784cc <runtime.park_m+0x000000000000014c>  0xffffffff00017f78 
+0x00007f2fefffe858:  0x0000000000677f9e <runtime.schedule+0x000000000000025e>  0x0000004000017c45 
+0x00007f2fefffe868:  0x0000000000675cef <runtime.startm+0x00000000000000cf>  0x0000004000016d21 
+0x00007f2fefffe878:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe888:  0x00007f2fefffe8d0  0x0000000000000000 
+0x00007f2fefffe898:  0x000000c0002296e0  0x00000000006b8065 <syscall.Syscall6+0x0000000000000005> 
+0x00007f2fefffe8a8:  0x000000c0008801a0  0x00007f39366301c3 
+0x00007f2fefffe8b8:  0x0000000000ad7e9c  0x000000180001703b 
+0x00007f2fefffe8c8:  0x00000000006a3e1e <runtime.callCgoMmap+0x000000000000003e>  0x00000000006a2041 <runtime.goexit+0x0000000000000001> 
+0x00007f2fefffe8d8:  0x0000000000000314  0x00000000006b8065 <syscall.Syscall6+0x0000000000000005> 
+0x00007f2fefffe8e8:  0x000000000002bf96  0x000000000095af45 <github.com/martian-lang/martian/martian/core.executeLocal+0x0000000000000045> 
+0x00007f2fefffe8f8:  0x00000048000c9ab3  0x0000000000000000 
+0x00007f2fefffe908:  0x00007f395d3cc868  0x00000000003b9e88 
+0x00007f2fefffe918:  0x00007f26080008c0  0x0000000000000178 
+0x00007f2fefffe928:  0x000000c0008801a0  0x00007f393663758f 
+0x00007f2fefffe938: <0x00007f395d03c8f8  0x0000000000000020 
+0x00007f2fefffe948:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe958:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe968:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe978:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe988:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe998:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe9a8:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe9b8:  0x0000000000000000  0x000000000000000d 
+0x00007f2fefffe9c8:  0x00007f395d0f3ff9  0x0000000000000000 
+0x00007f2fefffe9d8:  0x00007f395d07f0b3  0x000000000000000d 
+0x00007f2fefffe9e8:  0x00007f395d3cc1c0  0x0000000000000001 
+0x00007f2fefffe9f8:  0x00007f395d3cc243  0x00007f395d3c83a0 
+0x00007f2fefffea08:  0x00007f395d0808ce  0x00007f395d3cc1c0 
+0x00007f2fefffea18:  0x000000000000000a  0x00007f26080008c0 
+0x00007f2fefffea28:  0x0000000000000178  0x000000c0008801a0 
+runtime: unknown pc 0x7f395d03b207
+stack: frame={sp:0x7f2fefffe938, fp:0x0} stack=[0x7f2f5ffff298,0x7f2fefffee98)
+0x00007f2fefffe838:  0x0000000000000005  0xffffffff00004aa6 
+0x00007f2fefffe848:  0x00000000006784cc <runtime.park_m+0x000000000000014c>  0xffffffff00017f78 
+0x00007f2fefffe858:  0x0000000000677f9e <runtime.schedule+0x000000000000025e>  0x0000004000017c45 
+0x00007f2fefffe868:  0x0000000000675cef <runtime.startm+0x00000000000000cf>  0x0000004000016d21 
+0x00007f2fefffe878:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe888:  0x00007f2fefffe8d0  0x0000000000000000 
+0x00007f2fefffe898:  0x000000c0002296e0  0x00000000006b8065 <syscall.Syscall6+0x0000000000000005> 
+0x00007f2fefffe8a8:  0x000000c0008801a0  0x00007f39366301c3 
+0x00007f2fefffe8b8:  0x0000000000ad7e9c  0x000000180001703b 
+0x00007f2fefffe8c8:  0x00000000006a3e1e <runtime.callCgoMmap+0x000000000000003e>  0x00000000006a2041 <runtime.goexit+0x0000000000000001> 
+0x00007f2fefffe8d8:  0x0000000000000314  0x00000000006b8065 <syscall.Syscall6+0x0000000000000005> 
+0x00007f2fefffe8e8:  0x000000000002bf96  0x000000000095af45 <github.com/martian-lang/martian/martian/core.executeLocal+0x0000000000000045> 
+0x00007f2fefffe8f8:  0x00000048000c9ab3  0x0000000000000000 
+0x00007f2fefffe908:  0x00007f395d3cc868  0x00000000003b9e88 
+0x00007f2fefffe918:  0x00007f26080008c0  0x0000000000000178 
+0x00007f2fefffe928:  0x000000c0008801a0  0x00007f393663758f 
+0x00007f2fefffe938: <0x00007f395d03c8f8  0x0000000000000020 
+0x00007f2fefffe948:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe958:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe968:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe978:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe988:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe998:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe9a8:  0x0000000000000000  0x0000000000000000 
+0x00007f2fefffe9b8:  0x0000000000000000  0x000000000000000d 
+0x00007f2fefffe9c8:  0x00007f395d0f3ff9  0x0000000000000000 
+0x00007f2fefffe9d8:  0x00007f395d07f0b3  0x000000000000000d 
+0x00007f2fefffe9e8:  0x00007f395d3cc1c0  0x0000000000000001 
+0x00007f2fefffe9f8:  0x00007f395d3cc243  0x00007f395d3c83a0 
+0x00007f2fefffea08:  0x00007f395d0808ce  0x00007f395d3cc1c0 
+0x00007f2fefffea18:  0x000000000000000a  0x00007f26080008c0 
+0x00007f2fefffea28:  0x0000000000000178  0x000000c0008801a0 
+
+goroutine 34 [syscall, 1 minutes]:
+os/signal.signal_recv()
+	GOROOT/src/runtime/sigqueue.go:151 +0x2f
+os/signal.loop()
+	GOROOT/src/os/signal/signal_unix.go:23 +0x19
+created by os/signal.Notify.func1.1
+	GOROOT/src/os/signal/signal.go:151 +0x2a
+
+goroutine 22 [chan receive, 1 minutes]:
+github.com/martian-lang/martian/martian/util.SetupSignalHandlers.func1()
+	signal.go:117 +0x45
+created by github.com/martian-lang/martian/martian/util.SetupSignalHandlers
+	signal.go:116 +0x6e
+
+goroutine 83 [IO wait, 1 minutes]:
+internal/poll.runtime_pollWait(0x7f3786369258, 0x72)
+	GOROOT/src/runtime/netpoll.go:302 +0x89
+internal/poll.(*pollDesc).wait(0xc00072f000?, 0x0?, 0x0)
+	GOROOT/src/internal/poll/fd_poll_runtime.go:83 +0x32
+internal/poll.(*pollDesc).waitRead(...)
+	GOROOT/src/internal/poll/fd_poll_runtime.go:88
+internal/poll.(*FD).Accept(0xc00072f000)
+	GOROOT/src/internal/poll/fd_unix.go:614 +0x22c
+net.(*netFD).accept(0xc00072f000)
+	GOROOT/src/net/fd_unix.go:172 +0x35
+net.(*TCPListener).accept(0xc00081c1c8)
+	GOROOT/src/net/tcpsock_posix.go:139 +0x28
+net.(*TCPListener).Accept(0xc00081c1c8)
+	GOROOT/src/net/tcpsock.go:288 +0x3d
+net/http.(*Server).Serve(0xc0001d7340, {0x3a27b0, 0xc00081c1c8})
+	GOROOT/src/net/http/server.go:3039 +0x385
+main.(*mrpWebServer).Start(0xc0003b8f50)
+	external/martian/cmd/mrp/webserver.go:109 +0x37c
+main.runWebServer({0x3a27b0?, 0xc00081c1c8}, 0xc0002d4500, 0xc0002cdb80, 0x1)
+	external/martian/cmd/mrp/webserver.go:60 +0xe5
+created by main.main
+	external/martian/cmd/mrp/main.go:463 +0xad7
+
+goroutine 84 [wait for GC cycle]:
+runtime.GC()
+	GOROOT/src/runtime/mgc.go:445 +0x4e
+main.runLoop(0xc0002cdb80, 0x0?, {0x2cc8b4, 0x7}, 0x0?, 0xc000118c60)
+	external/martian/cmd/mrp/runloop.go:71 +0x265
+created by main.main
+	external/martian/cmd/mrp/main.go:470 +0xbdd
+
+goroutine 100 [syscall, 1 minutes]:
+syscall.Syscall6(0xf7, 0x1, 0x640e, 0xc000229738, 0x1000004, 0x0, 0x0)
+	GOROOT/src/syscall/asm_linux_amd64.s:43 +0x5
+os.(*Process).blockUntilWaitable(0xc00002b1a0)
+	GOROOT/src/os/wait_waitid.go:32 +0x9c
+os.(*Process).wait(0xc00002b1a0)
+	GOROOT/src/os/exec_unix.go:22 +0x28
+os.(*Process).Wait(...)
+	GOROOT/src/os/exec.go:132
+os/exec.(*Cmd).Wait(0xc00056c840)
+	GOROOT/src/os/exec/exec.go:507 +0x54
+github.com/martian-lang/martian/martian/core.executeLocal(0xc000113800?, {0xc0004500a0?, 0xc00078fe00?}, {0xc000450280?, 0x0?}, 0x0?, 0x0?)
+	external/martian/martian/core/jobmanager_local.go:736 +0x45
+github.com/martian-lang/martian/martian/core.(*LocalJobManager).Enqueue.func1()
+	external/martian/martian/core/jobmanager_local.go:649 +0x14a8
+created by github.com/martian-lang/martian/martian/core.(*LocalJobManager).Enqueue
+	external/martian/martian/core/jobmanager_local.go:688 +0x207
+
+goroutine 101 [syscall, 1 minutes]:
+syscall.Syscall6(0xf7, 0x1, 0x640f, 0xc0003f9738, 0x1000004, 0x0, 0x0)
+	GOROOT/src/syscall/asm_linux_amd64.s:43 +0x5
+os.(*Process).blockUntilWaitable(0xc0004883c0)
+	GOROOT/src/os/wait_waitid.go:32 +0x9c
+os.(*Process).wait(0xc0004883c0)
+	GOROOT/src/os/exec_unix.go:22 +0x28
+os.(*Process).Wait(...)
+	GOROOT/src/os/exec.go:132
+os/exec.(*Cmd).Wait(0xc0003e8000)
+	GOROOT/src/os/exec/exec.go:507 +0x54
+github.com/martian-lang/martian/martian/core.executeLocal(0xc000113800?, {0xc00045c320?, 0xc00071a3c0?}, {0xc00045c5a0?, 0x64657361656c2f3a?}, 0x30?, 0x797a616c2c6b636f?)
+	external/martian/martian/core/jobmanager_local.go:736 +0x45
+github.com/martian-lang/martian/martian/core.(*LocalJobManager).Enqueue.func1()
+	external/martian/martian/core/jobmanager_local.go:649 +0x14a8
+created by github.com/martian-lang/martian/martian/core.(*LocalJobManager).Enqueue
+	external/martian/martian/core/jobmanager_local.go:688 +0x207
+
+rax    0x0
+rbx    0x7f395d3cc868
+rcx    0xffffffffffffffff
+rdx    0x6
+rdi    0x63f1
+rsi    0x6402
+rbp    0x3b9e88
+rsp    0x7f2fefffe938
+r8     0xa
+r9     0x7f2feffff700
+r10    0x8
+r11    0x202
+r12    0x7f26080008c0
+r13    0x178
+r14    0xc0008801a0
+r15    0x7f393663758f
+rip    0x7f395d03b207
+rflags 0x202
+cs     0x33
+fs     0x0
+gs     0x0
+2022-12-15 10:14:16 Caught signal terminated
+2022-12-15 10:14:16 [monitor] Caught signal terminated
+Saving pipestance info to "Br2039_D1/Br2039_D1.mri.tgz"
+For assistance, upload this file to 10x Genomics by running:
+
+spaceranger upload <your_email> "Br2039_D1/Br2039_D1.mri.tgz"
+
+Moving results to new location
+Thu Dec 15 10:14:18 EST 2022
+**** Job ends ****
+Thu Dec 15 10:14:18 EST 2022

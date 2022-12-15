@@ -1,0 +1,66 @@
+Adding LIBD modules
+Loading git
+Loading LIBD module for git-status-size/github
+Loading LIBD module for git-lfs/2.8.0
+Loading LIBD module for rmate/1.5.9
+Loading LIBD module for ruby/2.6.4p104
+Loading conda_R/4.2
+**** Job starts ****
+Thu Dec 15 10:13:03 EST 2022
+**** JHPCE info ****
+User: hdivecha
+Job id: 1321453
+Job name: spatialDLPFC_SCZ
+Hostname: compute-141.cm.cluster
+Task id: 1
+Loading LIBD module for spaceranger/2.0.0
+Reference files, for use with the '--transcriptome' argument, can be accessed
+or downloaded into /dcs04/lieber/lcolladotor/annotationFiles_LIBD001/10x. 
+
+Currently Loaded Modules:
+  1) matlab/R2019a     6) COMMUNITY_CENTOS7_DEFAULT_ENV  11) ruby/2.6.4p104
+  2) stata/17          7) JHPCE_CENTOS7_DEFAULT_ENV      12) rmate/1.5.9
+  3) JHPCE_tools/1.0   8) git-status-size/github         13) conda/3-4.11.0
+  4) sge/8.1.9         9) git/2.28.0                     14) conda_R/4.2
+  5) gcc/4.4.7        10) git-lfs/2.8.0                  15) spaceranger/2.0.0
+
+ 
+
+Processing sample Br2039_C1 from slide V12F14-057 and capture area C1 with image /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif and aligned with /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V12F14-057_C1.json with FASTQs: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/FASTQ/Br2039_C1
+Thu Dec 15 10:13:04 EST 2022
+-rw-rwx--- 1 ukaipa lieber_marmaypag 770M Nov  9 18:35 /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
+-rw-rwx--- 1 ukaipa lieber_marmaypag 548K Nov 17 15:46 /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V12F14-057_C1.json
+Martian Runtime - v4.0.9
+2022-12-15 10:13:06 [jobmngr] WARNING: The current virtual address space size
+                              limit is too low.
+	Limiting virtual address space size interferes with the operation of many
+	common libraries and programs, and is not recommended.
+	Contact your system administrator to remove this limit.
+Serving UI at http://compute-141.cm.cluster:42891?auth=AhVnb_7COYbwxWwFq7OraSUI2oVJCo-2IptPfKej6Jc
+
+Running preflight checks (please wait)...
+Checking sample info...
+Checking FASTQ folder...
+Checking reference...
+Checking reference_path (/dcs04/lieber/lcolladotor/annotationFiles_LIBD001/10x/refdata-gex-GRCh38-2020-A) on compute-141.cm.cluster...
+Checking optional arguments...
+mro: v4.0.9
+mrp: v4.0.9
+Anaconda: Python 3.8.12
+numpy: 1.21.5
+scipy: 1.7.3
+
+[error] Loupe manual alignment file seems to be created with different tissue image(s) than was passed to the pipeline
+
+2022-12-15 10:14:43 Shutting down.
+2022-12-15 10:14:43 Caught signal terminated
+2022-12-15 10:14:43 [monitor] Caught signal terminated
+Saving pipestance info to "Br2039_C1/Br2039_C1.mri.tgz"
+For assistance, upload this file to 10x Genomics by running:
+
+spaceranger upload <your_email> "Br2039_C1/Br2039_C1.mri.tgz"
+
+Moving results to new location
+Thu Dec 15 10:14:44 EST 2022
+**** Job ends ****
+Thu Dec 15 10:14:44 EST 2022
