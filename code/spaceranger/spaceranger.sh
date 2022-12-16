@@ -48,7 +48,7 @@ spaceranger count \
     --id=${SAMPLE} \
     --transcriptome=/dcs04/lieber/lcolladotor/annotationFiles_LIBD001/10x/refdata-gex-GRCh38-2020-A \
     --fastqs=${FASTQPATH} \
-    --image=${IMAGEPATH} \
+    --darkimage=${IMAGEPATH} \
     --slide=${SLIDE} \
     --area=${CAPTUREAREA} \
     --loupe-alignment=${LOUPEPATH} \
