@@ -1,0 +1,611 @@
+Martian Runtime - v4.0.9
+2022-12-15 16:38:33 [build  ] Built with Go version go1.18.2
+2022-12-15 16:38:33 [cmdline] mrp __Br2039_D1.mro Br2039_D1 --jobmode local --localcores 9 --localmem 81
+2022-12-15 16:38:33 [pid    ] 31307
+2022-12-15 16:38:33 [environ] SGE_O_TZ=US/Eastern
+2022-12-15 16:38:33 [environ] JAVA_LD_LIBRARY_PATH=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/lib/server
+2022-12-15 16:38:33 [environ] HOSTNAME=compute-141.cm.cluster
+2022-12-15 16:38:33 [environ] SGE_TASK_STEPSIZE=1
+2022-12-15 16:38:33 [environ] HOST=x86_64-conda-linux-gnu
+2022-12-15 16:38:33 [environ] SHELL=/bin/bash
+2022-12-15 16:38:33 [environ] TERM=
+2022-12-15 16:38:33 [environ] NHOSTS=1
+2022-12-15 16:38:33 [environ] SGE_O_WORKDIR=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger
+2022-12-15 16:38:33 [environ] TMPDIR=/scratch/temp/1328286.2.shared.q
+2022-12-15 16:38:33 [environ] LIBRARY_PATH=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/lib
+2022-12-15 16:38:33 [environ] CONDA_SHLVL=1
+2022-12-15 16:38:33 [environ] SGE_O_HOME=/users/hdivecha
+2022-12-15 16:38:33 [environ] CONDA_PROMPT_MODIFIER=(svnR-4.2) 
+2022-12-15 16:38:33 [environ] SGE_ARCH=lx-amd64
+2022-12-15 16:38:33 [environ] SGE_CELL=default
+2022-12-15 16:38:33 [environ] USER=hdivecha
+2022-12-15 16:38:33 [environ] CONDA_TOOLCHAIN_BUILD=x86_64-conda-linux-gnu
+2022-12-15 16:38:33 [environ] CONDA_EXE=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/bin/conda
+2022-12-15 16:38:33 [environ] SGE_TASK_LAST=2
+2022-12-15 16:38:33 [environ] LD_GOLD=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/bin/x86_64-conda-linux-gnu-ld.gold
+2022-12-15 16:38:33 [environ] SGE_BINDING=0 1 3 6 7 10 19 20 21 24 25 27 30 31 34 43 44 45
+2022-12-15 16:38:33 [environ] CONDA_BUILD_SYSROOT=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/x86_64-conda-linux-gnu/sysroot
+2022-12-15 16:38:33 [environ] CONDA_TOOLCHAIN_HOST=x86_64-conda-linux-gnu
+2022-12-15 16:38:33 [environ] SGE_TASK_ID=2
+2022-12-15 16:38:33 [environ] SGE_BINARY_PATH=/cm/shared/apps/sge/sge-8.1.9//bin/lx-amd64
+2022-12-15 16:38:33 [environ] PATH=/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/lib/bin:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/martian/bin:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/anaconda/bin:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/bin/tenkit:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/bin:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/bin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/texlive/bin/x86_64-linux:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/R/4.2/bin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/condabin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/bin:/jhpce/shared/jhpce/libd/rmate/1.5.9/rmate/bin:/jhpce/shared/jhpce/libd/ruby/2.6.4p104/rubyinstall/bin:/jhpce/shared/jhpce/libd/git-lfs/2.8.0/git-lfs-files:/jhpce/shared/jhpce/core/git/2.28.0/bin:/jhpce/shared/jhpce/libd/git-status-size/github/git-status-size:/cm/shared/apps/sge/sge-8.1.9/bin/lx-amd64:/jhpce/shared/jhpce/core/JHPCE_tools/1.0/bin:/jhpce/shared/jhpce/core/stata/17:/jhpce/shared/jhpce/core/matlab/R2019a/bin:/cm/shared/apps/sge/sge-8.1.9/bin:/usr/lib64/qt-3.3/bin:/scratch/temp/1328286.2.shared.q:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/users/hdivecha/bin
+2022-12-15 16:38:33 [environ] LD=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/bin/x86_64-conda-linux-gnu-ld
+2022-12-15 16:38:33 [environ] CONDA_PREFIX=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2
+2022-12-15 16:38:33 [environ] SGE_STDERR_PATH=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/logs/spaceranger.2.txt
+2022-12-15 16:38:33 [environ] PWD=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger
+2022-12-15 16:38:33 [environ] JAVA_HOME=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2
+2022-12-15 16:38:33 [environ] SGE_STDOUT_PATH=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/logs/spaceranger.2.txt
+2022-12-15 16:38:33 [environ] SGE_ACCOUNT=sge
+2022-12-15 16:38:33 [environ] LANG=C
+2022-12-15 16:38:33 [environ] JOB_SCRIPT=/cm/shared/apps/sge/sge-8.1.9//default/spool/compute-141/job_scripts/1328286
+2022-12-15 16:38:33 [environ] JOB_NAME=spatialDLPFC_SCZ
+2022-12-15 16:38:33 [environ] SGE_ROOT=/cm/shared/apps/sge/sge-8.1.9
+2022-12-15 16:38:33 [environ] SGE_JOB_SPOOL_DIR=/cm/shared/apps/sge/sge-8.1.9//default/spool/compute-141/active_jobs/1328286.2
+2022-12-15 16:38:33 [environ] ENVIRONMENT=BATCH
+2022-12-15 16:38:33 [environ] SHLVL=1
+2022-12-15 16:38:33 [environ] HOME=/users/hdivecha
+2022-12-15 16:38:33 [environ] SGE_CWD_PATH=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger
+2022-12-15 16:38:33 [environ] NQUEUES=1
+2022-12-15 16:38:33 [environ] SGE_O_LOGNAME=hdivecha
+2022-12-15 16:38:33 [environ] SGE_O_MAIL=/var/spool/mail/hdivecha
+2022-12-15 16:38:33 [environ] CONDA_PYTHON_EXE=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/bin/python
+2022-12-15 16:38:33 [environ] JOB_ID=1328286
+2022-12-15 16:38:33 [environ] LOGNAME=hdivecha
+2022-12-15 16:38:33 [environ] XDG_DATA_DIRS=/users/hdivecha/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+2022-12-15 16:38:33 [environ] SGE_TASK_FIRST=1
+2022-12-15 16:38:33 [environ] JAVA_HOME_CONDA_BACKUP=
+2022-12-15 16:38:33 [environ] CONDA_DEFAULT_ENV=svnR-4.2
+2022-12-15 16:38:33 [environ] OMP_NUM_THREADS=1
+2022-12-15 16:38:33 [environ] SGE_O_PATH=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/bin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/texlive/bin/x86_64-linux:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/R/4.2/bin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/condabin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/bin:/jhpce/shared/jhpce/libd/rmate/1.5.9/rmate/bin:/jhpce/shared/jhpce/libd/ruby/2.6.4p104/rubyinstall/bin:/jhpce/shared/jhpce/libd/git-lfs/2.8.0/git-lfs-files:/jhpce/shared/jhpce/core/git/2.28.0/bin:/jhpce/shared/jhpce/libd/git-status-size/github/git-status-size:/cm/shared/apps/sge/sge-8.1.9/bin/lx-amd64:/jhpce/shared/jhpce/core/JHPCE_tools/1.0/bin:/jhpce/shared/jhpce/core/stata/17:/jhpce/shared/jhpce/core/matlab/R2019a/bin:/cm/shared/apps/sge/sge-8.1.9/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/users/hdivecha/bin
+2022-12-15 16:38:33 [environ] SGE_CLUSTER_NAME=sge1
+2022-12-15 16:38:33 [environ] SGE_O_HOST=x86_64-conda-linux-gnu
+2022-12-15 16:38:33 [environ] SGE_O_SHELL=/bin/bash
+2022-12-15 16:38:33 [environ] JAVA_LD_LIBRARY_PATH_BACKUP=
+2022-12-15 16:38:33 [environ] NSLOTS=9
+2022-12-15 16:38:33 [environ] SGE_STDIN_PATH=/dev/null
+2022-12-15 16:38:33 [environ] BASH_FUNC_module()=() {  eval $($LMOD_CMD bash "$@") && eval $(${LMOD_SETTARG_CMD:-:} -s sh)
+}
+2022-12-15 16:38:33 [environ] BASH_FUNC_ml()=() {  eval $($LMOD_DIR/ml_cmd "$@")
+}
+2022-12-15 16:38:33 [environ] _=/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/spaceranger
+2022-12-15 16:38:33 [environ] LC_CTYPE=en_US.UTF-8
+2022-12-15 16:38:33 [environ] PYTHONNOUSERSITE=1
+2022-12-15 16:38:33 [environ] MKL_CBWR=COMPATIBLE
+2022-12-15 16:38:33 [environ] HDF5_USE_FILE_LOCKING=FALSE
+2022-12-15 16:38:33 [environ] RUST_BACKTRACE=1
+2022-12-15 16:38:33 [environ] PYTHONPATH=/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/lib/python:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/martian/adapters/python
+2022-12-15 16:38:33 [environ] TENX_PRODUCT=spaceranger
+2022-12-15 16:38:33 [environ] TENX_VERSION=spaceranger-2.0.0
+2022-12-15 16:38:33 [environ] TENX_COPYRIGHT=Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
+2022-12-15 16:38:33 [options] --localcores=9
+2022-12-15 16:38:33 [options] --localmem=81
+2022-12-15 16:38:33 [environ] MROPATH=/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/mro
+2022-12-15 16:38:33 [version] MRO Version=spaceranger-2.0.0
+2022-12-15 16:38:33 [options] --jobmode=local
+2022-12-15 16:38:33 [options] --vdrmode=rolling
+2022-12-15 16:38:33 [options] --profile=disable
+2022-12-15 16:38:33 [options] --stackvars=false
+2022-12-15 16:38:33 [options] --zip=false
+2022-12-15 16:38:33 [options] --limit-loadavg=false
+2022-12-15 16:38:33 [options] --noexit=false
+2022-12-15 16:38:33 [options] --nopreflight=false
+2022-12-15 16:38:33 [jobmngr] Job config = /jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/martian/jobmanagers/config.json
+2022-12-15 16:38:33 [jobmngr] Using 9 cores, per --localcores option.
+2022-12-15 16:38:33 [jobmngr] Using 81 GB, per --localmem option.
+2022-12-15 16:38:33 [jobmngr] ulimit -v: 82944MB (minimum required 83968MB)
+2022-12-15 16:38:33 [jobmngr] WARNING: The current virtual address space size
+                              limit is too low.
+	Limiting virtual address space size interferes with the operation of many
+	common libraries and programs, and is not recommended.
+	Contact your system administrator to remove this limit.
+2022-12-15 16:38:34 [sysinfo] linux amd64
+2022-12-15 16:38:34 [sysinfo] Linux kernel release version: 3.10.0-1160.el7.x86_64
+2022-12-15 16:38:34 [sysinfo] glibc version: 2.17
+2022-12-15 16:38:34 [filesys] Pipestance path /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1
+2022-12-15 16:38:34 [filesys] Pipestance filesystem type nfs
+2022-12-15 16:38:34 [filesys] 444 TB and 867,332,667,397 inodes available.
+2022-12-15 16:38:34 [filesys] Pipestance filesystem nfs4 mount options: rw,noatime,rw,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=192.168.11.141,local_lock=none,addr=192.168.11.209
+2022-12-15 16:38:34 [filesys] Pipestance directory permissions dgrwxrwx--- owned by uid 42395 gid 4218
+2022-12-15 16:38:34 [filesys] Bin path /jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/martian/bin
+2022-12-15 16:38:34 [filesys] Bin filesystem type nfs
+2022-12-15 16:38:34 [filesys] Bin filesystem nfs4 mount options: rw,noatime,nodiratime,rw,vers=4.0,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=192.168.11.141,local_lock=none,addr=192.168.11.205
+2022-12-15 16:38:34 [filesys] Executable file permissions -rwxrwxr-x owned by uid 42086 gid 4217
+2022-12-15 16:38:34 [user   ] User hdivecha uid 42395 / gid 4129
+Serving UI at http://compute-141.cm.cluster:40549?auth=1qFEkupzzJmha8CT1AfH8eS8FjvYZFLA9DZEEaJ4nvE
+
+Running preflight checks (please wait)...
+2022-12-15 16:38:34 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT_LOCAL
+2022-12-15 16:38:34 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT_LOCAL.fork0.chnk0.main
+2022-12-15 16:38:34 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+2022-12-15 16:38:34 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT.fork0.split
+2022-12-15 16:39:22 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+2022-12-15 16:39:22 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT.fork0.join
+2022-12-15 16:39:36 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT_LOCAL
+2022-12-15 16:39:36 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+2022-12-15 16:39:36 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER_PREP.CHEMISTRY_DETECTOR
+2022-12-15 16:39:36 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER_PREP.CHEMISTRY_DETECTOR.fork0.chnk0.main
+2022-12-15 16:39:36 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.DISABLE_FEATURE_STAGES
+2022-12-15 16:39:36 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.DISABLE_FEATURE_STAGES.fork0.chnk0.main
+2022-12-15 16:39:36 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.WRITE_GENE_INDEX
+2022-12-15 16:39:36 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.WRITE_GENE_INDEX.fork0.chnk0.main
+2022-12-15 16:39:37 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.DISABLE_FEATURE_STAGES
+2022-12-15 16:39:39 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER_PREP.CHEMISTRY_DETECTOR
+2022-12-15 16:39:39 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER_PREP.MULTI_SETUP_CHUNKS
+2022-12-15 16:39:39 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER_PREP.MULTI_SETUP_CHUNKS.fork0.chnk0.main
+2022-12-15 16:39:39 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER_PREP.MULTI_SETUP_CHUNKS
+2022-12-15 16:39:39 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.DETERMINE_PIPELINE_MODE
+2022-12-15 16:39:39 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.DETERMINE_PIPELINE_MODE.fork0.chnk0.main
+2022-12-15 16:39:40 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.DETERMINE_PIPELINE_MODE
+2022-12-15 16:39:40 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.STANDARDIZE_IMAGES
+2022-12-15 16:39:40 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.STANDARDIZE_IMAGES.fork0.split
+2022-12-15 16:39:53 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.WRITE_GENE_INDEX
+2022-12-15 16:39:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.PARSE_TARGET_FEATURES
+2022-12-15 16:39:53 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.PARSE_TARGET_FEATURES.fork0.chnk0.main
+2022-12-15 16:39:56 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.PARSE_TARGET_FEATURES
+2022-12-15 16:39:57 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD
+2022-12-15 16:39:57 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD.fork0.split
+2022-12-15 16:40:02 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD
+2022-12-15 16:40:02 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD.fork0.chnk0.main
+2022-12-15 16:40:51 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.STANDARDIZE_IMAGES
+2022-12-15 16:40:51 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.STANDARDIZE_IMAGES.fork0.join
+2022-12-15 16:41:54 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.STANDARDIZE_IMAGES
+2022-12-15 16:41:55 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.LOUPE_ALIGNMENT_READER
+2022-12-15 16:41:55 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.LOUPE_ALIGNMENT_READER.fork0.chnk0.main
+2022-12-15 16:41:55 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_TILE_IMAGES
+2022-12-15 16:41:55 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_TILE_IMAGES.fork0.split
+2022-12-15 16:41:57 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_TILE_IMAGES
+2022-12-15 16:41:57 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_TILE_IMAGES.fork0.join
+2022-12-15 16:41:57 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.LOUPE_ALIGNMENT_READER
+2022-12-15 16:41:57 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.REGISTER_TISSUE
+2022-12-15 16:41:57 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.REGISTER_TISSUE
+2022-12-15 16:41:57 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.GPR_READER
+2022-12-15 16:41:57 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.GPR_READER.fork0.chnk0.main
+2022-12-15 16:42:00 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.GPR_READER
+2022-12-15 16:42:00 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.ALIGN_FIDUCIALS
+2022-12-15 16:42:00 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.ALIGN_FIDUCIALS.fork0.chnk0.main
+2022-12-15 16:42:19 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.ALIGN_FIDUCIALS
+2022-12-15 16:42:19 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.DETECT_TISSUE
+2022-12-15 16:42:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.DETECT_TISSUE.fork0.chnk0.main
+2022-12-15 16:42:28 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.DETECT_TISSUE
+2022-12-15 16:42:28 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.OUTPUT_SPOTS_BARCODES
+2022-12-15 16:42:28 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.OUTPUT_SPOTS_BARCODES.fork0.chnk0.main
+2022-12-15 16:42:38 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.OUTPUT_SPOTS_BARCODES
+2022-12-15 16:42:38 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.CALCULATE_FLUORESCENCE_INTENSITY
+2022-12-15 16:42:38 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.CALCULATE_FLUORESCENCE_INTENSITY.fork0.split
+2022-12-15 16:42:42 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.CALCULATE_FLUORESCENCE_INTENSITY
+2022-12-15 16:42:42 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.CALCULATE_FLUORESCENCE_INTENSITY.fork0.join
+2022-12-15 16:42:42 [jobmngr] Need 9 threads to start the next job (6 threads available).  Waiting for jobs to complete.
+2022-12-15 16:46:04 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD.fork0 chunks_running
+2022-12-15 16:48:01 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_TILE_IMAGES.fork0 join_running
+2022-12-15 16:52:05 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD.fork0 chunks_running
+2022-12-15 16:52:20 [jobmngr] Need 9 threads to start the next job (7 threads available). Waiting for jobs to complete.
+2022-12-15 16:52:20 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_TILE_IMAGES
+2022-12-15 16:58:05 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD.fork0 chunks_running
+2022-12-15 17:04:06 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD.fork0 chunks_running
+2022-12-15 17:07:01 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD
+2022-12-15 17:07:01 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD.fork0.join
+2022-12-15 17:07:04 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.CALCULATE_FLUORESCENCE_INTENSITY.fork0 join_running
+2022-12-15 17:07:18 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_IMAGING_CS.CALCULATE_FLUORESCENCE_INTENSITY
+2022-12-15 17:07:19 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MAKE_SHARD
+2022-12-15 17:07:19 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.split
+2022-12-15 17:07:19 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk00.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk01.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk02.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk03.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk04.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk05.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk06.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk07.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk08.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk09.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk10.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk11.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk12.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk13.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk14.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk15.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk16.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk17.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk18.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk19.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk20.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk21.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk22.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk23.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk24.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk25.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk26.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk27.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk28.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk29.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk30.main
+2022-12-15 17:07:19 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.chnk31.main
+2022-12-15 17:07:47 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION
+2022-12-15 17:07:47 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION.fork0.join
+2022-12-15 17:07:47 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.BARCODE_CORRECTION
+2022-12-15 17:07:49 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.SET_ALIGNER_SUBSAMPLE_RATE
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.SET_ALIGNER_SUBSAMPLE_RATE.fork0.chnk0.main
+2022-12-15 17:07:49 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_BARCODE_INDEX
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_BARCODE_INDEX.fork0.chnk0.main
+2022-12-15 17:07:49 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER._SLFE_PARTIAL_FIRST_PASS.SUBSAMPLE_BARCODES
+2022-12-15 17:07:49 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER._SLFE_PARTIAL_FIRST_PASS.SUBSAMPLE_BARCODES
+2022-12-15 17:07:49 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER._SLFE_PARTIAL_FIRST_PASS.INITIAL_ALIGN_AND_COUNT
+2022-12-15 17:07:49 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER._SLFE_PARTIAL_FIRST_PASS.INITIAL_ALIGN_AND_COUNT
+2022-12-15 17:07:49 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.SET_ALIGNER_SUBSAMPLE_RATE
+2022-12-15 17:07:49 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_BARCODE_INDEX
+2022-12-15 17:07:49 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER._SLFE_PARTIAL_FIRST_PASS.SET_TARGETED_UMI_FILTER
+2022-12-15 17:07:49 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER._SLFE_PARTIAL_FIRST_PASS.SET_TARGETED_UMI_FILTER
+2022-12-15 17:07:49 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.split
+2022-12-15 17:07:49 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER._SLFE_PARTIAL_FIRST_PASS
+2022-12-15 17:07:49 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk00.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk01.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk02.main
+2022-12-15 17:07:49 [jobmngr] Need 4 threads to start the next job (1 threads available).  Waiting for jobs to complete.
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk03.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk04.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk05.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk06.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk07.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk08.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk09.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk10.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk11.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk12.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk13.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk14.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk15.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk16.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk17.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk18.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk19.main
+2022-12-15 17:07:49 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.chnk20.main
+2022-12-15 17:09:58 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:10:04 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:10:51 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:11:06 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:11:44 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:12:08 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:13:45 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (6/21 completed)
+2022-12-15 17:17:12 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:19:15 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (7/21 completed)
+2022-12-15 17:25:17 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (7/21 completed)
+2022-12-15 17:25:53 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:26:23 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:30:24 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (9/21 completed)
+2022-12-15 17:35:55 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (9/21 completed)
+2022-12-15 17:36:04 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:36:36 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:42:07 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (11/21 completed)
+2022-12-15 17:45:03 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:46:53 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:48:57 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (13/21 completed)
+2022-12-15 17:53:59 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:53:59 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (14/21 completed)
+2022-12-15 17:57:45 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 17:59:48 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (15/21 completed)
+2022-12-15 18:04:49 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (15/21 completed)
+2022-12-15 18:04:49 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:08:47 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:10:51 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (17/21 completed)
+2022-12-15 18:14:20 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:16:24 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (18/21 completed)
+2022-12-15 18:22:21 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (19/21 completed)
+2022-12-15 18:28:40 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0 chunks running (20/21 completed)
+2022-12-15 18:33:59 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT
+2022-12-15 18:33:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT.fork0.join
+2022-12-15 18:33:59 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.ALIGN_AND_COUNT
+2022-12-15 18:34:06 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_MATRIX_MARKET
+2022-12-15 18:34:06 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_MATRIX_MARKET.fork0.chnk0.main
+2022-12-15 18:34:06 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_BARCODE_SUMMARY
+2022-12-15 18:34:06 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_BARCODE_SUMMARY.fork0.chnk0.main
+2022-12-15 18:34:06 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.COLLATE_METRICS
+2022-12-15 18:34:06 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.COLLATE_METRICS.fork0.split
+2022-12-15 18:34:06 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_H5_MATRIX
+2022-12-15 18:34:06 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_H5_MATRIX.fork0.chnk0.main
+2022-12-15 18:34:06 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.COLLATE_METRICS
+2022-12-15 18:34:06 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.COLLATE_METRICS.fork0.chnk0.main
+2022-12-15 18:34:06 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.COLLATE_METRICS
+2022-12-15 18:34:06 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.COLLATE_METRICS.fork0.join
+2022-12-15 18:34:06 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.COLLATE_METRICS
+2022-12-15 18:34:06 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MERGE_METRICS
+2022-12-15 18:34:07 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MERGE_METRICS.fork0.chnk0.main
+2022-12-15 18:34:07 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.MERGE_METRICS
+2022-12-15 18:34:14 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_BARCODE_SUMMARY
+2022-12-15 18:34:16 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_H5_MATRIX
+2022-12-15 18:34:16 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.DISABLE_STAGES
+2022-12-15 18:34:16 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.DISABLE_STAGES.fork0.chnk0.main
+2022-12-15 18:34:16 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.FILTER_BARCODES
+2022-12-15 18:34:16 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.FILTER_BARCODES.fork0.split
+2022-12-15 18:34:17 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._MATRIX_COMPUTER.WRITE_MATRIX_MARKET
+2022-12-15 18:34:24 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.DISABLE_STAGES
+2022-12-15 18:34:24 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.MULTIPLEXING_METHOD
+2022-12-15 18:34:24 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.MULTIPLEXING_METHOD
+2022-12-15 18:34:24 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM
+2022-12-15 18:34:24 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.split
+2022-12-15 18:34:25 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk00.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk01.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk02.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk03.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk04.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk05.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk06.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk07.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk08.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk09.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk10.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk11.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk12.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk13.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk14.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk15.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk16.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk17.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk18.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk19.main
+2022-12-15 18:34:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.chnk20.main
+2022-12-15 18:34:46 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:34:46 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.FILTER_BARCODES
+2022-12-15 18:34:46 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.FILTER_BARCODES.fork0.chnk0.main
+2022-12-15 18:35:19 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:35:37 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:35:44 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:36:07 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:36:53 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:36:58 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:37:13 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:37:33 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:38:21 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:38:23 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:38:40 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:38:57 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:39:48 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:39:48 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:39:48 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0 chunks running (13/21 completed)
+2022-12-15 18:40:05 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:40:22 [jobmngr] Need 2 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:41:12 [runtime] (update)          ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.FILTER_BARCODES.fork0 chunks_running
+2022-12-15 18:41:25 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.FILTER_BARCODES
+2022-12-15 18:41:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.FILTER_BARCODES.fork0.join
+2022-12-15 18:42:02 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.FILTER_BARCODES
+2022-12-15 18:42:04 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.INFER_GEM_WELL_THROUGHPUT
+2022-12-15 18:42:04 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.INFER_GEM_WELL_THROUGHPUT
+2022-12-15 18:42:04 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.WRITE_MOLECULE_INFO
+2022-12-15 18:42:04 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.WRITE_MOLECULE_INFO.fork0.split
+2022-12-15 18:42:04 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.ANALYZER_PREFLIGHT
+2022-12-15 18:42:04 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.ANALYZER_PREFLIGHT.fork0.chnk0.main
+2022-12-15 18:42:04 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.CALL_TAGS_MARGINAL
+2022-12-15 18:42:04 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.CALL_TAGS_MARGINAL
+2022-12-15 18:42:04 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.CALL_TAGS_RTL
+2022-12-15 18:42:04 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.CALL_TAGS_RTL
+2022-12-15 18:42:04 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT
+2022-12-15 18:42:04 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.split
+2022-12-15 18:42:04 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.WRITE_MOLECULE_INFO
+2022-12-15 18:42:04 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.WRITE_MOLECULE_INFO.fork0.join
+2022-12-15 18:42:10 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.ANALYZER_PREFLIGHT
+2022-12-15 18:42:10 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.PREPROCESS_MATRIX
+2022-12-15 18:42:10 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.PREPROCESS_MATRIX.fork0.split
+2022-12-15 18:42:21 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.WRITE_MOLECULE_INFO
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER.SUBSAMPLE_OFF_TARGET_READS
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER.SUBSAMPLE_OFF_TARGET_READS
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.CALL_TAGS_JIBES
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.CALL_TAGS_JIBES
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS
+2022-12-15 18:42:21 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS.fork0.split
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER.SUBSAMPLE_ON_TARGET_READS
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER.SUBSAMPLE_ON_TARGET_READS
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.DETERMINE_SAMPLE_ASSIGNMENTS
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.DETERMINE_SAMPLE_ASSIGNMENTS
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MULTI_WRITE_PER_SAMPLE_BAM
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MULTI_WRITE_PER_SAMPLE_BAM
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MULTI_COLLATE_PER_SAMPLE_METRICS
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MULTI_COLLATE_PER_SAMPLE_METRICS
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MULTI_WRITE_PER_SAMPLE_MOLECULE_INFO
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MULTI_WRITE_PER_SAMPLE_MOLECULE_INFO
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.COMPUTE_EXTRA_MULTIPLEXING_METRICS
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.COMPUTE_EXTRA_MULTIPLEXING_METRICS
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MULTI_WRITE_PER_SAMPLE_MATRICES
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MULTI_WRITE_PER_SAMPLE_MATRICES
+2022-12-15 18:42:21 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.MERGE_METRICS
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS.MERGE_METRICS
+2022-12-15 18:42:21 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._ASSIGN_TAGS
+2022-12-15 18:42:35 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.PREPROCESS_MATRIX
+2022-12-15 18:42:35 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.PREPROCESS_MATRIX.fork0.join
+2022-12-15 18:42:38 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS
+2022-12-15 18:42:38 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS.fork0.chnk0.main
+2022-12-15 18:42:38 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS.fork0.chnk1.main
+2022-12-15 18:42:38 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS.fork0.chnk2.main
+2022-12-15 18:42:38 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS.fork0.chnk3.main
+2022-12-15 18:42:52 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM
+2022-12-15 18:42:52 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM.fork0.join
+2022-12-15 18:42:52 [jobmngr] Need 4 threads to start the next job (3 threads available).  Waiting for jobs to complete.
+2022-12-15 18:42:52 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.PREPROCESS_MATRIX
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_BATCH_CORRECTION_PCA.PCA_PREP
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_BATCH_CORRECTION_PCA.PCA_PREP
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIGEN_ANALYZER.SUMMARIZE_ANTIBODY_ANALYSIS
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIGEN_ANALYZER.SUMMARIZE_ANTIBODY_ANALYSIS
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_MULTIGENOME_ANALYSIS
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_MULTIGENOME_ANALYSIS
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_BATCH_CORRECTION_PCA.RUN_PCA2
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_BATCH_CORRECTION_PCA.RUN_PCA2
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIBODY_ANALYZER.CALL_ANTIBODIES
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIBODY_ANALYZER.CALL_ANTIBODIES
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIBODY_ANALYZER.SUMMARIZE_ANTIBODY_ANALYSIS
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIBODY_ANALYZER.SUMMARIZE_ANTIBODY_ANALYSIS
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIGEN_ANALYZER.CALL_ANTIBODIES
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIGEN_ANALYZER.CALL_ANTIBODIES
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIBODY_ANALYZER
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_BATCH_CORRECTION_PCA.POST_PCA
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_BATCH_CORRECTION_PCA.POST_PCA
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_BATCH_CORRECTION_PCA
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.CORRECT_CHEMISTRY_BATCH
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.CORRECT_CHEMISTRY_BATCH
+2022-12-15 18:42:53 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER._ANTIGEN_ANALYZER
+2022-12-15 18:42:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_PCA
+2022-12-15 18:42:53 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_PCA.fork0.split
+2022-12-15 18:42:59 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk00.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk01.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk02.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk03.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk04.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk05.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk06.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk07.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk08.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk09.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk10.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk11.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk12.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk13.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk14.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk15.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk16.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk17.main
+2022-12-15 18:42:59 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.chnk18.main
+2022-12-15 18:43:00 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_PCA
+2022-12-15 18:43:00 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_PCA.fork0.chnk0.main
+2022-12-15 18:44:06 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS
+2022-12-15 18:44:06 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS.fork0.join
+2022-12-15 18:44:35 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.WRITE_POS_BAM
+2022-12-15 18:44:56 [jobmngr] Need 4 threads to start the next job (1 threads available). Waiting for jobs to complete.
+2022-12-15 18:44:57 [jobmngr] Need 4 threads to start the next job (2 threads available). Waiting for jobs to complete.
+2022-12-15 18:45:04 [jobmngr] Need 4 threads to start the next job (3 threads available). Waiting for jobs to complete.
+2022-12-15 18:45:11 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUBSAMPLE_READS
+2022-12-15 18:45:11 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUMMARIZE_BASIC_REPORTS
+2022-12-15 18:45:11 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUMMARIZE_BASIC_REPORTS.fork0.split
+2022-12-15 18:45:16 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT
+2022-12-15 18:45:17 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT.fork0.join
+2022-12-15 18:45:17 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUMMARIZE_BASIC_REPORTS
+2022-12-15 18:45:17 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUMMARIZE_BASIC_REPORTS.fork0.join
+2022-12-15 18:45:17 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_PCA
+2022-12-15 18:45:17 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_PCA.fork0.join
+2022-12-15 18:45:18 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_PCA
+2022-12-15 18:45:18 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS
+2022-12-15 18:45:18 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.split
+2022-12-15 18:45:18 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_GRAPH_CLUSTERING
+2022-12-15 18:45:18 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_GRAPH_CLUSTERING.fork0.split
+2022-12-15 18:45:18 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_TSNE
+2022-12-15 18:45:18 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_TSNE.fork0.split
+2022-12-15 18:45:18 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_UMAP
+2022-12-15 18:45:18 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_UMAP.fork0.split
+2022-12-15 18:45:18 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_TSNE
+2022-12-15 18:45:18 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_TSNE.fork0.chnk0.main
+2022-12-15 18:45:18 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_GRAPH_CLUSTERING
+2022-12-15 18:45:18 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_GRAPH_CLUSTERING.fork0.chnk0.main
+2022-12-15 18:45:18 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_UMAP
+2022-12-15 18:45:18 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_UMAP.fork0.chnk0.main
+2022-12-15 18:45:24 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.RUN_SPATIAL_ENRICHMENT
+2022-12-15 18:45:25 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_GRAPH_CLUSTERING
+2022-12-15 18:45:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_GRAPH_CLUSTERING.fork0.join
+2022-12-15 18:45:25 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_GRAPH_CLUSTERING
+2022-12-15 18:45:26 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER._CELLS_REPORTER.SUMMARIZE_BASIC_REPORTS
+2022-12-15 18:45:26 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MERGE_METRICS
+2022-12-15 18:45:26 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MERGE_METRICS.fork0.chnk0.main
+2022-12-15 18:45:26 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._BASIC_SPATIAL_RNA_COUNTER.MERGE_METRICS
+2022-12-15 18:45:26 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER.CALCULATE_TARGETED_METRICS
+2022-12-15 18:45:26 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER.CALCULATE_TARGETED_METRICS
+2022-12-15 18:45:26 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER.MERGE_METRICS
+2022-12-15 18:45:26 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER.MERGE_METRICS
+2022-12-15 18:45:26 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_TSNE
+2022-12-15 18:45:26 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_TSNE.fork0.join
+2022-12-15 18:45:26 [runtime] (disabled)        ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER._TARGETED_ANALYZER
+2022-12-15 18:45:26 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_TSNE
+2022-12-15 18:45:27 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk0.main
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk1.main
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk2.main
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk3.main
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk4.main
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk5.main
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk6.main
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk7.main
+2022-12-15 18:45:27 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.chnk8.main
+2022-12-15 18:45:39 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS
+2022-12-15 18:45:39 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS.fork0.join
+2022-12-15 18:45:42 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_KMEANS
+2022-12-15 18:45:42 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.COMBINE_CLUSTERING
+2022-12-15 18:45:42 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.COMBINE_CLUSTERING.fork0.chnk0.main
+2022-12-15 18:45:44 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.COMBINE_CLUSTERING
+2022-12-15 18:45:44 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.split
+2022-12-15 18:45:44 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.chnk0.main
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.chnk1.main
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.chnk2.main
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.chnk3.main
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.chnk4.main
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.chnk5.main
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.chnk6.main
+2022-12-15 18:45:44 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.chnk7.main
+2022-12-15 18:45:47 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_UMAP
+2022-12-15 18:45:47 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_UMAP.fork0.join
+2022-12-15 18:45:47 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_UMAP
+2022-12-15 18:46:24 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION
+2022-12-15 18:46:24 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION.fork0.join
+2022-12-15 18:46:25 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.RUN_DIFFERENTIAL_EXPRESSION
+2022-12-15 18:46:25 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.SUMMARIZE_ANALYSIS
+2022-12-15 18:46:25 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.SUMMARIZE_ANALYSIS.fork0.split
+2022-12-15 18:46:29 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.SUMMARIZE_ANALYSIS
+2022-12-15 18:46:30 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.SUMMARIZE_ANALYSIS.fork0.chnk0.main
+2022-12-15 18:46:32 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.SUMMARIZE_ANALYSIS
+2022-12-15 18:46:32 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.SUMMARIZE_ANALYSIS.fork0.join
+2022-12-15 18:46:34 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_RNA_ANALYZER.SUMMARIZE_ANALYSIS
+2022-12-15 18:46:35 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_REPORTER
+2022-12-15 18:46:35 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_REPORTER.fork0.chnk0.main
+2022-12-15 18:46:52 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.SPATIAL_RNA_COUNTER.SPATIAL_REPORTER
+2022-12-15 18:46:53 [runtime] (ready)           ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_PREPROCESS
+2022-12-15 18:46:53 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_PREPROCESS.fork0.split
+2022-12-15 18:46:55 [runtime] (split_complete)  ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_PREPROCESS
+2022-12-15 18:46:55 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_PREPROCESS.fork0.chnk0.main
+2022-12-15 18:47:29 [runtime] (chunks_complete) ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_PREPROCESS
+2022-12-15 18:47:29 [runtime] (run:local)       ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_PREPROCESS.fork0.join
+2022-12-15 18:47:36 [runtime] (join_complete)   ID.Br2039_D1.SPATIAL_RNA_COUNTER_CS.CLOUPE_PREPROCESS
+2022-12-15 18:49:18 [runtime] VDR killed 8642 files, 97 GB.
+
+Outputs:
+- Run summary HTML:                                          /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/web_summary.html
+- Outputs of spatial pipeline:
+    aligned_fiducials:              /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/spatial/aligned_fiducials.jpg
+    detected_tissue_image:          /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/spatial/detected_tissue_image.jpg
+    scalefactors_json:              /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/spatial/scalefactors_json.json
+    tissue_hires_image:             /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/spatial/tissue_hires_image.png
+    tissue_lowres_image:            /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/spatial/tissue_lowres_image.png
+    cytassist_image:                null
+    aligned_tissue_image:           null
+    tissue_positions:               /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/spatial/tissue_positions.csv
+    spatial_enrichment:             /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/spatial/spatial_enrichment.csv
+    barcode_fluorescence_intensity: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/spatial/barcode_fluorescence_intensity.csv
+- Run summary CSV:                                           /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/metrics_summary.csv
+- Correlation values between isotypes and Antibody features: null
+- BAM:                                                       /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/possorted_genome_bam.bam
+- BAM BAI index:                                             /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/possorted_genome_bam.bam.bai
+- BAM CSI index:                                             null
+- Filtered feature-barcode matrices MEX:                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/filtered_feature_bc_matrix
+- Filtered feature-barcode matrices HDF5:                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/filtered_feature_bc_matrix.h5
+- Unfiltered feature-barcode matrices MEX:                   /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/raw_feature_bc_matrix
+- Unfiltered feature-barcode matrices HDF5:                  /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/raw_feature_bc_matrix.h5
+- Secondary analysis output CSV:                             /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/analysis
+- Per-molecule read information:                             /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/molecule_info.h5
+- Loupe Browser file:                                        /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br2039_D1/outs/cloupe.cloupe
+- Feature Reference:                                         null
+- Target Panel file:                                         null
+- Probe Set file:                                            null
+
+2022-12-15 18:49:18 [perform] Serializing pipestance performance data.
+Waiting 6 seconds for UI to do final refresh.
+Pipestance completed successfully!
+
+2022-12-15 18:49:24 Shutting down.
+2022-12-15 18:49:24 [jobmngr] Highest memory usage observed: {
+  "rss": 33015762944,
+  "shared": 337301504,
+  "vmem": 146159300608,
+  "text": 201752576,
+  "stack": 146010333184,
+  "proc_count": 98
+}
