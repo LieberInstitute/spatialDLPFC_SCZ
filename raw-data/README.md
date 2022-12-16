@@ -17,6 +17,6 @@ ln -s /dcs04/lieber/lcolladotor/rawDataTDSC_LIBD001/raw-data/2022-12-13_SPag1206
 
 
 ## Br2039_D1 (Sample8)
-mkdir Br2039_D1
-ln -s /dcs04/lieber/lcolladotor/rawDataTDSC_LIBD001/raw-data/2022-12-13_SPag120622_2/8v-SHK_S2_L00* Br2039_D1/
+mkdir Br2378_D1
+ln -s /dcs04/lieber/lcolladotor/rawDataTDSC_LIBD001/raw-data/2022-12-13_SPag120622_2/8v-SHK_S2_L00* Br2378_D1/
 ```
