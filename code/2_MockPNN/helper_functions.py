@@ -82,6 +82,50 @@ def draw_contours(contours, normalised_img, color, thickness):
     return (x,y,w,h, area, contour_img)
 
 
+######### DAPI segmentation functions
+def morph_transform(image_clr):
+    shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
+    gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
+    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    # fig,ax = plt.subplots(figsize = (20,20))
+    # ax.imshow(image_clr)
+    # fig.show()
+    return shifted, thresh, gray
+
+
+
+def find_labels(threshold):
+    D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
+    localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
+    markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
+    labels = watershed(-D, markers, mask=threshold)
+    # print("{} unique segments found".format(len(np.unique(labels)) - 1))
+    return labels
+
+
+
+# extract the watershed algorithm labels
+def draw_rect_dapi(labels, gray, dapi): # add area
+    dpx, dpy, dpw, dph, area = [], [], [], [], []
+    for label in np.unique(labels):
+        if label == 0: # label marked 0 are background
+            continue
+        mask = np.zeros(gray.shape, dtype="uint8") # create masks that only have the detected labels as foreground and 0 as background
+        mask[labels == label] = 255
+        # detect contours in the mask and grab the largest one
+        cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # detect the watershed contours
+        cnts = imutils.grab_contours(cnts) # extract only the contours
+        c = max(cnts, key=cv2.contourArea) # get the area
+        x,y,w,h = cv2.boundingRect(c) # BB coordinates
+        area.append(cv2.contourArea(c))
+        dpx.append(x)
+        dpy.append(y)
+        dpw.append(w)
+        dph.append(h)
+        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,0,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+    return dpx, dpy, dpw, dph, area, ws_img_bb
+
+
 
 def draw_rect(df_manual_test, contour_img, color):
     for box in range(len(df_manual_test['x1'])):
