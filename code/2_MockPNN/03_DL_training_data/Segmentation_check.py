@@ -152,7 +152,7 @@ for cnt in contours1:
     # print(area)
     if area >= 1000:
         out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), -1) # eliminating all the big objects
-    elif area >= 100 and area < 2000:
+    elif 100 <= area < 2000: # size threshold
     # if area >= 100 and area <= 2000: # area >= 2000
         # print(x1,y1,w1,h1)
         wfx.append(x1)
