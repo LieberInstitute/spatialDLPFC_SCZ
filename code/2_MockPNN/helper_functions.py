@@ -122,11 +122,12 @@ def draw_rect_dapi(labels, gray, dapi): # add area
         c = max(cnts, key=cv2.contourArea) # get the area
         x,y,w,h = cv2.boundingRect(c) # BB coordinates
         area.append(cv2.contourArea(c))
-        dpx.append(x)
-        dpy.append(y)
-        dpw.append(w)
-        dph.append(h)
-        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,0,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+        if area <= 100:
+            dpx.append(x)
+            dpy.append(y)
+            dpw.append(w)
+            dph.append(h)
+            ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,0,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
 
@@ -202,11 +203,12 @@ def hist_plot(img):
 
 
 
+
+# plot histogram improved
 import pylab
 from pylab import xticks
-# plot histogram improved
-def histo(img,range):
-    n, bins, patches = plt.hist(im_wfa, 30, range = [0,0.02], facecolor='gray', align='mid')
+def histo(img,range = [0,1]):
+    n, bins, patches = plt.hist(img, 30, range = range, facecolor='gray', align='mid')
     pylab.rc("axes", linewidth=8.0)
     pylab.rc("lines", markeredgewidth=2.0)
     plt.xlabel('pix int', fontsize=14)
