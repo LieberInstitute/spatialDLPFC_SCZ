@@ -41,6 +41,8 @@ img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_S
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[7851,47718]_component_data_12.tif') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[7851,47718]_component_data_12.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 
+img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[7851,47718]_component_data_12.tif'
+
 # read the tile and the manual annotation csv
 img_wfa = Image.open(img_test)
 img_wfa.seek(3)
@@ -142,7 +144,7 @@ for cnt in contours1:
         wfw.append(w1)
         wfh.append(h1)
         pnn_area.append(area)
-        out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,255,0), 2) # change the color to black (0,0,0) if bb is not needed
+        out_img1 = cv2.rectangle(out_img_clr, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), 2) # change the color to black (0,0,0) if bb is not needed
         rect = cv2.minAreaRect(cnt)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
