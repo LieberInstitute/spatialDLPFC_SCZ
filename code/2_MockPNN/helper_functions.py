@@ -53,11 +53,14 @@ def read_norm(filepath, ch_num):
         return img_wfa
 
 
+
 # detect contours in the normalised_img
 def detect_contours(normalised_img):
     hierachy, img_threshold = cv2.threshold((np.array((normalised_img * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     return contours
+
+
 
 # draw the extracted contours onto the image
 def draw_contours(contours, normalised_img, color, thickness):
@@ -78,15 +81,20 @@ def draw_contours(contours, normalised_img, color, thickness):
             contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),-1) # change the color and thickness here if contours need to be visible
     return (x,y,w,h, area, contour_img)
 
+
+
 def draw_rect(df_manual_test, contour_img, color):
     for box in range(len(df_manual_test['x1'])):
         # print(box)
         rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), color, 2)
     # return contour_img
 
+
+
 def draw_single_rect(df_manual_test, contour_img):
     cv2.rectangle(contour_img, (df_manual_test['x1'], df_manual_test['y1']), (df_manual_test['x4'], df_manual_test['y4']), (255,211,155), 2)
     # return contour_img
+
 
 
 # populate a dataframe with the coordinates info
@@ -103,6 +111,8 @@ def create_df(x,y,w,h, area, img_test, label):
     img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'area']]
     return(img_info_df)
 
+
+
 def manual_annot(filepath):
     conv_factor = 2.0112375738 # the fiji annotations are measured in microns which need to be translated to pixels (1860/924.81)
     df_manual_test = pd.read_csv(filepath) # read the manual annotations csv into dataframe
@@ -118,6 +128,7 @@ def manual_annot(filepath):
     return df_manual_test
 
 
+
 # plot the segmented and original image
 def plot_img(original_img, segmented_img):
     fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
@@ -126,6 +137,8 @@ def plot_img(original_img, segmented_img):
     ax[1].imshow(segmented_img)
     ax[1].title.set_text('Segmented')
     fig.show()
+
+
 
 # plot histogram
 def hist_plot(img):
@@ -138,4 +151,21 @@ def hist_plot(img):
     plt.xlim([img.min(), img.max()])
     plt.plot(bin_edges[0:-1], histogram)
     plt.show()
+
+
+
+import pylab
+from pylab import xticks
+# plot histogram improved
+def histo(img,range):
+    n, bins, patches = plt.hist(im_wfa, 30, range = [0,0.02], facecolor='gray', align='mid')
+    pylab.rc("axes", linewidth=8.0)
+    pylab.rc("lines", markeredgewidth=2.0)
+    plt.xlabel('pix int', fontsize=14)
+    plt.ylabel('# of targets', fontsize=14)
+    pylab.xticks(fontsize=15, rotation = 'vertical')
+    pylab.yticks(fontsize=15)
+    plt.grid(True)
+    plt.show()
+
 
