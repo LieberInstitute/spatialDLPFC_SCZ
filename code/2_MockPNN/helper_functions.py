@@ -83,6 +83,10 @@ def draw_contours(contours, normalised_img, color, thickness):
 
 
 ######### DAPI segmentation functions
+from __future__ import print_function
+from skimage.feature import peak_local_max
+from skimage.segmentation import find_boundaries, watershed
+from scipy import ndimage
 def morph_transform(image_clr):
     shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
     gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
