@@ -81,6 +81,12 @@ ax[0].imshow(im_neun)
 ax[1].imshow(im_wfa)
 fig.show()
 
+# dapi segmentation (functions to be run first in the dapi segmentations code)
+dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
+shifted, thresh, gray = morph_transform(dapi_clr)
+labels = find_labels(thresh)
+dpx, dpy, dpw, dph, area, ws_img_bb = draw_rect_dapi(labels, gray, im_dapi)
+img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 
 # claudin segmentation
 claudin_clr = skimage.color.gray2rgb((np.array((claudin * 255), dtype = np.uint8))) # convert to color to draw colored bb
