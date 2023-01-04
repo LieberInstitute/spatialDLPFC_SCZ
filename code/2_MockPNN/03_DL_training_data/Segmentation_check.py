@@ -82,15 +82,17 @@ ax[1].imshow(im_wfa)
 fig.show()
 
 # dapi segmentation (functions to be run first in the dapi segmentations code)
-dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
+dapi_clr = skimage.color.gray2rgb((np.array((im_dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
 shifted, thresh, gray = morph_transform(dapi_clr)
 labels = find_labels(thresh)
-dpx, dpy, dpw, dph, area, ws_img_bb = draw_rect_dapi(labels, gray, im_dapi)
+dpx, dpy, dpw, dph, area, seg_dapi = draw_rect_dapi(labels, gray, dapi_clr)
 img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 
+plot_img(im_dapi, seg_dapi)
+
 # claudin segmentation
-claudin_clr = skimage.color.gray2rgb((np.array((claudin * 255), dtype = np.uint8))) # convert to color to draw colored bb
-hierachy, img_threshold = cv2.threshold((np.array((claudin * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
+claudin_clr = skimage.color.gray2rgb((np.array((im_cla * 255), dtype = np.uint8))) # convert to color to draw colored bb
+hierachy, img_threshold = cv2.threshold((np.array((im_cla * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
 contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 # cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR len(contours)
 clx, cly, clw, clh = [],[],[],[]
