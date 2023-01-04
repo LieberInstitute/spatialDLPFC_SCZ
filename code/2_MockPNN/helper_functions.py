@@ -87,6 +87,7 @@ from __future__ import print_function
 from skimage.feature import peak_local_max
 from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
+import imutils
 def morph_transform(image_clr):
     shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
     gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
@@ -121,13 +122,14 @@ def draw_rect_dapi(labels, gray, dapi): # add area
         cnts = imutils.grab_contours(cnts) # extract only the contours
         c = max(cnts, key=cv2.contourArea) # get the area
         x,y,w,h = cv2.boundingRect(c) # BB coordinates
-        area.append(cv2.contourArea(c))
-        if area <= 100:
+        area1 = cv2.contourArea(c)
+        if area1 <= 100:
             dpx.append(x)
             dpy.append(y)
             dpw.append(w)
             dph.append(h)
-            ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,0,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+            area.append(cv2.contourArea(c))
+            ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
 
