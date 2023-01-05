@@ -51,24 +51,6 @@ im_cla = read_norm(img_test, 1)
 im_neun = read_norm(img_test, 2)
 im_wfa = read_norm(img_test, 3)
 
-img_dapi = Image.open(img_test)
-img_dapi.seek(0)
-img_cla = Image.open(img_test)
-img_cla.seek(1)
-img_neun = Image.open(img_test)
-img_neun.seek(2)
-img_wfa = Image.open(img_test)
-img_wfa.seek(3)
-im_dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-im_cla = cv2.normalize(np.array(img_cla, dtype = 'float32'), np.zeros(np.array(img_cla, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-im_neun = cv2.normalize(np.array(img_neun, dtype = 'float32'), np.zeros(np.array(img_neun, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-im_wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-
-# preprocess
-im_cla[im_cla <= im_cla.mean()] = 0.0
-im_cla[im_cla >= im_cla.mean()] = 1.0
-dapi_clr = skimage.color.gray2rgb((np.array((im_dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
-
 
 ### works well and shows the plots but without decimal places on the x-axis
 n, bins, patches = plt.hist(im_wfa, 30, range = [0,0.02], facecolor='gray', align='mid')
@@ -92,52 +74,27 @@ shifted, thresh, gray = morph_transform(dapi_clr)
 labels = find_labels(thresh)
 dpx, dpy, dpw, dph, area, seg_dapi = draw_rect_dapi(labels, gray, dapi_clr)
 img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
-
 plot_img(im_dapi, seg_dapi)
 
 # claudin segmentation
 cla_contours = detect_contours(im_cla)
 clx,cly,clw,clh, cl_area, seg_cla = draw_contours(cla_contours, im_cla, (255,0,0), 2)
 img_info_claudin = create_df(clx,cly,clw,clh, cl_area, img_test, 'claudin')
-
 plot_img(im_cla, seg_cla)
-
-
-claudin_clr = skimage.color.gray2rgb((np.array((im_cla * 255), dtype = np.uint8))) # convert to color to draw colored bb
-hierachy, img_threshold = cv2.threshold((np.array((im_cla * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
-contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-# cv2.drawContours(out_imgc, contours1, -1, (0, 255, 0), 2, cv2.LINE_AA) # color scheme: BGR len(contours)
-clx, cly, clw, clh = [],[],[],[]
-for cnt in contours:
-      x,y,w,h = cv2.boundingRect(cnt)
-      if(w*h >= 100):
-            clx.append(x)
-            cly.append(y)
-            clw.append(w)
-            clh.append(h)
-            out_img_bb = cv2.rectangle(claudin_clr, (x,y), (x+w+5, y+h+5), (0,0,255), 2)
-            rect = cv2.minAreaRect(cnt)
-            box = cv2.boxPoints(rect)
-            box = np.int0(box)
-            out_img_cnt = cv2.drawContours(out_img_bb,[box],0,(0,255,0),1)
-
-# Put the BB details in the csv
-col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'total_number_claudin']
-object_name = 'Blood_vessels' # name of the objects stored in the dataframe
-file_name = os.path.basename(img_test) # image file name
-
-dict = {col_names[0]: file_name, col_names[1]: object_name, col_names[2]: clx, col_names[3]: cly, col_names[4]: clw, col_names[5]: clh}
-img_info_claudin = pd.DataFrame(dict, columns = col_names)
-# compute the rest of the coordinates of the BB
-img_info_claudin['x2'] = img_info_claudin['x1'] + img_info_claudin['Width']
-img_info_claudin['y2'], img_info_claudin['x3'] = img_info_claudin['y1'], img_info_claudin['x1']
-img_info_claudin['y3'] = img_info_claudin['y1'] + img_info_claudin['Height']
-img_info_claudin['x4'], img_info_claudin['y4'] = img_info_claudin['x2'], img_info_claudin['y3']
-img_info_claudin = img_info_claudin[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height']]
 
 
 # segment pnns and get their coordinates in a df
 # claudin + wfa segmentation
+cla_wfa_contour = detect_contours(im_cla)
+clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(cla_wfa_contour, im_wfa, (0,0,0), -1)
+plot_img(seg_cla, seg_cla_wfa)
+out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
+# out_img255 = np.array(seg_cla_wfa * 255, dtype = np.uint8)
+wfa_contours = detect_contours(out_img_gry)
+wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(wfa_contours, out_img_gry, (0,0,255), 2)
+plot_img(im_wfa, seg_wfa)
+img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
+
 wfa_clr = skimage.color.gray2rgb(im_wfa)
 claudin_clr = skimage.color.gray2rgb((np.array((claudin * 255), dtype = np.uint8))) # convert to color to draw colored bb
 hierachy, img_threshold = cv2.threshold(np.array(claudin * 255, dtype = np.uint8), 10, 255, cv2.THRESH_BINARY)
