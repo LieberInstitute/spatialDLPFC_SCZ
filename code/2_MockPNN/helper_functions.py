@@ -63,23 +63,90 @@ def detect_contours(normalised_img):
 
 
 # draw the extracted contours onto the image
-def draw_contours(contours, normalised_img, color, thickness):
-    color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
-    x, y, w, h, area = [],[],[],[],[]
-    for cnt in contours:
-        x_, y_, w_, h_ = cv2.boundingRect(cnt)
-        if(w_*h_ >= 100):
+def draw_cont(contours, normalised_img, ch_num, color, thickness):
+    if ch_num == 0:
+        dpx, dpy, dpw, dph, area = [], [], [], [], []
+        for label in np.unique(labels):
+            if label == 0: # label marked 0 are background
+                continue
+            mask = np.zeros(gray.shape, dtype="uint8") # create masks that only have the detected labels as foreground and 0 as background
+            mask[labels == label] = 255
+            # detect contours in the mask and grab the largest one
+            cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # detect the watershed contours
+            cnts = imutils.grab_contours(cnts) # extract only the contours
+            c = max(cnts, key=cv2.contourArea) # get the area
+            x,y,w,h = cv2.boundingRect(c) # BB coordinates
+            area1 = cv2.contourArea(c)
+            if area1 <= 100:
+                dpx.append(x)
+                dpy.append(y)
+                dpw.append(w)
+                dph.append(h)
+                area.append(cv2.contourArea(c))
+                ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+        return dpx, dpy, dpw, dph, area, ws_img_bb
+    elif ch_num == 3:
+        color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
+        x, y, w, h, area = [],[],[],[],[]
+        for cnt in contours:
+            x_, y_, w_, h_ = cv2.boundingRect(cnt)
             area_ = cv2.contourArea(cnt)
-            # print(ax,ay,aw,ah)
-            x.append(x_)
-            y.append(y_)
-            w.append(w_)
-            h.append(h_)
-            area.append(area_)
-            bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
-            box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
-            contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
-    return (x,y,w,h, area, contour_img)
+            if area >= 1000:
+                contour_img = cv2.rectangle(color_img, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), -1) # eliminating all the big objects
+            elif 100 <= area < 2000: # size threshold
+                # print(ax,ay,aw,ah)
+                x.append(x_)
+                y.append(y_)
+                w.append(w_)
+                h.append(h_)
+                area.append(area_)
+                bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
+                box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
+                contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
+        return (x,y,w,h, area, contour_img)
+    else:
+        color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
+        x, y, w, h, area = [],[],[],[],[]
+        for cnt in contours:
+            x_, y_, w_, h_ = cv2.boundingRect(cnt)
+            area_ = cv2.contourArea(cnt)
+            if area_ >= 100:
+                # area_ = cv2.contourArea(cnt)
+                # print(ax,ay,aw,ah)
+                x.append(x_)
+                y.append(y_)
+                w.append(w_)
+                h.append(h_)
+                area.append(area_)
+                bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
+                box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
+                contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
+        return (x,y,w,h, area, contour_img)
+
+
+
+
+
+
+
+
+# def draw_contours(contours, normalised_img, color, thickness):
+#     color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
+#     x, y, w, h, area = [],[],[],[],[]
+#     for cnt in contours:
+#         x_, y_, w_, h_ = cv2.boundingRect(cnt)
+#         if(w_*h_ >= 100):
+#             area_ = cv2.contourArea(cnt)
+#             # print(ax,ay,aw,ah)
+#             x.append(x_)
+#             y.append(y_)
+#             w.append(w_)
+#             h.append(h_)
+#             area.append(area_)
+#             bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
+#             box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
+#             contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
+#     return (x,y,w,h, area, contour_img)
 
 
 ######### DAPI segmentation functions
@@ -110,7 +177,7 @@ def find_labels(threshold):
 
 
 # extract the watershed algorithm labels
-def draw_rect_dapi(labels, gray, dapi): # add area
+def draw_rect_dapi(labels, gray, dapi):
     dpx, dpy, dpw, dph, area = [], [], [], [], []
     for label in np.unique(labels):
         if label == 0: # label marked 0 are background
