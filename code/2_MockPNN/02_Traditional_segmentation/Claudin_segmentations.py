@@ -111,3 +111,8 @@ img_info_claudin = img_info_claudin[['img_file_name', 'type_of_object_str', 'x1'
 # export the dataframe to csv
 img_info_claudin.to_csv("/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17_claudin.csv")
 
+###### segmentation using the helper_functions
+im_cla = read_norm(img_test, 1)
+cla_contours = detect_contours(im_cla)
+clx,cly,clw,clh, cl_area, contour_cla = draw_contours(cla_contours, im_cla, (255,0,0), 2)
+img_info_claudin = create_df(clx,cly,clw,clh, cl_area, img_test, 'claudin')
