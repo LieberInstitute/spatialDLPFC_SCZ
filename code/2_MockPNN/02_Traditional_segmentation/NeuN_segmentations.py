@@ -162,3 +162,10 @@ for img_name in os.listdir(img_dir):
         df_ml_neun.to_csv(path_or_buf = (csv_dst + img_name.split('.')[0] + '.csv')) # df to csv and save it in the csv_dst folder
         cv2.imwrite((img_dst + img_name.split('.')[0] + '.tif'), neun_segmented)
 
+
+
+###### using helper_functions for 1 image
+neun = read_norm(img_test, 2)
+neun_contours = detect_contours(neun)
+nx,ny,nw,nh,narea, seg_neun = draw_contours(neun_contours, neun, 2, (0,255,0), 2)
+img_info_neun = create_df(nx,ny,nw,nh, narea, img_test, 'NeuN')
