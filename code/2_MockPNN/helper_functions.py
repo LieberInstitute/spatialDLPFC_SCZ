@@ -63,8 +63,20 @@ def detect_contours(normalised_img):
 
 
 # draw the extracted contours onto the image
-def draw_contours(contours, normalised_img, ch_num, color, thickness):
+from __future__ import print_function
+from skimage.feature import peak_local_max
+from skimage.segmentation import find_boundaries, watershed
+from scipy import ndimage
+import imutils
+def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickness = None, dapi_clr = None):
     if ch_num == 0:
+        shifted = cv2.pyrMeanShiftFiltering(dapi_clr, 21, 51) #dapi_clr
+        gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
+        thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+        D = ndimage.distance_transform_edt(thresh) # Euclidean distance from binary to nearest 0-pixel
+        localMax = peak_local_max(D, indices=False, min_distance=5, labels=thresh) # find the local maxima for all the individual objects
+        markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
+        labels = watershed(-D, markers, mask=thresh)
         dpx, dpy, dpw, dph, area = [], [], [], [], []
         for label in np.unique(labels):
             if label == 0: # label marked 0 are background
@@ -83,7 +95,7 @@ def draw_contours(contours, normalised_img, ch_num, color, thickness):
                 dpw.append(w)
                 dph.append(h)
                 area.append(cv2.contourArea(c))
-                ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+                ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
         return dpx, dpy, dpw, dph, area, ws_img_bb
     elif ch_num == 3:
         color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
@@ -226,10 +238,10 @@ def create_df(x,y,w,h, area, img_test, label):
     img_info_df['y2'], img_info_df['x3'] = img_info_df['y1'], img_info_df['x1']
     img_info_df['y3'] = img_info_df['y1'] + img_info_df['Height']
     img_info_df['x4'], img_info_df['y4'] = img_info_df['x2'], img_info_df['y3']
-    img_info_df['xc'] = (img_info_df['x1'] + img_info_df['x4'])/2
-    img_info_df['yc'] = (img_info_df['y1'] + img_info_df['y4'])/2
-    img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'area']]
-    return(img_info_df)
+    img_info_df['xc'] = np.int0(np.ceil((img_info_df['x1'] + img_info_df['x4'])/2))
+    img_info_df['yc'] = np.int0(np.ceil((img_info_df['y1'] + img_info_df['y4'])/2))
+    img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area']]
+    return img_info_df
 
 
 
