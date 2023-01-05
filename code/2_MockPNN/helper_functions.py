@@ -63,7 +63,7 @@ def detect_contours(normalised_img):
 
 
 # draw the extracted contours onto the image
-def draw_cont(contours, normalised_img, ch_num, color, thickness):
+def draw_contours(contours, normalised_img, ch_num, color, thickness):
     if ch_num == 0:
         dpx, dpy, dpw, dph, area = [], [], [], [], []
         for label in np.unique(labels):
