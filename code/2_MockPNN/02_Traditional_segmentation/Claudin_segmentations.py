@@ -114,5 +114,5 @@ img_info_claudin.to_csv("/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/proce
 ###### segmentation using the helper_functions
 im_cla = read_norm(img_test, 1)
 cla_contours = detect_contours(im_cla)
-clx,cly,clw,clh, cl_area, contour_cla = draw_contours(cla_contours, im_cla, (255,0,0), 2)
+clx,cly,clw,clh, cl_area, contour_cla = draw_contours(cla_contours, im_cla, 1, (255,0,0), 2)
 img_info_claudin = create_df(clx,cly,clw,clh, cl_area, img_test, 'claudin')
