@@ -46,9 +46,28 @@ img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_
 ####### All for 1 image ######
 # segment all the channels and put the code here
 # open and normalise
-im_dapi = read_norm(img_test, 0)
+im_dapi, dapi_clr = read_norm(img_test, 0)
 im_cla = read_norm(img_test, 1)
 im_neun = read_norm(img_test, 2)
+im_wfa = read_norm(img_test, 3)
+
+img_dapi = Image.open(img_test)
+img_dapi.seek(0)
+img_cla = Image.open(img_test)
+img_cla.seek(1)
+img_neun = Image.open(img_test)
+img_neun.seek(2)
+img_wfa = Image.open(img_test)
+img_wfa.seek(3)
+im_dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+im_cla = cv2.normalize(np.array(img_cla, dtype = 'float32'), np.zeros(np.array(img_cla, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+im_neun = cv2.normalize(np.array(img_neun, dtype = 'float32'), np.zeros(np.array(img_neun, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+im_wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+
+# preprocess
+im_cla[im_cla <= im_cla.mean()] = 0.0
+im_cla[im_cla >= im_cla.mean()] = 1.0
+dapi_clr = skimage.color.gray2rgb((np.array((im_dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
 
 
 ### works well and shows the plots but without decimal places on the x-axis
@@ -69,7 +88,6 @@ ax[1].imshow(im_wfa)
 fig.show()
 
 # dapi segmentation (functions to be run first in the dapi segmentations code)
-dapi_clr = skimage.color.gray2rgb((np.array((im_dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
 shifted, thresh, gray = morph_transform(dapi_clr)
 labels = find_labels(thresh)
 dpx, dpy, dpw, dph, area, seg_dapi = draw_rect_dapi(labels, gray, dapi_clr)
@@ -78,6 +96,13 @@ img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 plot_img(im_dapi, seg_dapi)
 
 # claudin segmentation
+cla_contours = detect_contours(im_cla)
+clx,cly,clw,clh, cl_area, seg_cla = draw_contours(cla_contours, im_cla, (255,0,0), 2)
+img_info_claudin = create_df(clx,cly,clw,clh, cl_area, img_test, 'claudin')
+
+plot_img(im_cla, seg_cla)
+
+
 claudin_clr = skimage.color.gray2rgb((np.array((im_cla * 255), dtype = np.uint8))) # convert to color to draw colored bb
 hierachy, img_threshold = cv2.threshold((np.array((im_cla * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
 contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
