@@ -46,22 +46,9 @@ img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_
 ####### All for 1 image ######
 # segment all the channels and put the code here
 # open and normalise
-img_dapi = Image.open(img_test)
-img_dapi.seek(0)
-img_cla = Image.open(img_test)
-img_cla.seek(1)
-img_neun = Image.open(img_test)
-img_neun.seek(2)
-img_wfa = Image.open(img_test)
-img_wfa.seek(3)
-im_dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-im_cla = cv2.normalize(np.array(img_cla, dtype = 'float32'), np.zeros(np.array(img_cla, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-im_neun = cv2.normalize(np.array(img_neun, dtype = 'float32'), np.zeros(np.array(img_neun, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-im_wfa = cv2.normalize(np.array(img_wfa, dtype = 'float32'), np.zeros(np.array(img_wfa, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-
-# preprocess
-im_cla[im_cla <= im_cla.mean()] = 0.0
-im_cla[im_cla >= im_cla.mean()] = 1.0
+im_dapi = read_norm(img_test, 0)
+im_cla = read_norm(img_test, 1)
+im_neun = read_norm(img_test, 2)
 
 
 ### works well and shows the plots but without decimal places on the x-axis
