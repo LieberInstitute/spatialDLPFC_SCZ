@@ -226,6 +226,8 @@ def create_df(x,y,w,h, area, img_test, label):
     img_info_df['y2'], img_info_df['x3'] = img_info_df['y1'], img_info_df['x1']
     img_info_df['y3'] = img_info_df['y1'] + img_info_df['Height']
     img_info_df['x4'], img_info_df['y4'] = img_info_df['x2'], img_info_df['y3']
+    img_info_df['xc'] = (img_info_df['x1'] + img_info_df['x4'])/2
+    img_info_df['yc'] = (img_info_df['y1'] + img_info_df['y4'])/2
     img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'area']]
     return(img_info_df)
 
