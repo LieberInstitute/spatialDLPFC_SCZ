@@ -71,11 +71,11 @@ ax[1].imshow(im_wfa)
 fig.show()
 
 # dapi segmentation (functions to be run first in helper_functions)
-shifted, thresh, gray = morph_transform(dapi_clr)
-labels = find_labels(thresh)
-dpx, dpy, dpw, dph, area, seg_dapi = draw_rect_dapi(labels, gray, dapi_clr)
-# dpx, dpy, dpw, dph, area, seg_dapi = draw_contours(im_dapi, 0, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
-# img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
+# shifted, thresh, gray = morph_transform(dapi_clr)
+# labels = find_labels(thresh)
+# dpx, dpy, dpw, dph, area, seg_dapi = draw_rect_dapi(labels, gray, dapi_clr)
+dpx, dpy, dpw, dph, area, seg_dapi = draw_contours(im_dapi, 0, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
+img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 plot_img(im_dapi, seg_dapi)
 
 
