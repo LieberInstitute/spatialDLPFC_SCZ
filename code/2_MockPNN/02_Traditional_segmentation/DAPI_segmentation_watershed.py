@@ -66,7 +66,7 @@ def draw_rect_dapi(labels, gray, dapi): # add area
         dpy.append(y)
         dpw.append(w)
         dph.append(h)
-        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,0,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
 
