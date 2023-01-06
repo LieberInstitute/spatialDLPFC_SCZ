@@ -48,6 +48,8 @@ img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_S
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[6925,49106]_component_data_24.tif')
 img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17.tif'
+dst_csv_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Annotations/Claudin_annotations/'
+dst_img_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Images/Claudin_segmentations/'
 
 
 # Read and normalize the image
@@ -111,8 +113,21 @@ img_info_claudin = img_info_claudin[['img_file_name', 'type_of_object_str', 'x1'
 # export the dataframe to csv
 img_info_claudin.to_csv("/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[12864,50280]_component_data_17_claudin.csv")
 
-###### segmentation using the helper_functions
+###### segmentation using helper_functions for 1 image
 im_cla = read_norm(img_test, 1)
 cla_contours = detect_contours(im_cla)
-clx,cly,clw,clh, cl_area, contour_cla = draw_contours(cla_contours, im_cla, 1, (255,0,0), 2)
+clx,cly,clw,clh, cl_area, seg_cla = draw_contours(im_cla, 1, cla_contours , (255,0,0), 2)
 img_info_claudin = create_df(clx,cly,clw,clh, cl_area, img_test, 'claudin')
+
+
+#### segmentations for all images in the folder
+for img_name in os.listdir(img_dir):
+    if img_name.endswith('.tif'):
+          print(img_name.split('.')[0])
+          im_cla = read_norm(os.path.join(img_dir, img_name), 1)
+          cla_contours = detect_contours(im_cla)
+          clx,cly,clw,clh, cl_area, seg_cla = draw_contours(im_cla, 1, cla_contours , (255,0,0), 2)
+          img_info_claudin = create_df(clx,cly,clw,clh, cl_area, img_test, 'claudin')
+          img_info_claudin.to_csv(path_or_buf = (dst_csv_claudin + img_name.split('.')[0] + '.csv')) # df to csv and save it in the csv_dst folder
+          cv2.imwrite((dst_img_claudin + img_name.split('.')[0] + '.tif'), seg_cla)
+
