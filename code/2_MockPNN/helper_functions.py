@@ -115,14 +115,14 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
                 box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
                 contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
-        return (x,y,w,h, area, contour_img)
+        return x, y, w, h, area, contour_img
     else:
         color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
         x, y, w, h, area = [],[],[],[],[]
         for cnt in contours:
             x_, y_, w_, h_ = cv2.boundingRect(cnt)
             area_ = cv2.contourArea(cnt)
-            if area_ >= 100:
+            if area_ >= 10:
                 # area_ = cv2.contourArea(cnt)
                 # print(ax,ay,aw,ah)
                 x.append(x_)
@@ -133,7 +133,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
                 box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
                 contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
-        return (x,y,w,h, area, contour_img)
+        return x, y, w, h, area, contour_img
 
 
 
