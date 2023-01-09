@@ -283,8 +283,7 @@ def hist_plot(img):
     plt.show()
 
 
-# print the y value for a given range of x values: n where bins >= 1.7598 bins < 2.0
-# find values of x where y is (0.0 to 0.25) * 10pow6
+### figure out a condition to set for removing background noise
 
 # plot histogram improved
 import pylab
@@ -293,9 +292,10 @@ def histo(img,range = [0,1]):
     n, bins, patches = plt.hist(img.ravel(), 30, range = range, facecolor='gray', align='mid') # (y, x, _)
     order = np.argsort(n)[::-1]
     print(bins)
-    print("4 highest bins:", n[order][:10])
+    print(" highest bins:", n[order][:10])
     print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
-    # img[img <= ([ (bins[i+1])   for i in order[:1]])] = 0.0
+    print("the order to be used",[ (bins[i+1])   for i in order[9:10]])
+    img[img <= ([ (bins[i+1])   for i in order[9:10]])] = 0.0 #order[9:10] maybe?
     pylab.rc("axes", linewidth=8.0)
     pylab.rc("lines", markeredgewidth=2.0)
     xticks = [(bins[idx+1] + value)/2 for idx, value in enumerate(bins[:-1])]
