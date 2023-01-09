@@ -48,10 +48,7 @@ def read_norm(filepath, ch_num):
     else: # wfa
         img_arr = np.array(img, dtype = 'float32')
         histo(img_arr,range = [img_arr.min(),img_arr.max()])
-        # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(img_arr, cmap = plt.get_cmap(name = 'gray'))
-        # fig.show()
-        img_arr[img_arr < 1.7598] = 0.0
+        # img_arr[img_arr < 1.7598] = 0.0
         # img_arr[img_arr >= 0.6513] = 0.6513
         # img_arr[img_arr <= img_arr.mean()] = 0.0
         # img_arr[img_arr >= 1.0] = img_arr.max()
@@ -292,20 +289,27 @@ def hist_plot(img):
 # plot histogram improved
 import pylab
 from pylab import xticks
-def histo(img,range = [img.min(), img.max()]):
+def histo(img,range = [0,1]):
     n, bins, patches = plt.hist(img.ravel(), 30, range = range, facecolor='gray', align='mid') # (y, x, _)
-    print("bins", bins)
+    order = np.argsort(n)[::-1]
+    print(bins)
+    print("4 highest bins:", n[order][:10])
+    print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
+    # img[img <= ([ (bins[i+1])   for i in order[:1]])] = 0.0
     pylab.rc("axes", linewidth=8.0)
     pylab.rc("lines", markeredgewidth=2.0)
     xticks = [(bins[idx+1] + value)/2 for idx, value in enumerate(bins[:-1])]
-    print(xticks)
     xticks_labels = [ "{:.1f}\nto\n{:.1f}".format(value, bins[idx+1]) for idx, value in enumerate(bins[:-1])]
-    plt.xticks(xticks, labels = xticks_labels)
+    # plt.xticks(xticks, labels = xticks_labels)
     plt.xlabel('pix int', fontsize=14)
     plt.ylabel('# of targets', fontsize=14)
-    # pylab.xticks(fontsize=15, rotation = 'vertical')
+    pylab.xticks(fontsize=15, rotation = 'vertical')
     pylab.yticks(fontsize=15)
-    plt.grid(True)
-    plt.show()
+    # for idx, value in enumerate(bins[:-1]):
+    #     # print(idx, value)
+    #     if 0.0 < n[idx] <= 0.25*pow(10, 4):
+    #         print("in loop",idx, value)
+    # plt.grid(True)
+    # plt.show()
 
 
