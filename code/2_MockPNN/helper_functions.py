@@ -47,8 +47,14 @@ def read_norm(filepath, ch_num):
         return img_neun
     else: # wfa
         img_arr = np.array(img, dtype = 'float32')
-        img_arr[img_arr <= img_arr.mean()] = 0.0
-        img_arr[img_arr >= 1.0] = img_arr.max()
+        histo(img_arr,range = [img_arr.min(),img_arr.max()])
+        # fig,ax = plt.subplots(figsize = (20,20))
+        # ax.imshow(img_arr, cmap = plt.get_cmap(name = 'gray'))
+        # fig.show()
+        img_arr[img_arr < 1.7598] = 0.0
+        # img_arr[img_arr >= 0.6513] = 0.6513
+        # img_arr[img_arr <= img_arr.mean()] = 0.0
+        # img_arr[img_arr >= 1.0] = img_arr.max()
         img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         return img_wfa
 
@@ -270,7 +276,7 @@ def plot_img(original_img, segmented_img):
 # plot histogram
 def hist_plot(img):
     range = (img.min(), img.max())
-    histogram, bin_edges = np.histogram(img, bins=256, range=range)
+    histogram, bin_edges = np.histogram(img.ravel(), bins=256, range=range)
     plt.figure()
     plt.title("Grayscale Histogram")
     plt.xlabel("grayscale value")
@@ -286,7 +292,7 @@ def hist_plot(img):
 import pylab
 from pylab import xticks
 def histo(img,range = [0,1]):
-    n, bins, patches = plt.hist(img, 30, range = range, facecolor='gray', align='mid')
+    n, bins, patches = plt.hist(img.ravel(), 30, range = range, facecolor='gray', align='mid')
     pylab.rc("axes", linewidth=8.0)
     pylab.rc("lines", markeredgewidth=2.0)
     plt.xlabel('pix int', fontsize=14)
