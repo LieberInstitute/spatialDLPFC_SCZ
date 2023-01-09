@@ -103,9 +103,9 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
         for cnt in contours:
             x_, y_, w_, h_ = cv2.boundingRect(cnt)
             area_ = cv2.contourArea(cnt)
-            if area >= 1000:
+            if area_ >= 1000:
                 contour_img = cv2.rectangle(color_img, (x1-10,y1-10), (x1+w1+10, y1+h1+10), (0,0,0), -1) # eliminating all the big objects
-            elif 100 <= area < 2000: # size threshold
+            elif 100 <= area_ < 2000: # size threshold
                 # print(ax,ay,aw,ah)
                 x.append(x_)
                 y.append(y_)
@@ -134,11 +134,6 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
                 contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
         return x, y, w, h, area, contour_img
-
-
-
-
-
 
 
 
