@@ -56,7 +56,7 @@ def read_norm(filepath, ch_num):
         # img_arr[img_arr <= img_arr.mean()] = 0.0
         # img_arr[img_arr >= 1.0] = img_arr.max()
         img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        return img_wfa
+        return img_arr, img_wfa
 
 
 
@@ -286,18 +286,24 @@ def hist_plot(img):
     plt.show()
 
 
-
+# print the y value for a given range of x values: n where bins >= 1.7598 bins < 2.0
+# find values of x where y is (0.0 to 0.25) * 10pow6
 
 # plot histogram improved
 import pylab
 from pylab import xticks
-def histo(img,range = [0,1]):
-    n, bins, patches = plt.hist(img.ravel(), 30, range = range, facecolor='gray', align='mid')
+def histo(img,range = [img.min(), img.max()]):
+    n, bins, patches = plt.hist(img.ravel(), 30, range = range, facecolor='gray', align='mid') # (y, x, _)
+    print("bins", bins)
     pylab.rc("axes", linewidth=8.0)
     pylab.rc("lines", markeredgewidth=2.0)
+    xticks = [(bins[idx+1] + value)/2 for idx, value in enumerate(bins[:-1])]
+    print(xticks)
+    xticks_labels = [ "{:.1f}\nto\n{:.1f}".format(value, bins[idx+1]) for idx, value in enumerate(bins[:-1])]
+    plt.xticks(xticks, labels = xticks_labels)
     plt.xlabel('pix int', fontsize=14)
     plt.ylabel('# of targets', fontsize=14)
-    pylab.xticks(fontsize=15, rotation = 'vertical')
+    # pylab.xticks(fontsize=15, rotation = 'vertical')
     pylab.yticks(fontsize=15)
     plt.grid(True)
     plt.show()
