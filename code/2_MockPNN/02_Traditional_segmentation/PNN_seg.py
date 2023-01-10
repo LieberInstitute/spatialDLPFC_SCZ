@@ -54,25 +54,31 @@ plot_img(im_cla, im_wfa)
 # segment PNNs using Claudin-5 for a single image
 cla_wfa_contour = detect_contours(im_cla)
 clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour, (0,0,0), -1)
-plot_img(im_cla, seg_cla_wfa)
+# plot_img(im_cla, seg_cla_wfa)
 out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
 wfa_contours = detect_contours(out_img_gry)
 wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
-plot_img(im_wfa, seg_wfa)
+# plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
 
 
 # segment PNNs from all images in a directory
+dst_wfa_img = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/ML_annotations/Images/WFA_segmentations/'
 for img_name in os.listdir(img_dir):
     if img_name.endswith('.tif'):
-          print(img_name.split('.')[0])
+          # print(img_name.split('.')[0])
           im_cla = read_norm(os.path.join(img_dir, img_name), 1)
           im_wfa = read_norm(os.path.join(img_dir, img_name), 3)
-          print("read cla and wfa")
+          # print("read cla and wfa")
           cla_wfa_contour = detect_contours(im_cla)
           clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour, (0,0,0), -1)
+          # print("claudins segmented")
           out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
           wfa_contours = detect_contours(out_img_gry)
           wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
+          # print("PNNs segmented")
+          # cv2.imwrite((dst_wfa_img + img_name.split('.')[0] + '.tif'), seg_wfa)
           img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
+          print("img name:",img_name.split('.')[0],"PNNs:",len(img_info_wfa))
+
 
