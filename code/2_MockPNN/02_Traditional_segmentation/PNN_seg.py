@@ -43,15 +43,29 @@ csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_M
 img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif'
 
 
+# read and normalize the images
 im_cla = read_norm(img_test, 1)
+im_wfa = read_norm(img_test, 3)
+plot_img(im_cla, im_wfa)
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(im_wfa)
+# fig.show()
 
-# segment pnns and get their coordinates in a df
-# claudin + wfa segmentation
+# segment PNNs using Claudin-5 for a single image
 cla_wfa_contour = detect_contours(im_cla)
-clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(cla_wfa_contour, im_wfa, (0,0,0), -1)
-plot_img(seg_cla, seg_cla_wfa)
+clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour, (0,0,0), -1)
+plot_img(im_cla, seg_cla_wfa)
 out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
 wfa_contours = detect_contours(out_img_gry)
-wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(wfa_contours, out_img_gry, (0,0,255), 2)
+wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
 plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
+
+
+# segment PNNs from all images in a directory
+for img_name in os.listdir(img_dir):
+    if img_name.endswith('.tif'):
+          print(img_name.split('.')[0])
+          im_cla = read_norm(os.path.join(img_dir, img_name), 1)
+          im_wfa = read_norm(os.path.join(img_dir, img_name), 3)
+          print("read cla and wfa")
