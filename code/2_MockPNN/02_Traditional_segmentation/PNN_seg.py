@@ -69,3 +69,10 @@ for img_name in os.listdir(img_dir):
           im_cla = read_norm(os.path.join(img_dir, img_name), 1)
           im_wfa = read_norm(os.path.join(img_dir, img_name), 3)
           print("read cla and wfa")
+          cla_wfa_contour = detect_contours(im_cla)
+          clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour, (0,0,0), -1)
+          out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
+          wfa_contours = detect_contours(out_img_gry)
+          wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
+          img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
+
