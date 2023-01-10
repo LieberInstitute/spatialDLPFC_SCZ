@@ -53,7 +53,7 @@ def read_norm(filepath, ch_num):
         # img_arr[img_arr <= img_arr.mean()] = 0.0
         # img_arr[img_arr >= 1.0] = img_arr.max()
         img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        return img_arr, img_wfa
+        return img_wfa
 
 
 
@@ -262,9 +262,9 @@ def manual_annot(filepath):
 # plot the segmented and original image
 def plot_img(original_img, segmented_img):
     fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
-    ax[0].imshow(original_img)
+    ax[0].imshow(original_img, cmap='gray')
     ax[0].title.set_text('Original')
-    ax[1].imshow(segmented_img)
+    ax[1].imshow(segmented_img, cmap='gray')
     ax[1].title.set_text('Segmented')
     fig.show()
 
@@ -291,10 +291,9 @@ from pylab import xticks
 def histo(img,range = [0,1]):
     n, bins, patches = plt.hist(img.ravel(), 30, range = range, facecolor='gray', align='mid') # (y, x, _)
     order = np.argsort(n)[::-1]
-    print(bins)
-    print(" highest bins:", n[order][:10])
-    print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
-    print("the order to be used",[ (bins[i+1])   for i in order[9:10]])
+    # print(" highest bins:", n[order][:10])
+    # print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
+    # print("the order to be used",[ (bins[i+1])   for i in order[8:9]])
     img[img <= ([ (bins[i+1])   for i in order[9:10]])] = 0.0 #order[9:10] maybe?
     pylab.rc("axes", linewidth=8.0)
     pylab.rc("lines", markeredgewidth=2.0)
