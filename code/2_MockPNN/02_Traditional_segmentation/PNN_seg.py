@@ -46,7 +46,7 @@ img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_
 # read and normalize the images
 im_cla = read_norm(img_test, 1)
 im_wfa = read_norm(img_test, 3)
-plot_img(im_cla, im_wfa)
+# plot_img(im_cla, im_wfa)
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(im_wfa)
 # fig.show()
@@ -60,6 +60,31 @@ wfa_contours = detect_contours(out_img_gry)
 wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
 # plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
+
+df_manual_test = img_info_wfa
+contour_img = seg_wfa
+rect = cv2.rectangle(contour_img, (df_manual_test['x1'][1], df_manual_test['y1'][1]), (df_manual_test['x4'][1], df_manual_test['y4'][1]), (255,255,255), -1)
+cv2.imwrite('/users/ukaipa/PNN/Hist_PNN/fig12.tif', contour_img)
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(contour_img, cmap = 'gray')
+fig.show()
+
+
+
+for box in range(len(df_manual_test['x1'])):
+    print(box) # figure put why the box loop isnt working and why the boxes are all being drawn at once
+    rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,255,255), -1)
+    cv2.imwrite('/users/ukaipa/PNN/Hist_PNN/fig1' + '%d.tif' %box, contour_img)
+    fig,ax = plt.subplots(figsize = (20,20))
+    ax.imshow(contour_img, cmap = 'gray')
+    fig.show()
+    gray_seg_wfa = skimage.color.rgb2gray(contour_img)
+    locs = np.argwhere(gray_seg_wfa == 1.0)
+    print(locs.shape, locs.mean())
+
+
+
 
 
 # segment PNNs from all images in a directory
