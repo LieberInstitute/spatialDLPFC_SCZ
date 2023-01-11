@@ -257,17 +257,17 @@ def all_pix_pnns(img_info_df, contour_img):
         # gray_seg_wfa_copy = skimage.color.rgb2gray(contour_img_copy) # convert to gray for pix comparesion
         gray_seg_wfa = skimage.color.rgb2gray(contour_img)
         plot_img(gray_image, gray_seg_wfa)
-        locs = np.argwhere(gray_image == 1.0)
+        locs = np.argwhere(gray_image == 255)
         print(locs.shape, locs.mean())
         for i in range(locs.shape[0]):
             for j in range(locs.shape[1] -1):
                 if gray_image[locs[i,j],locs[i,j+1]] == 255: # gray image has white filled boxes
-                    print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
-                    # pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
-        # print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
-    return gray_image, contour_img
+                    # print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
+                    pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
+        print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
+    return locs, gray_image, contour_img
 
-gray_image, wfa = all_pix_pnns(img_info_wfa, seg_wfa)
+locs, gray_image, wfa = all_pix_pnns(img_info_wfa, seg_wfa)
 
 # rect_img = draw_rect(img_info_wfa, seg_wfa)
 # gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
