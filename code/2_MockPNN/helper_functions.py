@@ -248,30 +248,32 @@ pix_list = []
 def all_pix_pnns(img_info_df, contour_img):
     for box in range(len(img_info_df['x1'])):
         print(box)
-        contour_img_copy = contour_img # copy so the original pix intensities are retained
-        rect = cv2.rectangle(contour_img_copy, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
+        # contour_img_copy = contour_img
+        gray_image = np.full((1396,1860), 0, dtype=np.uint8) # new blank image so the original pix intensities are retained
+        rect = cv2.rectangle(gray_image, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
         # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(contour_img, cmap = 'gray')
+        # ax.imshow(gray_image, cmap = 'gray')
         # fig.show()
-        gray_seg_wfa_copy = skimage.color.rgb2gray(contour_img_copy) # convert to gray for pix comparision
+        # gray_seg_wfa_copy = skimage.color.rgb2gray(contour_img_copy) # convert to gray for pix comparesion
         gray_seg_wfa = skimage.color.rgb2gray(contour_img)
-        locs = np.argwhere(gray_seg_wfa_copy == 1.0)
+        plot_img(gray_image, gray_seg_wfa)
+        locs = np.argwhere(gray_image == 1.0)
         print(locs.shape, locs.mean())
         for i in range(locs.shape[0]):
             for j in range(locs.shape[1] -1):
-                if gray_seg_wfa_copy[locs[i,j],locs[i,j+1]] != 1.0: # the copy has white filled boxes
+                if gray_image[locs[i,j],locs[i,j+1]] == 255: # gray image has white filled boxes
                     print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
-                    pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
-                    print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
-    return contour_img, img_info_df
+                    # pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
+        # print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
+    return gray_image, contour_img
 
-
+gray_image, wfa = all_pix_pnns(img_info_wfa, seg_wfa)
 
 # rect_img = draw_rect(img_info_wfa, seg_wfa)
 # gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(gray_seg_wfa, cmap = 'gray')
-# fig.show()
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(gray_image, cmap = 'gray')
+fig.show()
 # locs = np.argwhere(gray_seg_wfa == 1.0)
 # pixels = gray_seg_wfa[locs]
 # print(np.mean(pixels), len(locs[0]))
