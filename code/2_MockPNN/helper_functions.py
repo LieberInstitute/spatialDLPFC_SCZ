@@ -246,8 +246,28 @@ def create_df(x,y,w,h, area, img_test, label):
 from collections import Counter
 def draw_rect(df_manual_test, contour_img):
     for box in range(len(df_manual_test['x1'])):
-        print(box)
+        print(box) # figure put why the box loop isnt working and why the boxes are all being drawn at once
         rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,255,255), -1)
+        fig,ax = plt.subplots(figsize = (20,20))
+        ax.imshow(contour_img, cmap = 'gray')
+        fig.show()
+        gray_seg_wfa = skimage.color.rgb2gray(contour_img)
+        locs = np.argwhere(gray_seg_wfa == 1.0)
+        print(locs.shape, locs.mean())
+    return contour_img
+
+# draw a white rectangle filled using the coordinates from the csv
+from collections import Counter
+def draw_rect(df_manual_test, contour_img):
+    for box in range(len(df_manual_test['x1'])):
+        print(box) # figure put why the box loop isnt working and why the boxes are all being drawn at once
+        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,255,255), -1)
+        fig,ax = plt.subplots(figsize = (20,20))
+        ax.imshow(contour_img, cmap = 'gray')
+        fig.show()
+        gray_seg_wfa = skimage.color.rgb2gray(contour_img)
+        locs = np.argwhere(gray_seg_wfa == 1.0)
+        print(locs.shape, locs.mean())
     return contour_img
 
 rect_img = draw_rect(img_info_wfa, seg_wfa)
@@ -255,11 +275,9 @@ gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(gray_seg_wfa, cmap = 'gray')
 # fig.show()
-locs = np.where(rect_img == 1.0)
+locs = np.argwhere(gray_seg_wfa == 1.0)
 pixels = gray_seg_wfa[locs]
 print(np.mean(pixels), len(locs[0]))
-
-
 
 
 def manual_annot(filepath):
