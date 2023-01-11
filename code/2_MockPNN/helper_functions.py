@@ -254,21 +254,13 @@ def draw_rect(df_manual_test, contour_img):
         gray_seg_wfa = skimage.color.rgb2gray(contour_img)
         locs = np.argwhere(gray_seg_wfa == 1.0)
         print(locs.shape, locs.mean())
+        for i in range(locs.shape[0]):
+            for j in range(locs.shape[1] -1):
+                if gray_seg_wfa[locs[i,j],locs[i,j+1]] != 1.0:
+                    print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
     return contour_img
 
-# draw a white rectangle filled using the coordinates from the csv
-from collections import Counter
-def draw_rect(df_manual_test, contour_img):
-    for box in range(len(df_manual_test['x1'])):
-        print(box) # figure put why the box loop isnt working and why the boxes are all being drawn at once
-        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,255,255), -1)
-        fig,ax = plt.subplots(figsize = (20,20))
-        ax.imshow(contour_img, cmap = 'gray')
-        fig.show()
-        gray_seg_wfa = skimage.color.rgb2gray(contour_img)
-        locs = np.argwhere(gray_seg_wfa == 1.0)
-        print(locs.shape, locs.mean())
-    return contour_img
+
 
 rect_img = draw_rect(img_info_wfa, seg_wfa)
 gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
