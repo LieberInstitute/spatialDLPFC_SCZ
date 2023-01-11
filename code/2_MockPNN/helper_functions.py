@@ -253,14 +253,15 @@ def all_pix_pnns(img_info_df, contour_img):
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(contour_img, cmap = 'gray')
         # fig.show()
-        gray_seg_wfa_copy = skimage.color.rgb2gray(contour_img_copy)
+        gray_seg_wfa_copy = skimage.color.rgb2gray(contour_img_copy) # convert to gray for pix comparision
+        gray_seg_wfa = skimage.color.rgb2gray(contour_img)
         locs = np.argwhere(gray_seg_wfa_copy == 1.0)
         print(locs.shape, locs.mean())
         for i in range(locs.shape[0]):
             for j in range(locs.shape[1] -1):
-                if gray_seg_wfa[locs[i,j],locs[i,j+1]] != 1.0:
+                if gray_seg_wfa_copy[locs[i,j],locs[i,j+1]] != 1.0: # the copy has white filled boxes
                     print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
-                    pix_list.append()
+                    pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
 
     return contour_img, img_info_df
 
