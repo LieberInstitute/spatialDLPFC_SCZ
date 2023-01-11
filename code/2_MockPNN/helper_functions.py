@@ -262,19 +262,19 @@ def all_pix_pnns(img_info_df, contour_img):
                 if gray_seg_wfa_copy[locs[i,j],locs[i,j+1]] != 1.0: # the copy has white filled boxes
                     print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
                     pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
-
+                    print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
     return contour_img, img_info_df
 
 
 
-rect_img = draw_rect(img_info_wfa, seg_wfa)
-gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
+# rect_img = draw_rect(img_info_wfa, seg_wfa)
+# gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(gray_seg_wfa, cmap = 'gray')
 # fig.show()
-locs = np.argwhere(gray_seg_wfa == 1.0)
-pixels = gray_seg_wfa[locs]
-print(np.mean(pixels), len(locs[0]))
+# locs = np.argwhere(gray_seg_wfa == 1.0)
+# pixels = gray_seg_wfa[locs]
+# print(np.mean(pixels), len(locs[0]))
 
 
 def manual_annot(filepath):
