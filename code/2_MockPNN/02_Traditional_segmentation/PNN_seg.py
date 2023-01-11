@@ -82,10 +82,10 @@ for box in range(len(df_manual_test['x1'])):
     gray_seg_wfa = skimage.color.rgb2gray(contour_img)
     locs = np.argwhere(gray_seg_wfa == 1.0)
     print(locs, locs.shape, locs.mean())
-    for i in locs.shape[0]:
-        for j in locs.shape[1]:
-            print(locs[i][j])
-            # print(gray_seg_wfa[i][j])
+    for i in range(locs.shape[0]):
+        for j in range(locs.shape[1] -1):
+            if gray_seg_wfa[locs[i,j],locs[i,j+1]] != 1.0:
+                print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
 
 
 
