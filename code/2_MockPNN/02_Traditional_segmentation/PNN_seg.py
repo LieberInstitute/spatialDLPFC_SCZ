@@ -40,15 +40,16 @@ img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_M
 csv_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif')
 csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv'
-img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif'
+img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[10087,53057]_component_data_23.tif'
+#           '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif'
 
 
 # read and normalize the images
 im_cla = read_norm(img_test, 1)
-im_wfa = read_norm(img_test, 3)
+orig_wfa, im_wfa = read_norm(img_test, 3) #, im_wfa, img_arr_adj
 # plot_img(im_cla, im_wfa)
 # fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(im_wfa)
+# ax.imshow(im_wfa, cmap = 'gray')
 # fig.show()
 
 # segment PNNs using Claudin-5 for a single image
@@ -58,10 +59,16 @@ clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour
 out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
 wfa_contours = detect_contours(out_img_gry)
 wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
-plot_img(im_wfa, seg_wfa)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(seg_wfa)
+fig.show()
+
+# plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
 
-wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa) # to get all the pixels and their mean pixel intensities
+
+# out_img_gry = skimage.color.rgb2gray(im_wfa)
+wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa, orig_wfa) # to get all the pixels and their mean pixel intensities
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(contour_img, cmap = 'gray')
 # fig.show()
