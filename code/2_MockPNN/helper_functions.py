@@ -118,6 +118,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
                 box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
                 contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
+                cv2.putText(contour_img, '1', (x_ +50,y_+ 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (125, 246, 55), 3)
         return x, y, w, h, area, contour_img
     else:
         color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
@@ -267,13 +268,13 @@ def all_pix_pnns(img_info_df, contour_img):
         print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
     return locs, gray_image, contour_img
 
-locs, gray_image, wfa = all_pix_pnns(img_info_wfa, seg_wfa)
+# locs, gray_image, wfa = all_pix_pnns(img_info_wfa, seg_wfa)
 
 # rect_img = draw_rect(img_info_wfa, seg_wfa)
 # gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(gray_image, cmap = 'gray')
-fig.show()
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(gray_image, cmap = 'gray')
+# fig.show()
 # locs = np.argwhere(gray_seg_wfa == 1.0)
 # pixels = gray_seg_wfa[locs]
 # print(np.mean(pixels), len(locs[0]))
