@@ -61,34 +61,10 @@ wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contou
 plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
 
-df_manual_test = img_info_wfa
-contour_img = seg_wfa
-# rect = cv2.rectangle(contour_img, (df_manual_test['x1'][1], df_manual_test['y1'][1]), (df_manual_test['x4'][1], df_manual_test['y4'][1]), (255,255,255), -1)
-# cv2.imwrite('/users/ukaipa/PNN/Hist_PNN/fig12.tif', contour_img)
-#
+wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa) # to get all the pixels and their mean pixel intensities
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(contour_img, cmap = 'gray')
 # fig.show()
-
-
-
-for box in range(len(df_manual_test['x1'])):
-    print(box) # figure put why the box loop isnt working and why the boxes are all being drawn at once
-    rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (255,255,255), -1)
-    # cv2.imwrite('/users/ukaipa/PNN/Hist_PNN/fig1' + '%d.tif' %box, contour_img)
-    # fig,ax = plt.subplots(figsize = (20,20))
-    # ax.imshow(contour_img, cmap = 'gray')
-    # fig.show()
-    gray_seg_wfa = skimage.color.rgb2gray(contour_img)
-    locs = np.argwhere(gray_seg_wfa == 1.0)
-    print(locs, locs.shape, locs.mean())
-    for i in range(locs.shape[0]):
-        for j in range(locs.shape[1] -1):
-            if gray_seg_wfa[locs[i,j],locs[i,j+1]] != 1.0:
-                print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
-
-
-
 
 
 # segment PNNs from all images in a directory
