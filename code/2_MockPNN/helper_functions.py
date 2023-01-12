@@ -47,13 +47,14 @@ def read_norm(filepath, ch_num):
         return img_neun
     else: # wfa
         img_arr = np.array(img, dtype = 'float32')
+        # img_arr_adj = img_arr
         histo(img_arr,range = [img_arr.min(),img_arr.max()])
         # img_arr[img_arr < 1.7598] = 0.0
         # img_arr[img_arr >= 0.6513] = 0.6513
         # img_arr[img_arr <= img_arr.mean()] = 0.0
         # img_arr[img_arr >= 1.0] = img_arr.max()
         img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        return img_wfa
+        return img_arr, img_wfa
 
 
 
@@ -246,13 +247,13 @@ def create_df(x,y,w,h, area, img_test, label):
 # draw a white rectangle filled using the coordinates from the csv
 from collections import Counter
 pix_list, locs_list, mean_pix_int_list  = [], [], []
-def all_pix_pnns(img_info_df, contour_img):
+def all_pix_pnns(img_info_df, contour_img, original_img):
     for box in range(len(img_info_df['x1'])):
         print(box)
         gray_image = np.full((1396,1860), 0, dtype=np.uint8) # new blank image so the original pix intensities are retained
         rect = cv2.rectangle(gray_image, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
         cv2.putText(contour_img, ('%d'%box), (img_info_df['x1'][box],img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 2, (125, 246, 55), 3)
-        gray_seg_wfa = skimage.color.rgb2gray(contour_img)
+        # gray_seg_wfa = skimage.color.rgb2gray(contour_img)
         # plot_img(gray_image, contour_img)
         locs = np.argwhere(gray_image == 255)
         print(locs.shape, locs.mean())
@@ -260,13 +261,22 @@ def all_pix_pnns(img_info_df, contour_img):
             for j in range(locs.shape[1] -1):
                 if gray_image[locs[i,j],locs[i,j+1]] == 255: # gray image has white filled boxes
                     # print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
-                    pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
+                    pix_list.append(original_img[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
         print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
         locs_list.append(locs) # append the all pixels of all PNNs detected
         mean_pix_int_list.append((np.array(pix_list)).mean()) # and their mean intensities
+    print("Number of PNNs segmented:", len(locs_list))
+    print("lengths", len(locs_list), len(mean_pix_int_list))
     img_info_df['pixels'] = locs_list
     img_info_df['mean_pixel_int'] = mean_pix_int_list
     img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
+    fig = plt.figure(figsize = (5, 5))
+    plt.bar(list(range(len(img_info_df))), img_info_df['mean_pixel_int'], color = 'blue', width = 0.2)
+    plt.xticks(np.arange(0,len(img_info_df), 1), labels = list(range(len(img_info_df))))
+    plt.xlabel("Number of segmented PNNs")
+    plt.ylabel("Mean pixel intensities")
+    plt.title("Mean pixel intensities plot for segmented PNNs")
+    plt.show()
     return contour_img, img_info_df # this returns a color image with PNN contours marked along with numbers
 
 
@@ -299,9 +309,9 @@ def plot_img(original_img, segmented_img):
 
 
 # plot histogram
-def hist_plot(img):
+def hist_plot(img, bins=256):
     range = (img.min(), img.max())
-    histogram, bin_edges = np.histogram(img.ravel(), bins=256, range=range)
+    histogram, bin_edges = np.histogram(img.ravel(), bins=bins, range=range)
     plt.figure()
     plt.title("Grayscale Histogram")
     plt.xlabel("grayscale value")
@@ -316,20 +326,22 @@ def hist_plot(img):
 # plot histogram improved
 import pylab
 from pylab import xticks
-def histo(img,range = [0,1]):
-    n, bins, patches = plt.hist(img.ravel(), 30, range = range, facecolor='gray', align='mid') # (y, x, _)
+def histo(img, bins = 30, range = [0,1]):
+    n, bins, patches = plt.hist(img.ravel(), bins = bins, range = range, facecolor='gray', align='mid') # (y, x, _)
     order = np.argsort(n)[::-1]
     # print(" highest bins:", n[order][:10])
     # print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
-    # print("the order to be used",[ (bins[i+1])   for i in order[8:9]])
-    img[img <= ([ (bins[i+1])   for i in order[9:10]])] = 0.0 #order[9:10] maybe?
+    img[img <= ([(bins[i+1])   for i in order[7:8]])] = 0.0 # select the bin, below which the pix intensities will be blackened
+    img[img >= ([(bins[i+1])   for i in order[8:9]])] = 1.0
+    print("the order to be used",[(bins[i+1])   for i in order[7:8]]) # print the chosen value below which all pix intensities are considered to be noise
     pylab.rc("axes", linewidth=8.0)
     pylab.rc("lines", markeredgewidth=2.0)
     xticks = [(bins[idx+1] + value)/2 for idx, value in enumerate(bins[:-1])]
     xticks_labels = [ "{:.1f}\nto\n{:.1f}".format(value, bins[idx+1]) for idx, value in enumerate(bins[:-1])]
     # plt.xticks(xticks, labels = xticks_labels)
-    plt.xlabel('pix int', fontsize=14)
-    plt.ylabel('# of targets', fontsize=14)
+    plt.xlabel('Pixel intensities', fontsize=14)
+    plt.ylabel('Frequency', fontsize=14)
+    plt.title('Pixel intensitiy plot')
     pylab.xticks(fontsize=15, rotation = 'vertical')
     pylab.yticks(fontsize=15)
     # for idx, value in enumerate(bins[:-1]):
