@@ -245,7 +245,7 @@ def create_df(x,y,w,h, area, img_test, label):
 
 # draw a white rectangle filled using the coordinates from the csv
 from collections import Counter
-pix_list = []
+pix_list, locs_list, mean_pix_int_list  = [], [], []
 def all_pix_pnns(img_info_df, contour_img):
     for box in range(len(img_info_df['x1'])):
         print(box)
@@ -255,17 +255,19 @@ def all_pix_pnns(img_info_df, contour_img):
         gray_seg_wfa = skimage.color.rgb2gray(contour_img)
         # plot_img(gray_image, contour_img)
         locs = np.argwhere(gray_image == 255)
-        img_info_df['pixels'] = [locs]
         print(locs.shape, locs.mean())
+        # img_info_df['pixels'] = [locs]
         for i in range(locs.shape[0]):
             for j in range(locs.shape[1] -1):
                 if gray_image[locs[i,j],locs[i,j+1]] == 255: # gray image has white filled boxes
                     # print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
                     pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
         print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
-        # img_info_df['pixels'] = locs
-        img_info_df['mean_pixel_int'] = np.int0(np.ceil(np.array(pix_list)).mean())
-        img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
+        locs_list.append(locs)
+        mean_pix_int_list.append((np.array(pix_list)).mean())
+    img_info_df['pixels'] = locs_list
+    img_info_df['mean_pixel_int'] = mean_pix_int_list
+    img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
     return locs, gray_image, contour_img, img_info_df
 
 locs, gray_image, wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa)
