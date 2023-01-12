@@ -256,29 +256,19 @@ def all_pix_pnns(img_info_df, contour_img):
         # plot_img(gray_image, contour_img)
         locs = np.argwhere(gray_image == 255)
         print(locs.shape, locs.mean())
-        # img_info_df['pixels'] = [locs]
         for i in range(locs.shape[0]):
             for j in range(locs.shape[1] -1):
                 if gray_image[locs[i,j],locs[i,j+1]] == 255: # gray image has white filled boxes
                     # print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
                     pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
         print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
-        locs_list.append(locs)
-        mean_pix_int_list.append((np.array(pix_list)).mean())
+        locs_list.append(locs) # append the all pixels of all PNNs detected
+        mean_pix_int_list.append((np.array(pix_list)).mean()) # and their mean intensities
     img_info_df['pixels'] = locs_list
     img_info_df['mean_pixel_int'] = mean_pix_int_list
     img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
-    return contour_img, img_info_df
+    return contour_img, img_info_df # this returns a color image with PNN contours marked along with numbers
 
-
-# rect_img = draw_rect(img_info_wfa, seg_wfa)
-# gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(gray_image, cmap = 'gray')
-# fig.show()
-# locs = np.argwhere(gray_seg_wfa == 1.0)
-# pixels = gray_seg_wfa[locs]
-# print(np.mean(pixels), len(locs[0]))
 
 
 def manual_annot(filepath):
