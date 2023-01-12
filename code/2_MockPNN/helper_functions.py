@@ -249,17 +249,13 @@ pix_list = []
 def all_pix_pnns(img_info_df, contour_img):
     for box in range(len(img_info_df['x1'])):
         print(box)
-        # contour_img_copy = contour_img
         gray_image = np.full((1396,1860), 0, dtype=np.uint8) # new blank image so the original pix intensities are retained
         rect = cv2.rectangle(gray_image, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
         cv2.putText(contour_img, ('%d'%box), (img_info_df['x1'][box],img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 2, (125, 246, 55), 3)
-        # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(gray_image, cmap = 'gray')
-        # fig.show()
-        # gray_seg_wfa_copy = skimage.color.rgb2gray(contour_img_copy) # convert to gray for pix comparesion
         gray_seg_wfa = skimage.color.rgb2gray(contour_img)
-        plot_img(gray_image, contour_img)
+        # plot_img(gray_image, contour_img)
         locs = np.argwhere(gray_image == 255)
+        img_info_df['pixels'] = [locs]
         print(locs.shape, locs.mean())
         for i in range(locs.shape[0]):
             for j in range(locs.shape[1] -1):
@@ -267,9 +263,12 @@ def all_pix_pnns(img_info_df, contour_img):
                     # print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
                     pix_list.append(gray_seg_wfa[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
         print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
-    return gray_image, contour_img
+        # img_info_df['pixels'] = locs
+        img_info_df['mean_pixel_int'] = np.int0(np.ceil(np.array(pix_list)).mean())
+        img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
+    return locs, gray_image, contour_img, img_info_df
 
-gray_image, wfa = all_pix_pnns(img_info_wfa, seg_wfa)
+locs, gray_image, wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa)
 
 # rect_img = draw_rect(img_info_wfa, seg_wfa)
 # gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
