@@ -268,9 +268,8 @@ def all_pix_pnns(img_info_df, contour_img):
     img_info_df['pixels'] = locs_list
     img_info_df['mean_pixel_int'] = mean_pix_int_list
     img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
-    return locs, gray_image, contour_img, img_info_df
+    return contour_img, img_info_df
 
-locs, gray_image, wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa)
 
 # rect_img = draw_rect(img_info_wfa, seg_wfa)
 # gray_seg_wfa = skimage.color.rgb2gray(seg_wfa)
