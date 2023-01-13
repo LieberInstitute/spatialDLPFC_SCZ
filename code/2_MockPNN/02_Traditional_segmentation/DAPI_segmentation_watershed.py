@@ -130,29 +130,26 @@ for img_name in os.listdir(img_dir):
         dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect_dapi(labels, gray, dapi_clr)
         img_info_dapi = create_df(dpx, dpy, dpw, dph, area, os.path.join(img_dir, img_name), 'DAPI')
         img_info_dapi.to_csv(path_or_buf = (csv_dst + img_name.split('.')[0] + '.csv')) # df to csv and save it in the csv_dst folder
-        cv2.imwrite((img_dst + img_name.split('.')[0] + '.tif'), segmented_dapi)
+        cv2.imwrite((img_dst + img_name.split('.')[0] + '.tif'), segmented_dapi) # save the segmented images in the img_dst folder
 
-
-        # save the segmented images in the img_dst folder
-
-
-
-            fig,ax = plt.subplots(figsize = (20,20))
-            ax.imshow(segmented_dapi)
-            fig.show()
-
-
-
-
-
-
-
-
-dapi, dapi_clr = read_norm(img_test, 0)
 
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(dapi)
+ax.imshow(segmented_dapi)
 fig.show()
+
+
+
+# dapi segmentations for a single image
+dapi, dapi_clr = read_norm(img_test, 0)
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(dapi, cmap = 'gray')
+# fig.show()
+dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 0, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(ws_img_bb)
+# fig.show()
+plot_img(dapi, ws_img_bb)
+img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 
 
 # perform pyramid mean shifting
