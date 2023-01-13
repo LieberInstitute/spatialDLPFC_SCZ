@@ -194,3 +194,43 @@ for i in range(len(csv)):
             ymin1, ymin2, ymin3 = csv['y1'][i], df_wfa_ml['y1'][j], img_info_dapi['y1'][k]
             xmax1, xmax2, xmax3 = csv['x4'][i], df_wfa_ml['x4'][j], img_info_dapi['x4'][k]
             ymax1, ymax2, ymax3 = csv['y4'][i], df_wfa_ml['y4'][j], img_info_dapi['y4'][k]
+
+
+# loop through the whole directory to find the overlaps between WFA and DAPI
+img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/'
+csv_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
+
+for img_name in os.listdir(img_dir):
+    for csv_name in os.listdir(csv_dir):
+        if int(img_name.split('_')[8].split('.')[0]) == int(csv_name.split('_')[8].split('.')[0]):
+            # print(int(img_name.split('_')[8].split('.')[0]), int(csv_name.split('_')[8].split('.')[0]))
+            print(img_name, csv_name)
+            dapi, dapi_clr = read_norm(os.path.join(img_dir, img_name), 0)
+            print(img_name)
+            csv = manual_annot(os.path.join(csv_dir, csv_name))
+            print(len(csv))
+            shifted, thresh, gray = morph_transform(dapi_clr)
+            labels = find_labels(thresh)
+            dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect_dapi(labels, gray, dapi_clr)
+            img_info_dapi = create_df(dpx, dpy, dpw, dph, area, os.path.join(img_dir, img_name), 'DAPI')
+            draw_rect(csv, segmented_dapi)
+            # df_wfa_ml = create_df(x,y,w,h, area, os.path.join(img_dir, img_name), 'PNN')
+            box_lists_dapi = []
+            for i in range(len(img_info_dapi)): # PNN
+                for k in range(len(csv)):
+                    # for j in range(len(img_info_dapi)): # DAPI
+                        xmin1, xmax1, xmin2, xmax2 = img_info_dapi['x1'][i], img_info_dapi['x4'][i], csv['x1'][k], csv['x4'][k]
+                        ymin1, ymax1, ymin2, ymax2 = img_info_dapi['y1'][i], img_info_dapi['y4'][i], csv['y1'][k], csv['y4'][k]
+                        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
+                        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
+                        # xmin1, xmax1, xmin2, xmax2 = df_wfa_ml['x1'][i], df_wfa_ml['x4'][i], img_info_dapi['x1'][k], img_info_dapi['x4'][k]
+                        # ymin1, ymax1, ymin2, ymax2 = df_wfa_ml['y1'][i], df_wfa_ml['y4'][i], img_info_dapi['y1'][k], img_info_dapi['y4'][k]
+                        if xmax1 >= xmin2 and xmax2 >= xmin1 and ymax1 >= ymin2 and ymax2 >= ymin1:
+                            # print(xmin1, xmax1, xmin2, xmax2, i, k)
+                            box_lists_dapi.append(k)
+            print(Counter(box_lists_dapi))
+
+            fig,ax = plt.subplots(figsize = (20,20))
+            ax.imshow(segmented_dapi)
+            fig.show()
+
