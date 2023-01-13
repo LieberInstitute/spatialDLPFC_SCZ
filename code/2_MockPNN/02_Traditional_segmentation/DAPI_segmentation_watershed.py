@@ -24,57 +24,6 @@ import pyhere
 # define the image path
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.tif')
 csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[6384,53057]_component_data_11.csv'
-
-# load and preprocess the image
-# img_dapi = Image.open(img_test)
-# img_dapi.seek(0) # channel 0 = DAPI
-# dapi = cv2.normalize(np.array(img_dapi, dtype = 'float32'), np.zeros(np.array(img_dapi, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-# dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
-
-def morph_transform(image_clr):
-    shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
-    gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
-    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    # fig,ax = plt.subplots(figsize = (20,20))
-    # ax.imshow(image_clr)
-    # fig.show()
-    return shifted, thresh, gray
-
-def find_labels(threshold):
-    D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
-    localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
-    markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
-    labels = watershed(-D, markers, mask=threshold)
-    # print("{} unique segments found".format(len(np.unique(labels)) - 1))
-    return labels
-
-# extract the watershed algorithm labels
-def draw_rect_dapi(labels, gray, dapi): # add area
-    dpx, dpy, dpw, dph, area = [], [], [], [], []
-    for label in np.unique(labels):
-        if label == 0: # label marked 0 are background
-            continue
-        mask = np.zeros(gray.shape, dtype="uint8") # create masks that only have the detected labels as foreground and 0 as background
-        mask[labels == label] = 255
-        # detect contours in the mask and grab the largest one
-        cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # detect the watershed contours
-        cnts = imutils.grab_contours(cnts) # extract only the contours
-        c = max(cnts, key=cv2.contourArea) # get the area
-        x,y,w,h = cv2.boundingRect(c) # BB coordinates
-        area.append(cv2.contourArea(c))
-        dpx.append(x)
-        dpy.append(y)
-        dpw.append(w)
-        dph.append(h)
-        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
-    return dpx, dpy, dpw, dph, area, ws_img_bb
-
-
-
-
-
-
-
 # loop through the whole directory to segment only DAPI
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S2_SCZ/'
 csv_dst = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/DAPI_segmentations/Image_csvs/'
@@ -111,66 +60,8 @@ dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 0, contours = None,  c
 # ax.imshow(ws_img_bb)
 # fig.show()
 plot_img(dapi, ws_img_bb)
-img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
+img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI') # populate the data in the dataframe
 
-
-# perform pyramid mean shifting
-def morph_transform(image_clr):
-    shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
-    gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
-    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    # fig,ax = plt.subplots(figsize = (20,20))
-    # ax.imshow(image_clr)
-    # fig.show()
-    return shifted, thresh, gray
-
-shifted, thresh, gray = morph_transform(dapi_clr)
-
-
-
-# find labels in the image
-def find_labels(threshold):
-    D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
-    localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
-    markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
-    labels = watershed(-D, markers, mask=threshold)
-    print("{} unique segments found".format(len(np.unique(labels)) - 1))
-    return labels
-
-labels = find_labels(thresh)
-
-# extract the watershed algorithm labels
-def draw_rect_dapi(labels, gray, dapi): # add area
-    dpx, dpy, dpw, dph, area = [], [], [], [], []
-    for label in np.unique(labels):
-        if label == 0: # label marked 0 are background
-            continue
-        mask = np.zeros(gray.shape, dtype="uint8") # create masks that only have the detected labels as foreground and 0 as background
-        mask[labels == label] = 255
-        # detect contours in the mask and grab the largest one
-        cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # detect the watershed contours
-        cnts = imutils.grab_contours(cnts) # extract only the contours
-        c = max(cnts, key=cv2.contourArea) # get the area
-        x,y,w,h = cv2.boundingRect(c) # BB coordinates
-        area.append(cv2.contourArea(c))
-        dpx.append(x)
-        dpy.append(y)
-        dpw.append(w)
-        dph.append(h)
-        ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (255,0,0), 2) # draw BB
-    return dpx, dpy, dpw, dph, area, ws_img_bb
-
-dpx, dpy, dpw, dph, area, segmented_dapi = draw_rect_dapi(labels, gray, dapi_clr)
-
-# Plot the segmentation result
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(segmented_dapi)
-ax.title.set_text('Watershed Segmentation')
-fig.show()
-
-
-# Populate the data in the dataframe
-img_info_dapi = create_df(dpx, dpy, dpw, dph, area, img_test, 'DAPI')
 
 # for loop for looping through the total num of BB/len of the csv
 dapi_box_means = []
