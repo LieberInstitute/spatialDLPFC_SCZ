@@ -93,7 +93,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
             c = max(cnts, key=cv2.contourArea) # get the area
             x,y,w,h = cv2.boundingRect(c) # BB coordinates
             area1 = cv2.contourArea(c)
-            if area1 <= 1000:
+            if area1 <= 500:
                 dpx.append(x)
                 dpy.append(y)
                 dpw.append(w)
