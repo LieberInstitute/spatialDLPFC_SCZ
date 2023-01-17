@@ -90,3 +90,7 @@ for img_name in os.listdir(img_dir):
           print("img name:",img_name.split('.')[0],"PNNs:",len(img_info_wfa))
 
 
+#### Trying the shape detector
+shape = "unidentified"
+peri = cv2.arcLength(c, True) # c is the contour
+approx = cv2.approxPolyDP(c, 0.04 * peri, True)
