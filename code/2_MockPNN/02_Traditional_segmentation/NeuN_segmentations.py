@@ -157,7 +157,7 @@ for img_name in os.listdir(img_dir):
         print(img_name)
         neun= read_norm(os.path.join(img_dir, img_name), 2)
         neun_contours = detect_contours(neun)
-        nx,ny,nw,nh,narea, neun_segmented = draw_contours(neun_contours, neun, (0,255,0), 2)
+        nx,ny,nw,nh,narea, neun_segmented = draw_contours(neun, 2, neun_contours, (0,255,0), 2)
         df_ml_neun = create_df(nx,ny,nw,nh, narea,os.path.join(img_dir, img_name) , 'NeuN')
         df_ml_neun.to_csv(path_or_buf = (csv_dst + img_name.split('.')[0] + '.csv')) # df to csv and save it in the csv_dst folder
         cv2.imwrite((img_dst + img_name.split('.')[0] + '.tif'), neun_segmented)
@@ -166,6 +166,12 @@ for img_name in os.listdir(img_dir):
 
 ###### using helper_functions for 1 image
 neun = read_norm(img_test, 2)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(neun, cmap = 'gray')
+fig.show()
 neun_contours = detect_contours(neun)
-nx,ny,nw,nh,narea, seg_neun = draw_contours(neun_contours, neun, 2, (0,255,0), 2)
+nx,ny,nw,nh,narea, seg_neun = draw_contours(neun, 2, neun_contours,(0,255,0), 2)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(seg_neun)
+fig.show()
 img_info_neun = create_df(nx,ny,nw,nh, narea, img_test, 'NeuN')
