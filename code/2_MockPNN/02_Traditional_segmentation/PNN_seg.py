@@ -59,11 +59,7 @@ clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour
 out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
 wfa_contours = detect_contours(out_img_gry)
 wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(seg_wfa)
-fig.show()
-
-# plot_img(im_wfa, seg_wfa)
+plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
 
 
