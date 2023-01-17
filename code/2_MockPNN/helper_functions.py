@@ -127,7 +127,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
         for cnt in contours:
             x_, y_, w_, h_ = cv2.boundingRect(cnt)
             area_ = cv2.contourArea(cnt)
-            if area_ >= 10:
+            if area_ >= 100:
                 # area_ = cv2.contourArea(cnt)
                 # print(ax,ay,aw,ah)
                 x.append(x_)
@@ -321,7 +321,7 @@ def hist_plot(img, bins=256):
     plt.show()
 
 
-### figure out a condition to set for removing background noise
+
 
 # plot histogram improved
 import pylab
