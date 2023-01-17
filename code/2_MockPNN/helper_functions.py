@@ -33,7 +33,11 @@ def read_norm(filepath, ch_num):
 def detect_contours(normalised_img):
     hierachy, img_threshold = cv2.threshold((np.array((normalised_img * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    return contours
+    for c in contours:
+        peri = cv2.arcLength(c, True) # c is the contour
+        approx = cv2.approxPolyDP(c, 0.04 * peri, True)
+        print(peri, approx)
+    return approx, contours
 
 
 
