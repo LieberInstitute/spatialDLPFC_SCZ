@@ -33,13 +33,14 @@ def read_norm(filepath, ch_num):
 def detect_contours(normalised_img): ### create a separate function for shape detection and run it through this loop for contour detection
     hierachy, img_threshold = cv2.threshold((np.array((normalised_img * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    return contours
+
+def detect_shape_pnns(contour_img, img_info_df, contours):
+    # color_img = skimage.color.gray2rgb(normalised_img)
     shape = "unidentified"
     for c in contours:
         peri = cv2.arcLength(c, True) # c is the contour
-        approx = cv2.approxPolyDP(c, 0.04 * peri, True)
-        rect = cv2.rectangle(gray_image, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
-        cv2.putText(contour_img, ('%d'%box), (img_info_df['x1'][box],img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 2, (125, 246, 55), 3)
-        # gray_seg_wfa = skimage.color.rgb2gray(contour_img)
+        approx = cv2.approxPolyDP(c, 0.04 * peri, True)# gray_seg_wfa = skimage.color.rgb2gray(contour_img)
         # print("peri, approx", peri, approx)
         if len(approx) == 3:
             shape = "triangle"
@@ -52,6 +53,8 @@ def detect_contours(normalised_img): ### create a separate function for shape de
         else:
             shape = "circle"
         print("shape", shape)
+    rect = cv2.rectangle(contour_img, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
+    cv2.putText(contour_img, ('%d'%box), (img_info_df['x1'][box],img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 2, (125, 246, 55), 3)
     return approx, contours, shape
 
 
