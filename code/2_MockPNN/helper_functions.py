@@ -30,14 +30,25 @@ def read_norm(filepath, ch_num):
 
 
 # detect contours in the normalised_img
-def detect_contours(normalised_img):
+def detect_contours(normalised_img): ### create a separate function for shape detection and run it through this loop for contour detection
     hierachy, img_threshold = cv2.threshold((np.array((normalised_img * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    shape = "unidentified"
     for c in contours:
         peri = cv2.arcLength(c, True) # c is the contour
         approx = cv2.approxPolyDP(c, 0.04 * peri, True)
         print(peri, approx)
-    return approx, contours
+        if len(approx) == 3:
+            shape = "triangle"
+        elif len(approx) == 4:
+            (x, y, w, h) = cv2.boundingRect(approx)
+            ar = w / float(h)
+            shape = "square" if ar >= 0.95 and ar <= 1.05 else "rectangle"
+        elif len(approx) == 5:
+            shape = "pentagon"
+        else:
+            shape = "circle"
+    return approx, contours, shape
 
 
 
