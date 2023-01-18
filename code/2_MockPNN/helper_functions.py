@@ -37,7 +37,10 @@ def detect_contours(normalised_img): ### create a separate function for shape de
     for c in contours:
         peri = cv2.arcLength(c, True) # c is the contour
         approx = cv2.approxPolyDP(c, 0.04 * peri, True)
-        print(peri, approx)
+        rect = cv2.rectangle(gray_image, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
+        cv2.putText(contour_img, ('%d'%box), (img_info_df['x1'][box],img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 2, (125, 246, 55), 3)
+        # gray_seg_wfa = skimage.color.rgb2gray(contour_img)
+        # print("peri, approx", peri, approx)
         if len(approx) == 3:
             shape = "triangle"
         elif len(approx) == 4:
@@ -48,6 +51,7 @@ def detect_contours(normalised_img): ### create a separate function for shape de
             shape = "pentagon"
         else:
             shape = "circle"
+        print("shape", shape)
     return approx, contours, shape
 
 
