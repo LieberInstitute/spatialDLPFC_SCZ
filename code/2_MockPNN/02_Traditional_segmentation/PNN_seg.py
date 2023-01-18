@@ -53,7 +53,7 @@ orig_wfa, im_wfa = read_norm(img_test, 3) #, im_wfa, img_arr_adj
 # fig.show()
 
 # segment PNNs using Claudin-5 for a single image
-cla_wfa_contour = detect_contours(im_cla)
+approx, cla_wfa_contour, shape = detect_contours(im_cla)
 clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour, (0,0,0), -1)
 # plot_img(im_cla, seg_cla_wfa)
 out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
