@@ -59,9 +59,10 @@ clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour
 out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
 wfa_contours = detect_contours(out_img_gry)
 wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
-plot_img(im_wfa, seg_wfa)
+# plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
 
+normalised_img, ch_num, contours = None,  color = None, thickness = None, dapi_clr = None
 
 # out_img_gry = skimage.color.rgb2gray(im_wfa)
 wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa, orig_wfa) # to get all the pixels and their mean pixel intensities
