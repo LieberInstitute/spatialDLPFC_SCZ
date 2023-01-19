@@ -307,7 +307,7 @@ def histo(img, bins = 30, range = [0,1]):
     order = np.argsort(n)[::-1]
     # print(" highest bins:", n[order][:10])
     # print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
-    img[img <= ([(bins[i+1])   for i in order[7:8]])] = 0.0 # select the bin, below which the pix intensities will be blackened
+    img[img <= ([(bins[i+1])   for i in order[6:7]])] = 0.0 # select the bin, below which the pix intensities will be blackened
     img[img >= ([(bins[i+1])   for i in order[8:9]])] = 1.0
     print("the order to be used",[(bins[i+1])   for i in order[7:8]]) # print the chosen value below which all pix intensities are considered to be noise
     pylab.rc("axes", linewidth=8.0)
