@@ -87,6 +87,9 @@ for img_name in os.listdir(img_dir):
 manual_pnns = manual_annot(csv_test)
 orig_wfa_clr = skimage.color.gray2rgb(orig_wfa)
 manual = draw_rect(manual_pnns, orig_wfa_clr, (255,0,0))
+img, df = all_pix_pnns(manual_pnns, manual,  orig_wfa)
+
+
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(manual, cmap = 'gray')
+ax.imshow(img, cmap = 'gray')
 fig.show()
