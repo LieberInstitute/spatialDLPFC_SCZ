@@ -205,27 +205,27 @@ def all_pix_pnns(img_info_df, contour_img, original_img):
         # gray_seg_wfa = skimage.color.rgb2gray(contour_img)
         # plot_img(gray_image, contour_img)
         locs = np.argwhere(gray_image == 255)
-        print(locs.shape, locs.mean())
+        print(locs.shape)
         for i in range(locs.shape[0]):
             for j in range(locs.shape[1] -1):
                 if gray_image[locs[i,j],locs[i,j+1]] == 255: # gray image has white filled boxes
-                    # print(gray_seg_wfa[locs[i,j],locs[i,j+1]])
+                    # print(original_img[locs[i,j],locs[i,j+1]])
                     pix_list.append(original_img[locs[i,j],locs[i,j+1]]) # append all pix intensities of coordinates inside the PNN box
         print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
         locs_list.append(locs) # append the all pixels of all PNNs detected
         mean_pix_int_list.append((np.array(pix_list)).mean()) # and their mean intensities
     print("Number of PNNs segmented:", len(locs_list))
     print("lengths", len(locs_list), len(mean_pix_int_list))
-    img_info_df['pixels'] = locs_list
-    img_info_df['mean_pixel_int'] = mean_pix_int_list
-    img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
-    fig = plt.figure(figsize = (5, 5))
-    plt.bar(list(range(len(img_info_df))), img_info_df['mean_pixel_int'], color = 'blue', width = 0.2)
-    plt.xticks(np.arange(0,len(img_info_df), 1), labels = list(range(len(img_info_df))))
-    plt.xlabel("Number of segmented PNNs")
-    plt.ylabel("Mean pixel intensities")
-    plt.title("Mean pixel intensities plot for segmented PNNs")
-    plt.show()
+    # img_info_df['pixels'] = locs_list
+    # img_info_df['mean_pixel_int'] = mean_pix_int_list
+    # img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
+    # fig = plt.figure(figsize = (5, 5))
+    # plt.bar(list(range(len(img_info_df))), img_info_df['mean_pixel_int'], color = 'blue', width = 0.2)
+    # plt.xticks(np.arange(0,len(img_info_df), 1), labels = list(range(len(img_info_df))))
+    # plt.xlabel("Number of segmented PNNs")
+    # plt.ylabel("Mean pixel intensities")
+    # plt.title("Mean pixel intensities plot for segmented PNNs")
+    # plt.show()
     return contour_img, img_info_df # this returns a color image with PNN contours marked along with numbers
 
 
