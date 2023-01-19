@@ -46,11 +46,11 @@ img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_
 
 # read and normalize the images
 im_cla = read_norm(img_test, 1)
-orig_wfa, im_wfa = read_norm(img_test, 3) #, im_wfa, img_arr_adj
-plot_img(im_cla, im_wfa)
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(im_wfa, cmap = 'gray')
-# fig.show()
+orig_wfa = read_norm(img_test, 3) #, im_wfa, img_arr_adj
+# plot_img(orig_wfa, im_wfa)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(orig_wfa, cmap = 'gray')
+fig.show()
 
 # segment PNNs using Claudin-5 for a single image
 cla_wfa_contour = detect_contours(im_cla)
@@ -85,7 +85,8 @@ for img_name in os.listdir(img_dir):
 
 #### Draw the manual annotations contours to check how much of background is being cut off and also check FPs
 manual_pnns = manual_annot(csv_test)
-manual = draw_rect(manual_pnns, seg_wfa, (255,0,0))
+orig_wfa_clr = skimage.color.gray2rgb(orig_wfa)
+manual = draw_rect(manual_pnns, orig_wfa_clr, (255,0,0))
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(manual, cmap = 'gray')
 fig.show()
