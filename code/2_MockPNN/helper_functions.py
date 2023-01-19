@@ -19,13 +19,9 @@ def read_norm(filepath, ch_num):
     else: # wfa
         img_arr = np.array(img, dtype = 'float32')
         # img_arr_adj = img_arr
-        histo(img_arr,range = [img_arr.min(),img_arr.max()])
-        # img_arr[img_arr < 1.7598] = 0.0
-        # img_arr[img_arr >= 0.6513] = 0.6513
-        # img_arr[img_arr <= img_arr.mean()] = 0.0
-        # img_arr[img_arr >= 1.0] = img_arr.max()
-        img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        return img_arr, img_wfa
+        # histo(img_arr,range = [img_arr.min(),img_arr.max()])
+        # img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        return img_arr
 
 
 
