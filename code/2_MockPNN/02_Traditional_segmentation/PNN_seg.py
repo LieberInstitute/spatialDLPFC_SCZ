@@ -53,11 +53,11 @@ plot_img(im_cla, im_wfa)
 # fig.show()
 
 # segment PNNs using Claudin-5 for a single image
-approx_cla, cla_wfa_contour, shape_cla = detect_contours(im_cla)
+cla_wfa_contour = detect_contours(im_cla)
 clx,cly,clw,clh, cl_area, seg_cla_wfa = draw_contours(im_wfa, 1, cla_wfa_contour, (0,0,0), -1)
 # plot_img(im_cla, seg_cla_wfa)
 out_img_gry = skimage.color.rgb2gray(seg_cla_wfa) # convert to gray to find contours and increase contrast
-approx_wfa,wfa_contours, shape_wfa = detect_contours(out_img_gry)
+wfa_contours = detect_contours(out_img_gry)
 wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
 # plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
@@ -84,4 +84,8 @@ for img_name in os.listdir(img_dir):
 
 
 #### Draw the manual annotations contours to check how much of background is being cut off and also check FPs
+manual_pnns = manual_annot(csv_test)
 manual = draw_rect(manual_pnns, seg_wfa, (255,0,0))
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(manual, cmap = 'gray')
+fig.show()
