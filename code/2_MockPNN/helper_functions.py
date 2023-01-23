@@ -1,28 +1,12 @@
-
-# read and normalise the image
-def read_norm(filepath, ch_num):
-    img = Image.open(filepath)
-    img.seek(ch_num)
-    if ch_num == 0: # DAPI
-        dapi = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        dapi_clr = skimage.color.gray2rgb((np.array((dapi * 255), dtype = np.uint8))) # convert to color to draw colored bb
-        return dapi, dapi_clr
-    if ch_num == 1: # claudin
-        img_claudin = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        img_claudin[img_claudin <= img_claudin.mean()] = 0.0
-        img_claudin[img_claudin >= img_claudin.mean()] = 1.0
-        return img_claudin
-    if ch_num == 2: #NeuN
-        img_neun = cv2.normalize(np.array(img, dtype = 'float32'), np.zeros(np.array(img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        # neun_gray = skimage.color.rgb2gray(img_neun) # convert to gray to find contours
-        return img_neun
-    else: # wfa
-        img_arr = np.array(img, dtype = 'float32')
-        # img_arr_adj = img_arr
-        # histo(img_arr,range = [img_arr.min(),img_arr.max()])
-        # img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        return img_arr
-
+'''
+For Visium-IF
+Channel0 = DAPI, DAPI
+Channel1 = Claudin5 (Alex 488),
+Channel2 = NeuN (Alexa 555),
+Channel3 = WFA (Alexa 647),
+Channel4 = AF (Autofluorescence), sample AF
+Channel5 = Thumbnail
+'''
 
 
 # detect contours in the normalised_img
@@ -75,7 +59,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
             area_ = cv2.contourArea(cnt)
             if area_ >= 1000:
                 contour_img = cv2.rectangle(color_img, (x_-10,y_-10), (x_+w_+10, y_+h_+10), (0,0,0), -1) # eliminating all the big objects
-            elif 100 <= area_ < 2000: # size threshold
+            elif 90 <= area_ < 2500: # size threshold
                 # print(ax,ay,aw,ah)
                 x.append(x_)
                 y.append(y_)
@@ -216,40 +200,48 @@ def all_pix_pnns(img_info_df, contour_img, original_img):
         mean_pix_int_list.append((np.array(pix_list)).mean()) # and their mean intensities
     print("Number of PNNs segmented:", len(locs_list))
     print("lengths", len(locs_list), len(mean_pix_int_list))
-    # img_info_df['pixels'] = locs_list
-    # img_info_df['mean_pixel_int'] = mean_pix_int_list
-    # img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
-    # fig = plt.figure(figsize = (5, 5))
-    # plt.bar(list(range(len(img_info_df))), img_info_df['mean_pixel_int'], color = 'blue', width = 0.2)
-    # plt.xticks(np.arange(0,len(img_info_df), 1), labels = list(range(len(img_info_df))))
-    # plt.xlabel("Number of segmented PNNs")
-    # plt.ylabel("Mean pixel intensities")
-    # plt.title("Mean pixel intensities plot for segmented PNNs")
-    # plt.show()
-    return contour_img, img_info_df # this returns a color image with PNN contours marked along with numbers
+    img_info_df['pixels'] = locs_list
+    img_info_df['mean_pixel_int'] = mean_pix_int_list
+    img_info_df = img_info_df[['img_file_name', 'type_of_object_str', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'xc', 'yc', 'Width', 'Height', 'area', 'mean_pixel_int', 'pixels']]
+    fig = plt.figure(figsize = (5, 5))
+    plt.bar(list(range(len(img_info_df))), img_info_df['mean_pixel_int'], color = 'blue', width = 0.2)
+    plt.xticks(np.arange(0,len(img_info_df), 1), labels = list(range(len(img_info_df))))
+    plt.xlabel("Number of segmented PNNs")
+    plt.ylabel("Mean pixel intensities")
+    plt.title("Mean pixel intensities plot for segmented PNNs")
+    plt.show()
+    return contour_img, img_info_df, mean_pix_int_list # this returns a color image with PNN contours marked along with numbers
 
 
 def detect_shape_pnns(contour_img, img_info_df, contours):
     # color_img = skimage.color.gray2rgb(normalised_img)
     shape = "unidentified"
-    for c in contours:
-        peri = cv2.arcLength(c, True) # c is the contour
-        approx = cv2.approxPolyDP(c, 0.04 * peri, True)# gray_seg_wfa = skimage.color.rgb2gray(contour_img)
+    for cnts in contours:
+        peri = cv2.arcLength(cnts, True) # c is the contour
+        approx = cv2.approxPolyDP(cnts, 0.04 * peri, True)# gray_seg_wfa = skimage.color.rgb2gray(contour_img)
+        c = max(cnts, key=cv2.contourArea) # get the area
+        x,y,w,h = cv2.boundingRect(c)
+        area_ = cv2.contourArea(cnts)
         # print("peri, approx", peri, approx)
-        if len(approx) == 3:
-            shape = "triangle"
-        elif len(approx) == 4:
-            (x, y, w, h) = cv2.boundingRect(approx)
-            ar = w / float(h)
-            shape = "square" if ar >= 0.95 and ar <= 1.05 else "rectangle"
-        elif len(approx) == 5:
-            shape = "pentagon"
-        else:
-            shape = "circle"
+        if 90 <= area_ <= 2500:
+            if len(approx) == 3:
+                shape = "triangle"
+                cv2.putText(contour_img, shape, (x,y), cv2.FONT_HERSHEY_SIMPLEX, 1, (125, 246, 55), 3)
+            elif len(approx) == 4:
+                (x, y, w, h) = cv2.boundingRect(approx)
+                ar = w / float(h)
+                shape = "square" if ar >= 0.95 and ar <= 1.05 else "rectangle"
+                cv2.putText(contour_img, shape, (x,y), cv2.FONT_HERSHEY_SIMPLEX, 1, (125, 246, 55), 3)
+            elif len(approx) == 5:
+                shape = "pentagon"
+                cv2.putText(contour_img, shape, (x,y), cv2.FONT_HERSHEY_SIMPLEX, 1, (125, 246, 55), 3)
+            else:
+                shape = "circle"
+                cv2.putText(contour_img, shape, (x,y), cv2.FONT_HERSHEY_SIMPLEX, 1, (125, 246, 55), 3)
         print("shape", shape)
-    # rect = cv2.rectangle(contour_img, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
-    # cv2.putText(contour_img, ('%d'%box), (img_info_df['x1'][box],img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 2, (125, 246, 55), 3)
-    return approx, contours, shape
+    # rect = cv2.rectangle(contour_img, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), 3) # draw white filled rect on the copy of the image
+    # cv2.putText(contour_img, shape, (img_info_df['x1'][box], img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 3, (125, 246, 55), 3)
+    return approx, contours, shape, contour_img
 
 
 
@@ -302,9 +294,26 @@ def histo(img, bins = 30, range = [0,1]):
     n, bins, patches = plt.hist(img.ravel(), bins = bins, range = range, facecolor='gray', align='mid') # (y, x, _)
     order = np.argsort(n)[::-1]
     # print(" highest bins:", n[order][:10])
-    # print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
-    img[img <= ([(bins[i+1])   for i in order[6:7]])] = 0.0 # select the bin, below which the pix intensities will be blackened
-    img[img >= ([(bins[i+1])   for i in order[8:9]])] = 1.0
+    print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
+    # change the contrast such that the order[3:8] are only visible and rest are all masked
+    img[img <= ([(bins[i+1])   for i in order[7:8]])] = 0.0 # select the bin, below which the pix intensities will be blackened
+    img[img <= ([(bins[i+1])   for i in order[2:3]])] = 0.0
+    # img[img <= ([(bins[i+1])   for i in order[2:3]])] = 0.0
+    # img[img <= ([(bins[i+1])   for i in order[7:]])] = 0.0
+    print("0 init done!")
+    # img[img >= ([(bins[i+1])   for i in order[3:4]])] = 1.0
+    # img[img >= ([(bins[i+1])   for i in order[4:5]])] = 1.0
+    # img[img >= ([(bins[i+1])   for i in order[5:6]])] = 1.0
+    # img[img >= ([(bins[i+1])   for i in order[6:7]])] = 1.0
+    img[img >= ([(bins[i+1])   for i in order[4:5]])] = 1.0
+    img[img >= ([(bins[i+1])   for i in order[3:4]])] = 1.0
+    img[img >= ([(bins[i+1])   for i in order[5:6]])] = 1.0
+    print("1 init done!")
+    # for i in order:
+    #     if i>=8:
+    #         print("3",i, bins[i+1], img[img >= ([(bins[i+1])])])
+    #         img[img >= ([(bins[i+1])])] = 0.0
+    #         print("after 3", img[img >= ([(bins[i+1])])])
     print("the order to be used",[(bins[i+1])   for i in order[7:8]]) # print the chosen value below which all pix intensities are considered to be noise
     pylab.rc("axes", linewidth=8.0)
     pylab.rc("lines", markeredgewidth=2.0)
@@ -324,3 +333,51 @@ def histo(img, bins = 30, range = [0,1]):
     # plt.show()
 
 
+
+
+# img_arr = Image.open(img_test)
+# img_arr.seek(3)
+# img = np.array(img_arr, dtype = 'float32')
+# range = [img.min(),img.max()]
+# n, bins, patches = plt.hist(img.ravel(), bins = 30, range = range, facecolor='gray', align='mid') # (y, x, _)
+# order = np.argsort(n)[::-1]
+# print(order)
+# # print(" highest bins:", n[order][:10])
+# print("  their ranges:", [ (bins[i+1])   for i in order[:]]) #bins[i],
+# for i in order:
+#     if i >=0 and i<3:
+#         print("1",i, bins[i+1], img[img <= ([(bins[i+1])])])
+#         img[img <= ([(bins[i+1])])] = 0.0
+#         print("after 1",img[img <= ([(bins[i+1])])])
+#     elif i>=8:
+#         print("3",i, bins[i+1], img[img >= ([(bins[i+1])])])
+#         img[img >= ([(bins[i+1])])] = 0.0
+#         print("after 3", img[img >= ([(bins[i+1])])])
+#     elif i>=3 and i<8:
+#         print("2",i, bins[i+1], img[img >= ([(bins[i+1])])])
+#         # img[img >= ([(bins[i+1])])] = 1.0
+#
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(img, cmap = 'gray')
+# fig.show()
+#
+#
+#
+# # change the contrast such that the order[3:8] are only visible and rest are all masked
+#     img[img <= ([(bins[i+1])   for i in order[0:1]])] = 0.0 # select the bin, below which the pix intensities will be blackened
+#     img[img <= ([(bins[i+1])   for i in order[1:2]])] = 0.0
+#     img[img <= ([(bins[i+1])   for i in order[2:3]])] = 0.0
+#     # img[img <= ([(bins[i+1])   for i in order[7:]])] = 0.0
+#     print("0 init done!")
+#     img[img >= ([(bins[i+1])   for i in order[3:4]])] = 1.0
+#     img[img >= ([(bins[i+1])   for i in order[4:5]])] = 1.0
+#     img[img >= ([(bins[i+1])   for i in order[5:6]])] = 1.0
+#     img[img >= ([(bins[i+1])   for i in order[6:7]])] = 1.0
+#     img[img >= ([(bins[i+1])   for i in order[7:8]])] = 1.0
+#     print("the order to be used",[(bins[i+1])   for i in order[3:8]]) # print the chosen value below which all pix intensities are considered to be noise
+#     pylab.rc("axes", linewidth=8.0)
+#     pylab.rc("lines", markeredgewidth=2.0)
+#     xticks = [(bins[idx+1] + value)/2 for idx, value in enumerate(bins[:-1])]
+#     xticks_labels = [ "{:.1f}\nto\n{:.1f}".format(value, bins[idx+1]) for idx, value in enumerate(bins[:-1])]
+#     # plt.xticks(xticks, labels = xticks_labels)
+#     plt.xlabel('Pixel intensities', fontsize=14)
