@@ -36,8 +36,8 @@ def read_norm(filepath, ch_num):
 # plot histogram improved
 import pylab
 from pylab import xticks
-def histo(img, bins = 30, range = [0,1]):
-    n, bins, patches = plt.hist(img.ravel(), bins = bins, range = range, facecolor='gray', align='mid') # (y, x, _)
+def histo(img, bins = 30, range1 = [0,1]):
+    n, bins, patches = plt.hist(img.ravel(), bins = bins, range = range1, facecolor='gray', align='mid') # (y, x, _)
     order = np.argsort(n)[::-1]
     # print(" highest bins:", n[order][:10])
     print("  their ranges:", [ (bins[i+1])   for i in order[:10]]) #bins[i],
@@ -84,31 +84,32 @@ def histo(img, bins = 30, range = [0,1]):
 img_arr = Image.open(img_test)
 img_arr.seek(3)
 img = np.array(img_arr, dtype = 'float32')
-range = [img.min(),img.max()]
-n, bins, patches = plt.hist(img.ravel(), bins = 30, range = range, facecolor='gray', align='mid') # (y, x, _)
+range2 = [img.min(),img.max()]
+n, bins, patches = plt.hist(img.ravel(), bins = 30, range = range2, facecolor='gray', align='mid') # (y, x, _)
 order = np.argsort(n)[::-1]
 print(order)
 # print(" highest bins:", n[order][:10])
 print("  their ranges:", [ (bins[i+1])   for i in order[:]]) #bins[i],
-for i in order:
-    if i >=0 and i<3:
+for i in range(len(order)):
+    if bins[i+1] >= img.mean():
+        print(bins[i+1])
+    if 0 <= i <= 4:
         print("1",i, bins[i+1], img[img <= ([(bins[i+1])])])
         img[img <= ([(bins[i+1])])] = 0.0
         print("after 1",img[img <= ([(bins[i+1])])])
-    elif i>=8:
+    elif 5 <= i <= 6:
+        print("2",i, bins[i+1], img[img <= ([(bins[i+1])])])
+        # img[img <= ([(bins[i+1])])] = img.max()
+    elif i>=7:
         print("3",i, bins[i+1], img[img >= ([(bins[i+1])])])
         img[img >= ([(bins[i+1])])] = 0.0
         print("after 3", img[img >= ([(bins[i+1])])])
-    elif i>=3 and i<8:
-        print("2",i, bins[i+1], img[img >= ([(bins[i+1])])])
-        # img[img >= ([(bins[i+1])])] = 1.0
-#
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(img, cmap = 'gray')
-# fig.show()
-#
-#
-#
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(img, cmap = 'gray')
+fig.show()
+
+
 # # change the contrast such that the order[3:8] are only visible and rest are all masked
 #     img[img <= ([(bins[i+1])   for i in order[0:1]])] = 0.0 # select the bin, below which the pix intensities will be blackened
 #     img[img <= ([(bins[i+1])   for i in order[1:2]])] = 0.0
