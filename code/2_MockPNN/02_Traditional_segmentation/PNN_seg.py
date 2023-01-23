@@ -46,11 +46,12 @@ img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_
 
 # read and normalize the images
 im_cla = read_norm(img_test, 1)
-orig_wfa = read_norm(img_test, 3) #, im_wfa, img_arr_adj
+orig_wfa, im_wfa = read_norm(img_test, 3) #, im_wfa, img_arr_adj
+
 # plot_img(orig_wfa, im_wfa)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(orig_wfa, cmap = 'gray')
-fig.show()
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(orig_wfa, cmap = 'gray')
+# fig.show()
 
 # segment PNNs using Claudin-5 for a single image
 cla_wfa_contour = detect_contours(im_cla)
@@ -61,10 +62,12 @@ wfa_contours = detect_contours(out_img_gry)
 wfx, wfy, wfw, wfh, pnn_area, seg_wfa = draw_contours(out_img_gry, 3, wfa_contours, (0,0,255), 2)
 # plot_img(im_wfa, seg_wfa)
 img_info_wfa = create_df(wfx, wfy, wfw, wfh, pnn_area, img_test, 'PNN')
-wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa, orig_wfa) # to get all the pixels and their mean pixel intensities
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(contour_img, cmap = 'gray')
-# fig.show()
+# wfa, img_info1_wfa = all_pix_pnns(img_info_wfa, seg_wfa, orig_wfa) # to get all the pixels and their mean pixel intensities
+im_wfa_clr = skimage.color.gray2rgb(im_wfa)
+approx, contours1, shapes, contour_img1 = detect_shape_pnns(seg_wfa, img_info_wfa, wfa_contours)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(contour_img1, cmap = 'gray')
+fig.show()
 
 
 # segment PNNs from all images in a directory
@@ -88,7 +91,15 @@ manual_pnns = manual_annot(csv_test)
 orig_wfa_clr = skimage.color.gray2rgb(orig_wfa)
 manual = draw_rect(manual_pnns, orig_wfa_clr, (255,0,0))
 img, df = all_pix_pnns(manual_pnns, manual,  orig_wfa)
+x = [0.63221335, 0.5955076,0.6419167,0.67618203,0.7545275,0.75522727,0.7332946,0.7341727,0.72368777]
 
+fig = plt.figure(figsize = (5, 5))
+plt.bar(list(range(0,9)), x, color = 'blue', width = 0.2)
+plt.xticks(np.arange(0,9, 1), labels = list(range(0,8)))
+plt.xlabel("Number of segmented PNNs")
+plt.ylabel("Mean pixel intensities")
+plt.title("Mean pixel intensities plot for annotated PNNs")
+plt.show()
 
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(img, cmap = 'gray')
