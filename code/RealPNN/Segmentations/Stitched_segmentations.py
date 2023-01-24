@@ -7,7 +7,6 @@ Channel3 = NeuN,
 Channel4 = WFA
 '''
 
-AF, Claudin-5, DAPI, NeuN, WFA
 
 
 import numpy as np
@@ -43,11 +42,15 @@ img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1
 img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif')
 
 Image.MAX_IMAGE_PIXELS = None
-dapi = read_norm(img_C1, 4)
+dapi = Image.open(img_C1)
+dapi.seek(2)
+im_dapi = np.array(dapi, dtype = 'uint8')
+
+dapi, dapi_clr = read_norm(img_C1, 2)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi, cmap = 'gray')
 fig.show()
-dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 0, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
+dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 2, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(ws_img_bb)
 fig.show()
