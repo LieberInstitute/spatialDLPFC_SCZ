@@ -39,3 +39,13 @@ from shapely.geometry.polygon import Polygon
 
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif')
 img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif')
+
+Image.MAX_IMAGE_PIXELS = None
+dapi, dapi_clr = read_norm(img_C1, 0)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(dapi, cmap = 'gray')
+fig.show()
+dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 0, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(ws_img_bb)
+fig.show()
