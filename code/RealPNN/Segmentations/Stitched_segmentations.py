@@ -1,12 +1,14 @@
 '''
-For Visium-IF
-Channel0 = DAPI, DAPI
-Channel1 = Claudin5 (Alex 488),
-Channel2 = NeuN (Alexa 555),
-Channel3 = WFA (Alexa 647),
-Channel4 = AF (Autofluorescence), sample AF
-Channel5 = Thumbnail
+For Stitched Visium-IF tissue sections from VistoSeg SplitSlide output
+Channel0 = AF
+Channel1 = Claudin - 5 (Alex 488),
+Channel2 = DAPI,
+Channel3 = NeuN,
+Channel4 = WFA
 '''
+
+AF, Claudin-5, DAPI, NeuN, WFA
+
 
 import numpy as np
 import helper_functions
@@ -41,7 +43,7 @@ img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1
 img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif')
 
 Image.MAX_IMAGE_PIXELS = None
-dapi, dapi_clr = read_norm(img_C1, 0)
+dapi = read_norm(img_C1, 4)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi, cmap = 'gray')
 fig.show()
