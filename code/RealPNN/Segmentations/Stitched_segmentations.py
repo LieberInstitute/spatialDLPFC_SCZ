@@ -63,7 +63,12 @@ fig.show()
 
 
 ######### NeuN segmentations
-neun = read_norm(img_C1, 3)
+neun = read_norm(img_C1, 3)fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(neun, cmap = 'gray')
+fig.show()
 neun_contours = detect_contours(neun)
+nx,ny,nw,nh,narea, seg_neun = draw_contours(neun, 2, neun_contours,(0,255,0), 2)
+plot_img(neun, seg_neun)
+
 
 
