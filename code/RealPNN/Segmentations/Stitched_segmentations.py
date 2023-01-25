@@ -42,6 +42,8 @@ img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1
 img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif')
 
 Image.MAX_IMAGE_PIXELS = None
+
+###### DAPI segmentations
 dapi = Image.open(img_C1)
 dapi.seek(2)
 im_dapi = np.array(dapi, dtype = 'uint8')
@@ -58,3 +60,10 @@ dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 2, contours = None,  c
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(ws_img_bb)
 fig.show()
+
+
+######### NeuN segmentations
+neun = read_norm(img_C1, 3)
+neun_contours = detect_contours(neun)
+
+
