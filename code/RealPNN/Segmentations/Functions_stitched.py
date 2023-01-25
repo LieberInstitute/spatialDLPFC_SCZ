@@ -88,3 +88,11 @@ def draw_rect_dapi(labels, gray, dapi):
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
 
+# plot the segmented and original image
+def plot_img(original_img, segmented_img):
+    fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
+    ax[0].imshow(original_img, cmap='gray')
+    ax[0].title.set_text('Original')
+    ax[1].imshow(segmented_img, cmap='gray')
+    ax[1].title.set_text('Segmented')
+    fig.show()
