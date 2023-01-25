@@ -46,11 +46,11 @@ dapi = Image.open(img_C1)
 dapi.seek(2)
 im_dapi = np.array(dapi, dtype = 'uint8')
 shifted, thresh, gray = morph_transform(dapi_clr)
-
+labels = find_labels(thresh)
 
 dapi, dapi_clr = read_norm(img_C1, 2)
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(dapi, cmap = 'gray')
+ax.imshow(shifted) # , cmap = 'gray'
 fig.show()
 dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 2, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
 fig,ax = plt.subplots(figsize = (20,20))
