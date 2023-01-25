@@ -48,6 +48,7 @@ im_dapi = np.array(dapi, dtype = 'uint8')
 shifted, thresh, gray = morph_transform(dapi_clr)
 labels = find_labels(thresh)
 dpx, dpy, dpw, dph, area, ws_img_bb = draw_rect_dapi(labels, gray, dapi)
+cv2.imsave('/users/ukaipa/PNN/One_img/dapi_stitched.tif', ws_img_bb)
 
 dapi, dapi_clr = read_norm(img_C1, 2)
 fig,ax = plt.subplots(figsize = (20,20))
