@@ -45,6 +45,8 @@ Image.MAX_IMAGE_PIXELS = None
 dapi = Image.open(img_C1)
 dapi.seek(2)
 im_dapi = np.array(dapi, dtype = 'uint8')
+shifted, thresh, gray = morph_transform(dapi_clr)
+
 
 dapi, dapi_clr = read_norm(img_C1, 2)
 fig,ax = plt.subplots(figsize = (20,20))
