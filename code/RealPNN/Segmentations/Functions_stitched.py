@@ -71,7 +71,7 @@ def find_labels(threshold):
 
 
 # extract the watershed algorithm labels
-def draw_rect_dapi(labels, gray, dapi):
+def draw_rect_dapi(labels, gray, dapi_clr):
     dpx, dpy, dpw, dph, area = [], [], [], [], []
     print("1) entering the label loop")
     for label in np.unique(labels):
@@ -97,7 +97,7 @@ def draw_rect_dapi(labels, gray, dapi):
             dph.append(h)
             area.append(cv2.contourArea(c))
             print("7) appended")
-            ws_img_bb = cv2.rectangle(dapi, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+            ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
             print("8) drawing rectangles")
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
@@ -158,7 +158,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 # cv2.putText(contour_img, label, (x_,y_), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (125, 246, 55), 3)
         return x, y, w, h, area, contour_img
     else:
-        color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
+        color_img = skimage.color.gray2rgb(neun, dtype = np.uint8)
         x, y, w, h, area = [],[],[],[],[]
         for cnt in contours:
             x_, y_, w_, h_ = cv2.boundingRect(cnt)
