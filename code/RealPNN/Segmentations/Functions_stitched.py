@@ -13,9 +13,10 @@ def read_norm(filepath, ch_num):
     img = Image.open(filepath)
     img.seek(ch_num)
     if ch_num == 1: # claudin
-        img_claudin = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        img_claudin[img_claudin <= img_claudin.mean()] = 0.0
-        img_claudin[img_claudin >= img_claudin.mean()] = 1.0
+        # img_claudin = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        img_claudin = np.array(img, dtype = 'uint8')
+        # img_claudin[img_claudin <= img_claudin.mean()] = 0.0
+        # img_claudin[img_claudin >= img_claudin.mean()] = 1.0
         return img_claudin
     if ch_num == 2: # DAPI
         dapi_clr = skimage.color.gray2rgb((np.array(img, dtype = np.uint8))) # convert to color to draw colored bb
@@ -113,7 +114,7 @@ from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
 import imutils
 def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickness = None, dapi_clr = None):
-    if ch_num == 0:
+    if ch_num == 2: #DAPI
         shifted = cv2.pyrMeanShiftFiltering(dapi_clr, 21, 51) #dapi_clr
         gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
         thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
@@ -141,7 +142,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 area.append(cv2.contourArea(c))
                 ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
         return dpx, dpy, dpw, dph, area, ws_img_bb
-    elif ch_num == 3:
+    elif ch_num == 4: #WFA
         color_img = skimage.color.gray2rgb((np.array((normalised_img * 255), dtype = np.uint8)))
         x, y, w, h, area = [],[],[],[],[]
         for cnt in contours:
@@ -161,8 +162,8 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
                 # cv2.putText(contour_img, label, (x_,y_), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (125, 246, 55), 3)
         return x, y, w, h, area, contour_img
-    else:
-        color_img = skimage.color.gray2rgb(neun, dtype = np.uint8)
+    else: #NeuN and Claudin
+        color_img = skimage.color.gray2rgb(normalised_img, dtype = np.uint8)
         x, y, w, h, area = [],[],[],[],[]
         for cnt in contours:
             x_, y_, w_, h_ = cv2.boundingRect(cnt)
