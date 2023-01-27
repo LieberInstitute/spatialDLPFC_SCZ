@@ -8,6 +8,7 @@ Channel4 = WFA
 '''
 
 # read and normalise the image
+Image.MAX_IMAGE_PIXELS = None
 def read_norm(filepath, ch_num):
     img = Image.open(filepath)
     img.seek(ch_num)
