@@ -24,8 +24,8 @@ def read_norm(filepath, ch_num):
         return dapi
     if ch_num == 3: #NeuN
         img_neun = np.array(img, dtype = 'uint8')
-        img_neun[img_neun <= img_neun.mean()] = 0
-        img_neun[img_neun >= img_neun.mean()] = 255
+        # img_neun[img_neun <= img_neun.mean()] = 0
+        # img_neun[img_neun >= img_neun.mean()] = 255
         # img_neun = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         # neun_gray = skimage.color.rgb2gray(img_neun) # convert to gray to find contours
         return img_neun
