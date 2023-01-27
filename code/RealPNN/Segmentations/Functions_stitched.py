@@ -78,6 +78,7 @@ def find_labels(threshold):
 
 # extract the watershed algorithm labels
 def draw_rect_dapi(labels, gray, dapi_clr):
+    counter = 0
     dpx, dpy, dpw, dph, area = [], [], [], [], []
     print("1) entering the label loop")
     for label in np.unique(labels):
@@ -105,6 +106,7 @@ def draw_rect_dapi(labels, gray, dapi_clr):
             print("7) appended")
             ws_img_bb = cv2.rectangle(dapi_clr, (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
             print("8) drawing rectangles")
+            print("drawing rectangle number",counter+1)
     return dpx, dpy, dpw, dph, area, ws_img_bb
 
 
