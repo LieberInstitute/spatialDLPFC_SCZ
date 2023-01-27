@@ -66,7 +66,8 @@ fig.show()
 
 
 ######### NeuN segmentations
-neun = read_norm(img_C1, 3)fig,ax = plt.subplots(figsize = (20,20))
+neun = read_norm(img_C1, 3)
+fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(neun, cmap = 'gray')
 fig.show()
 neun_contours = detect_contours(neun)
@@ -77,6 +78,9 @@ plot_img(neun, seg_neun)
 
 ########## Claudin segmentation
 cla = read_norm(img_C1, 1)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(cla, cmap = 'gray')
+fig.show()
 cla_contours = detect_contours(cla)
 clx,cly,clw,clh, cl_area, seg_cla = draw_contours(im_cla, 1, cla_contours , (255,0,0), 2)
 img_info_claudin = create_df(clx,cly,clw,clh, cl_area, img_test, 'claudin')
