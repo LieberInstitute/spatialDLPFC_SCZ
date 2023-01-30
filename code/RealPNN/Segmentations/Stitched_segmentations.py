@@ -56,6 +56,10 @@ wfa255 = wfa * 255
 ret,th1 = cv.threshold(wfa255,127,255,cv2.THRESH_BINARY)
 th2 = cv2.adaptiveThreshold(wfa255,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,2)
 th3 = cv2.adaptiveThreshold(wfa255,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(wfa255, cmap = 'gray')
+fig.show()
+
 
 im_dapi = np.array(dapi, dtype = 'uint8')
 shifted, thresh, gray = morph_transform(dapi_clr)
