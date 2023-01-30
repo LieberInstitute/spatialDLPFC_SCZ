@@ -44,11 +44,19 @@ img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1
 Image.MAX_IMAGE_PIXELS = None
 
 ###### DAPI segmentations
-dapi = Image.open(img_C1)
-dapi.seek(4)
+wfa = Image.open(img_C1)
+wfa.seek(4)
+im_wfa = np.array(wfa, dtype = 'uint8')
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(dapi, cmap = 'gray')
+ax.imshow(wfa, cmap = 'gray')
 fig.show()
+
+im_wfa, wfa = read_norm(img_C1, 4)
+wfa255 = wfa * 255
+ret,th1 = cv.threshold(wfa255,127,255,cv2.THRESH_BINARY)
+th2 = cv2.adaptiveThreshold(wfa255,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,2)
+th3 = cv2.adaptiveThreshold(wfa255,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+
 im_dapi = np.array(dapi, dtype = 'uint8')
 shifted, thresh, gray = morph_transform(dapi_clr)
 labels = find_labels(thresh)
