@@ -167,7 +167,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
                 # cv2.putText(contour_img, label, (x_,y_), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (125, 246, 55), 3)
         return x, y, w, h, area, contour_img
-    else: #NeuN
+    elif ch_num == 3: #NeuN
         color_img = skimage.color.gray2rgb(normalised_img, dtype = np.uint8)
         x, y, w, h, area = [],[],[],[],[]
         for cnt in contours:
@@ -191,7 +191,7 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
         for cnt in contours:
             x_, y_, w_, h_ = cv2.boundingRect(cnt)
             area_ = cv2.contourArea(cnt)
-            if area_ >= 100:
+            if area_ >= 100 and area_ < 2000:
                 # area_ = cv2.contourArea(cnt)
                 # print(ax,ay,aw,ah)
                 x.append(x_)
