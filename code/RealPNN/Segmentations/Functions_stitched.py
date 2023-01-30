@@ -167,7 +167,25 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
                 contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
                 # cv2.putText(contour_img, label, (x_,y_), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (125, 246, 55), 3)
         return x, y, w, h, area, contour_img
-    else: #NeuN and Claudin
+    else: #NeuN
+        color_img = skimage.color.gray2rgb(normalised_img, dtype = np.uint8)
+        x, y, w, h, area = [],[],[],[],[]
+        for cnt in contours:
+            x_, y_, w_, h_ = cv2.boundingRect(cnt)
+            area_ = cv2.contourArea(cnt)
+            if area_ >= 100:
+                # area_ = cv2.contourArea(cnt)
+                # print(ax,ay,aw,ah)
+                x.append(x_)
+                y.append(y_)
+                w.append(w_)
+                h.append(h_)
+                area.append(area_)
+                bb_img = cv2.rectangle(color_img, (x_,y_), (x_+w_+10, y_+h_+10), color, thickness) #(255,0,0), 2-- to draw colored boxes
+                box = np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))
+                contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
+        return x, y, w, h, area, contour_img
+    else: #Claudin
         color_img = skimage.color.gray2rgb(normalised_img, dtype = np.uint8)
         x, y, w, h, area = [],[],[],[],[]
         for cnt in contours:
