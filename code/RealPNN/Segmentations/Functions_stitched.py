@@ -191,7 +191,9 @@ def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickn
         for cnt in contours:
             x_, y_, w_, h_ = cv2.boundingRect(cnt)
             area_ = cv2.contourArea(cnt)
-            if area_ >= 100 and area_ < 2000:
+            if area_ >= 1000:
+                contour_img = cv2.rectangle(color_img, (x_-10,y_-10), (x_+w_+10, y_+h_+10), (0,0,0), -1) # eliminating all the big objects
+            elif 90 <= area_ < 2500: # size threshold
                 # area_ = cv2.contourArea(cnt)
                 # print(ax,ay,aw,ah)
                 x.append(x_)
