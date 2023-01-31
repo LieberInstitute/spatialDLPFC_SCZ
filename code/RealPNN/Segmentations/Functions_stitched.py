@@ -12,6 +12,7 @@ from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
 import imutils
 
+
 # read and normalise the image
 Image.MAX_IMAGE_PIXELS = None
 def read_norm(filepath, ch_num):
@@ -51,11 +52,6 @@ def detect_contours(normalised_img): ### create a separate function for shape de
     return contours
 
 ######### DAPI segmentation functions
-from __future__ import print_function
-from skimage.feature import peak_local_max
-from skimage.segmentation import find_boundaries, watershed
-from scipy import ndimage
-import imutils
 def morph_transform(original_img):
     image_clr = skimage.color.gray2rgb((np.array((original_img * 255), dtype = np.uint8)))
     shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
