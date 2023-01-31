@@ -46,11 +46,9 @@ from shapely.geometry.polygon import Polygon
 def morph_transform(original_img):
     image_clr = skimage.color.gray2rgb(original_img)
     shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
-    print("shifted")
     gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
-    print("grayed")
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    print("thresholded")
+    print("Morphological transformations complete")
     # fig,ax = plt.subplots(figsize = (20,20))
     # ax.imshow(image_clr)
     # fig.show()
