@@ -19,9 +19,9 @@ def read_norm(filepath, ch_num):
         img_claudin[img_claudin >= img_claudin.mean()] = 255
         return img_claudin
     if ch_num == 2: # DAPI
-        # dapi_clr = skimage.color.gray2rgb((np.array(img, dtype = np.uint8))) # convert to color to draw colored bb
+        dapi_clr = skimage.color.gray2rgb((np.array(img, dtype = np.uint8))) # convert to color to draw colored bb
         dapi = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        return dapi
+        return dapi, dapi_clr
     if ch_num == 3: #NeuN
         img_neun = np.array(img, dtype = 'uint8')
         # img_neun[img_neun <= img_neun.mean()] = 0
@@ -52,7 +52,7 @@ from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
 import imutils
 def morph_transform(original_img):
-    image_clr = skimage.color.gray2rgb((np.array(original_img, dtype = np.uint8)))
+    image_clr = skimage.color.gray2rgb((np.array((original_img * 255), dtype = np.uint8)))
     shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
     print("shifted")
     gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
