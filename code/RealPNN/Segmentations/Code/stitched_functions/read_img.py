@@ -44,7 +44,7 @@ from shapely.geometry.polygon import Polygon
 
 # morphological transformations
 def morph_transform(original_img):
-    image_clr = skimage.color.gray2rgb((np.array((original_img * 255), dtype = np.uint8)))
+    image_clr = skimage.color.gray2rgb(original_img)
     shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
     print("shifted")
     gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
@@ -71,23 +71,14 @@ def preprocess(filepath, ch_num):
     if ch_num == 2: # DAPI
         # img_dapi = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         img_dapi = np.array(img, dtype = 'uint8')
-        img_dapi_clr = skimage.color.gray2rgb(img_dapi) # convert to color to draw colored bb
-        dapi_shifted = cv2.pyrMeanShiftFiltering(img_dapi_clr, 21, 51) #dapi_clr
-        print("shifted")
-        dapi_gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
-        print("grayed")
-        dapi_thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-        print("thresholded")
+        dapi_shifted, dapi_gray, dapi_thresh = morph_transform(img_dapi)
         return img_dapi, dapi_shifted, dapi_gray, dapi_thresh
     if ch_num == 3: #NeuN
         img_neun = np.array(img, dtype = 'uint8')
-        # img_neun[img_neun <= img_neun.mean()] = 0
-        # img_neun[img_neun >= img_neun.mean()] = 255
-        # img_neun = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        # neun_gray = skimage.color.rgb2gray(img_neun) # convert to gray to find contours
-        return img_neun
+        neun_shifted, neun_gray, neun_thresh = morph_transform(img_neun)
+        # img_neun = cv2.normalize(img_neun, np.zeros(img_neun.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        return img_neun, neun_shifted, neun_gray, neun_thresh
     else: # wfa
-        img_arr = np.array(img, dtype = 'uint8')
-        # histo(img_arr,range = [img_arr.min(),img_arr.max()])
-        img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        return img_arr, img_wfa
+        img_wfa = np.array(img, dtype = 'uint8')
+        # img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        return img_wfa
