@@ -6,6 +6,36 @@ Channel2 = DAPI,
 Channel3 = NeuN,
 Channel4 = WFA
 '''
+from __future__ import print_function
+from skimage.feature import peak_local_max
+from skimage.segmentation import find_boundaries, watershed
+from scipy import ndimage
+import imutils
+import numpy as np
+from pyhere import here
+from pylab import xticks
+from pathlib import Path
+import pandas as pd
+import PIL
+from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
+import os
+import matplotlib
+import matplotlib.pyplot as plt
+import sys
+import cv2
+import math
+import scipy
+from scipy.spatial.distance import *
+import skimage
+from skimage import *
+from skimage import feature, segmentation, draw, measure, morphology
+from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
+from skimage.draw import polygon_perimeter
+from itertools import product
+from collections import defaultdict
+from shapely.geometry import Point
+from shapely.geometry.polygon import Polygon
+
 
 # read and normalise the image
 Image.MAX_IMAGE_PIXELS = None
@@ -46,11 +76,6 @@ def detect_contours(normalised_img): ### create a separate function for shape de
     return contours
 
 ######### DAPI segmentation functions
-from __future__ import print_function
-from skimage.feature import peak_local_max
-from skimage.segmentation import find_boundaries, watershed
-from scipy import ndimage
-import imutils
 def morph_transform(original_img):
     image_clr = skimage.color.gray2rgb((np.array((original_img * 255), dtype = np.uint8)))
     shifted = cv2.pyrMeanShiftFiltering(image_clr, 21, 51) #dapi_clr
@@ -113,11 +138,6 @@ def draw_rect_dapi(labels, gray, dapi):
 
 
 # draw the extracted contours onto the image
-from __future__ import print_function
-from skimage.feature import peak_local_max
-from skimage.segmentation import find_boundaries, watershed
-from scipy import ndimage
-import imutils
 def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickness = None, dapi_clr = None):
     if ch_num == 1: #Claudin
         color_img = skimage.color.gray2rgb(normalised_img, dtype = np.uint8)
