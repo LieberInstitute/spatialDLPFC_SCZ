@@ -12,6 +12,7 @@ from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
 import imutils
 import numpy as np
+import pyhere
 from pyhere import here
 from pylab import xticks
 from pathlib import Path

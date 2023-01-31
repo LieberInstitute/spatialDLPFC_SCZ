@@ -8,7 +8,7 @@ Channel4 = WFA
 '''
 
 
-import Functions_stitched
+import Functions_stitched as fs
 import numpy as np
 from pyhere import here
 from pylab import xticks
@@ -48,7 +48,7 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(wfa, cmap = 'gray')
 fig.show()
 
-im_wfa, wfa = read_norm(img_C1, 4)
+im_wfa, wfa = fs.read_norm(img_C1, 4)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(wfa, cmap = 'gray')
 fig.show()
@@ -69,21 +69,21 @@ fig.show()
 
 im_dapi = np.array(dapi, dtype = 'uint8')
 
-dapi, dapi_clr = read_norm(img_C1, 2)
+dapi, dapi_clr = fs.read_norm(img_C1, 2)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi, cmap = 'gray')
 fig.show()
-shifted, thresh, gray = morph_transform(dapi)
+shifted, thresh, gray = fs.morph_transform(dapi)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(gray, cmap = 'gray')
 fig.show()
 
-labels = find_labels(thresh)
+labels = fs.find_labels(thresh)
 dpx, dpy, dpw, dph, area, ws_img_bb = draw_rect_dapi(labels, gray, dapi_clr)
 cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_run2.tif', ws_img_bb)
 
-dapi = read_norm(img_C1, 2)
-dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 2, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
+dapi = fs.read_norm(img_C1, 2)
+dpx, dpy, dpw, dph, area, ws_img_bb = fs.draw_contours(dapi, 2, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(ws_img_bb)
 fig.show()
