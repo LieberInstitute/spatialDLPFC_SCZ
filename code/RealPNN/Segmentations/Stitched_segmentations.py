@@ -8,7 +8,7 @@ Channel4 = WFA
 '''
 
 
-
+import Functions_stitched
 import numpy as np
 from pyhere import here
 from pylab import xticks
