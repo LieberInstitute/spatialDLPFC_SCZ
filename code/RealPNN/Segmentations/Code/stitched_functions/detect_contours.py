@@ -47,3 +47,15 @@ def contours(original_img): ### create a separate function for shape detection a
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     print("contours detected", len(contours))
     return contours
+
+
+def find_labels(threshold):
+    D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
+    print("distance measured")
+    localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
+    print("local max found")
+    markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
+    print("local max markers found")
+    labels = watershed(-D, markers, mask=threshold)
+    print("{} unique segments found".format(len(np.unique(labels)) - 1))
+    return labels
