@@ -1,5 +1,4 @@
 #!/bin/bash
-#$ -cwd;
 #$ -pe local 10
 #$ -l caracol,mem_free=120G,h_vmem=120G,h_fsize=100G
 #$ -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/logs/Output_DAPI_seg.txt
@@ -25,7 +24,7 @@ eval "$(conda shell.bash hook)"
 conda activate venv_uma
 
 ### python filename
-python 
+python DAPI.py
 
 
 echo "**** Job ends ****"
