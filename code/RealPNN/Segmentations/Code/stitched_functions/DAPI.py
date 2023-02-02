@@ -1,12 +1,11 @@
 OMJGJSRJH
 '''
-For Visium-IF
-Channel0 = DAPI, DAPI
-Channel1 = Claudin5 (Alex 488),
-Channel2 = NeuN (Alexa 555),
-Channel3 = WFA (Alexa 647),
-Channel4 = AF (Autofluorescence), sample AF
-Channel5 = Thumbnail
+For Stitched Visium-IF tissue sections from VistoSeg SplitSlide output
+Channel0 = AF
+Channel1 = Claudin - 5 (Alex 488),
+Channel2 = DAPI,
+Channel3 = NeuN,
+Channel4 = WFA
 '''
 
 from __future__ import print_function
@@ -46,6 +45,12 @@ from stitched_functions import watershed_segmentation
 
 
 # file paths
-parser = argparse.ArgumentParser()
-parser.add_argument('filepath')
-args = parser.parse_args()
+img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
+img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
+
+# parser = argparse.ArgumentParser()
+# parser.add_argument('--filepath', type=dir_path, required = True)
+# args = parser.parse_args()
+
+img_dapi, dapi_shifted, dapi_gray, dapi_thresh = read_img.read_and_preprocess(img_C1, 2)
+dapi_labels, dapi_localmax = watershed_segmentation.find_labels(dapi_thresh)
