@@ -10,7 +10,6 @@ Channel4 = WFA
 
 
 import numpy as np
-import helper_functions
 import pyhere
 import pylab
 from pylab import xticks
@@ -80,8 +79,7 @@ shifted, thresh, gray = morph_transform(dapi)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(gray, cmap = 'gray')
 fig.show()
-
-labels = find_labels(thresh)
+labels, localMax = find_labels(thresh)
 dpx, dpy, dpw, dph, area, ws_img_bb = draw_rect_dapi(labels, gray, dapi_clr)
 cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_run2.tif', ws_img_bb)
 
