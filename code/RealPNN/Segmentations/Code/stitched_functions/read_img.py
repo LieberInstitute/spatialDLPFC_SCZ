@@ -57,7 +57,7 @@ def morph_transform(original_img):
 
 # read and normalise the image
 Image.MAX_IMAGE_PIXELS = None
-def preprocess(filepath, ch_num):
+def read_and_preprocess(filepath, ch_num):
     img = Image.open(filepath)
     img.seek(ch_num)
     if ch_num == 1: # claudin
