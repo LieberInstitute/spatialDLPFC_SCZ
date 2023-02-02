@@ -60,7 +60,7 @@ def draw_rect_dapi(labels, gray, dapi):
         x,y,w,h = cv2.boundingRect(c) # BB coordinates
         area1 = cv2.contourArea(c)
         # print("5) found BB coordinates and area", counter)
-        if area1 <= 500:
+        if 2 >= area1 <= 500: # adding shape filter to filter out the smaller contours and the biggest cluter contours
             # print("6) appending BB coordinates", counter)
             dpx.append(x)
             dpy.append(y)
