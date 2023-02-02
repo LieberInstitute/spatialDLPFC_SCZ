@@ -95,7 +95,7 @@ def morph_transform(original_img):
 def find_labels(threshold):
     D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
     print("distance measured")
-    localMax = peak_local_max(D, indices=False, min_distance=5, labels=threshold) # find the local maxima for all the individual objects
+    localMax = peak_local_max(D, indices=False, min_distance=0, labels=threshold) # find the local maxima for all the individual objects
     print("local max found")
     markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
     print("local max markers found")
