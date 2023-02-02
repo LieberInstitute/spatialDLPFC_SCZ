@@ -96,12 +96,23 @@ def find_labels(threshold):
     D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
     print("distance measured")
     localMax = peak_local_max(D, indices=False, min_distance=0, labels=threshold) # find the local maxima for all the individual objects
-    print("local max found")
+    print("local max found") #min_distance=3 before
     markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
     print("local max markers found")
     labels = watershed(-D, markers, mask=threshold)
     print("{} unique segments found".format(len(np.unique(labels)) - 1))
-    return labels
+    return labels, localMax
+
+
+from matplotlib.collections import PatchCollection
+def plotRoi(spots, img_ax, color, radius):
+    patches = []
+    for spot in spots:
+        y, x = spot
+        c = plt.Circle((x, y), radius)
+        patches.append(c)
+    img_ax.add_collection(PatchCollection(patches, facecolors = "None", edgecolors = color, alpha = 0.3, linewidths = 1))
+
 
 
 
