@@ -1,4 +1,4 @@
-OMJGJSRJH
+
 '''
 For Visium-IF
 Channel0 = DAPI, DAPI
