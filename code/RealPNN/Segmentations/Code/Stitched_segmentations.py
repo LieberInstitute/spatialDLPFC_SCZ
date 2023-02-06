@@ -43,12 +43,24 @@ img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1
 Image.MAX_IMAGE_PIXELS = None
 
 ###### DAPI segmentations
-wfa = Image.open(img_C1)
-wfa.seek(4)
-im_wfa = np.array(wfa, dtype = 'uint8')
+neun = Image.open(img_C1)
+neun.seek(3)
+im_neun = np.array(neun, dtype = 'uint8')
+neun_clr = skimage.color.gray2rgb(im_neun)
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(wfa, cmap = 'gray')
+ax.imshow(neun, cmap = 'gray')
 fig.show()
+shifted, thresh, gray = morph_transform(neun_clr)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(thresh, cmap = 'gray')
+fig.show()
+
+labels, localMax = find_labels(thresh)
+dpx, dpy, dpw, dph, area, ws_img_bb = draw_rect_dapi(labels, gray, dapi_clr)
+cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_C1_run2.tif', ws_img_bb)
+
+
+
 
 im_wfa, wfa = read_norm(img_C1, 4)
 fig,ax = plt.subplots(figsize = (20,20))
@@ -71,7 +83,7 @@ fig.show()
 
 im_dapi = np.array(dapi, dtype = 'uint8')
 
-dapi, dapi_clr = read_norm(img_C1, 2)
+dapi, dapi_clr = read_norm(img_D1, 2)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi, cmap = 'gray')
 fig.show()
@@ -81,7 +93,7 @@ ax.imshow(gray, cmap = 'gray')
 fig.show()
 labels, localMax = find_labels(thresh)
 dpx, dpy, dpw, dph, area, ws_img_bb = draw_rect_dapi(labels, gray, dapi_clr)
-cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_run2.tif', ws_img_bb)
+cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_C1_run2.tif', ws_img_bb)
 
 dapi = read_norm(img_C1, 2)
 dpx, dpy, dpw, dph, area, ws_img_bb = draw_contours(dapi, 2, contours = None,  color = None, thickness = None, dapi_clr = dapi_clr)
