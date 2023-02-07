@@ -40,3 +40,14 @@ from itertools import product
 from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+from stitched_functions import *
+
+# image paths
+img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
+img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
+
+
+# read and pre-process the image
+im_claudin = read_and_preprocess(img_C1)
+plot_im(im_claudin)
+
