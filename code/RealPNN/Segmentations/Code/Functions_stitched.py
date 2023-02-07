@@ -69,11 +69,11 @@ def read_norm(filepath, ch_num):
 
 # detect contours in the normalised_img
 def detect_contours(normalised_img): ### create a separate function for shape detection and run it through this loop for contour detection
-    print("1) starting")
-    hierachy, img_threshold = cv2.threshold((np.array((normalised_img * 255), dtype = np.uint8)), 100, 255, cv2.THRESH_BINARY)
-    print("thresholded")
+    # print("1) starting")
+    hierachy, img_threshold = cv2.threshold(normalised_img, 10, 255, cv2.THRESH_BINARY)
+    # print("thresholded")
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    print("contours detected", len(contours))
+    print("Number of Claudin-5 contours detected:", len(contours))
     return contours
 
 ######### DAPI segmentation functions
