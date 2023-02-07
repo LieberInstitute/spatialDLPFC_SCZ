@@ -44,7 +44,7 @@ Image.MAX_IMAGE_PIXELS = None
 
 ###### DAPI segmentations
 neun = Image.open(img_C1)
-neun.seek(3)
+neun.seek(1)
 im_neun = np.array(neun, dtype = 'uint8')
 neun_clr = skimage.color.gray2rgb(im_neun)
 fig,ax = plt.subplots(figsize = (20,20))
@@ -128,6 +128,10 @@ cla = read_norm(img_C1, 1)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(cla, cmap = 'gray')
 fig.show()
+cla_clr = skimage.color.gray2rgb(cla)
+shifted1, thresh1, gray1 = morph_transform(cla_clr)
+labels, localMax = find_labels(thresh1)
+
 cla_contours = detect_contours(cla)
 clx,cly,clw,clh, cl_area, seg_cla = draw_contours(im_cla, 1, cla_contours , (255,0,0), 2)
 img_info_claudin = create_df(clx,cly,clw,clh, cl_area, img_test, 'claudin')
