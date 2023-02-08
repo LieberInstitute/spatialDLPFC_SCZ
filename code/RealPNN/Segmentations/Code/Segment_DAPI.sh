@@ -21,7 +21,7 @@ echo "****"
 
 ### load the python environment
 eval "$(conda shell.bash hook)"
-conda activate venv_uma
+conda activate venv_segmentations
 
 ### python filename
 python DAPI.py
