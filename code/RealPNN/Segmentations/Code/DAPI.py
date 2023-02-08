@@ -53,5 +53,16 @@ img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1
 
 img_dapi, dapi_shifted, dapi_gray, dapi_thresh = read_img.read_and_preprocess(img_D1, 2)
 dapi_labels, dapi_localmax = watershed_segmentation.find_labels(dapi_thresh)
-dpx, dpy, dpw, dph, area, dapi_segmented = watershed_segmentation.draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
+dpx, dpy, dpw, dph, dp_area, dapi_segmented = watershed_segmentation.draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
+dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, im_claudin, 'claudin')
+
+# claudin segmentations by detecting contours for all images in the directory
+for img_path in os.listdir(img_dir):
+    if img_path.endswith(".tif"):
+        im_claudin = read_img.read_and_preprocess(img_path, 1)
+        print("read", os.path.basename(img_path))
+        # plot_im(im_claudin)
+        cla_contours = detect_contours.return_contours(im_claudin)
+        clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+        img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
 
