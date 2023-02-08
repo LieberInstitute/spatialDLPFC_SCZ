@@ -1,12 +1,11 @@
 
 '''
-For Visium-IF
-Channel0 = DAPI, DAPI
-Channel1 = Claudin5 (Alex 488),
-Channel2 = NeuN (Alexa 555),
-Channel3 = WFA (Alexa 647),
-Channel4 = AF (Autofluorescence), sample AF
-Channel5 = Thumbnail
+For Stitched Visium-IF tissue sections from VistoSeg SplitSlide output
+Channel0 = AF
+Channel1 = Claudin - 5 (Alex 488),
+Channel2 = DAPI,
+Channel3 = NeuN,
+Channel4 = WFA
 '''
 
 from __future__ import print_function
@@ -41,3 +40,22 @@ from itertools import product
 from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+
+img_neun, neun_shifted, neun_gray, neun_thresh = read_img.read_and_preprocess(img_D1, 3)
+plot_im(img_neun)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(neun_thresh, cmap = 'gray')
+fig.show()
+neun_labels, neun_localmax = watershed_segmentation.find_labels(neun_thresh)
+nnx, nny, nnw, nnh, nn_area, neun_segmented = watershed_segmentation.draw_rect_dapi(neun_labels, neun_gray, img_neun)
+dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, im_claudin, 'claudin')
+
+# neun segmentations by detecting contours for all images in the directory
+for img_path in os.listdir(img_dir):
+    if img_path.endswith(".tif"):
+        im_neun = read_img.read_and_preprocess(img_path, 3)
+        print("read", os.path.basename(img_path))
+        # plot_im(im_claudin)
+        neun_contours = detect_contours.return_contours(im_neun)
+        nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_detected_contours(im_neun, 3, neun_contours , (255,0,0), 2)
+        img_info_claudin = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, im_neun, 'NeuN')
