@@ -43,10 +43,10 @@ from shapely.geometry.polygon import Polygon
 
 
 # populate a dataframe with the coordinates info
-def create_df(x,y,w,h, area, img_test, label):
+def create_df(x,y,w,h, area, img_name, label):
     print("Segmented {0} {1}".format(len(x), label))
     col_names = ['img_file_name','type_of_object_str', 'x1', 'y1', 'Width', 'Height', 'area']
-    file_name = os.path.basename(img_test) # image file name
+    file_name = os.path.basename(img_name) # image file name
     dict = {col_names[0]: file_name, col_names[1]: label, col_names[2]: x, col_names[3]: y, col_names[4]: w, col_names[5]: h, col_names[6]: area}
     img_info_df = pd.DataFrame(dict, columns = col_names)
     img_info_df['x2'] = img_info_df['x1'] + img_info_df['Width']
