@@ -42,7 +42,7 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 # draw the extracted contours onto the image
-def draw_contours(normalised_img, ch_num, contours = None,  color = None, thickness = None, dapi_clr = None):
+def draw_detected_contours(normalised_img, ch_num, contours = None,  color = None, thickness = None, dapi_clr = None):
     if ch_num == 1: #Claudin
         color_img = skimage.color.gray2rgb(normalised_img, dtype = np.uint8)
         x, y, w, h, area = [],[],[],[],[]
