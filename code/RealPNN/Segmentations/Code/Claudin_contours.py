@@ -45,9 +45,22 @@ from stitched_functions import *
 # image paths
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
 img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
+img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
 
-
-# read and pre-process the image
-im_claudin = read_and_preprocess(img_C1)
+# claudin segmentations by detecting contours for 1 image
+im_claudin = read_img.read_and_preprocess(img_C1, 1)
 plot_im(im_claudin)
+cla_contours = detect_contours.return_contours(im_claudin)
+clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+
+# claudin segmentations by detecting contours for all images in the directory
+for img_path in os.listdir(img_dir):
+    if img_path.endswith(".tif"):
+        im_claudin = read_img.read_and_preprocess(img_path, 1)
+        # plot_im(im_claudin)
+        cla_contours = detect_contours.return_contours(im_claudin)
+        clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+        img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+
 
