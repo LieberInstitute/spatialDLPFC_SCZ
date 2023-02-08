@@ -42,7 +42,7 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 # detect contours in the normalised_img
-def contours(original_img): ### create a separate function for shape detection and run it through this loop for contour detection
+def return_contours(original_img): ### create a separate function for shape detection and run it through this loop for contour detection
     hierachy, img_threshold = cv2.threshold(original_img, 100, 255, cv2.THRESH_BINARY)
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     print("contours detected", len(contours))
