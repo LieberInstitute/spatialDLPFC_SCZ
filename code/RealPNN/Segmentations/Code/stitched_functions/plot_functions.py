@@ -43,9 +43,18 @@ from shapely.geometry.polygon import Polygon
 from stitched_functions import *
 
 # simple plot
-def plot_im(img):
+def plot_im(img1, img2=None):
     fig,ax = plt.subplots(figsize = (20,20))
-    ax.imshow(img, cmap = 'gray')
+    ax.imshow(img1, cmap = 'gray')
     fig.show()
+    if (img2):
+        fig,ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20,20))
+        ax[0].imshow(original_img, cmap='gray')
+        # ax[0].title.set_text('Original')
+        ax[1].imshow(segmented_img, cmap='gray')
+        # ax[1].title.set_text('Segmented')
+        fig.show()
+
+
 
 
