@@ -51,23 +51,21 @@ img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1
 # directory path
 img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
 
-img_dapi, dapi_shifted, dapi_gray, dapi_thresh = read_img.read_and_preprocess(img_D1, 2)
-plot_im(dapi_thresh)
+img_af, af_shifted, af_gray, af_thresh = read_img.read_and_preprocess(img_D1, 0)
+plot_im(af_thresh)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi_thresh, cmap = 'gray')
 fig.show()
-dapi_labels, dapi_localmax = watershed_segmentation.find_labels(dapi_thresh)
-dpx, dpy, dpw, dph, dp_area, dapi_segmented = watershed_segmentation.draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
-dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, im_claudin, 'claudin')
+af_labels, af_localmax = watershed_segmentation.find_labels(af_thresh)
+afx, afy, afw, afh, af_area, af_segmented = watershed_segmentation.draw_rect_dapi(af_labels, af_gray, img_af)
+af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
 
 # claudin segmentations by detecting contours for all images in the directory
 for img_path in os.listdir(img_dir):
     if img_path.endswith(".tif"):
-        im_dapi = read_img.read_and_preprocess(img_path, 2)
+        im_af = read_img.read_and_preprocess(img_path, 0)
         print("read", os.path.basename(img_path))
         # plot_im(im_claudin)
-        dapi_contours = detect_contours.return_contours(im_dapi)
-        dpx, dpy, dpw, dph, dp_area, dapi_segmented = draw_contours.draw_detected_contours(im_dapi, 2, dapi_contours , (255,0,0), 2)
-        img_info_claudin = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, dapi_segmented, im_dapi, 'DAPI')
-
-
+        af_labels, af_localmax = watershed_segmentation.find_labels(af_thresh)
+        afx, afy, afw, afh, af_area, af_segmented = watershed_segmentation.draw_rect_dapi(af_labels, af_gray, img_af)
+        af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
