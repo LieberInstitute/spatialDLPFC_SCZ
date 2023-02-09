@@ -60,6 +60,11 @@ Image.MAX_IMAGE_PIXELS = None
 def read_and_preprocess(filepath, ch_num):
     img = Image.open(filepath)
     img.seek(ch_num)
+    if ch_num == 0: #AF
+        img_af = np.array(img, dtype = 'uint8')
+        af_clr = skimage.color.gray2rgb(img_af)
+        af_shifted, af_gray, af_thresh = morph_transform(af_clr)
+        return img_af, af_shifted, af_gray, af_thresh
     if ch_num == 1: # claudin
         # img_claudin = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         img_claudin = np.array(img, dtype = 'uint8')
