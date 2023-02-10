@@ -43,31 +43,36 @@ from stitched_functions import read_img
 from stitched_functions import watershed_segmentation
 from stitched_functions import *
 
-
+print("packages imported")
 # file paths
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
 img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
+print("filepaths imported")
 
 # parser = argparse.ArgumentParser()
 # parser.add_argument('--filepath', type=dir_path, required = True)
 # args = parser.parse_args()
 
 img_dapi, dapi_shifted, dapi_gray, dapi_thresh = read_img.read_and_preprocess(img_D1, 2)
-plot_im(img_dapi)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(dapi_thresh, cmap = 'gray')
-fig.show()
+# plot_imgs(img_dapi, dapi_thresh)
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(dapi_thresh, cmap = 'gray')
+# fig.show()
+print("dapi preprocessed")
 dapi_labels, dapi_localmax = watershed_segmentation.find_labels(dapi_thresh)
-dpx, dpy, dpw, dph, dp_area, dapi_segmented = watershed_segmentation.draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
-dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, im_claudin, 'claudin')
+print("dapi segmented")
+# dpx, dpy, dpw, dph, dp_area, dapi_segmented = watershed_segmentation.draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
+# print("dapi segments drawn and saved")
+# dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_dapi, 'dapi')
+# print("dapi coordinates saved")
 
-# claudin segmentations by detecting contours for all images in the directory
-for img_path in os.listdir(img_dir):
-    if img_path.endswith(".tif"):
-        im_dapi = read_img.read_and_preprocess(img_path, 2)
-        print("read", os.path.basename(img_path))
-        # plot_im(im_claudin)
-        cla_contours = detect_contours.return_contours(im_dapi)
-        clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_dapi, 1, cla_contours , (255,0,0), 2)
-        img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+# dapi segmentations by detecting contours for all images in the directory
+# for img_path in os.listdir(img_dir):
+#     if img_path.endswith(".tif"):
+#         im_dapi = read_img.read_and_preprocess(img_path, 2)
+#         print("read", os.path.basename(img_path))
+#         # plot_im(im_claudin)
+#         dapi_contours = detect_contours.return_contours(im_dapi)
+#         dpx, dpy, dpw, dph, dp_area, dapi_segmented = draw_contours.draw_detected_contours(im_dapi, 2, dapi_contours , (255,0,0), 2)
+#         img_info_dapi = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, dapi_segmented, im_dapi, 'DAPI')
 
