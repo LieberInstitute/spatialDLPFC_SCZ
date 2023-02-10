@@ -1,9 +1,8 @@
 #!/bin/bash
-#$ -pe local 10
-#$ -l caracol,mem_free=120G,h_vmem=120G,h_fsize=100G
+#$ -l caracol,mem_free=120G,h_vmem=120G,h_fsize=10G
 #$ -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/logs/Output_DAPI_seg.txt
-#$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/logs/Error__DAPI_seg.txt
-#$ -m bea
+#$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/logs/Error_DAPI_seg.txt
+#$ -m be
 #$ -M uma.kaipa@libd.org
 
 
