@@ -68,15 +68,17 @@ def read_and_preprocess(filepath, ch_num):
     if ch_num == 1: # claudin
         # img_claudin = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         img_claudin = np.array(img, dtype = 'uint8')
-        img_claudin[img_claudin <= img_claudin.mean()] = 0
-        img_claudin[img_claudin >= img_claudin.mean()] = 255
-        return img_claudin
+        claudin_clr = skimage.color.gray2rgb(img_dapi)
+        claudin_shifted, claudin_gray, claudin_thresh = morph_transform(claudin_clr)
+        # img_claudin[img_claudin <= img_claudin.mean()] = 0
+        # img_claudin[img_claudin >= img_claudin.mean()] = 255
+        return img_claudin, claudin_shifted, claudin_gray, claudin_thresh
     if ch_num == 2: # DAPI
         # img_dapi = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         img_dapi = np.array(img, dtype = 'uint8')
         dapi_clr = skimage.color.gray2rgb(img_dapi)
         dapi_shifted, dapi_gray, dapi_thresh = morph_transform(dapi_clr)
-        return img_dapi, dapi_shifted, dapi_gray, dapi_thresh
+        return img_dapi,dapi_shifted, dapi_gray, dapi_thresh
     if ch_num == 3: #NeuN
         img_neun = np.array(img, dtype = 'uint8')
         neun_clr = skimage.color.gray2rgb(img_neun)
