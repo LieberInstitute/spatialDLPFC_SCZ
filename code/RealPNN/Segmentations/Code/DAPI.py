@@ -61,8 +61,10 @@ img_dapi, dapi_shifted, dapi_gray, dapi_thresh = read_img.read_and_preprocess(im
 print("dapi preprocessed")
 dapi_labels, dapi_localmax = watershed_segmentation.find_labels(dapi_thresh)
 print("dapi segmented")
-# dpx, dpy, dpw, dph, dp_area, dapi_segmented = watershed_segmentation.draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
-# print("dapi segments drawn and saved")
+dpx, dpy, dpw, dph, dp_area, dapi_segmented = watershed_segmentation.draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
+print("dapi segments drawn and saved")
+cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_D1_run1_but2.tif', dapi_segmented)
+print("segmented image saved")
 # dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_dapi, 'dapi')
 # print("dapi coordinates saved")
 
