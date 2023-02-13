@@ -74,7 +74,7 @@ def draw_rect_dapi(labels, gray, dapi):
         x,y,w,h = cv2.boundingRect(c) # BB coordinates
         area1 = cv2.contourArea(c)
         # print("5) found BB coordinates and area", counter)
-        if 2 >= area1 <= 500: # adding shape filter to filter out the smaller contours and the biggest cluter contours
+        if 2 >= area1 <= 1000: # adding shape filter to filter out the smaller contours and the biggest cluter contours
             # print("6) appending BB coordinates", counter)
             dpx.append(x)
             dpy.append(y)
@@ -85,5 +85,5 @@ def draw_rect_dapi(labels, gray, dapi):
             ws_img_bb = cv2.rectangle(skimage.color.gray2rgb(dapi), (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
             # print("8) drawing rectangles")
             print("drawing rectangle number",counter, "with area", area1)
-    cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_D1_run1.tif', ws_img_bb)
+    # cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_D1_run1.tif', ws_img_bb)
     return dpx, dpy, dpw, dph, area, ws_img_bb
