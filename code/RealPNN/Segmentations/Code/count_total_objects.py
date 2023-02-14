@@ -50,6 +50,7 @@ img_dir_SCZ = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images
 for img in os.listdir(img_dir_NTC):
     if img.endswith('.tif'):
         img_arr = read_and_preprocess(os.path.join(img_dir_NTC, img), 0)
+
         fig,ax = plt.subplots(figsize = (20,20))
         ax.imshow(img_arr, cmap = 'gray')
         fig.show()
