@@ -56,8 +56,8 @@ def find_labels(threshold):
 
 
 # extract the watershed algorithm labels
-def draw_rect_dapi(labels, gray, dapi):
-    dpx, dpy, dpw, dph, area = [], [], [], [], []
+def draw_rect_dapi(labels, gray, img):
+    x_, y_, w_, h_, area_ = [], [], [], [], []
     # print("1) entering the label loop")
     for counter, label in enumerate(np.unique(labels)):
         if label == 0: # label marked 0 are background
@@ -74,16 +74,34 @@ def draw_rect_dapi(labels, gray, dapi):
         x,y,w,h = cv2.boundingRect(c) # BB coordinates
         area1 = cv2.contourArea(c)
         # print("5) found BB coordinates and area", counter)
-        if 2 >= area1 <= 1000: # adding shape filter to filter out the smaller contours and the biggest cluter contours
+        if area1 >= 2: # adding shape filter to filter out the smaller contours and the biggest cluter contours 2 >= area1 <= 1000
             # print("6) appending BB coordinates", counter)
-            dpx.append(x)
-            dpy.append(y)
-            dpw.append(w)
-            dph.append(h)
-            area.append(cv2.contourArea(c))
+            x_.append(x)
+            y_.append(y)
+            w_.append(w)
+            h_.append(h)
+            area_.append(cv2.contourArea(c))
             # print("7) appended")
-            ws_img_bb = cv2.rectangle(skimage.color.gray2rgb(dapi), (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+            ws_img_bb = cv2.rectangle(skimage.color.gray2rgb(img), (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
             # print("8) drawing rectangles")
             print("drawing rectangle number",counter, "with area", area1)
     # cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_D1_run1.tif', ws_img_bb)
-    return dpx, dpy, dpw, dph, area, ws_img_bb
+    return x_, y_, w_, h_, area_, ws_img_bb
+
+
+# # testing the segmentation on a single tile to check if the draw tile function is working
+# filepath = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S1_NTC/20220814_VIF_PNN_S1_NTC_Scan1_[12056,34215]_component_data.tif'
+# dp, dp_clr = read_norm(filepath, 0)
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(dp, cmap = 'gray')
+# fig.show()
+# dapi_shifted, dapi_gray, dapi_thresh = morph_transform(dp_clr)
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(dapi_thresh, cmap = 'gray')
+# fig.show()
+# dp_lbls, dp_max = find_labels(dapi_thresh)
+# dpx, dpy, dpw, dph, area, ws_img_bb=draw_rect_dapi(dp_lbls, dapi_gray, dp)
+#
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(ws_img_bb)
+# fig.show()
