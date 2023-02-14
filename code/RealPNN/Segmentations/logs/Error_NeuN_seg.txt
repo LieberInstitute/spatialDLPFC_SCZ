@@ -14,3 +14,10 @@ Traceback (most recent call last):
   File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/NeuN.py", line 47, in <module>
     img_neun, neun_shifted, neun_gray, neun_thresh = read_img.read_and_preprocess(img_D1, 3)
 NameError: name 'img_D1' is not defined
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/NeuN.py", line 43, in <module>
+    from stitched_functions import read_img, watershed_segmentation, save_coordinates
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/stitched_functions/read_img.py", line 101
+    Image.MAX_IMAGE_PIXELS = None
+    ^
+IndentationError: expected an indented block

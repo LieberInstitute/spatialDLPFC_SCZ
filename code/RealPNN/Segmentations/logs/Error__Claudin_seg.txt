@@ -8,3 +8,10 @@ Traceback (most recent call last):
   File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 76, in <module>
     clx, cly, clw, clh, cl_area, claudin_segmented = watershed_segmentation.draw_rect_dapi(claudin_labels, claudin_gray, claudin_neun)
 NameError: name 'claudin_neun' is not defined
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 43, in <module>
+    from stitched_functions import read_img, watershed_segmentation, save_coordinates
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/stitched_functions/read_img.py", line 101
+    Image.MAX_IMAGE_PIXELS = None
+    ^
+IndentationError: expected an indented block
