@@ -19,6 +19,7 @@ import imutils
 import numpy as np
 import pyhere
 from pyhere import here
+import re
 from pylab import xticks
 from pathlib import Path
 import pandas as pd
@@ -47,16 +48,28 @@ from stitched_functions import *
 img_dir_NTC = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S1_NTC/'
 img_dir_SCZ = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S2_SCZ/'
 
+
+# gets all the x,y coordinates of the slide
+cnt_x, cnt_y = [], []
 for img in os.listdir(img_dir_NTC):
     if img.endswith('.tif'):
-        img_arr = read_and_preprocess(os.path.join(img_dir_NTC, img), 0)
+        print(int(re.split(',', img.split('_')[6])[1].split(']')[0]))
+        cnt_x.append(int(re.split(',', img.split('_')[6])[0].split('[')[1]))
+        cnt_y.append(int(re.split(',', img.split('_')[6])[1].split(']')[0]))
 
-        fig,ax = plt.subplots(figsize = (20,20))
-        ax.imshow(img_arr, cmap = 'gray')
-        fig.show()
+np.unique(cnt_x)
+np.unique(cnt_y)
 
 
 
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(img_arr, cmap = 'gray')
-fig.show()
+
+##### two ways to do this ######
+#1) blow up the neun channel
+######## look for the fiducial frames by detecting perfect circles
+### 2) in VistoSeg tutorial:
+# find the size of the image (x,y)
+# split x: x/4 = the size of each individual tissue section
+# if there are any offsets, adjust them manually
+# maybe try this on the NTC section because the tissues are not so wonky/tricky as compared to the SCZ slide
+### first step would be to read in the qptiff and then convert this into a numpy array
+# or maybe check if you can read the mat file in the NTC folder and convert that to np array
