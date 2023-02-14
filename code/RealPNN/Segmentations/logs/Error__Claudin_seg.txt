@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 68, in <module>
+    img_claudin, claudin_shifted, claudin_gray, claudin_thresh = read_img.read_and_preprocess(img_D1, 3)
+NameError: name 'read_img' is not defined
+/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/stitched_functions/watershed_segmentation.py:49: FutureWarning: indices argument is deprecated and will be removed in version 0.20. To avoid this warning, please do not use the indices argument. Please see peak_local_max documentation for more details.
+  localMax = peak_local_max(D, indices=False, min_distance=1, labels=threshold) # find the local maxima for all the individual objects
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 76, in <module>
+    clx, cly, clw, clh, cl_area, claudin_segmented = watershed_segmentation.draw_rect_dapi(claudin_labels, claudin_gray, claudin_neun)
+NameError: name 'claudin_neun' is not defined
