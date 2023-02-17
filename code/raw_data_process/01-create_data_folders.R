@@ -33,9 +33,9 @@ stopifnot(all(!is.null(meta_df$`Sample #`)))
 fs_df <- meta_df |> 
   transmute(
     sample_fld_name = glue("Br{BrNumbr}_{`Array #`}"),
+    # TODO: update "v" to match with 
     fastq_name_start = glue("{`Sample #`}v-{exp_init}")
   )
-
 
 
 # Create Sample Specific Folder -------------------------------------------
@@ -63,18 +63,38 @@ fs_df |>
     )
   )
 
-  
-
-  # grep(pattern (),
-  #      x = _$.x,
-  #      value = TRUE
-  #      )
-
-
-
 
 # Create A Softlink -------------------------------------------------------
+# TODO: if there is multiple samples
+all_files <- list.files(raw_file_path, full.names = TRUE)
 
+fs_df |> 
+  pull(fastq_name_start) |> 
+  walk(.f = function(name_start){
+    raw_fast_paths <- grep(
+      pattern = paste0("^", name_start,
+                       ".*",
+                       "\.fastq.gz"),
+      x = name_start,
+      value = TURE,
+    )
+    
+    # TODO: verify if it is true, there are 2 files
+    stopifnot(length(raw_fast_paths)!=2)
+    
+    # Create the command
+    soft_copy_command <-
+      paste("ln", "-s",
+            paste(raw_fast_path, collapse = " "),
+            here(fastq_fldr_path, .x)
+            )
+    
+    # Run the command
+    system(soft_copy_command)
+    
+    # TODO:Validation step
+    
+  })
 
 
 
