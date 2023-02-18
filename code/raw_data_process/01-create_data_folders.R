@@ -58,7 +58,9 @@ fs_df <- meta_df |>
     raw_data_path = paste0(fastq_fldr_path, "/", sample_fld_name),
     process_data_path = paste0(processed_fldr_path, "/", sample_fld_name),
     # TODO: update "v" to match with 
-    fastq_name_start = glue("{`Sample #`}v-{exp_init}")
+    fastq_name_start = glue("{`Sample #`}v-{exp_init}"),
+    # Information Needs for spaceranger script
+    `Slide SN #`, `Array #`
   )
 
 
