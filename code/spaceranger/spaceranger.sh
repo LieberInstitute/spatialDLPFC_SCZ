@@ -1,8 +1,8 @@
 #!/bin/bash
 #$ -l mem_free=9G,h_vmem=9G,h_fsize=100G
 #$ -pe local 9
-#$ -o logs/$JOB_ID.out
-#$ -e logs/$JOB_ID.err
+#$ -o logs/$JOB_NAME.out
+#$ -e logs/$JOB_NAME.err
 #$ -m e
 #$ -t 1
 #$ -tc 10
@@ -24,12 +24,12 @@ module load spaceranger/2.0.0
 module list
 
 ## Read parameters
-SAMPLE=$(awk 'BEGIN {FS="\t"} {print $1}' parameters/${JOB_ID}.tsv | awk "NR==${SGE_TASK_ID}")
-SLIDE=$(awk 'BEGIN {FS="\t"} {print $2}' parameters/${JOB_ID}.tsv | awk "NR==${SGE_TASK_ID}")
-CAPTUREAREA=$(awk 'BEGIN {FS="\t"} {print $3}' parameters/${JOB_ID}.tsv | awk "NR==${SGE_TASK_ID}")
-IMAGEPATH=$(awk 'BEGIN {FS="\t"} {print $4}' parameters/${JOB_ID}.tsv | awk "NR==${SGE_TASK_ID}")
-LOUPEPATH=$(awk 'BEGIN {FS="\t"} {print $5}' parameters/${JOB_ID}.tsv | awk "NR==${SGE_TASK_ID}")
-FASTQPATH=$(awk 'BEGIN {FS="\t"} {print $6}' parameters/${JOB_ID}.tsv | awk "NR==${SGE_TASK_ID}")
+SAMPLE=$(awk 'BEGIN {FS="\t"} {print $1}' parameters/${JOB_NAME}.tsv | awk "NR==${SGE_TASK_ID}")
+SLIDE=$(awk 'BEGIN {FS="\t"} {print $2}' parameters/${JOB_NAME}.tsv | awk "NR==${SGE_TASK_ID}")
+CAPTUREAREA=$(awk 'BEGIN {FS="\t"} {print $3}' parameters/${JOB_NAME}.tsv | awk "NR==${SGE_TASK_ID}")
+IMAGEPATH=$(awk 'BEGIN {FS="\t"} {print $4}' parameters/${JOB_NAME}.tsv | awk "NR==${SGE_TASK_ID}")
+LOUPEPATH=$(awk 'BEGIN {FS="\t"} {print $5}' parameters/${JOB_NAME}.tsv | awk "NR==${SGE_TASK_ID}")
+FASTQPATH=$(awk 'BEGIN {FS="\t"} {print $6}' parameters/${JOB_NAME}.tsv | awk "NR==${SGE_TASK_ID}")
 
 echo "Processing sample ${SAMPLE} from slide ${SLIDE} and capture area ${CAPTUREAREA} with image ${IMAGEPATH} and aligned with ${LOUPEPATH} with FASTQs: ${FASTQPATH}"
 date
