@@ -1,0 +1,119 @@
+Martian Runtime - v4.0.9
+2023-02-19 08:50:42 [build  ] Built with Go version go1.18.2
+2023-02-19 08:50:42 [cmdline] mrp __Br1958_B1.mro Br1958_B1 --jobmode local --localcores 9 --localmem 81
+2023-02-19 08:50:42 [pid    ] 21536
+2023-02-19 08:50:42 [environ] SGE_O_TZ=US/Eastern
+2023-02-19 08:50:42 [environ] HOSTNAME=compute-058.cm.cluster
+2023-02-19 08:50:42 [environ] SGE_TASK_STEPSIZE=1
+2023-02-19 08:50:42 [environ] SHELL=/bin/bash
+2023-02-19 08:50:42 [environ] TERM=
+2023-02-19 08:50:42 [environ] NHOSTS=1
+2023-02-19 08:50:42 [environ] SGE_O_WORKDIR=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100
+2023-02-19 08:50:42 [environ] TMPDIR=/scratch/temp/2974052.1.shared.q
+2023-02-19 08:50:42 [environ] SGE_O_HOME=/users/bguo
+2023-02-19 08:50:42 [environ] SGE_ARCH=lx-amd64
+2023-02-19 08:50:42 [environ] SGE_CELL=default
+2023-02-19 08:50:42 [environ] USER=bguo
+2023-02-19 08:50:42 [environ] LS_COLORS=di=0;32:ln=0;36:so=0;35:pi=0;93:ex=0;31:bd=0;34;46:cd=0;34;43:su=0;41:sg=0;46:tw=0;47:ow=0;43:fi=0;33
+2023-02-19 08:50:42 [environ] SGE_TASK_LAST=1
+2023-02-19 08:50:42 [environ] SGE_BINDING=10 12 14 17 29 55 57 59 63
+2023-02-19 08:50:42 [environ] SGE_TASK_ID=1
+2023-02-19 08:50:42 [environ] SGE_BINARY_PATH=/cm/shared/apps/sge/sge-8.1.9//bin/lx-amd64
+2023-02-19 08:50:42 [environ] PATH=/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/lib/bin:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/martian/bin:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/anaconda/bin:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/bin/tenkit:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/bin:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0:/cm/shared/apps/sge/sge-8.1.9/bin/lx-amd64:/jhpce/shared/jhpce/core/JHPCE_tools/1.0/bin:/jhpce/shared/jhpce/core/stata/17:/jhpce/shared/jhpce/core/matlab/R2019a/bin:/cm/shared/apps/sge/sge-8.1.9/bin:/usr/lib64/qt-3.3/bin:/scratch/temp/2974052.1.shared.q:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/users/bguo/bin
+2023-02-19 08:50:42 [environ] SGE_STDERR_PATH=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/logs/Br1958_B1.err
+2023-02-19 08:50:42 [environ] PWD=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger
+2023-02-19 08:50:42 [environ] SGE_STDOUT_PATH=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/logs/Br1958_B1.out
+2023-02-19 08:50:42 [environ] SGE_ACCOUNT=sge
+2023-02-19 08:50:42 [environ] LANG=C
+2023-02-19 08:50:42 [environ] JOB_SCRIPT=/cm/local/apps/sge/sge-8.1.9/default/spool/compute-058/job_scripts/2974052
+2023-02-19 08:50:42 [environ] JOB_NAME=Br1958_B1
+2023-02-19 08:50:42 [environ] SGE_ROOT=/cm/shared/apps/sge/sge-8.1.9
+2023-02-19 08:50:42 [environ] SGE_JOB_SPOOL_DIR=/cm/local/apps/sge/sge-8.1.9/default/spool/compute-058/active_jobs/2974052.1
+2023-02-19 08:50:42 [environ] ENVIRONMENT=BATCH
+2023-02-19 08:50:42 [environ] SHLVL=1
+2023-02-19 08:50:42 [environ] HOME=/users/bguo
+2023-02-19 08:50:42 [environ] SGE_CWD_PATH=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger
+2023-02-19 08:50:42 [environ] NQUEUES=1
+2023-02-19 08:50:42 [environ] SGE_O_LOGNAME=bguo
+2023-02-19 08:50:42 [environ] SGE_O_MAIL=/var/spool/mail/bguo
+2023-02-19 08:50:42 [environ] JOB_ID=2974052
+2023-02-19 08:50:42 [environ] LOGNAME=bguo
+2023-02-19 08:50:42 [environ] XDG_DATA_DIRS=/users/bguo/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+2023-02-19 08:50:42 [environ] SGE_TASK_FIRST=1
+2023-02-19 08:50:42 [environ] OMP_NUM_THREADS=1
+2023-02-19 08:50:42 [environ] SGE_O_PATH=/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2.x/bin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2.x/texlive/bin/x86_64-linux:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2.x/R/4.2.x/bin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/condabin:/jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/bin:/cm/shared/apps/sge/sge-8.1.9/bin/lx-amd64:/jhpce/shared/jhpce/core/JHPCE_tools/1.0/bin:/jhpce/shared/jhpce/core/stata/17:/jhpce/shared/jhpce/core/matlab/R2019a/bin:/cm/shared/apps/sge/sge-8.1.9/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/users/bguo/bin
+2023-02-19 08:50:42 [environ] SGE_CLUSTER_NAME=sge1
+2023-02-19 08:50:42 [environ] SGE_O_HOST=x86_64-conda-linux-gnu
+2023-02-19 08:50:42 [environ] SGE_O_SHELL=/bin/bash
+2023-02-19 08:50:42 [environ] NSLOTS=9
+2023-02-19 08:50:42 [environ] SGE_STDIN_PATH=/dev/null
+2023-02-19 08:50:42 [environ] BASH_FUNC_module()=() {  eval $($LMOD_CMD bash "$@") && eval $(${LMOD_SETTARG_CMD:-:} -s sh)
+}
+2023-02-19 08:50:42 [environ] BASH_FUNC_ml()=() {  eval $($LMOD_DIR/ml_cmd "$@")
+}
+2023-02-19 08:50:42 [environ] _=/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/spaceranger
+2023-02-19 08:50:42 [environ] LC_CTYPE=en_US.UTF-8
+2023-02-19 08:50:42 [environ] PYTHONNOUSERSITE=1
+2023-02-19 08:50:42 [environ] MKL_CBWR=COMPATIBLE
+2023-02-19 08:50:42 [environ] HDF5_USE_FILE_LOCKING=FALSE
+2023-02-19 08:50:42 [environ] RUST_BACKTRACE=1
+2023-02-19 08:50:42 [environ] PYTHONPATH=/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/lib/python:/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/martian/adapters/python
+2023-02-19 08:50:42 [environ] TENX_PRODUCT=spaceranger
+2023-02-19 08:50:42 [environ] TENX_VERSION=spaceranger-2.0.0
+2023-02-19 08:50:42 [environ] TENX_COPYRIGHT=Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
+2023-02-19 08:50:42 [options] --localcores=9
+2023-02-19 08:50:42 [options] --localmem=81
+2023-02-19 08:50:42 [environ] MROPATH=/jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/mro
+2023-02-19 08:50:42 [version] MRO Version=spaceranger-2.0.0
+2023-02-19 08:50:42 [options] --jobmode=local
+2023-02-19 08:50:42 [options] --vdrmode=rolling
+2023-02-19 08:50:42 [options] --profile=disable
+2023-02-19 08:50:42 [options] --stackvars=false
+2023-02-19 08:50:42 [options] --zip=false
+2023-02-19 08:50:42 [options] --limit-loadavg=false
+2023-02-19 08:50:42 [options] --noexit=false
+2023-02-19 08:50:42 [options] --nopreflight=false
+2023-02-19 08:50:42 [jobmngr] Job config = /jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/martian/jobmanagers/config.json
+2023-02-19 08:50:42 [jobmngr] Using 9 cores, per --localcores option.
+2023-02-19 08:50:42 [jobmngr] Using 81 GB, per --localmem option.
+2023-02-19 08:50:42 [jobmngr] ulimit -v: 82944MB (minimum required 83968MB)
+2023-02-19 08:50:42 [jobmngr] WARNING: The current virtual address space size
+                              limit is too low.
+	Limiting virtual address space size interferes with the operation of many
+	common libraries and programs, and is not recommended.
+	Contact your system administrator to remove this limit.
+2023-02-19 08:50:42 [sysinfo] linux amd64
+2023-02-19 08:50:42 [sysinfo] Linux kernel release version: 3.10.0-1160.el7.x86_64
+2023-02-19 08:50:42 [sysinfo] glibc version: 2.17
+2023-02-19 08:50:42 [filesys] Pipestance path /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/spaceranger/Br1958_B1
+2023-02-19 08:50:42 [filesys] Pipestance filesystem type nfs
+2023-02-19 08:50:42 [filesys] 372 TB and 725,761,504,045 inodes available.
+2023-02-19 08:50:42 [filesys] Pipestance filesystem nfs4 mount options: rw,noatime,rw,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=192.168.11.58,local_lock=none,addr=192.168.11.209
+2023-02-19 08:50:42 [filesys] Pipestance directory permissions dgrwxrwx--- owned by uid 42678 gid 4218
+2023-02-19 08:50:42 [filesys] Bin path /jhpce/shared/jhpce/libd/spaceranger/2.0.0/spaceranger-2.0.0/external/martian/bin
+2023-02-19 08:50:42 [filesys] Bin filesystem type nfs
+2023-02-19 08:50:42 [filesys] Bin filesystem nfs4 mount options: rw,noatime,nodiratime,rw,vers=4.0,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=192.168.11.58,local_lock=none,addr=192.168.11.205
+2023-02-19 08:50:42 [filesys] Executable file permissions -rwxrwxr-x owned by uid 42086 gid 4217
+2023-02-19 08:50:42 [user   ] User bguo uid 42678 / gid 100
+Serving UI at http://compute-058.cm.cluster:38087?auth=W9pBGLm6AK6_HT_vymLB2e1b4KBgoT_bBA5VnpeDS5k
+
+Running preflight checks (please wait)...
+2023-02-19 08:50:42 [runtime] (ready)           ID.Br1958_B1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT_LOCAL
+2023-02-19 08:50:42 [runtime] (run:local)       ID.Br1958_B1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT_LOCAL.fork0.chnk0.main
+2023-02-19 08:50:42 [runtime] (ready)           ID.Br1958_B1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+2023-02-19 08:50:42 [runtime] (run:local)       ID.Br1958_B1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT.fork0.split
+2023-02-19 08:50:58 [runtime] (split_complete)  ID.Br1958_B1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+2023-02-19 08:50:58 [runtime] (run:local)       ID.Br1958_B1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT.fork0.join
+2023-02-19 08:51:06 [runtime] (failed)          ID.Br1958_B1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+
+[error] Loupe manual alignment file seems to be created with different tissue image(s) than was passed to the pipeline
+
+2023-02-19 08:51:06 Shutting down.
+2023-02-19 08:51:06 [jobmngr] Highest memory usage observed: {
+  "rss": 197521408,
+  "shared": 68534272,
+  "vmem": 31905366016,
+  "text": 11755520,
+  "stack": 30815199232,
+  "proc_count": 31
+}
