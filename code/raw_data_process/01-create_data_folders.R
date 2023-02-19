@@ -68,32 +68,21 @@ fs_df <- meta_df |>
 
 # Create "FASTQ" folder if not exists
 
-if(!dir.exists(fastq_fldr_path))
-  dir.create(
-    fastq_fldr_path, 
-    recursive = TRUE # Create "raw-data" folder if not exists
-  )
+mkdir_if_not_exist(
+  fastq_fldr_path, 
+  recursive = TRUE # Create "raw-data" folder if not exists
+)
 
 # Error Prevention
 stopifnot(dir.exists(fastq_fldr_path))
 
-if(!dir.exists(processed_fldr_path))
-  dir.create(
-    processed_fldr_path, 
-    recursive = TRUE # Create "raw-data" folder if not exists
-  )
+mkdir_if_not_exist(
+  processed_fldr_path, 
+  recursive = TRUE # Create "raw-data" folder if not exists
+)
 
 # Error Prevention
 stopifnot(dir.exists(processed_fldr_path))
-
-# Create Sample Specific Folder
-# fs_df |> 
-#   pull(sample_fld_name) |> 
-#   walk(
-#     ~mkdir_if_not_exist(
-#       here(fastq_fldr_path, .x)
-#     )
-#   )
 
 
 # Create A Softlink -------------------------------------------------------
