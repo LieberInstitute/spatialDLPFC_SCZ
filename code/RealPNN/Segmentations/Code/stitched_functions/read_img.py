@@ -55,6 +55,7 @@ def morph_transform(color_img):
     return shifted, thresh, gray
 
 
+
 # read and normalise the image
 Image.MAX_IMAGE_PIXELS = None
 def read_and_preprocess(filepath, ch_num):
@@ -62,9 +63,10 @@ def read_and_preprocess(filepath, ch_num):
     img.seek(ch_num)
     if ch_num == 0: #AF
         img_af = np.array(img, dtype = 'uint8')
-        af_clr = skimage.color.gray2rgb(img_af)
-        af_shifted, af_gray, af_thresh = morph_transform(af_clr)
-        return img_af, af_shifted, af_gray, af_thresh
+        print(img_af.min(), img_af.max(), img_af.mean())
+        # af_clr = skimage.color.gray2rgb(img_af)
+        # af_shifted, af_gray, af_thresh = morph_transform(af_clr)
+        return img_af #, af_shifted, af_gray, af_thresh
     if ch_num == 1: # claudin
         # img_claudin = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         img_claudin = np.array(img, dtype = 'uint8')
@@ -89,3 +91,46 @@ def read_and_preprocess(filepath, ch_num):
         img_wfa = np.array(img, dtype = 'uint8')
         # img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         return img_wfa
+
+
+# # check if the image is blank
+# if img.mean() < 0.1:
+#
+#
+#
+# # read and normalise the image
+# Image.MAX_IMAGE_PIXELS = None
+# def read_and_preprocess_tiles(filepath, ch_num):
+#     img = Image.open(filepath)
+#     img.seek(ch_num)
+#     if ch_num == 0: #DAPI
+#         img_af = np.array(img, dtype = 'uint8')
+#         print(img_af.min(), img_af.max(), img_af.mean())
+#         if img_af.mean() < 0.1:
+#             # af_clr = skimage.color.gray2rgb(img_af)
+#             # af_shifted, af_gray, af_thresh = morph_transform(af_clr)
+#         return img_af #, af_shifted, af_gray, af_thresh
+#     if ch_num == 1: # claudin
+#         # img_claudin = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+#         img_claudin = np.array(img, dtype = 'uint8')
+#         claudin_clr = skimage.color.gray2rgb(img_dapi)
+#         claudin_shifted, claudin_gray, claudin_thresh = morph_transform(claudin_clr)
+#         # img_claudin[img_claudin <= img_claudin.mean()] = 0
+#         # img_claudin[img_claudin >= img_claudin.mean()] = 255
+#         return img_claudin, claudin_shifted, claudin_gray, claudin_thresh
+#     if ch_num == 2: # DAPI
+#         # img_dapi = cv2.normalize(np.array(img, dtype = 'uint8'), np.zeros(np.array(img, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+#         img_dapi = np.array(img, dtype = 'uint8')
+#         dapi_clr = skimage.color.gray2rgb(img_dapi)
+#         dapi_shifted, dapi_gray, dapi_thresh = morph_transform(dapi_clr)
+#         return img_dapi,dapi_shifted, dapi_gray, dapi_thresh
+#     if ch_num == 3: #NeuN
+#         img_neun = np.array(img, dtype = 'uint8')
+#         neun_clr = skimage.color.gray2rgb(img_neun)
+#         neun_shifted, neun_gray, neun_thresh = morph_transform(neun_clr)
+#         # img_neun = cv2.normalize(img_neun, np.zeros(img_neun.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+#         return img_neun, neun_shifted, neun_gray, neun_thresh
+#     else: # wfa
+#         img_wfa = np.array(img, dtype = 'uint8')
+#         # img_wfa = cv2.normalize(img_arr, np.zeros(img_arr.shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+#         return img_wfa
