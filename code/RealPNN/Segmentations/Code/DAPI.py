@@ -59,12 +59,14 @@ img_dapi, dapi_shifted, dapi_gray, dapi_thresh = read_img.read_and_preprocess(im
 # ax.imshow(dapi_thresh, cmap = 'gray')
 # fig.show()
 print("dapi preprocessed")
-dapi_labels, dapi_localmax = watershed_segmentation.find_labels(dapi_thresh)
+dapi_labels, dapi_localmax = find_labels(dapi_thresh) #watershed_segmentation.
 print("dapi segmented")
-dpx, dpy, dpw, dph, dp_area, dapi_segmented = watershed_segmentation.draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
+dpx, dpy, dpw, dph, dp_area, dapi_segmented = draw_rect_dapi(dapi_labels, dapi_gray, img_dapi)
 print("dapi segments drawn and saved")
-cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_D1_run1_but2.tif', dapi_segmented)
+cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_D1_1148569.tif', dapi_segmented)
 print("segmented image saved")
+
+
 # dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_dapi, 'dapi')
 # print("dapi coordinates saved")
 
@@ -78,3 +80,5 @@ print("segmented image saved")
 #         dpx, dpy, dpw, dph, dp_area, dapi_segmented = draw_contours.draw_detected_contours(im_dapi, 2, dapi_contours , (255,0,0), 2)
 #         img_info_dapi = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, dapi_segmented, im_dapi, 'DAPI')
 
+# dapi edge detection for all images in the directory
+edges_all_images(source_dir, dst_dir)
