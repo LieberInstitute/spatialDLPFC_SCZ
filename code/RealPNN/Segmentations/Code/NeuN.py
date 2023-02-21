@@ -45,12 +45,17 @@ from stitched_functions import *
 
 
 img_neun, neun_shifted, neun_gray, neun_thresh = read_img.read_and_preprocess(img_D1, 3)
+
 plot_im(img_neun)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(neun_thresh, cmap = 'gray')
 fig.show()
-neun_labels, neun_localmax = watershed_segmentation.find_labels(neun_thresh)
-nnx, nny, nnw, nnh, nn_area, neun_segmented = watershed_segmentation.draw_rect_dapi(neun_labels, neun_gray, img_neun)
+
+neun_labels, neun_localmax = find_labels(neun_thresh) #watershed_segmentation.
+nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_rect_dapi(neun_labels, neun_gray, img_neun) #watershed_segmentation.
+cv2.imwrite('/users/ukaipa/PNN/One_img/neun_stitched_segmented_D1_1629382.tif', neun_segmented)
+print("segmented image saved")
+
 # dapi_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, img_neun, 'NeuN')
 
 # neun segmentations by detecting contours for all images in the directory
