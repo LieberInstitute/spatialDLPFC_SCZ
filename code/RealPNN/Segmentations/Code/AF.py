@@ -44,7 +44,11 @@ from stitched_functions import read_img
 from stitched_functions import watershed_segmentation
 from stitched_functions import *
 
-# file paths
+# directory path
+source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
+dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/'
+
+# file paths for test images
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
 img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
 
@@ -53,9 +57,9 @@ img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
 
 img_af, af_shifted, af_gray, af_thresh = read_img.read_and_preprocess(img_D1, 0)
 plot_im(af_thresh)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(dapi_thresh, cmap = 'gray')
-fig.show()
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(dapi_thresh, cmap = 'gray')
+# fig.show()
 af_labels, af_localmax = watershed_segmentation.find_labels(af_thresh)
 afx, afy, afw, afh, af_area, af_segmented = watershed_segmentation.draw_rect_dapi(af_labels, af_gray, img_af)
 af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
@@ -65,7 +69,7 @@ for img_path in os.listdir(img_dir):
     if img_path.endswith(".tif"):
         im_af = read_img.read_and_preprocess(img_path, 0)
         print("read", os.path.basename(img_path))
-        # plot_im(im_claudin)
-        af_labels, af_localmax = watershed_segmentation.find_labels(af_thresh)
-        afx, afy, afw, afh, af_area, af_segmented = watershed_segmentation.draw_rect_dapi(af_labels, af_gray, img_af)
+        # af_labels, af_localmax = watershed_segmentation.find_labels(af_thresh)
+        af_contours = detect_contours.return_contours(im_af)
+        afx, afy, afw, afh, af_area, af_segmented = draw_contours.draw_detected_contours(im_af, 0, af_contours, (255,125,155), 2)
         af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
