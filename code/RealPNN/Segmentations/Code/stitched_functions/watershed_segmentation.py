@@ -46,7 +46,7 @@ from shapely.geometry.polygon import Polygon
 def find_labels(threshold):
     D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
     print("distance measured")
-    localMax = peak_local_max(D, indices=False, min_distance=1, labels=threshold) # find the local maxima for all the individual objects
+    localMax = peak_local_max(D, indices=False, min_distance=3, labels=threshold) # find the local maxima for all the individual objects
     print("local max found")
     markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
     print("local max markers found")
@@ -82,7 +82,7 @@ def draw_rect_dapi(labels, gray, img):
             h_.append(h)
             area_.append(cv2.contourArea(c))
             # print("7) appended")
-            ws_img_bb = cv2.rectangle(skimage.color.gray2rgb(img), (x,y), (x+w, y+h), (0,255,0), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
+            ws_img_bb = cv2.rectangle(skimage.color.gray2rgb(img), (x,y), (x+w, y+h), (0,0,255), 1) # if a colored BB is not required then, change color to (0,0,0) and thickness to 1
             # print("8) drawing rectangles")
             print("drawing rectangle number",counter, "with area", area1)
     # cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_D1_run1.tif', ws_img_bb)
