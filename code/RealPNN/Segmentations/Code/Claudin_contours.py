@@ -1,11 +1,10 @@
 '''
-For Visium-IF
-Channel0 = DAPI, DAPI
-Channel1 = Claudin5 (Alex 488),
-Channel2 = NeuN (Alexa 555),
-Channel3 = WFA (Alexa 647),
-Channel4 = AF (Autofluorescence), sample AF
-Channel5 = Thumbnail
+For Stitched Visium-IF tissue sections from VistoSeg SplitSlide output
+Channel0 = AF
+Channel1 = Claudin - 5 (Alex 488),
+Channel2 = DAPI,
+Channel3 = NeuN,
+Channel4 = WFA
 '''
 
 from __future__ import print_function
@@ -49,22 +48,22 @@ img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1
 img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
 img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
 
-# claudin segmentations by detecting contours for 1 image
-# im_claudin = read_img.read_and_preprocess(img_C1, 1)
-# plot_im(im_claudin)
-# cla_contours = detect_contours.return_contours(im_claudin)
-# clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
-# claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+claudin segmentations by detecting contours for 1 image
+im_claudin = read_img.read_and_preprocess(img_C1, 1)
+plot_im(im_claudin)
+cla_contours = detect_contours.return_contours(im_claudin)
+clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
 
-# # claudin segmentations by detecting contours for all images in the directory
-# for img_path in os.listdir(img_dir):
-#     if img_path.endswith(".tif"):
-#         im_claudin = read_img.read_and_preprocess(img_path, 1)
-#         print("read", os.path.basename(img_path))
-#         # plot_im(im_claudin)
-#         cla_contours = detect_contours.return_contours(im_claudin)
-#         clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
-#         img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+# claudin segmentations by detecting contours for all images in the directory
+for img_path in os.listdir(img_dir):
+    if img_path.endswith(".tif"):
+        im_claudin = read_img.read_and_preprocess(img_path, 1)
+        print("read", os.path.basename(img_path))
+        # plot_im(im_claudin)
+        cla_contours = detect_contours.return_contours(im_claudin)
+        clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+        img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
 
 # watershed segmentations claudin
 img_claudin, claudin_shifted, claudin_gray, claudin_thresh = read_img.read_and_preprocess(img_D1, 3)
@@ -72,9 +71,9 @@ img_claudin, claudin_shifted, claudin_gray, claudin_thresh = read_img.read_and_p
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(neun_thresh, cmap = 'gray')
 # fig.show()
-claudin_labels, claudin_localmax = watershed_segmentation.find_labels(claudin_thresh)
-clx, cly, clw, clh, cl_area, claudin_segmented = watershed_segmentation.draw_rect_dapi(claudin_labels, claudin_gray, claudin_neun)
-cv2.imwrite('/users/ukaipa/PNN/One_img/claudin_stitched_segmented_D1_run1.tif', claudin_segmented)
-print("segmented image saved")
+# claudin_labels, claudin_localmax = watershed_segmentation.find_labels(claudin_thresh)
+# clx, cly, clw, clh, cl_area, claudin_segmented = watershed_segmentation.draw_rect_dapi(claudin_labels, claudin_gray, claudin_neun)
+# cv2.imwrite('/users/ukaipa/PNN/One_img/claudin_stitched_segmented_D1_run1.tif', claudin_segmented)
+# print("segmented image saved")
 # claudin_df = save_coordinates.create_df(clx, cly, clw, clh, cl_area, img_claudin, 'Claudin')
 
