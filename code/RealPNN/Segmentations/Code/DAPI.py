@@ -43,6 +43,12 @@ from stitched_functions import read_img
 from stitched_functions import watershed_segmentation
 from stitched_functions import *
 
+# directory path
+source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
+dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/'
+
+
+
 print("packages imported")
 # file paths
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
@@ -89,11 +95,29 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dp_cnt) #
 fig.show()
 
+# find contours for all images in the dir
+for img_path in os.listdir(source_dir):
+    if img_path.endswith(".tif"):
+        dapi_img = Image.open(os.path.join(source_dir, img_path))
+        dapi_img.seek(2)
+        dapi = np.array(dapi_img, dtype = 'uint8')
+        dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+        gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
+        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+        contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(contours), "in", img_path)
+        dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+        cv2.imwrite(dst_dir + img_path + '_dapi_contours_segmented.tif', dp_cnt)
+
+
+
+
+
 
 # dapi segmentations by detecting contours for all images in the directory
 # for img_path in os.listdir(img_dir):
 #     if img_path.endswith(".tif"):
-#         im_dapi = read_img.read_and_preprocess(img_path, 2)
+#         im_dapi, dapi_clr = read_img.read_and_preprocess(img_path, 2)
 #         print("read", os.path.basename(img_path))
 #         # plot_im(im_claudin)
 #         dapi_contours = detect_contours.return_contours(im_dapi)
