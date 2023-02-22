@@ -1,20 +1,3 @@
-library(here)
-library(tidyverse)
-library(cellranger)
-library(glue)
-
-# Load Helper Function ----------------------------------------------------
-source(
-  grep(
-    pattern = "/fun[^/]*\\.R",
-    x = list.files(
-      here("code", "raw_data_process"),
-      full.names = TRUE
-    ),
-    value = TRUE
-  )
-)
-
 # Paths -------------------------------------------------------------------
 
 exp_init <- "shk" |> tolower() # Seems always have lower case
