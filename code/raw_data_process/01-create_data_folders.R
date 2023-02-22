@@ -27,7 +27,8 @@ master_file_path <- here("raw-data", "sample_info",
 raw_file_path <- paste0(
   "/dcs04/lieber/lcolladotor/rawDataTDSC_LIBD001/",
   "raw-data/", 
-  c("2023-01-29_SPag010323") #TODO: add here when more folder
+  c("2023-01-29_SPag010323",
+    "2022-12-13_SPag120622_2") #TODO: add here when more folder
 )
 
 
