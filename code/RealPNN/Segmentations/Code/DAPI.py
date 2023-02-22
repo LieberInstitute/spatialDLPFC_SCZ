@@ -65,10 +65,24 @@ dpx, dpy, dpw, dph, dp_area, dapi_segmented = draw_rect_dapi(dapi_labels, dapi_g
 print("dapi segments drawn and saved")
 cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_D1_1148569.tif', dapi_segmented)
 print("segmented image saved")
-
-
 # dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_dapi, 'dapi')
 # print("dapi coordinates saved")
+
+# detect contours on test image
+Image.MAX_IMAGE_PIXELS = None
+dapi_img = Image.open(img_A1)
+dapi_img.seek(2)
+dapi = np.array(dapi_img, dtype = 'uint8') # (17799, 16740)
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(dapi, cmap = 'gray') #
+# fig.show()
+dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
+_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print(len(contours))
+dapi_contour = draw_contours(contours, dapi)
+
 
 # dapi segmentations by detecting contours for all images in the directory
 # for img_path in os.listdir(img_dir):
