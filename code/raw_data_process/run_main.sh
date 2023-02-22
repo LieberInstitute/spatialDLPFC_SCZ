@@ -1,9 +1,9 @@
 #!/bin/bash
 #$ -cwd
-#$ -l mem_free=10G,h_vmem=10G,h_fsize=100G
-#$ -N run_main.sh
-#$ -o logs/run_main.sh.txt
-#$ -e logs/run_main.sh.txt
+#$ -l mem_free=5G,h_vmem=5G,h_fsize=1G
+#$ -N SCZ-Sequence-preprocess.sh
+#$ -o run_main.txt
+#$ -e run_main.txt
 #$ -m e
 
 echo "**** Job starts ****"
@@ -17,13 +17,13 @@ echo "Hostname: ${HOSTNAME}"
 echo "Task id: ${SGE_TASK_ID}"
 
 ## Load the R module (absent since the JHPCE upgrade to CentOS v7)
-module load conda_R
+module load conda_R/4.2.x
 
 ## List current modules for reproducibility
 module list
 
 ## Edit with your job command
-Rscript -e "options(width = 120); sessioninfo::session_info()"
+Rscript -e 00-main.R
 
 echo "**** Job ends ****"
 date
