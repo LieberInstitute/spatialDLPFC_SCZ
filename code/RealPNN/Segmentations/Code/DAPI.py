@@ -79,9 +79,15 @@ dapi = np.array(dapi_img, dtype = 'uint8') # (17799, 16740)
 dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(thresh, cmap = 'gray') #
+fig.show()
 contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print(len(contours))
-dapi_contour = draw_contours(contours, dapi)
+dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(dp_cnt) #
+fig.show()
 
 
 # dapi segmentations by detecting contours for all images in the directory
