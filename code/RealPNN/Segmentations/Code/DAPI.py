@@ -79,15 +79,8 @@ Image.MAX_IMAGE_PIXELS = None
 dapi_img = Image.open(img_A1)
 dapi_img.seek(2)
 dapi = np.array(dapi_img, dtype = 'uint8') # (17799, 16740)
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(dapi, cmap = 'gray') #
-# fig.show()
 dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
-_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(thresh, cmap = 'gray') #
-fig.show()
 contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print(len(contours))
 dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
@@ -96,6 +89,7 @@ ax.imshow(dp_cnt) #
 fig.show()
 
 # find contours for all images in the dir
+Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
     if img_path.endswith(".tif"):
         dapi_img = Image.open(os.path.join(source_dir, img_path))
