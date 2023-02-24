@@ -12,7 +12,7 @@ finished_df <-
 
 
 
-# TODO: add error prevention to check if
+# Add error prevention to check if
 # the spaceranger run is acutally finished
 
 sr_success_brs <- file.exists(
