@@ -54,11 +54,16 @@ spaceranger count \
     --localcores=9 \
     --localmem=81
 
+## Update file permission
+sh /dcs04/lieber/lcolladotor/_jhpce_org_LIBD001/update_permissions_spatialteam.sh ${SAMPLE}
+
+
 ## Move output
 echo "Moving results to new location"
 date
 mkdir -p ../../processed-data/spaceranger/
 mv ${SAMPLE} ../../processed-data/spaceranger/
+
 
 echo "**** Job ends ****"
 date
