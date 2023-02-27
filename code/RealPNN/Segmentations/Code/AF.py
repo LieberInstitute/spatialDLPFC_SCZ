@@ -1,4 +1,3 @@
-OMJGJSRJH
 '''
 For Stitched Visium-IF tissue sections from VistoSeg SplitSlide output
 Channel0 = AF
@@ -12,8 +11,6 @@ from __future__ import print_function
 from skimage.feature import peak_local_max
 from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
-import argparse
-from argparse import ArgumentParser
 import imutils
 import numpy as np
 import pyhere
@@ -21,32 +18,20 @@ from pyhere import here
 from pylab import xticks
 from pathlib import Path
 import pandas as pd
-import PIL
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
-import matplotlib
 import matplotlib.pyplot as plt
-import sys
 import cv2
-import math
 import scipy
 from scipy.spatial.distance import *
-import skimage
-from skimage import *
 from skimage import feature, segmentation, draw, measure, morphology
-from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
 from skimage.draw import polygon_perimeter
-from itertools import product
-from collections import defaultdict
-from shapely.geometry import Point
-from shapely.geometry.polygon import Polygon
-from stitched_functions import read_img
-from stitched_functions import watershed_segmentation
+from stitched_functions import read_img, watershed_segmentation
 from stitched_functions import *
 
 # directory path
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/'
+dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/'
 
 # file paths for test images
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
@@ -73,3 +58,21 @@ for img_path in os.listdir(img_dir):
         af_contours = detect_contours.return_contours(im_af)
         afx, afy, afw, afh, af_area, af_segmented = draw_contours.draw_detected_contours(im_af, 0, af_contours, (255,125,155), 2)
         af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
+
+
+# find contours for all images in the dir
+Image.MAX_IMAGE_PIXELS = None
+for img_path in os.listdir(source_dir):
+    if img_path.endswith(".tif"):
+        af_img = Image.open(os.path.join(source_dir, img_path))
+        af_img.seek(0)
+        af = np.array(af_img, dtype = 'uint8')
+        af_c = cv2.cvtColor(af,cv2.COLOR_BGR2RGB)
+        gray = cv2.cvtColor(af_c,cv2.COLOR_RGB2GRAY)
+        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+        contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(contours), "in", img_path)
+        af_cnt = cv2.drawContours(af_c, contours, -1, (255, 0, 0), 2)
+        afx, afy, afw, afh, af_area, af_segmented = draw_contours.draw_detected_contours(im_af, 0, af_contours, (255,125,155), 2)
+        af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
+        cv2.imwrite(dst_dir + img_path + '_af_contours_segmented.tif', af_segmented)
