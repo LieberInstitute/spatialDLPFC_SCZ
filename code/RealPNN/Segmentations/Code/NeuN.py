@@ -41,29 +41,53 @@ from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 from stitched_functions import read_img, watershed_segmentation, save_coordinates
-from stitched_functions import *
+from stitched_functions import draw_contours
 
 
-img_neun, neun_shifted, neun_gray, neun_thresh = read_img.read_and_preprocess(img_D1, 3)
+# directory path
+Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
+source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
+dst_dir_neun = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/'
 
-plot_im(img_neun)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(neun_thresh, cmap = 'gray')
-fig.show()
 
-neun_labels, neun_localmax = find_labels(neun_thresh) #watershed_segmentation.
-nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_rect_dapi(neun_labels, neun_gray, img_neun) #watershed_segmentation.
-cv2.imwrite('/users/ukaipa/PNN/One_img/neun_stitched_segmented_D1_1629382.tif', neun_segmented)
-print("segmented image saved")
+# img_neun, neun_shifted, neun_gray, neun_thresh = read_img.read_and_preprocess(img_D1, 3)
+# plot_im(img_neun)
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(neun_thresh, cmap = 'gray')
+# fig.show()
+
+# neun_labels, neun_localmax = find_labels(neun_thresh) #watershed_segmentation.
+# nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_rect_dapi(neun_labels, neun_gray, img_neun) #watershed_segmentation.
+# cv2.imwrite('/users/ukaipa/PNN/One_img/neun_stitched_segmented_D1_1629382.tif', neun_segmented)
+# print("segmented image saved")
 
 # dapi_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, img_neun, 'NeuN')
 
 # neun segmentations by detecting contours for all images in the directory
-for img_path in os.listdir(img_dir):
+# for img_path in os.listdir(img_dir):
+#     if img_path.endswith(".tif"):
+#         im_neun = read_img.read_and_preprocess(img_path, 3)
+#         print("read", os.path.basename(img_path))
+#         # plot_im(im_claudin)
+#         neun_contours = detect_contours.return_contours(im_neun)
+#         nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_detected_contours(im_neun, 3, neun_contours , (255,0,0), 2)
+#         img_info_claudin = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, im_neun, 'NeuN')
+
+
+# find contours for all images in the dir
+Image.MAX_IMAGE_PIXELS = None
+for img_path in os.listdir(source_dir):
     if img_path.endswith(".tif"):
-        im_neun = read_img.read_and_preprocess(img_path, 3)
-        print("read", os.path.basename(img_path))
-        # plot_im(im_claudin)
-        neun_contours = detect_contours.return_contours(im_neun)
-        nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_detected_contours(im_neun, 3, neun_contours , (255,0,0), 2)
-        img_info_claudin = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, im_neun, 'NeuN')
+        neun_img = Image.open(os.path.join(source_dir, img_path))
+        neun_img.seek(3)
+        neun = np.array(neun_img, dtype = 'uint8')
+        neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
+        gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
+        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+        neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(neun_contours), "in", img_path)
+        # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+        nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_all_contours(neun_c, neun_contours, (0,255,0), 2)
+        neun_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, neun_img, 'NeuN')
+        neun_df.to_csv(dst_dir_neun + img_path + '_info.csv')
+        # cv2.imwrite(dst_dir_neun + img_path + '_neun_contours_segmented.tif', neun_segmented)
