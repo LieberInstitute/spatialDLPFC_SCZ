@@ -27,7 +27,7 @@ from scipy.spatial.distance import *
 import skimage
 from skimage import feature, segmentation, draw, measure, morphology
 from stitched_functions import read_img, watershed_segmentation, draw_contours
-from stitched_functions import *
+from stitched_functions import draw_contours
 
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
@@ -35,7 +35,7 @@ source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/V
 dst_dir_dapi = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/'
 
 # test file paths
-img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
+# img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
 
 # watershed segmentation on test image
 # img_dapi, dapi_shifted, dapi_gray, dapi_thresh = read_img.read_and_preprocess(img_A1, 2)
@@ -79,7 +79,6 @@ for img_path in os.listdir(source_dir):
         dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, dapi_img, 'DAPI')
         dapi_df.to_csv(dst_dir_dapi + img_path + '_info.csv')
         # cv2.imwrite(dst_dir + img_path + '_dapi_contours_segmented.tif', dp_cnt)
-
 
 
 
