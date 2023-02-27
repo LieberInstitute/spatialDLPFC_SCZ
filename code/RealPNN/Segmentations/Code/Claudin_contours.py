@@ -40,33 +40,39 @@ from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 from stitched_functions import read_img, watershed_segmentation, save_coordinates
-from stitched_functions import *
+from stitched_functions import draw_contours
+
+
+# directory path
+Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
+source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
+dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/'
 
 
 # image paths
-img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
-img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
-img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
+# img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
+# img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
+# img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
 
-claudin segmentations by detecting contours for 1 image
-im_claudin = read_img.read_and_preprocess(img_C1, 1)
-plot_im(im_claudin)
-cla_contours = detect_contours.return_contours(im_claudin)
-clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
-claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
-
-# claudin segmentations by detecting contours for all images in the directory
-for img_path in os.listdir(img_dir):
-    if img_path.endswith(".tif"):
-        im_claudin = read_img.read_and_preprocess(img_path, 1)
-        print("read", os.path.basename(img_path))
-        # plot_im(im_claudin)
-        cla_contours = detect_contours.return_contours(im_claudin)
-        clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
-        img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+# claudin segmentations by detecting contours for 1 image
+# im_claudin = read_img.read_and_preprocess(img_C1, 1)
+# plot_im(im_claudin)
+# cla_contours = detect_contours.return_contours(im_claudin)
+# clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+# claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+#
+# # claudin segmentations by detecting contours for all images in the directory
+# for img_path in os.listdir(img_dir):
+#     if img_path.endswith(".tif"):
+#         im_claudin = read_img.read_and_preprocess(img_path, 1)
+#         print("read", os.path.basename(img_path))
+#         # plot_im(im_claudin)
+#         cla_contours = detect_contours.return_contours(im_claudin)
+#         clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+#         img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
 
 # watershed segmentations claudin
-img_claudin, claudin_shifted, claudin_gray, claudin_thresh = read_img.read_and_preprocess(img_D1, 3)
+# img_claudin, claudin_shifted, claudin_gray, claudin_thresh = read_img.read_and_preprocess(img_D1, 3)
 # plot_im(img_claudin)
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(neun_thresh, cmap = 'gray')
@@ -77,3 +83,22 @@ img_claudin, claudin_shifted, claudin_gray, claudin_thresh = read_img.read_and_p
 # print("segmented image saved")
 # claudin_df = save_coordinates.create_df(clx, cly, clw, clh, cl_area, img_claudin, 'Claudin')
 
+
+
+# find contours for all images in the dir
+Image.MAX_IMAGE_PIXELS = None
+for img_path in os.listdir(source_dir):
+    if img_path.endswith(".tif"):
+        claudin_img = Image.open(os.path.join(source_dir, img_path))
+        claudin_img.seek(3)
+        claudin = np.array(claudin_img, dtype = 'uint8')
+        claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
+        gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
+        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+        claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(claudin_contours), "in", img_path)
+        # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+        clx,cly,clw,clh, cl_area, claudin_segmented = draw_contours.draw_all_contours(claudin_c, claudin_contours, (0,255,0), 2)
+        claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, claudin_img, 'Claudin-5')
+        claudin_df.to_csv(dst_dir_claudin + img_path + '_info.csv')
+        # cv2.imwrite(dst_dir_neun + img_path + '_neun_contours_segmented.tif', neun_segmented)
