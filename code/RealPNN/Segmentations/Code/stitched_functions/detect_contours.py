@@ -42,17 +42,17 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 # detect contours in the normalised_img
-def return_contours(original_img): ### create a separate function for shape detection and run it through this loop for contour detection
-    hierachy, img_threshold = cv2.threshold(original_img, 100, 255, cv2.THRESH_BINARY)
+def return_contours(original_img, threshold_low = 100): ### create a separate function for shape detection and run it through this loop for contour detection
+    hierachy, img_threshold = cv2.threshold(original_img, threshold_low, 255, cv2.THRESH_BINARY)
     contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     print("contours detected", len(contours))
     return contours
 
 
-def find_labels(threshold):
+def find_labels_watershed(threshold):
     D = ndimage.distance_transform_edt(threshold) # Euclidean distance from binary to nearest 0-pixel
     print("distance measured")
-    localMax = peak_local_max(D, indices=False, min_distance=0, labels=threshold) # find the local maxima for all the individual objects
+    localMax = peak_local_max(D, indices=False, min_distance=3, labels=threshold) # find the local maxima for all the individual objects
     print("local max found")
     markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0] # 8-connectivity connected component analysis
     print("local max markers found")
