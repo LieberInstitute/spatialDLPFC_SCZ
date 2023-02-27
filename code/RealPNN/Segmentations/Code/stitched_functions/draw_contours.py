@@ -101,3 +101,7 @@ def draw_detected_contours(normalised_img, ch_num, contours = None,  color = Non
                 contour_img = cv2.drawContours(bb_img,[box],0,(0,0,0),1) # change the color and thickness here if contours need to be visible
                 # cv2.putText(contour_img, label, (x_,y_), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (125, 246, 55), 3)
         return x, y, w, h, area, contour_img
+
+
+def draw_all_contours(color_img, contours, box_color = (255, 0, 0), box_thickness = 2):
+    contoured_img = cv2.drawContours(color_img, contours, -1, box_color, box_thickness)
