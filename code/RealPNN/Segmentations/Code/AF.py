@@ -49,7 +49,7 @@ af_labels, af_localmax = watershed_segmentation.find_labels(af_thresh)
 afx, afy, afw, afh, af_area, af_segmented = watershed_segmentation.draw_rect_dapi(af_labels, af_gray, img_af)
 af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
 
-# claudin segmentations by detecting contours for all images in the directory
+# segmentations by detecting contours for all images in the directory
 for img_path in os.listdir(img_dir):
     if img_path.endswith(".tif"):
         im_af = read_img.read_and_preprocess(img_path, 0)
@@ -70,9 +70,10 @@ for img_path in os.listdir(source_dir):
         af_c = cv2.cvtColor(af,cv2.COLOR_BGR2RGB)
         gray = cv2.cvtColor(af_c,cv2.COLOR_RGB2GRAY)
         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
-        contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        af_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(contours), "in", img_path)
-        af_cnt = cv2.drawContours(af_c, contours, -1, (255, 0, 0), 2)
-        afx, afy, afw, afh, af_area, af_segmented = draw_contours.draw_detected_contours(im_af, 0, af_contours, (255,125,155), 2)
-        af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
-        cv2.imwrite(dst_dir + img_path + '_af_contours_segmented.tif', af_segmented)
+        # af_cnt = cv2.drawContours(af_c, contours, -1, (255, 0, 0), 2)
+        afx, afy, afw, afh, af_area, af_segmented = draw_all_contours(af_c, af_contours, (255,125,155), 2)
+        af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, af_img, 'autofluorescence')
+        af_df.to_csv(dst_dir + img_path + '_info.csv')
+        # cv2.imwrite(dst_dir + img_path + '_af_contours_segmented.tif', af_segmented)
