@@ -50,6 +50,7 @@ dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-d
 
 
 # image paths
+img_C2 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif'
 # img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
 # img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
 # img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
@@ -90,7 +91,7 @@ Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
     if img_path.endswith(".tif"):
         claudin_img = Image.open(os.path.join(source_dir, img_path))
-        claudin_img.seek(3)
+        claudin_img.seek(1)
         claudin = np.array(claudin_img, dtype = 'uint8')
         claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
         gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)

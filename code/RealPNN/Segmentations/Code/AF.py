@@ -73,7 +73,7 @@ for img_path in os.listdir(source_dir):
         af_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(contours), "in", img_path)
         # af_cnt = cv2.drawContours(af_c, contours, -1, (255, 0, 0), 2)
-        afx, afy, afw, afh, af_area, af_segmented = draw_all_contours(af_c, af_contours, (255,125,155), 2)
+        afx, afy, afw, afh, af_area, af_segmented = draw_contours.draw_all_contours(af_c, af_contours, (255,125,155), 2)
         af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, af_img, 'autofluorescence')
         af_df.to_csv(dst_dir + img_path + '_info.csv')
         # cv2.imwrite(dst_dir + img_path + '_af_contours_segmented.tif', af_segmented)
