@@ -100,6 +100,6 @@ for img_path in os.listdir(source_dir):
         print("found", len(claudin_contours), "in", img_path)
         # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
         clx,cly,clw,clh, cl_area, claudin_segmented = draw_contours.draw_all_contours(claudin_c, claudin_contours, (0,255,0), 2)
-        claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, claudin_img, 'Claudin-5')
-        claudin_df.to_csv(dst_dir_claudin + img_path + '_info.csv')
+        claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, img_path.split('.')[0], 'Claudin-5')
+        claudin_df.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_info.csv')
         # cv2.imwrite(dst_dir_neun + img_path + '_neun_contours_segmented.tif', neun_segmented)
