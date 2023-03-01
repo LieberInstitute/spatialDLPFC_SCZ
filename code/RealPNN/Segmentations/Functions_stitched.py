@@ -81,7 +81,7 @@ def find_labels(threshold):
 
 
 # extract the watershed algorithm labels
-def draw_rect_dapi(labels, gray, dapi):
+def draw_rect_from_labels(labels, gray, dapi):
     dpx, dpy, dpw, dph, area = [], [], [], [], []
     # print("1) entering the label loop")
     for counter, label in enumerate(np.unique(labels)):
