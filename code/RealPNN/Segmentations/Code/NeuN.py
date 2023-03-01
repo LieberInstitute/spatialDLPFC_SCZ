@@ -88,6 +88,6 @@ for img_path in os.listdir(source_dir):
         print("found", len(neun_contours), "in", img_path)
         # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
         nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_all_contours(neun_c, neun_contours, (0,255,0), 2)
-        neun_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, neun_img, 'NeuN')
-        neun_df.to_csv(dst_dir_neun + img_path + '_info.csv')
+        neun_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, img_path.split('.')[0], 'NeuN')
+        neun_df.to_csv(dst_dir_neun + img_path.split('.')[0] + '_info.csv')
         # cv2.imwrite(dst_dir_neun + img_path + '_neun_contours_segmented.tif', neun_segmented)
