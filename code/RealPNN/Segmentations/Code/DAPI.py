@@ -75,10 +75,11 @@ for img_path in os.listdir(source_dir):
         dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(dapi_contours), "in", img_path)
         # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
-        dpx, dpy, dpw, dph, dp_area, dp_segmented = draw_contours.draw_all_contours(dapi_c, dapi_contours, (255,125,155), 2)
-        dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_path.split('.')[0], 'DAPI')
-        dapi_df.to_csv(dst_dir_dapi + img_path.split('.')[0] + '_info.csv')
-        # cv2.imwrite(dst_dir + img_path + '_dapi_contours_segmented.tif', dp_cnt)
+        if cnt in dapi_contours >= 10:
+            dpx, dpy, dpw, dph, dp_area, dp_segmented = draw_contours.draw_all_contours(dapi_c, dapi_contours, (255,125,155), 2)
+            dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_path.split('.')[0], 'DAPI')
+            dapi_df.to_csv(dst_dir_dapi + img_path.split('.')[0] + '_info.csv')
+            # cv2.imwrite(dst_dir + img_path + '_dapi_contours_segmented.tif', dp_cnt)
 
 
 
