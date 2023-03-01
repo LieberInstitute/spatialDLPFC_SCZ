@@ -43,8 +43,9 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 # directory path
+Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/'
+dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/'
 
 # file paths for test
 img_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_A1.tif'
@@ -95,12 +96,14 @@ fig.show()
 
 # detect contours on wfa after claudin masking
 wfa_contours, wfa_thresh = detect_contours(wfa, 100)
-hierachy, img_threshold = cv2.threshold(wfa, 100, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
-img_threshold = cv2.adaptiveThreshold(wfa, 255,
-	cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 10)
-wfa_gray = cv2.cvtColor(wfac, cv2.COLOR_RGB2GRAY)
-thresh_wfa = threshold_otsu(wfa_gray)
-img_otsu  = wfa_gray < thresh_wfa
+wfa_img = Image.open(img_A1)
+wfa_img.seek(4)
+wfa = np.array(wfa_img, dtype = 'uint8')
+# hierachy, img_threshold = cv2.threshold(wfa, 200, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+img_threshold = cv2.adaptiveThreshold(wfa, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 10)
+# wfa_gray = cv2.cvtColor(wfac, cv2.COLOR_RGB2GRAY)
+# thresh_wfa = threshold_otsu(wfa_gray)
+# img_otsu  = wfa_gray < thresh_wfa
 
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(img_threshold, cmap = 'gray')
@@ -117,3 +120,43 @@ fig.show()
 
 cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/A1_Claudin_bounding_box_test.tif', cont_claudin)
 
+# WFA threshold
+wfa_img = Image.open(img_A1)
+wfa_img.seek(4)
+wfa = np.array(wfa_img, dtype = 'uint8')
+wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
+hierachy, img_threshold = cv2.threshold(wfa,  100, 150, cv2.THRESH_BINARY)
+img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(img_threshold, cmap = 'gray')
+fig.show()
+
+# detecting claudin contours
+claudin_img = Image.open(img_A1)
+claudin_img.seek(1)
+claudin = np.array(claudin_img, dtype = 'uint8')
+claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
+gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
+_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("found", len(claudin_contours))
+
+# drawing claudin contours on the color thresholded image of WFA
+cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (0, 255, 0), 2)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(cla_cnt)
+fig.show()
+
+# drawing DAPI on the color thresholded image of WFA
+dapi_img = Image.open(img_A1)
+dapi_img.seek(2)
+dapi = np.array(dapi_img, dtype = 'uint8')
+dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
+_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("found", len(dapi_contours), "DAPI")
+dapi_cnt = cv2.drawContours(img_th_c, dapi_contours, -1, (0, 255, 0), 2)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(cla_cnt)
+fig.show()
