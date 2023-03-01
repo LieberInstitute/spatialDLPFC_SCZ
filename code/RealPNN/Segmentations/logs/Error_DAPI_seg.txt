@@ -11,3 +11,11 @@ Traceback (most recent call last):
     Image.MAX_IMAGE_PIXELS = None
     ^
 IndentationError: expected an indented block
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/DAPI.py", line 38, in <module>
+    img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
+NameError: name 'pyhere' is not defined
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/DAPI.py", line 79, in <module>
+    dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, dapi_img, 'DAPI')
+NameError: name 'save_coordinates' is not defined

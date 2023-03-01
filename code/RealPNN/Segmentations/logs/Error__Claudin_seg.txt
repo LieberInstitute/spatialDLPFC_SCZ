@@ -15,3 +15,31 @@ Traceback (most recent call last):
     Image.MAX_IMAGE_PIXELS = None
     ^
 IndentationError: expected an indented block
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 101, in <module>
+    clx,cly,clw,clh, cl_area, claudin_segmented = draw_all_contours(claudin_c, claudin_contours, (0,255,0), 2)
+NameError: name 'draw_all_contours' is not defined
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 102, in <module>
+    claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, claudin_img, 'Claudin-5')
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/stitched_functions/save_coordinates.py", line 49, in create_df
+    file_name = os.path.basename(img_name) # image file name
+  File "/users/ukaipa/.conda/envs/venv_segmentations/lib/python3.9/posixpath.py", line 142, in basename
+    p = os.fspath(p)
+TypeError: expected str, bytes or os.PathLike object, not TiffImageFile
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 103, in <module>
+    claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, claudin_img, 'Claudin-5')
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/stitched_functions/save_coordinates.py", line 49, in create_df
+    file_name = os.path.basename(img_name) # image file name
+  File "/users/ukaipa/.conda/envs/venv_segmentations/lib/python3.9/posixpath.py", line 142, in basename
+    p = os.fspath(p)
+TypeError: expected str, bytes or os.PathLike object, not TiffImageFile
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 103, in <module>
+    claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, claudin_img, 'Claudin-5')
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/stitched_functions/save_coordinates.py", line 49, in create_df
+    file_name = os.path.basename(img_name) # image file name
+  File "/users/ukaipa/.conda/envs/venv_segmentations/lib/python3.9/posixpath.py", line 142, in basename
+    p = os.fspath(p)
+TypeError: expected str, bytes or os.PathLike object, not TiffImageFile
