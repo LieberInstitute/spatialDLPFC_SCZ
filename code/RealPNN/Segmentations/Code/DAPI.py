@@ -27,7 +27,7 @@ from scipy.spatial.distance import *
 import skimage
 from skimage import feature, segmentation, draw, measure, morphology
 from stitched_functions import read_img, watershed_segmentation, draw_contours
-from stitched_functions import draw_contours
+from stitched_functions import draw_contours, save_coordinates
 
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
@@ -76,8 +76,8 @@ for img_path in os.listdir(source_dir):
         print("found", len(dapi_contours), "in", img_path)
         # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
         dpx, dpy, dpw, dph, dp_area, dp_segmented = draw_contours.draw_all_contours(dapi_c, dapi_contours, (255,125,155), 2)
-        dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, dapi_img, 'DAPI')
-        dapi_df.to_csv(dst_dir_dapi + img_path + '_info.csv')
+        dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_path.split('.')[0], 'DAPI')
+        dapi_df.to_csv(dst_dir_dapi + img_path.split('.')[0] + '_info.csv')
         # cv2.imwrite(dst_dir + img_path + '_dapi_contours_segmented.tif', dp_cnt)
 
 
