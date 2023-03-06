@@ -52,3 +52,15 @@ dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Real
 
 # file paths for test images
 img_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_A1.tif'
+
+
+for img_name in os.listdir(source_dir):
+    if img_name.endswith('.tif'):
+        img = Image.open(os.path.join(source_dir, img_name))
+        img.seek(2)
+        im_arr = np.array(img, dtype = 'uint8') # (17799, 16740)
+        img_clr = cv2.cvtColor(im_arr,cv2.COLOR_BGR2RGB)
+        gray = cv2.cvtColor(img_clr,cv2.COLOR_RGB2GRAY)
+        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY_INV)
+        edges = cv2.dilate(cv2.Canny(thresh,0,255),None)
+        cv2.imwrite(dst_dir + img_name + 'edges_segmented.tif', edges)
