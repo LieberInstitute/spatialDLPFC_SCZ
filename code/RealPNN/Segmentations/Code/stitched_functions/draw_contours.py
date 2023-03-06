@@ -117,3 +117,21 @@ def draw_all_contours(color_img, contours, box_color = (255, 0, 0), box_thicknes
         print("appended", number_cnt, "row to csv")
         contour_img = cv2.drawContours(color_img, contours, -1, box_color, box_thickness)
     return x_,y_,width_,height_,area_,contour_img
+
+
+def draw_dapi_contours(color_img, contours, box_color = (255, 0, 0), box_thickness = 2):
+    x_,y_,width_,height_,area_ = [],[],[],[],[] #x,y,width,height,area
+    print(len(contours))
+    for number_cnt, cnt in enumerate(contours):
+        if cv2.contourArea(cnt) >= 30:
+            x, y, w, h = cv2.boundingRect(cnt)
+            area = cv2.contourArea(cnt)
+            x_.append(x)
+            y_.append(y)
+            width_.append(w)
+            height_.append(h)
+            area_.append(area)
+            print("appended", number_cnt, "row to csv")
+            contour_img = cv2.drawContours(color_img, contours, -1, box_color, box_thickness)
+    return x_,y_,width_,height_,area_,contour_img
+
