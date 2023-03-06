@@ -1,4 +1,4 @@
-env'''
+'''
 For Visium-IF
 Channel0 = DAPI, DAPI
 Channel1 = Claudin5 (Alex 488),
@@ -43,13 +43,14 @@ from shapely.geometry.polygon import Polygon
 
 # draw a white rectangle filled using the coordinates from the csv
 from collections import Counter
+
 pix_list, locs_list, mean_pix_int_list  = [], [], []
 def all_pix_pnns(img_info_df, contour_img, original_img):
     for box in range(len(img_info_df['x1'])):
         print(box)
         gray_image = np.full((17799, 16740), 0, dtype=np.uint8) # new blank image so the original pix intensities are retained
-        rect = cv2.rectangle(gray_image, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
-        cv2.putText(contour_img, ('%d'%box), (img_info_df['x1'][box],img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 2, (125, 246, 55), 3)
+        # rect = cv2.rectangle(gray_image, (img_info_df['x1'][box], img_info_df['y1'][box]), (img_info_df['x4'][box], img_info_df['y4'][box]), (255,255,255), -1) # draw white filled rect on the copy of the image
+        # cv2.putText(contour_img, ('%d'%box), (img_info_df['x1'][box],img_info_df['y1'][box]), cv2.FONT_HERSHEY_SIMPLEX, 2, (125, 246, 55), 3)
         # gray_seg_wfa = skimage.color.rgb2gray(contour_img)
         # plot_img(gray_image, contour_img)
         locs = np.argwhere(gray_image == 255)
