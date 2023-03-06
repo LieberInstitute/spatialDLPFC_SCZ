@@ -13,6 +13,7 @@ from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
 import imutils
 import numpy as np
+import pyhere
 from pyhere import here
 from pylab import xticks
 from pathlib import Path
@@ -35,7 +36,8 @@ source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/V
 dst_dir_dapi = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/'
 
 # test file paths
-# img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
+img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
+img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_B1.tif'
 
 # watershed segmentation on test image
 # img_dapi, dapi_shifted, dapi_gray, dapi_thresh = read_img.read_and_preprocess(img_A1, 2)
@@ -46,40 +48,46 @@ dst_dir_dapi = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data
 
 
 # contour detection on test image
-# Image.MAX_IMAGE_PIXELS = None
-# dapi_img = Image.open(img_A1)
-# dapi_img.seek(2)
-# dapi = np.array(dapi_img, dtype = 'uint8') # (17799, 16740)
-# dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
-# gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
-# _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
-# contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-# print(len(contours))
-# dapi_contoured_img = draw_contours.draw_all_contours(dapi_c, contours, (0, 255, 0), 2) #dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+Image.MAX_IMAGE_PIXELS = None
+dapi_img = Image.open(img_A1)
+dapi_img.seek(2)
+dapi = np.array(dapi_img, dtype = 'uint8') # (17799, 16740)
+dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
+_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print(len(contours))
+for cont in contours:
+    if cv2.contourArea(cont) >= 20:
+        dapi_contoured_img = draw_contours.draw_dapi_contours(dapi_c, contours, (0, 255, 0), 2) #dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+cv2.imwrite(dst_dir_dapi + os.basename(img_A1)[0] + '_dapi_contours_thresholded.tif', dapi_contoured_img)
+# dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_dapi, 'DAPI')
+
 # cv2.imwrite(dst_dir_dapi + os.basename(img_A1)[0] + '_dapi_contours_detected.tif', dapi_contoured_img)
-# # dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_dapi, 'DAPI')
+# dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_dapi, 'DAPI')
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(thresh, cmap = 'gray')
 # fig.show()
 
 # find contours for all images in the dir
-Image.MAX_IMAGE_PIXELS = None
-for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif"):
-        dapi_img = Image.open(os.path.join(source_dir, img_path))
-        dapi_img.seek(2)
-        dapi = np.array(dapi_img, dtype = 'uint8')
-        dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
-        gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
-        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
-        dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        print("found", len(dapi_contours), "in", img_path)
-        # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
-        if cnt in dapi_contours >= 10:
-            dpx, dpy, dpw, dph, dp_area, dp_segmented = draw_contours.draw_all_contours(dapi_c, dapi_contours, (255,125,155), 2)
-            dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_path.split('.')[0], 'DAPI')
-            dapi_df.to_csv(dst_dir_dapi + img_path.split('.')[0] + '_info.csv')
-            # cv2.imwrite(dst_dir + img_path + '_dapi_contours_segmented.tif', dp_cnt)
+# Image.MAX_IMAGE_PIXELS = None
+# for img_path in os.listdir(source_dir):
+#     if img_path.endswith(".tif"):
+#         dapi_img = Image.open(os.path.join(source_dir, img_path))
+#         dapi_img.seek(2)
+#         dapi = np.array(dapi_img, dtype = 'uint8')
+#         dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+#         gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
+#         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+#         dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+#         print("found", len(dapi_contours), "in", img_path)
+#         # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+#         for cnt in dapi_contours:
+#             if cv2.contourArea(cnt) >=20:
+#                 dpx, dpy, dpw, dph, dp_area, dp_segmented = draw_contours.draw_all_contours(dapi_c, dapi_contours, (255,125,155), 2)
+#                 dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_path.split('.')[0], 'DAPI')
+#                 dapi_df.to_csv(dst_dir_dapi + img_path.split('.')[0] + '_info.csv')
+                # cv2.imwrite(dst_dir + img_path + '_dapi_contours_segmented.tif', dp_cnt)
 
 
 
@@ -95,3 +103,20 @@ for img_path in os.listdir(source_dir):
 
 # dapi edge detection for all images in the directory
 # edges_all_images(source_dir, dst_dir)
+
+# get all pixels info and append it to the existing csv
+# csv_info_053_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/Data_files/V12F14-053_B1_info.csv'
+
+
+# Image.MAX_IMAGE_PIXELS = None
+# dapi_img = Image.open(img_B1)
+# dapi_img.seek(2)
+# dapi = np.array(dapi_img, dtype = 'uint8') # (17799, 16740)
+# dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+# gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
+# _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+# contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# print(len(contours))
+
+# B1_053 = pd.read_csv(csv_info_053_B1)
+# contour_img, img_info_df, mean_pix_int_list = all_pix_pnns(img_info_df, contour_img, original_img)
