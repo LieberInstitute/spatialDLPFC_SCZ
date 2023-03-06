@@ -48,6 +48,7 @@ source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/V
 dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/'
 
 # file paths for test
+Image.MAX_IMAGE_PIXELS = None
 img_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_A1.tif'
 
 
@@ -121,7 +122,7 @@ fig.show()
 cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/A1_Claudin_bounding_box_test.tif', cont_claudin)
 
 # WFA threshold
-wfa_img = Image.open(img_A1)
+wfa_img = Image.open(img_B1)
 wfa_img.seek(4)
 wfa = np.array(wfa_img, dtype = 'uint8')
 wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
@@ -139,10 +140,11 @@ claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print("found", len(claudin_contours))
+cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (255, 153, 255), 2) #pink
+# print("found", len(claudin_contours))
 
 # drawing claudin contours on the color thresholded image of WFA
-cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (0, 255, 0), 2)
+# cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (0, 255, 0), 2)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(cla_cnt)
 fig.show()
@@ -156,7 +158,22 @@ gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print("found", len(dapi_contours), "DAPI")
-dapi_cnt = cv2.drawContours(img_th_c, dapi_contours, -1, (0, 255, 0), 2)
+dapi_cnt = cv2.drawContours(cla_cnt, dapi_contours, -1, (0, 255, 0), 2) #green
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(cla_cnt)
+ax.imshow(dapi_cnt)
+fig.show()
+
+
+# drawing neun contours
+neun_img = Image.open(img_A1)
+neun_img.seek(3)
+neun = np.array(neun_img, dtype = 'uint8')
+neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
+gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
+_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("found", len(neun_contours), "in", img_path)
+final = cv2.drawContours(dapi_cnt, neun_contours, -1, (255, 255, 0), 2) #yellow
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(final)
 fig.show()
