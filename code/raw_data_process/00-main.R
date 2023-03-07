@@ -33,9 +33,17 @@ here("code", "raw_data_process",
      "02-prep_for_space_ranger.R") |> 
   source()
 
+# Space Ranger QC ---------------------------------------------------------
+# https://github.com/LieberInstitute/spatialDLPFC_SCZ/issues/16
+
+# TODO:  Add here
+
 
 # Nuclei Segmentation with VistoSeg ---------------------------------------
 # https://github.com/LieberInstitute/spatialDLPFC_SCZ/issues/14
-# TODO: Not implemented yet
+here("code", "raw_data_process",
+     "04-vistoseg.R") |> 
+  source()
+
 
 
