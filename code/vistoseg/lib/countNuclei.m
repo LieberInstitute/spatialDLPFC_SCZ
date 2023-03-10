@@ -6,7 +6,7 @@ function [count,prop] = countNuclei(mask,jsonname,posname)
 
 disp('loading data')
 
- BW = load(mask);
+ BW = imread(mask);
  O = fieldnames(BW);
    
 [posPath,~] = fileparts(posname);
