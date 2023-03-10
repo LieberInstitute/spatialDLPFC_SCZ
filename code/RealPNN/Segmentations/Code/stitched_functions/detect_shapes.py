@@ -42,7 +42,7 @@ from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
-def detect_shape_pnns(contour_img, img_info_df, contours):
+def detect_shape_pnns(contour_img, contours): #img_info_df,
     # color_img = skimage.color.gray2rgb(normalised_img)
     shape = "unidentified"
     for cnts in contours:
