@@ -124,5 +124,5 @@ claudin_contoured_img = draw_contours.draw_all_contours(claudin_c, claudin_conto
 # cv2.imwrite(dst_dir_dapi + os.basename(img_A1)[0] + '_claudin_contours_thresholded.tif', claudin_contoured_img)
 # claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, img_A1, 'Claudin-5')
 A1 = pd.read_csv(csv_A1)
-contour_img, claudin_df_all, mean_pix_int_list = all.pixels.all_pix_pnns(A1, claudin_contoured_img, claudin)
+contour_img, claudin_df_all, mean_pix_int_list = all_pixels.all_pix_pnns(A1, claudin_contoured_img, claudin)
 claudin_df_all.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_pix_info.csv')
