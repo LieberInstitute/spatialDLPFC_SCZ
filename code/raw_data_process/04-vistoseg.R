@@ -34,10 +34,11 @@ if(nrow(finished_df) != sum(sr_success_brs)) # Space ranger Fails exist
 #               "DAPI", "Data_files")
 # )
 
+
 vistoseg_finished_brs <- file.exists(
   here("processed-data", "spaceranger",
        finished_df$sample_fld_name,
-       "outs","spatial", "tissue_positions_list.csv")
+       "outs","spatial", "tissue_spot_counts.csv")
 )
 
 
@@ -86,8 +87,9 @@ dapi_fs_df[have_dapi_file, , drop = FALSE] |>
       neuc_seg_mat = dapi_file_path,
       json = here(sr_fld_path,
                   "outs/spatial/scalefactors_json.json"),
+      #TODO: add flexibility to tissue_positions/tissue_positions_list
       output_path = here(sr_fld_path,
-                         "outs/spatial/tissue_positions_list.csv")
+                         "outs/spatial/tissue_positions.csv")
     ) |> 
       write.table( 
         file=here(
