@@ -6,7 +6,9 @@ function [count,prop] = countNuclei(mask,jsonname,posname)
 
 disp('loading data')
 
- BW = imread(mask);
+
+
+ BW = load(mask);
  O = fieldnames(BW);
    
 [posPath,~] = fileparts(posname);
@@ -20,6 +22,7 @@ prop = [];
     if size(tbl, 2) > 6
         b = 7;
         for C = 1:numel(O)
+        disp(O(C));
         count.(O{C}) = table2array(tbl(:, b));
         prop.(O{C}) = table2array(tbl(:, b+1));
         b = b+3;
