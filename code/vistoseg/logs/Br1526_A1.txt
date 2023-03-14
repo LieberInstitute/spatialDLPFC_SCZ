@@ -1,0 +1,122 @@
+**** Job starts ****
+Tue Mar  7 17:41:13 EST 2023
+**** JHPCE info ****
+User: bguo
+Job id: 3031085
+Job name: Br1526_A1
+Hostname: compute-129.cm.cluster
+****
+Sample id: Br1526_A1
+****
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2019 The MathWorks, Inc.
+                  R2019a (9.6.0.1072779) 64-bit (glnxa64)
+                               March 8, 2019
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+loading data
+{Error using readtable (line 216)
+Unable to open file
+'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/Br1526_A1/outs/spatial/tissue_positions_list.csv'.
+
+Error in countNuclei (line 16)
+tbl = readtable(posname) ;
+} 
+>> **** Job ends ****
+Tue Mar  7 17:42:04 EST 2023
+**** Job starts ****
+Wed Mar  8 11:28:05 EST 2023
+**** JHPCE info ****
+User: bguo
+Job id: 3032809
+Job name: Br1526_A1
+Hostname: compute-124.cm.cluster
+****
+Sample id: Br1526_A1
+****
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2019 The MathWorks, Inc.
+                  R2019a (9.6.0.1072779) 64-bit (glnxa64)
+                               March 8, 2019
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+loading data
+4992 Visium spots detected
+Building spot grid
+1 AF ROIS detected
+56776 Claudin5 ROIS detected
+5336133 DAPI ROIS detected
+1116613 NeuN ROIS detected
+7219 WFA ROIS detected
+counting dots per Visium spot
+100 spots finished in time 532.466s
+200 spots finished in time 1063.365s
+300 spots finished in time 1593.4698s
+400 spots finished in time 2123.9085s
+500 spots finished in time 2647.3161s
+600 spots finished in time 3132.7915s
+700 spots finished in time 3610.3726s
+800 spots finished in time 4091.0271s
+900 spots finished in time 4568.354s
+1000 spots finished in time 5038.2859s
+1100 spots finished in time 5495.5563s
+1200 spots finished in time 5952.1804s
+1300 spots finished in time 6409.5569s
+1400 spots finished in time 6866.6256s
+1500 spots finished in time 7322.6139s
+1600 spots finished in time 7777.9272s
+1700 spots finished in time 8233.6405s
+1800 spots finished in time 8689.1163s
+1900 spots finished in time 9144.0486s
+2000 spots finished in time 9599.6239s
+2100 spots finished in time 10056.1442s
+2200 spots finished in time 10513.8852s
+2300 spots finished in time 10970.5545s
+2400 spots finished in time 11427.3984s
+2500 spots finished in time 11884.8473s
+2600 spots finished in time 12343.1189s
+2700 spots finished in time 12799.5246s
+2800 spots finished in time 13254.2589s
+2900 spots finished in time 13709.3054s
+3000 spots finished in time 14164.2447s
+3100 spots finished in time 14620.5791s
+3200 spots finished in time 15077.263s
+3300 spots finished in time 15533.9612s
+3400 spots finished in time 15991.1106s
+3500 spots finished in time 16447.4683s
+3600 spots finished in time 16905.0361s
+3700 spots finished in time 17362.4189s
+3800 spots finished in time 17819.7726s
+3900 spots finished in time 18276.8317s
+4000 spots finished in time 18734.3943s
+4100 spots finished in time 19191.6268s
+4200 spots finished in time 19648.3237s
+4300 spots finished in time 20105.1073s
+4400 spots finished in time 20562.063s
+4500 spots finished in time 21019.7563s
+4600 spots finished in time 21476.1949s
+4700 spots finished in time 21932.5567s
+4800 spots finished in time 22389.0418s
+4900 spots finished in time 22845.0422s
+writing table
+
+ans = 
+
+  struct with fields:
+
+          AF: [4992x1 double]
+    Claudin5: [4992x1 double]
+        DAPI: [4992x1 double]
+        NeuN: [4992x1 double]
+         WFA: [4992x1 double]
+
+>> **** Job ends ****
+Wed Mar  8 18:07:33 EST 2023
