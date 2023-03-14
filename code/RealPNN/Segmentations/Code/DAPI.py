@@ -57,6 +57,24 @@ gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print(len(contours))
+# dapi_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 0, 0), 1) #black
+for cnt in contours:
+    x,y,w,h = cv2.boundingRect(cnt)
+    area = cv2.contourArea(cnt)
+    if area >=50:
+        # dapi_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 0, 0), 1)
+        dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), 1)
+    elif area<50:
+        # dapi_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 0, 0), -1)
+        dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), -1)
+gray_segmented = cv2.cvtColor(dp_cnt,cv2.COLOR_RGB2GRAY)
+thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+
+# cv2.imwrite(dst_dir_dapi + os.path.basename(img_A1).split('.')[0] + '_dapi_segmented.tif', dp_cnt)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(thresh_segmented, cmap = 'gray')
+fig.show()
+
 for cont in contours:
     if cv2.contourArea(cont) >= 20:
         dapi_contoured_img = draw_contours.draw_dapi_contours(dapi_c, contours, (0, 255, 0), 2) #dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
@@ -65,24 +83,37 @@ cv2.imwrite(dst_dir_dapi + os.basename(img_A1)[0] + '_dapi_contours_thresholded.
 
 # cv2.imwrite(dst_dir_dapi + os.basename(img_A1)[0] + '_dapi_contours_detected.tif', dapi_contoured_img)
 # dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_dapi, 'DAPI')
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(thresh, cmap = 'gray')
-# fig.show()
+a = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/Segmented_images/V12F14-053_A1_dapi_size_thresholded.tif'
+aim = Image.open(a)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(binary_segmented, cmap = 'gray')
+fig.show()
 
 # find contours for all images in the dir
-# Image.MAX_IMAGE_PIXELS = None
-# for img_path in os.listdir(source_dir):
-#     if img_path.endswith(".tif"):
-#         dapi_img = Image.open(os.path.join(source_dir, img_path))
-#         dapi_img.seek(2)
-#         dapi = np.array(dapi_img, dtype = 'uint8')
-#         dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
-#         gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
-#         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
-#         dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-#         print("found", len(dapi_contours), "in", img_path)
-#         # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
-#         for cnt in dapi_contours:
+Image.MAX_IMAGE_PIXELS = None
+for img_path in os.listdir(source_dir):
+    if img_path.endswith(".tif"):
+        dapi_img = Image.open(os.path.join(source_dir, img_path))
+        dapi_img.seek(2)
+        dapi = np.array(dapi_img, dtype = 'uint8')
+        dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+        gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
+        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+        dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(dapi_contours), "in", img_path)
+        # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+        for cnt in dapi_contours:
+            x,y,w,h = cv2.boundingRect(cnt)
+            area = cv2.contourArea(cnt)
+            if area >=50:
+                dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), 1)
+            elif area<50:
+                dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), -1)
+        gray_segmented = cv2.cvtColor(dp_cnt,cv2.COLOR_RGB2GRAY)
+        thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+        binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        cv2.imwrite(dst_dir_dapi + img_path.split('.')[0] + '_dapi_binarized.tif', binary_segmented)
+
 #             if cv2.contourArea(cnt) >=20:
 #                 dpx, dpy, dpw, dph, dp_area, dp_segmented = draw_contours.draw_all_contours(dapi_c, dapi_contours, (255,125,155), 2)
 #                 dapi_df = save_coordinates.create_df(dpx, dpy, dpw, dph, dp_area, img_path.split('.')[0], 'DAPI')
