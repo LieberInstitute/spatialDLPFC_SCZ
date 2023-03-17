@@ -83,3 +83,88 @@ ans =
 
 >> **** Job ends ****
 Mon Mar 13 18:42:14 EDT 2023
+**** Job starts ****
+Tue Mar 14 14:59:12 EDT 2023
+**** JHPCE info ****
+User: ukaipa
+Job id: 3052069
+Job name: countNuclei_V12F14-053_A1.sh
+Hostname: compute-126.cm.cluster
+Task id: undefined
+****
+Sample id: dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/Segmented_images/V12F14-053_A1_dapi_binarized.mat
+****
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2019 The MathWorks, Inc.
+                  R2019a (9.6.0.1072779) 64-bit (glnxa64)
+                               March 8, 2019
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+loading data
+4992 Visium spots detected
+Building spot grid
+38688 data ROIS detected
+counting dots per Visium spot
+100 spots finished in time 178.3326s
+200 spots finished in time 356.4273s
+300 spots finished in time 534.6023s
+400 spots finished in time 712.5344s
+500 spots finished in time 890.7169s
+600 spots finished in time 1068.9967s
+700 spots finished in time 1247.1398s
+800 spots finished in time 1425.0081s
+900 spots finished in time 1603.9326s
+1000 spots finished in time 1782.3048s
+1100 spots finished in time 1960.9851s
+1200 spots finished in time 2139.496s
+1300 spots finished in time 2317.8346s
+1400 spots finished in time 2495.9258s
+1500 spots finished in time 2667.9146s
+1600 spots finished in time 2828.9019s
+1700 spots finished in time 2992.2483s
+1800 spots finished in time 3155.5367s
+1900 spots finished in time 3317.6936s
+2000 spots finished in time 3478.3338s
+2100 spots finished in time 3638.7351s
+2200 spots finished in time 3794.0108s
+2300 spots finished in time 3950.595s
+2400 spots finished in time 4107.9434s
+2500 spots finished in time 4264.2873s
+2600 spots finished in time 4418.6385s
+2700 spots finished in time 4575.8561s
+2800 spots finished in time 4730.0041s
+2900 spots finished in time 4885.7999s
+3000 spots finished in time 5040.4831s
+3100 spots finished in time 5196.8684s
+3200 spots finished in time 5355.0766s
+3300 spots finished in time 5511.3191s
+3400 spots finished in time 5667.6921s
+3500 spots finished in time 5825.8825s
+3600 spots finished in time 5981.8831s
+3700 spots finished in time 6139.3919s
+3800 spots finished in time 6294.6716s
+3900 spots finished in time 6451.3248s
+4000 spots finished in time 6608.6328s
+4100 spots finished in time 6766.916s
+4200 spots finished in time 6923.1841s
+4300 spots finished in time 7079.4442s
+4400 spots finished in time 7234.7241s
+4500 spots finished in time 7388.9697s
+4600 spots finished in time 7542.2406s
+4700 spots finished in time 7695.5008s
+4800 spots finished in time 7849.0144s
+4900 spots finished in time 8002.805s
+writing table
+
+ans = 
+
+  struct with fields:
+
+    data: [4992x1 double]
+
+>> **** Job ends ****
+Tue Mar 14 17:15:15 EDT 2023
