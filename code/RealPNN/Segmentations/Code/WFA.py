@@ -45,7 +45,7 @@ from shapely.geometry.polygon import Polygon
 # directory path
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/'
+dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/Segmented_images_binary/'
 
 # file paths for test
 Image.MAX_IMAGE_PIXELS = None
@@ -53,21 +53,32 @@ img_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_B1.tif'
 
 
-
-
 # WFA threshold
-wfa_img = Image.open(img_A1)
-wfa_img.seek(4)
-wfa = np.array(wfa_img, dtype = 'uint8')
-wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
-hierachy, img_threshold = cv2.threshold(wfa,  100, 150, cv2.THRESH_BINARY)
-img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(contour_img)
-fig.show()
-wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (255, 153, 255), 2) #pink
-approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
+Image.MAX_IMAGE_PIXELS = None
+for img_path in os.listdir(source_dir):
+    if img_path.endswith(".tif"):
+        wfa_img = Image.open(os.path.join(source_dir, img_path))
+        wfa_img.seek(4)
+        wfa = np.array(wfa_img, dtype = 'uint8')
+        wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
+        hierachy, img_threshold = cv2.threshold(wfa,  100, 150, cv2.THRESH_BINARY)
+        img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
+        fig,ax = plt.subplots(figsize = (20,20))
+        ax.imshow(img_th_c)
+        fig.show()
+        wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(wfa_contours), "in", img_path)
+        wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) #(255, 153, 255)pink
+        gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
+        thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+        binary_segmented_wfa = cv2.normalize(np.array(thresh_segmented_wfa, dtype = 'uint8'), np.zeros(np.array(thresh_segmented_wfa, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        # fig,ax = plt.subplots(figsize = (20,20))
+        # ax.imshow(binary_segmented_wfa, cmap = 'gray')
+        # fig.show()
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_binarized.tif', binary_segmented_wfa)
+        # approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
+
+
 
 # detecting claudin contours
 claudin_img = Image.open(img_B1)
