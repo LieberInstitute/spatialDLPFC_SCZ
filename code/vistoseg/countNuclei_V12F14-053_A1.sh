@@ -16,14 +16,14 @@ echo "Job name: ${JOB_NAME}"
 echo "Hostname: ${HOSTNAME}"
 echo "Task id: ${SGE_TASK_ID}"
 echo "****"
-echo "Sample id: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/Segmented_images/V12F14-053_A1_dapi_size_thresholded.mat"
+echo "Sample id: dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/Segmented_images/V12F14-053_A1_dapi_binarized.mat"
 echo "****"
 
 ## List current modules for reproducibility
-module list
-mask='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/Segmented_images/V12F14-053_A1_dapi_size_thresholded.mat'
-jsonname='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/Br1526_A1/outs/spatial/scalefactors_json.json'
-posname='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/Br1526_A1/outs/spatial/tissue_positions.csv'
+module matlab/R2019a
+mask='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/Segmented_images/V12F14-053_A1_dapi_binarized.mat'
+jsonname='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/Br2719_A1/outs/spatial/scalefactors_json.json'
+posname='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/Br2719_A1/outs/spatial/tissue_positions.csv'
 
 toolbox='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib/'
 matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), countNuclei('$mask','$jsonname','$posname')" 
