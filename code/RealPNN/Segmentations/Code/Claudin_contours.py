@@ -46,7 +46,7 @@ from stitched_functions import draw_contours, all_pixels
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/'
+dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/Segmented_images_binary/'
 
 
 # image paths
@@ -92,23 +92,33 @@ csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealP
 
 
 # find contours for all images in the dir
-# Image.MAX_IMAGE_PIXELS = None
-# for img_path in os.listdir(source_dir):
-#     if img_path.endswith(".tif"):
-#         claudin_img = Image.open(os.path.join(source_dir, img_path))
-#         claudin_img.seek(1)
-#         claudin = np.array(claudin_img, dtype = 'uint8')
-#         claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
-#         gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
-#         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
-#         claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-#         print("found", len(claudin_contours), "in", img_path)
-#         # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
-#         clx,cly,clw,clh, cl_area, claudin_segmented = draw_contours.draw_all_contours(claudin_c, claudin_contours, (0,255,0), 2)
-#         claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, img_path.split('.')[0], 'Claudin-5')
-#         claudin_df.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_info.csv')
-        # cv2.imwrite(dst_dir_neun + img_path + '_neun_contours_segmented.tif', neun_segmented)
+Image.MAX_IMAGE_PIXELS = None
+for img_path in os.listdir(source_dir):
+    if img_path.endswith(".tif"):
+        claudin_img = Image.open(os.path.join(source_dir, img_path))
+        claudin_img.seek(1)
+        claudin = np.array(claudin_img, dtype = 'uint8')
+        claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
+        gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
+        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+        claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(claudin_contours), "in", img_path)
+        cl_cnt = cv2.drawContours(claudin_c, claudin_contours, -1, (0, 0, 0), 1)
+        gray_segmented = cv2.cvtColor(cl_cnt,cv2.COLOR_RGB2GRAY)
+        thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+        binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        fig,ax = plt.subplots(figsize = (20,20))
+        ax.imshow(thresh_segmented, cmap = 'gray')
+        fig.show()
+        # clx,cly,clw,clh, cl_area, claudin_segmented = draw_contours.draw_all_contours(claudin_c, claudin_contours, (0,255,0), 2)
+        # claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, img_path.split('.')[0], 'Claudin-5')
+        # claudin_df.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_info.csv')
+        cv2.imwrite(dst_dir_claudin + img_path.split('.')[0] + '_claudin_binarized.tif', binary_segmented)
 
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(binary_segmented, cmap = 'gray')
+fig.show()
 
 # tested out deriving all pixels from within the contour
 Image.MAX_IMAGE_PIXELS = None
