@@ -26,6 +26,8 @@ import cv2
 import scipy
 from scipy.spatial.distance import *
 import skimage
+import tifffile
+from scipy.io import savemat
 from skimage import feature, segmentation, draw, measure, morphology
 from stitched_functions import read_img, watershed_segmentation, draw_contours
 from stitched_functions import draw_contours, save_coordinates
@@ -69,10 +71,19 @@ for cnt in contours:
         dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), -1)
 gray_segmented = cv2.cvtColor(dp_cnt,cv2.COLOR_RGB2GRAY)
 thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+cv2.imwrite(dst_dir_dapi + os.path.basename(img_A1).split('.')[0] + '_dapi.tif', thresh_segmented)
+thresh_segmented.save(dst_dir_dapi + os.path.basename(img_A1).split('.')[0] + '_dapi.tif', 'tif')
+
+_, binary_segmented_thresh = cv2.threshold(binary_segmented, 0.5, 1, cv2.THRESH_BINARY)
+cv2.imwrite(filename, binary_segmented_thresh)
+io.imsave(dst_dir_dapi + os.path.basename(img_A1).split('.')[0] + '_dapi.png', thresh_segmented, plugin='pil', check_contrast=False, compress=9)
+
+
 
 # cv2.imwrite(dst_dir_dapi + os.path.basename(img_A1).split('.')[0] + '_dapi_segmented.tif', dp_cnt)
 fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(thresh_segmented, cmap = 'gray')
+ax.imshow(thresh_segmented, cmap = 'gray') #
 fig.show()
 
 for cont in contours:
@@ -88,6 +99,8 @@ aim = Image.open(a)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(binary_segmented, cmap = 'gray')
 fig.show()
+
+
 
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
