@@ -124,8 +124,8 @@ for img_path in os.listdir(source_dir):
                 dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), -1)
         gray_segmented = cv2.cvtColor(dp_cnt,cv2.COLOR_RGB2GRAY)
         thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
-        binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        cv2.imwrite(dst_dir_dapi + img_path.split('.')[0] + '_dapi_binarized.tif', binary_segmented)
+        # binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        cv2.imwrite(dst_dir_dapi + img_path.split('.')[0] + '_dapi_binarized.tif', thresh_segmented)
 
 #             if cv2.contourArea(cnt) >=20:
 #                 dpx, dpy, dpw, dph, dp_area, dp_segmented = draw_contours.draw_all_contours(dapi_c, dapi_contours, (255,125,155), 2)
