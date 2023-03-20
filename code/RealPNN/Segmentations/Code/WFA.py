@@ -91,26 +91,29 @@ img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
 # ax.imshow(img_th_c)
 # fig.show()
 wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print("found", len(wfa_contours), "in", img_path)
-wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) #(255, 153, 255)pink
+print("found", len(wfa_contours), "in", os.path.basename(img_A1))
+wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 255, 0), 2) #(255, 153, 255)pink
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(img_th_c)
+fig.show()
 gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
 thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
 # binary_segmented_wfa = cv2.normalize(np.array(thresh_segmented_wfa, dtype = 'uint8'), np.zeros(np.array(thresh_segmented_wfa, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(binary_segmented_wfa, cmap = 'gray')
-fig.show()
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(thresh_segmented_wfa, cmap = 'gray')
+# fig.show()
 
 
 
 # detecting claudin contours
-claudin_img = Image.open(img_B1)
+claudin_img = Image.open(img_A1)
 claudin_img.seek(1)
 claudin = np.array(claudin_img, dtype = 'uint8')
 claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (255, 153, 255), 2) #pink
+# cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (255, 153, 255), 2) #pink
 # print("found", len(claudin_contours))
 area_ = []
 for cnt in claudin_contours:
@@ -118,9 +121,9 @@ for cnt in claudin_contours:
     area = cv2.contourArea(cnt)
     area_.append(area)
     if area<1000:
-        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,255,0), 2) #green
+        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) #green
     elif area>=10000:
-        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+500+w+1000, y+500+h+1000), (255,255,0), 2) #yellow
+        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+50+w+100, y+50+h+100), (255,255,0), 2) #yellow
 
 
 fig,ax = plt.subplots(figsize = (20,20))
