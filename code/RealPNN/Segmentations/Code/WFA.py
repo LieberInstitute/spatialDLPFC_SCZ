@@ -121,7 +121,7 @@ for cnt in claudin_contours:
     area = cv2.contourArea(cnt)
     area_.append(area)
     if area<1000:
-        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) #green
+        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), 2) #green
     elif area>=10000:
         cla_rect = cv2.rectangle(img_th_c, (x,y), (x+50+w+100, y+50+h+100), (255,255,0), 2) #yellow
 
@@ -148,7 +148,7 @@ gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print("found", len(dapi_contours), "DAPI")
-dapi_cnt = cv2.drawContours(contour_img, dapi_contours, -1, (0, 0, 255), 2) #blue
+dapi_cnt = cv2.drawContours(img_th_c, dapi_contours, -1, (255, 153, 255), 2) #pink
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi_cnt)
 fig.show()
