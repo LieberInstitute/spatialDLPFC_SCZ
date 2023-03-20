@@ -43,3 +43,22 @@ from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
+
+import numpy as np
+import tifffile
+
+# Load the images
+image1 = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/V12F14-053_A1_dapi_binarized.tif'))
+image2 = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/V12F14-053_A1_claudin_binarized.tif'))
+
+# Combine the images to create a multi-channel image
+multi_channel_image = np.stack((image1, image2), axis=2)
+
+# Set metadata for the channels
+channel_names = ['DAPI', 'Claudin-5'] #, 'NeuN', 'WFA', 'AF']
+# channel_units = ['nm', 'ms']
+metadata = {'axes': 'ZYX', 'channel_names': channel_names} #, 'channel_units': channel_units}
+
+# Save the multi-channel image with metadata
+tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/multi_channel_image.tif', multi_channel_image, metadata=metadata)
+
