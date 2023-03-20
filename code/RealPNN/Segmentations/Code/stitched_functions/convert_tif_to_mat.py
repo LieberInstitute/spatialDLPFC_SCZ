@@ -1,3 +1,4 @@
+
 import os
 import numpy as np
 import tifffile
@@ -17,15 +18,4 @@ convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed
 convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_segmented_binary/')
 convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/Segmented_images_binary/')
 convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/Segmented_images_binary/')
-
-
-import scipy.io as sio
-from skimage import io
-
-# Load the TIFF image
-img = io.imread('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/V12F14-053_A1_dapi.tif')
-
-# Save the image as a MAT file
-sio.savemat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/V12F14-053_A1_dapi.mat', {'img': img})
-
-
+convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/')
