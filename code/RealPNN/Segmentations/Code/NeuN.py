@@ -47,7 +47,7 @@ from stitched_functions import draw_contours, all_pixels
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_neun = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_segmented_binary/'
+dst_dir_neun = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_binarized/'
 
 # test images
 img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
@@ -97,14 +97,14 @@ for img_path in os.listdir(source_dir):
         nn_cnt = cv2.drawContours(neun_c, neun_contours, -1, (0, 0, 0), 1)
         gray_segmented = cv2.cvtColor(nn_cnt,cv2.COLOR_RGB2GRAY)
         thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
-        binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        fig,ax = plt.subplots(figsize = (20,20))
-        ax.imshow(thresh_segmented, cmap = 'gray')
-        fig.show()
+        # binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        # fig,ax = plt.subplots(figsize = (20,20))
+        # ax.imshow(thresh_segmented, cmap = 'gray')
+        # fig.show()
         # nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_all_contours(neun_c, neun_contours, (0,255,0), 2)
         # neun_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, img_path.split('.')[0], 'NeuN')
         # neun_df.to_csv(dst_dir_neun + img_path.split('.')[0] + '_info.csv')
-        cv2.imwrite(dst_dir_neun + img_path.split('.')[0] + '_neun_binarized.tif', binary_segmented)
+        cv2.imwrite(dst_dir_neun + img_path.split('.')[0] + '_neun_binarized.tif', thresh_segmented)
 
 
 # tested out deriving all pixels from within the contour
