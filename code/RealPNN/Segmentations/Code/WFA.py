@@ -81,7 +81,8 @@ for img_path in os.listdir(source_dir):
 
 
 # wfa contours for 1 image
-wfa_img = Image.open(img_A1)
+Image.MAX_IMAGE_PIXELS = None
+wfa_img = Image.open(img_B1)
 wfa_img.seek(4)
 wfa = np.array(wfa_img, dtype = 'uint8')
 wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
@@ -106,7 +107,7 @@ thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_
 
 
 # detecting claudin contours
-claudin_img = Image.open(img_A1)
+claudin_img = Image.open(img_B1)
 claudin_img.seek(1)
 claudin = np.array(claudin_img, dtype = 'uint8')
 claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
@@ -130,7 +131,7 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(cla_rect)
 fig.show()
 
-cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/A1_Claudin_bounding_box_test.tif', cla_rect)
+cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/B1_Claudin_bounding_box_test.tif', cla_rect)
 
 cla_area = np.array(area_)
 
