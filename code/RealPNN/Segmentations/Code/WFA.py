@@ -151,6 +151,10 @@ _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRES
 dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print("found", len(dapi_contours), "DAPI")
 dapi_cnt = cv2.drawContours(img_th_c, dapi_contours, -1, (255, 153, 255), 2) #pink
+for cnt in dapi_contours:
+    if wfa_contours == dapi_contours:
+        wfa_dapi_masked = cv2.drawContours(img_th_c, wfa_cnt, -1, (0, 0, 0), -1) #pink
+
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi_cnt)
 fig.show()
