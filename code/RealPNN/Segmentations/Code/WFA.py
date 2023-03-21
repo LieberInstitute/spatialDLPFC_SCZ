@@ -158,6 +158,7 @@ for cnt in dapi_contours:
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(dapi_cnt)
 fig.show()
+cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/A1_Claudin_bounding_box_test.tif', cont_claudin)
 
 
 # drawing neun contours
