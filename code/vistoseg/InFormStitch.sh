@@ -1,6 +1,6 @@
 #!/bin/bash
-#$ -pe local 5
-#$ -l mem_free=10G,h_vmem=10G,h_fsize=100G
+# #$ -pe local 5
+#$ -l mem_free=120G,h_vmem=120G,h_fsize=100G
 #$ -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/logs/Informstitch_output.txt
 #$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/logs/Informstitch_error.txt
 #$ -m be
