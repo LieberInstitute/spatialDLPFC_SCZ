@@ -20,6 +20,7 @@ echo "Task id: ${SGE_TASK_ID}"
 echo "****"
 
 module load matlab/R2019a
+module list
 
 toolbox='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib/'
 
