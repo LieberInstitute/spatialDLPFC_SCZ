@@ -24,6 +24,7 @@ module load matlab/R2019a
 toolbox='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib/'
 
 path1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S1_NTC/20220814_VIF_PNN_S1_NTC_Scan1_*_component_data.tif'
+fname = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/round1/20220814_VIF_PNN_S1_NTC/20220814_VIF_PNN_S1_NTC_Scan1_[6502,29357]_component_data.tif'
 O1 = extractMD(fname)
 filename1  = 'V12F14-053_test'
 matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), InFormStitch('$path1',O1,7,'$filename1')"
