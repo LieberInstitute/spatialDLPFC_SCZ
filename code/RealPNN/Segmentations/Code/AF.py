@@ -31,7 +31,7 @@ from stitched_functions import *
 
 # directory path
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/'
+dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/'
 
 # file paths for test images
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
@@ -72,8 +72,10 @@ for img_path in os.listdir(source_dir):
         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
         af_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(contours), "in", img_path)
+        gray_segmented = cv2.cvtColor(dp_cnt,cv2.COLOR_RGB2GRAY)
+        thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
         # af_cnt = cv2.drawContours(af_c, contours, -1, (255, 0, 0), 2)
-        afx, afy, afw, afh, af_area, af_segmented = draw_contours.draw_all_contours(af_c, af_contours, (255,125,155), 2)
-        af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_path.split('.')[0], 'autofluorescence')
-        af_df.to_csv(dst_dir + img_path.split('.')[0] + '_info.csv')
-        # cv2.imwrite(dst_dir + img_path + '_af_contours_segmented.tif', af_segmented)
+        # afx, afy, afw, afh, af_area, af_segmented = draw_contours.draw_all_contours(af_c, af_contours, (255,125,155), 2)
+        # af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_path.split('.')[0], 'autofluorescence')
+        # af_df.to_csv(dst_dir + img_path.split('.')[0] + '_info.csv')
+        cv2.imwrite(dst_dir + img_path + '_af_contours_segmented.tif', thresh_segmented)
