@@ -78,4 +78,4 @@ for img_path in os.listdir(source_dir):
         # afx, afy, afw, afh, af_area, af_segmented = draw_contours.draw_all_contours(af_c, af_contours, (255,125,155), 2)
         # af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_path.split('.')[0], 'autofluorescence')
         # af_df.to_csv(dst_dir + img_path.split('.')[0] + '_info.csv')
-        cv2.imwrite(dst_dir + img_path + '_af_contours_segmented.tif', thresh_segmented)
+        cv2.imwrite(dst_dir + img_path.split('.')[0] + '_af_binarized.tif', thresh_segmented)
