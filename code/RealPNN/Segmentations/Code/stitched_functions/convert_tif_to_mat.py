@@ -24,3 +24,6 @@ convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed
 convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/')
 convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_binarized/')
 convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/WFA_binarized/')
+
+# Run-3
+convert_tiff_to_mat('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/Test/')
