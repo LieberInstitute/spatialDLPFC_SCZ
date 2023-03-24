@@ -53,25 +53,6 @@ image_NeuN = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4
 image_WFA = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/WFA_binarized/V12F14-053_A1_wfa_binarized.tif'))
 image_AF = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/V12F14-053_A1_af_contours_segmented.tif'))
 
-# Combine the images to create a multi-channel image
-multi_channel_image = np.stack((image_DAPI, image_claudin, image_NeuN, image_WFA, image_AF), axis = 0) # image_NeuN, image_WFA], axis=0
-# multi_channel_image = np.concatenate((image_DAPI[..., np.newaxis],
-#                                        image_claudin[..., np.newaxis],
-#                                        image_NeuN[..., np.newaxis],
-#                                        image_WFA[..., np.newaxis],
-#                                       image_AF[..., np.newaxis]), axis=-1)
-
-
-# Create a new numpy array with shape (x, y, 5)
-new_image = np.zeros((image_DAPI.shape[0], image_DAPI.shape[1], 5), dtype=np.uint8)
-
-# Assign existing images to the first four channels of the new numpy array
-new_image[:, :, 0] = image_DAPI
-new_image[:, :, 1] = image_claudin
-new_image[:, :, 2] = image_NeuN
-new_image[:, :, 3] = image_WFA
-new_image[:, :, 4] = image_AF
-
 new_image = np.zeros((5, image_DAPI.shape[0], image_DAPI.shape[1]), dtype=np.uint8)
 
 # Assign existing images to the first four channels of the new numpy array
