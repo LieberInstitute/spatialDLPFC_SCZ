@@ -70,11 +70,21 @@ new_image[:, :, 0] = image_DAPI
 new_image[:, :, 1] = image_claudin
 new_image[:, :, 2] = image_NeuN
 new_image[:, :, 3] = image_WFA
+new_image[:, :, 4] = image_AF
+
+new_image = np.zeros((5, image_DAPI.shape[0], image_DAPI.shape[1]), dtype=np.uint8)
+
+# Assign existing images to the first four channels of the new numpy array
+new_image[0] = image_DAPI
+new_image[1] = image_claudin
+new_image[2] = image_NeuN
+new_image[3] = image_WFA
+new_image[4] = image_AF
 
 
 # Set metadata for the channels
-channel_names = ['DAPI', 'Claudin-5', 'NeuN', 'WFA', 'Channel 5']
+channel_names = ['DAPI', 'Claudin-5', 'NeuN', 'WFA', 'AF']
 metadata = {'axes': 'ZYX', 'channel_names': channel_names}
 
 # Save the new image with metadata using tifffile module
-tifffile.imwrite('new_image.tif', new_image, imagej=True, metadata=metadata)
+tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/Test/A1_new_image.tif', new_image, imagej=True, metadata=metadata)
