@@ -53,20 +53,27 @@ image_WFA = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41
 image_AF = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/V12F14-053_A1_af_contours_segmented.tif'))
 
 # Combine the images to create a multi-channel image
-# multi_channel_image = np.stack((image_DAPI, image_claudin, image_NeuN, image_WFA, image_AF), axis = 2) # image_NeuN, image_WFA], axis=0
-multi_channel_image = np.concatenate((image_DAPI[..., np.newaxis],
-                                       image_claudin[..., np.newaxis],
-                                       image_NeuN[..., np.newaxis],
-                                       image_WFA[..., np.newaxis],
-                                      image_AF[..., np.newaxis]), axis=-1)
+multi_channel_image = np.stack((image_DAPI, image_claudin, image_NeuN, image_WFA, image_AF), axis = 0) # image_NeuN, image_WFA], axis=0
+# multi_channel_image = np.concatenate((image_DAPI[..., np.newaxis],
+#                                        image_claudin[..., np.newaxis],
+#                                        image_NeuN[..., np.newaxis],
+#                                        image_WFA[..., np.newaxis],
+#                                       image_AF[..., np.newaxis]), axis=-1)
+
+
+# Create a new numpy array with shape (x, y, 5)
+new_image = np.zeros((image_DAPI.shape[0], image_DAPI.shape[1], 5), dtype=np.uint8)
+
+# Assign existing images to the first four channels of the new numpy array
+new_image[:, :, 0] = image_DAPI
+new_image[:, :, 1] = image_claudin
+new_image[:, :, 2] = image_NeuN
+new_image[:, :, 3] = image_WFA
 
 
 # Set metadata for the channels
-channel_names = ['DAPI', 'Claudin-5', 'NeuN', 'WFA', 'AF']
-# channel_units = ['nm', 'ms']
-metadata = {'axes': 'ZXY', 'channel_names': channel_names} #, 'channel_units': channel_units}
+channel_names = ['DAPI', 'Claudin-5', 'NeuN', 'WFA', 'Channel 5']
+metadata = {'axes': 'ZYX', 'channel_names': channel_names}
 
-# Save the multi-channel image with metadata
-tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/Test/multi_channel_image_A1_with_AF.tif', multi_channel_image, imagej = True) #, metadata=metadata
-
-
+# Save the new image with metadata using tifffile module
+tifffile.imwrite('new_image.tif', new_image, imagej=True, metadata=metadata)
