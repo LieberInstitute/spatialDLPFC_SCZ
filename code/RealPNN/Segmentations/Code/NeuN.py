@@ -116,8 +116,19 @@ neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print(len(neun_contours))
-neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (0, 255, 0), 2)
+# create a blank mask image of the same size as the input image
+mask = np.zeros(neun.shape[:2], dtype=np.uint8)
+# draw the contour on the mask image
+cv2.drawContours(mask, neun_contours, -1, 255, cv2.FILLED)
+# extract the pixels within the contour region using the mask
+neun_contoured_img = cv2.bitwise_and(neun_c, neun_c, mask=mask)
+for row in range(neun.shape[0]):
+    for col in range(neun.shape[1]):
+        if neun[row][col] >= 10 and neun[row][col] < 30:
+            # print(len(neun_contours))
+            neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (0, 255, 0), 2)
+
+
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(neun_contoured_img) #, cmap = 'gray'
 fig.show()
@@ -130,14 +141,14 @@ fig.show()
 
 
 # plot histogram
-def hist_plot(img, bins=50):
-    range = (img.min(), 50) # img.max()
+def hist_plot(img, bins=255):
+    range = (img.min(), img.max()) # 50
     histogram, bin_edges = np.histogram(img.ravel(), bins=bins, range=range)
     plt.figure()
     plt.title("Grayscale Histogram")
     plt.xlabel("grayscale value")
     plt.ylabel("pixel count")
-    plt.xlim([img.min(), 50]) # img.max()
+    plt.xlim([img.min(), img.max()]) # 50
     plt.plot(bin_edges[0:-1], histogram)
     plt.show()
 
