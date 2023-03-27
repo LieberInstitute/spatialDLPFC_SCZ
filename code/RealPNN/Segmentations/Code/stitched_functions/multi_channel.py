@@ -65,7 +65,30 @@ new_image[4] = image_AF
 
 # Set metadata for the channels
 channel_names = ['DAPI', 'Claudin-5', 'NeuN', 'WFA', 'AF']
-metadata = {'axes': 'ZYX', 'channel_names': channel_names}
+metadata = {'axes': 'YXZ', 'channel_names': channel_names} #ZYX right ones
 
 # Save the new image with metadata using tifffile module
-tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/Test/A1_new_image.tif', new_image, imagej=True, metadata=metadata)
+tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/Test/A1_new_image_yxz.tif', new_image, imagej=True, metadata=metadata)
+
+
+# testing for channels last to match countnuclei
+# Create a new numpy array with shape (x, y, 5)
+new_image = np.zeros((image_DAPI.shape[0], image_DAPI.shape[1], 5), dtype=np.uint8)
+
+# Assign existing images to the first four channels of the new numpy array
+new_image[..., 0] = image_DAPI
+new_image[..., 1] = image_claudin
+new_image[..., 2] = image_NeuN
+new_image[..., 3] = image_WFA
+new_image[..., 4] = image_AF
+
+
+# Set metadata for the channels
+channel_names = ['DAPI', 'Claudin-5', 'NeuN', 'WFA', 'AF']
+metadata = {'axes': 'YXC', 'channel_names': channel_names}
+
+# Move the axis to have channels as the last dimension
+new_image = np.moveaxis(new_image, 2, -1)
+
+# Save the new image with metadata using tifffile module
+tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/Test/A1_new_image_yxc_.tif', new_image, metadata=metadata)
