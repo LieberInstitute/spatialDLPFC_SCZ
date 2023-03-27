@@ -82,7 +82,7 @@ for img_path in os.listdir(source_dir):
 
 # wfa contours for 1 image
 Image.MAX_IMAGE_PIXELS = None
-wfa_img = Image.open(img_B1)
+wfa_img = Image.open(img_A1)
 wfa_img.seek(4)
 wfa = np.array(wfa_img, dtype = 'uint8')
 wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
@@ -107,7 +107,7 @@ thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_
 
 
 # detecting claudin contours
-claudin_img = Image.open(img_B1)
+claudin_img = Image.open(img_C1)
 claudin_img.seek(1)
 claudin = np.array(claudin_img, dtype = 'uint8')
 claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
@@ -162,7 +162,7 @@ cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Re
 
 
 # drawing neun contours
-neun_img = Image.open(img_A1)
+neun_img = Image.open(img_B2)
 neun_img.seek(3)
 neun = np.array(neun_img, dtype = 'uint8')
 neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
@@ -176,4 +176,6 @@ ax.imshow(final)
 fig.show()
 
 
-cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/A1_Claudin_bounding_box_test.tif', cont_claudin)
+cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_C1.tif', claudin)
+
+cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/B1_NeuN.tif', neun)
