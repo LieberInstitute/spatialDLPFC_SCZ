@@ -121,7 +121,15 @@ mask = np.zeros(neun.shape[:2], dtype=np.uint8)
 # draw the contour on the mask image
 cv2.drawContours(mask, neun_contours, -1, 255, cv2.FILLED)
 # extract the pixels within the contour region using the mask
-neun_contoured_img = cv2.bitwise_and(neun_c, neun_c, mask=mask)
+neun_binary_img = cv2.bitwise_and(neun_c, neun_c, mask=mask)
+neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (0, 255, 0), 2)
+for row in range(neun_contoured_img.shape[0]):
+    for col in range(neun_contoured_img.shape[1]):
+        pixel_val = neun_contoured_img[row][col][0]  # assuming the image is in RGB format
+        if pixel_val >= 10 and pixel_val < 30:
+            neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (255, 255, 0), 2)
+
+
 for row in range(neun.shape[0]):
     for col in range(neun.shape[1]):
         if neun[row][col] >= 10 and neun[row][col] < 30:
