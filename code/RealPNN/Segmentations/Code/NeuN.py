@@ -110,16 +110,36 @@ for img_path in os.listdir(source_dir):
 # tested out deriving all pixels from within the contour
 Image.MAX_IMAGE_PIXELS = None
 neun_img = Image.open(img_A1)
-neun_img.seek(2)
+neun_img.seek(3)
 neun = np.array(neun_img, dtype = 'uint8') # (17799, 16740)
 neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print(len(neun_contours))
-neun_contoured_img = draw_contours.draw_all_contours(neun_c, neun_contours, (0, 255, 0), 2) #dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (0, 255, 0), 2)
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(neun_contoured_img) #, cmap = 'gray'
+fig.show()
+
 # cv2.imwrite(dst_dir_dapi + os.basename(img_A1)[0] + '_claudin_contours_thresholded.tif', claudin_contoured_img)
 # claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, img_A1, 'Claudin-5')
-A1 = pd.read_csv(csv_A1)
-contour_img, neun_df_all, mean_pix_int_list = all_pixels.all_pix_pnns(A1, neun_contoured_img, neun)
-neun_df_all.to_csv(dst_dir_neun + img_A1.split('.')[0] + '_pix_info.csv')
+# A1 = pd.read_csv(csv_A1)
+# contour_img, neun_df_all, mean_pix_int_list = all_pixels.all_pix_pnns(A1, neun_contoured_img, neun)
+# neun_df_all.to_csv(dst_dir_neun + img_A1.split('.')[0] + '_pix_info.csv')
+
+
+# plot histogram
+def hist_plot(img, bins=50):
+    range = (img.min(), 50) # img.max()
+    histogram, bin_edges = np.histogram(img.ravel(), bins=bins, range=range)
+    plt.figure()
+    plt.title("Grayscale Histogram")
+    plt.xlabel("grayscale value")
+    plt.ylabel("pixel count")
+    plt.xlim([img.min(), 50]) # img.max()
+    plt.plot(bin_edges[0:-1], histogram)
+    plt.show()
+
+hist_plot(neun)
+
