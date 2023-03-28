@@ -68,7 +68,15 @@ for img_path in os.listdir(source_dir):
         # fig.show()
         wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(wfa_contours), "in", img_path)
-        wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) #(255, 153, 255)pink
+        wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (255, 255, 0), 1) # yellow all contours
+        for cnt in wfa_contours:
+            x,y,w,h = cv2.boundingRect(cnt)
+            area = cv2.contourArea(cnt)
+            if area >=50:
+                wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), 1)
+            elif area<50:
+                wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), -1)
+        wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 255, 0), 1) #(255, 153, 255)pink
         gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
         thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
         # binary_segmented_wfa = cv2.normalize(np.array(thresh_segmented_wfa, dtype = 'uint8'), np.zeros(np.array(thresh_segmented_wfa, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
