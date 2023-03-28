@@ -47,7 +47,7 @@ from stitched_functions import draw_contours, all_pixels
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_neun = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_binarized/'
+dst_dir_neun = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/' #NeuN_binarized/
 
 # test images
 img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
@@ -148,7 +148,7 @@ contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 # draw the contours on the original image
 neun_contoured_img = cv2.drawContours(neun_contoured_img, contours, -1, (255, 255, 0), 2)
 
-cv2.imwrite(dst_dir_neun + img_path.split('.')[0] + '_neun_int.tif', neun_contoured_img)
+cv2.imwrite(dst_dir_neun + os.path.basename(img_A1).split('.')[0] + '_neun_int.tif', neun_contoured_img)
 
 
 # for row in range(neun.shape[0]):
