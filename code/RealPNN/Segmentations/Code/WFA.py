@@ -76,7 +76,6 @@ for img_path in os.listdir(source_dir):
                 wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), 1)
             elif area<50:
                 wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), -1)
-        wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 255, 0), 1) #(255, 153, 255)pink
         gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
         thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
         # binary_segmented_wfa = cv2.normalize(np.array(thresh_segmented_wfa, dtype = 'uint8'), np.zeros(np.array(thresh_segmented_wfa, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
@@ -106,12 +105,14 @@ for cnt in wfa_contours:
     x,y,w,h = cv2.boundingRect(cnt)
     area = cv2.contourArea(cnt)
     if area >=50:
-        wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), 1)
+        wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,255,0), 2)
     elif area<50:
         wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), -1)
 
-
-wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 255, 0), 2) #(255, 153, 255)pink
+gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
+thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+cv2.imwrite(dst_dir_wfa + 'A1_bounding_box_bin.tif', thresh_segmented_wfa)
+ #(255, 153, 255)pink
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(wfa_cnt)
 fig.show()
