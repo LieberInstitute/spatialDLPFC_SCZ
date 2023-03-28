@@ -3,7 +3,7 @@
 #$ -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/logs/Output_NeuN_seg.txt
 #$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/logs/Error_NeuN_seg.txt
 #$ -m be
-#$ -M uma.kaipa@libd.org
+#$ -M uma.kaipa.94@gmail.com
 
 
  
