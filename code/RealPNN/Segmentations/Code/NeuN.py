@@ -84,27 +84,28 @@ csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealP
 
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
-for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif"):
-        neun_img = Image.open(os.path.join(source_dir, img_path))
-        neun_img.seek(3)
-        neun = np.array(neun_img, dtype = 'uint8')
-        neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
-        gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
-        _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
-        neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        print(len(neun_contours), img_path)
-        nn_cnt = cv2.drawContours(neun_c, neun_contours, -1, (0, 0, 0), 1)
-        gray_segmented = cv2.cvtColor(nn_cnt,cv2.COLOR_RGB2GRAY)
-        thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
-        # binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(thresh_segmented, cmap = 'gray')
-        # fig.show()
-        # nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_all_contours(neun_c, neun_contours, (0,255,0), 2)
-        # neun_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, img_path.split('.')[0], 'NeuN')
-        # neun_df.to_csv(dst_dir_neun + img_path.split('.')[0] + '_info.csv')
-        cv2.imwrite(dst_dir_neun + img_path.split('.')[0] + '_neun_binarized.tif', thresh_segmented)
+img_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_A1.tif'
+# for img_path in os.listdir(source_dir):
+#     if img_path.endswith(".tif"):
+#         neun_img = Image.open(os.path.join(source_dir, img_path))
+#         neun_img.seek(3)
+#         neun = np.array(neun_img, dtype = 'uint8')
+#         neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
+#         gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
+#         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+#         neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+#         print(len(neun_contours), img_path)
+#         nn_cnt = cv2.drawContours(neun_c, neun_contours, -1, (0, 0, 0), 1)
+#         gray_segmented = cv2.cvtColor(nn_cnt,cv2.COLOR_RGB2GRAY)
+#         thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+#         # binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+#         # fig,ax = plt.subplots(figsize = (20,20))
+#         # ax.imshow(thresh_segmented, cmap = 'gray')
+#         # fig.show()
+#         # nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_all_contours(neun_c, neun_contours, (0,255,0), 2)
+#         # neun_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, img_path.split('.')[0], 'NeuN')
+#         # neun_df.to_csv(dst_dir_neun + img_path.split('.')[0] + '_info.csv')
+#         cv2.imwrite(dst_dir_neun + img_path.split('.')[0] + '_neun_binarized.tif', thresh_segmented)
 
 
 # tested out deriving all pixels from within the contour
@@ -117,29 +118,49 @@ gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 # create a blank mask image of the same size as the input image
-mask = np.zeros(neun.shape[:2], dtype=np.uint8)
-# draw the contour on the mask image
-cv2.drawContours(mask, neun_contours, -1, 255, cv2.FILLED)
-# extract the pixels within the contour region using the mask
-neun_binary_img = cv2.bitwise_and(neun_c, neun_c, mask=mask)
-neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (0, 255, 0), 2)
+# mask = np.zeros(neun.shape[:2], dtype=np.uint8)
+# # draw the contour on the mask image
+# cv2.drawContours(mask, neun_contours, -1, 255, cv2.FILLED)
+# # extract the pixels within the contour region using the mask
+# neun_binary_img = cv2.bitwise_and(neun_c, neun_c, mask=mask)
+neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (0, 255, 0), 2) # green all of the pixels
+# for row in range(neun_contoured_img.shape[0]):
+#     for col in range(neun_contoured_img.shape[1]):
+#         pixel_val = neun_contoured_img[row][col][0]  # assuming the image is in RGB format
+#         if pixel_val >= 10 and pixel_val < 30:
+#             neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (255, 255, 0), 2) # yellow only bright pixels
+
+
+
+# create a blank mask image of the same size as the input image
+mask = np.zeros(neun_contoured_img.shape[:2], dtype=np.uint8)
+
+# loop through the image and set the pixels with values between 10 and 30 to white
 for row in range(neun_contoured_img.shape[0]):
     for col in range(neun_contoured_img.shape[1]):
         pixel_val = neun_contoured_img[row][col][0]  # assuming the image is in RGB format
         if pixel_val >= 10 and pixel_val < 30:
-            neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (255, 255, 0), 2)
+            mask[row][col] = 255
+
+# find contours on the mask image
+contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+# draw the contours on the original image
+neun_contoured_img = cv2.drawContours(neun_contoured_img, contours, -1, (255, 255, 0), 2)
+
+cv2.imwrite(dst_dir_neun + img_path.split('.')[0] + '_neun_int.tif', neun_contoured_img)
 
 
-for row in range(neun.shape[0]):
-    for col in range(neun.shape[1]):
-        if neun[row][col] >= 10 and neun[row][col] < 30:
-            # print(len(neun_contours))
-            neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (0, 255, 0), 2)
+# for row in range(neun.shape[0]):
+#     for col in range(neun.shape[1]):
+#         if neun[row][col] >= 10 and neun[row][col] < 30:
+#             # print(len(neun_contours))
+#             neun_contoured_img = cv2.drawContours(neun_c, neun_contours, -1, (0, 255, 0), 2)
 
 
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(neun_contoured_img) #, cmap = 'gray'
-fig.show()
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(neun_contoured_img) #, cmap = 'gray'
+# fig.show()
 
 # cv2.imwrite(dst_dir_dapi + os.basename(img_A1)[0] + '_claudin_contours_thresholded.tif', claudin_contoured_img)
 # claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, img_A1, 'Claudin-5')
@@ -149,16 +170,16 @@ fig.show()
 
 
 # plot histogram
-def hist_plot(img, bins=255):
-    range = (img.min(), img.max()) # 50
-    histogram, bin_edges = np.histogram(img.ravel(), bins=bins, range=range)
-    plt.figure()
-    plt.title("Grayscale Histogram")
-    plt.xlabel("grayscale value")
-    plt.ylabel("pixel count")
-    plt.xlim([img.min(), img.max()]) # 50
-    plt.plot(bin_edges[0:-1], histogram)
-    plt.show()
-
-hist_plot(neun)
+# def hist_plot(img, bins=255):
+#     range = (img.min(), img.max()) # 50
+#     histogram, bin_edges = np.histogram(img.ravel(), bins=bins, range=range)
+#     plt.figure()
+#     plt.title("Grayscale Histogram")
+#     plt.xlabel("grayscale value")
+#     plt.ylabel("pixel count")
+#     plt.xlim([img.min(), img.max()]) # 50
+#     plt.plot(bin_edges[0:-1], histogram)
+#     plt.show()
+#
+# hist_plot(neun)
 
