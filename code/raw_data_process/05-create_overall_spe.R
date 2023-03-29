@@ -62,19 +62,6 @@ Sys.time()
 # spe$expr_chrM <- colSums(counts(spe)[is_mito, , drop = FALSE])
 # spe$expr_chrM_ratio <- spe$expr_chrM / spe$sum_umi
 
-## Read in cell counts and segmentation results
-# segmentations_list <- lapply(sample_info$sample_id, function(sampleid) {
-#   current <- sample_info$sample_path[sample_info$sample_id == sampleid]
-#   file <- file.path(current, "spatial", "tissue_spot_counts.csv")
-#   if (!file.exists(file)) {
-#     return(NULL)
-#   }
-#   x <- read.csv(file)
-#   x$key <- paste0(x$barcode, "_", sampleid)
-#   return(x)
-# })
-
-
 # TODO: add this information
 # ## Read in cell counts and segmentation results
 # segmentations_list <- lapply(sample_info$sample_id, function(sampleid) {
@@ -94,7 +81,16 @@ Sys.time()
 # segmentation_match <- match(spe$key, segmentations$key)
 # segmentation_info <- segmentations[segmentation_match, -which(colnames(segmentations) %in% c("barcode", "tissue", "row", "col", "imagerow", "imagecol", "key")), drop = FALSE]
 # colData(spe) <- cbind(colData(spe), segmentation_info)
-# 
+
+vis_grid_gene(
+  spe = spe,
+  geneid = "Ndata",
+  pdf = here::here("plots", "01_build_spe", "seg_count.pdf"),
+  assayname = "counts",
+  auto_crop = FALSE,
+  spatial = FALSE
+)
+
 # mean(spe$count)
 # pdf(here::here("plots", "01_build_spe", "cells_per_spot.pdf"))
 # boxplot(spe$count)

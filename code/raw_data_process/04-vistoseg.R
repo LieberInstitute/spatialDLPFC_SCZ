@@ -52,8 +52,8 @@ dapi_fs_df <- finished_df[sr_success_brs & (!vistoseg_finished_brs), , drop = FA
   ) |> transmute(
     sample_name = sample_fld_name,
     sr_fld_path = process_data_path,
-    dapi_file_name = glue("{`Slide SN #`}_{`Array #`}.mat"),
-    dapi_file_path = here("processed-data", "VistoSeg", "captureAreas",
+    dapi_file_name = glue("{`Slide SN #`}_{`Array #`}_dapi_binarized.mat"),
+    dapi_file_path = here("processed-data", "RealPNN/capture_area_segmentations/DAPI/Segmented_images",
                           dapi_file_name)
   )
 
@@ -108,12 +108,12 @@ dapi_fs_df[have_dapi_file, , drop = FALSE] |>
       here(vistseg_fld_path, "vistoseg.sh"),
       sep = " "
     )
-    
-    
-    # Run Spaceranger for each sample as a job
-    system(
-      job_sub_commond
-    )
+    # 
+    # 
+    # # Run Spaceranger for each sample as a job
+    # system(
+    #   job_sub_commond
+    # )
     
     
   }
