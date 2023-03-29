@@ -142,13 +142,29 @@ for row in range(neun_contoured_img.shape[0]):
         if pixel_val >= 10 and pixel_val < 30:
             mask[row][col] = 255
 
-# find contours on the mask image
+# find contours on the mask image --works for size threshold
 contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+for cnt in neun_contours:
+    x,y,w,h = cv2.boundingRect(cnt)
+    neun_area = cv2.contourArea(cnt)
+    if neun_area >=50:
+        neun_cnt = cv2.rectangle(neun_c, (x,y), (x+w, y+h), (0,255,0), 2)
+    elif neun_area <50:
+        neun_cnt = cv2.rectangle(neun_c, (x,y), (x+w, y+h), (255,255,125), 2)
 
 # draw the contours on the original image
-neun_contoured_img = cv2.drawContours(neun_contoured_img, contours, -1, (255, 255, 0), 2)
+neun_contoured_img = cv2.drawContours(neun_c, contours, -1, (255, 255, 0), 2)
 
-cv2.imwrite(dst_dir_neun + os.path.basename(img_A1).split('.')[0] + '_neun_int.tif', neun_contoured_img)
+cv2.imwrite(dst_dir_neun + os.path.basename(img_A1).split('.')[0] + '_neun_size.tif', neun_cnt)
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(neun_cnt) #, cmap = 'gray'
+fig.show()
+
+
+# for pix intensity threshold
+find the contours, get all pixles within the contour, get mean pixels intensity of the contour,
+plot histogram, based on that, get the threshold value, set that to be the threhold for neun segmentation
 
 
 # for row in range(neun.shape[0]):
