@@ -157,9 +157,9 @@ cla_area = np.array(area_)
 
 # drawing claudin contours on the color thresholded image of WFA
 # cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (0, 255, 0), 2)
-fig,ax = plt.subplots(figsize = (20,20))
-ax.imshow(cla_cnt)
-fig.show()
+# fig,ax = plt.subplots(figsize = (20,20))
+# ax.imshow(cla_cnt)
+# fig.show()
 
 # drawing DAPI on the color thresholded image of WFA
 dapi_img = Image.open(img_A1)
