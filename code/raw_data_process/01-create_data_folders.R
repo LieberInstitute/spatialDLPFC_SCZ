@@ -4,20 +4,20 @@ exp_init <- "shk" |> tolower() # Seems always have lower case
 
 # TODO: Scale to different round of experiment.
 # TODO: Update this part
-master_file_path <- here("raw-data", "sample_info",
-                         "Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx") 
+# master_file_path <- here("raw-data", "sample_info",
+#                          "Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx") 
 
-raw_file_path <- paste0(
-  "/dcs04/lieber/lcolladotor/rawDataTDSC_LIBD001/",
-  "raw-data/", 
-  c("2023-01-29_SPag010323",
-    "2022-12-13_SPag120622_2") #TODO: add here when more folder
-)
+# raw_file_path <- paste0(
+#   "/dcs04/lieber/lcolladotor/rawDataTDSC_LIBD001/",
+#   "raw-data/", 
+#   c("2023-01-29_SPag010323",
+#     "2022-12-13_SPag120622_2") #TODO: add here when more folder
+# )
 
 
-fastq_fldr_path <- here("raw-data", "FASTQ")
-
-processed_fldr_path <- here("processed-data", "spaceranger" )
+# fastq_fldr_path <- here("raw-data", "FASTQ")
+# 
+# processed_fldr_path <- here("processed-data", "spaceranger" )
 
 # Import Sample Meta Data From Master Excel File --------------------------
 

@@ -16,6 +16,12 @@ source(
   )
 )
 
+# Load File Path ----------------------------------------------------------
+here("code", "raw_data_process",
+     "file_paths.R") |> 
+  source()
+
+
 # VistoSeg (split images) & Loupe --------------------------------------------------------
 # Manually process
 # Pre-requisite to run successfully space ranger
