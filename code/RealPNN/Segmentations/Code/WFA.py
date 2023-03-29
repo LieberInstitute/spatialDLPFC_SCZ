@@ -108,6 +108,11 @@ for cnt in wfa_contours:
         wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,255,0), 2)
     elif area<50:
         wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), -1)
+    # if area<1000:
+    #     cla_rect = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), 2) #green
+    # elif area>=10000:
+    #     cla_rect = cv2.rectangle(img_th_c, (x,y), (x+50+w+100, y+50+h+100), (255,255,0), 2) #yellow
+
 
 gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
 thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
