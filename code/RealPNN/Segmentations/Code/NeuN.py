@@ -186,16 +186,16 @@ plot histogram, based on that, get the threshold value, set that to be the threh
 
 
 # plot histogram
-# def hist_plot(img, bins=255):
-#     range = (img.min(), img.max()) # 50
-#     histogram, bin_edges = np.histogram(img.ravel(), bins=bins, range=range)
-#     plt.figure()
-#     plt.title("Grayscale Histogram")
-#     plt.xlabel("grayscale value")
-#     plt.ylabel("pixel count")
-#     plt.xlim([img.min(), img.max()]) # 50
-#     plt.plot(bin_edges[0:-1], histogram)
-#     plt.show()
-#
-# hist_plot(neun)
+def hist_plot(img, bins=255):
+    range = (img.min(), img.max()) # 50
+    histogram, bin_edges = np.histogram(img.ravel(), bins=bins, range=range)
+    plt.figure()
+    plt.title("Grayscale Histogram")
+    plt.xlabel("grayscale value")
+    plt.ylabel("pixel count")
+    plt.xlim([img.min(), img.max()]) # 50
+    plt.plot(bin_edges[0:-1], histogram)
+    plt.show()
+
+hist_plot(neun)
 
