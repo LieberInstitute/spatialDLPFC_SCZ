@@ -164,3 +164,17 @@ for img_path in os.listdir(source_dir):
 
 # B1_053 = pd.read_csv(csv_info_053_B1)
 # contour_img, img_info_df, mean_pix_int_list = all_pix_pnns(img_info_df, contour_img, original_img)
+# overlay dapi on neun to check if the neun spots in the white matter are real
+# drawing neun contours
+neun_img = Image.open(img_B2)
+neun_img.seek(3)
+neun = np.array(neun_img, dtype = 'uint8')
+neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
+gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
+_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("found", len(neun_contours), "in", img_path)
+final = cv2.drawContours(dapi_cnt, neun_contours, -1, (255, 255, 0), 2) #yellow
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(final)
+fig.show()
