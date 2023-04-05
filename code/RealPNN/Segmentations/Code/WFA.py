@@ -124,7 +124,6 @@ fig.show()
 
 gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
 thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
-# binary_segmented_wfa = cv2.normalize(np.array(thresh_segmented_wfa, dtype = 'uint8'), np.zeros(np.array(thresh_segmented_wfa, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
 # fig,ax = plt.subplots(figsize = (20,20))
 # ax.imshow(thresh_segmented_wfa, cmap = 'gray')
 # fig.show()
