@@ -119,7 +119,7 @@ for img_path in os.listdir(source_dir):
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
             if area >=50:
-                dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), 1)
+                dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (255,0,0), 1)
             elif area<50:
                 dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), -1)
         gray_segmented = cv2.cvtColor(dp_cnt,cv2.COLOR_RGB2GRAY)
@@ -165,16 +165,41 @@ for img_path in os.listdir(source_dir):
 # B1_053 = pd.read_csv(csv_info_053_B1)
 # contour_img, img_info_df, mean_pix_int_list = all_pix_pnns(img_info_df, contour_img, original_img)
 # overlay dapi on neun to check if the neun spots in the white matter are real
+
+dapi_img = Image.open(img_A1)
+dapi_img.seek(2)
+dapi = np.array(dapi_img, dtype = 'uint8')
+dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
+_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("found", len(dapi_contours))
+# dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+for cnt in dapi_contours:
+   x,y,w,h = cv2.boundingRect(cnt)
+   area = cv2.contourArea(cnt)
+   if area >=50:
+      dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (255,0,0), 1)
+   elif area<50:
+      dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), -1)
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(dp_cnt)
+fig.show()
+
+
 # drawing neun contours
-neun_img = Image.open(img_B2)
+neun_img = Image.open(img_A1)
 neun_img.seek(3)
 neun = np.array(neun_img, dtype = 'uint8')
 neun_c = cv2.cvtColor(neun,cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(neun_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 neun_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print("found", len(neun_contours), "in", img_path)
-final = cv2.drawContours(dapi_cnt, neun_contours, -1, (255, 255, 0), 2) #yellow
+print("found", len(neun_contours))
+final = cv2.drawContours(dp_cnt, neun_contours, -1, (255, 255, 0), 2) #yellow
+cv2.imwrite(dst_dir_dapi + os.path.basename(img_A1)[0] + '_dapi_neun.tif', final)
+
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(final)
 fig.show()
