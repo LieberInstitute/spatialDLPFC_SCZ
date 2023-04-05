@@ -70,6 +70,43 @@ metadata = {'axes': 'YXZ', 'channel_names': channel_names} #ZYX right ones
 # Save the new image with metadata using tifffile module
 tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/Test/A1_new_image_yxz.tif', new_image, imagej=True, metadata=metadata)
 
+# automate this for all the images in the directory
+Image.MAX_IMAGE_PIXELS = None
+dapi_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/'
+neun_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_binarized/'
+claudin_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
+wfa_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/WFA_binarized/'
+af_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/'
+
+
+
+
+dir_list = [dapi_seg_dir, claudin_seg_dir, neun_seg_dir, wfa_seg_dir, af_seg_dir]
+for dir in dir_list:
+    print("Reading image from: ", dir_list.split[','][0].split['_'][0])
+    for img_path in os.listdir(dapi_seg_dir):
+        img = np.array(Image.open(os.path.join(dapi_seg_dir, img_path)))
+        print("Stitching image:", img_path.split('.')[0])
+        new_image = np.zeros((5, img.shape[0], img.shape[1]), dtype=np.uint8)
+        new_image[0] = image_DAPI
+        new_image[1] = image_claudin
+        new_image[2] = image_NeuN
+        new_image[3] = image_WFA
+        new_image[4] = image_AF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # testing for channels last to match countnuclei
 # Create a new numpy array with shape (x, y, 5)
@@ -92,3 +129,16 @@ new_image = np.moveaxis(new_image, 2, -1)
 
 # Save the new image with metadata using tifffile module
 tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/all_channels_segemented/Test/A1_new_image_yxc_.tif', new_image, metadata=metadata)
+
+
+###trying to find the right format
+import cv2
+
+# Load the four tiff images
+images = [cv2.imread("image1.tif"), cv2.imread("image2.tif"), cv2.imread("image3.tif"), cv2.imread("image4.tif")]
+
+# Create a new multichannel image
+multichannel_image = cv2.merge([images[0], images[1], images[2], images[3]])
+
+# Save the multichannel image
+cv2.imwrite("multichannel_image.tif", multichannel_image)
