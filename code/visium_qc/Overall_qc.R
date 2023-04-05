@@ -1,48 +1,74 @@
+# Load Packages -----------------------------------------------------------
 library(here)
 library(SpatialExperiment)
+library(scater)
+library(pryr)                 # Check spe size
+library(spatialLIBD)
 
 
+# File Paths --------------------------------------------------------------
+path_raw_spe <- here("processed-data/rds/spe",
+                     "01_build_spe/", "spe_raw.rds")
+
+path_clean_spe <- here("process-data/rds/spe",
+                       "spe_clean.rds")
+
+fldr_qc_plots <- here("plots", "02_visium_qc")
+dir.create( fldr_qc_plots, recursive = T)
+
+
+# QC Code -----------------------------------------------------------------
 raw_spe <- readRDS(
-  here("processed-data/rds/spe",
-       "01_build_spe/", "spe_raw.rds")
-  )
-
-
-## Remove spots without counts
-spe <- spe_raw[-no_expr, ]
-dim(spe)
-# [1] 29665 39936
-
-pryr::object_size(spe)
-# 1.81 GB
-
-spe <- spe[, which(colData(spe)$in_tissue)]
-dim(spe)
-# [1] 29665 30858
-
-
-## Remove spots without counts
-# NOTE: Compare to spatilDLPFC
-# all in$tissue spots have reads
-# n_spot_no_counts <- colSums(counts(spe)) == 0
-spe <- spe[, colSums(counts(spe)) != 0]
-dim(spe)
-# [1] 29665 30858
-
-
-dir.create(
-  here::here("plots", "01_build_spe"),
-  recursive = T
+  path_raw_spe
 )
 
-## Inspect in vs outside of tissue
+
+# Spot Analysis -----------------------------------------------------------
+
+# * Remove spots without counts ---------------------------------------------
+no_expr_spot <- colSums(counts(raw_spe)) != 0
+  
+spe <- raw_spe[, no_expr_spot]
+ncol(spe)
+
+
+# * Remove spots outside of tissue area ------------------------------------
+stopifnot(is.logical(spe$in_tissue))
+
+# Evaluate if in-tissue definition is accurate
 vis_grid_clus(
-  spe = spe_raw,
+  spe = spe,
   clustervar = "in_tissue",
-  pdf = here::here("plots", "01_build_spe", "in_tissue_grid.pdf"),
+  pdf_file = file.path(
+    fldr_qc_plots,
+    "in_tissue_grid_raw.pdf"  # Plot File Name
+  ),
   sort_clust = FALSE,
-  colors = c("TRUE" = "grey90", "FALSE" = "orange")
+  colors = c("FALSE" = "grey90", "TRUE" = "orange")
 )
+
+# Note, if in_tissue is integer, please convert it to a logic variable
+spe <- spe[, spe$in_tissue]
+ncol(spe)
+
+# Visual Validation
+vis_grid_clus(
+  spe = spe,
+  clustervar = "in_tissue",
+  pdf_file = file.path(
+    fldr_qc_plots,
+    "in_tissue_grid.pdf"  # Plot File Name
+    ),
+  sort_clust = FALSE,
+  colors = c("FALSE" = "grey90", "TRUE" = "orange")
+)
+
+
+
+
+
+
+
 
 ## Roughly speaking, looks very nice.
 
@@ -59,93 +85,93 @@ vis_grid_clus(
 
 
 # TODO: error
-vis_grid_gene(
-  spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
-  geneid = "sum_umi",
-  pdf = here::here("plots", "01_build_spe", "out_tissue_sum_umi_all.pdf"),
-  assayname = "counts",
-  auto_crop = FALSE
-)
-# Error in frame_lims$y_min:frame_lims$y_max : NA/NaN argument
-# Auto_crop doesn't work in this case.
-
-summary(spe_raw$expr_chrM_ratio[which(!colData(spe_raw)$in_tissue)])
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
-#  0.0000  0.1500  0.1947  0.2072  0.2500  1.0000      12
-
-vis_grid_gene(
-  spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
-  geneid = "expr_chrM_ratio",
-  pdf = here::here("plots", "01_build_spe", "out_tissue_expr_chrM_ratio_all.pdf"),
-  assayname = "counts",
-  auto_crop = FALSE
-)
-
-vis_grid_gene(
-  spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
-  geneid = "sum_gene",
-  pdf = here::here("plots", "01_build_spe", "out_tissue_sum_gene_all.pdf"),
-  assayname = "counts"
-)
-
-summary(spe$sum_umi)
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# 1    1358    2310    2674    3540   46881
-vis_grid_gene(
-  spe = spe,
-  geneid = "sum_umi",
-  pdf = here::here("plots", "01_build_spe", "in_tissue_sum_umi_all.pdf"),
-  assayname = "counts"
-)
-
-summary(spe$sum_gene)
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# 1     910    1426    1508    1999    8344
-
-vis_grid_gene(
-  spe = spe,
-  geneid = "sum_gene",
-  pdf = here::here("plots", "01_build_spe", "in_tissue_sum_gene_all.pdf"),
-  assayname = "counts"
-)
-
-summary(spe$expr_chrM_ratio)
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# 0.00000 0.07279 0.10440 0.12106 0.15513 1.00000
-vis_grid_gene(
-  spe = spe,
-  geneid = "expr_chrM_ratio",
-  pdf = here::here("plots", "01_build_spe", "in_tissue_expr_chrM_ratio_all.pdf"),
-  assayname = "counts"
-)
-
-vis_grid_gene(
-  spe = spe_raw,
-  geneid = "sum_umi",
-  pdf = here::here("plots", "01_build_spe", "all_sum_umi.pdf"),
-  assayname = "counts"
-)
-
-vis_grid_gene(
-  spe = spe_raw,
-  geneid = "sum_gene",
-  pdf = here::here("plots", "01_build_spe", "all_sum_gene.pdf"),
-  assayname = "counts"
-)
-
-vis_grid_gene(
-  spe = spe_raw,
-  geneid = "expr_chrM_ratio",
-  pdf = here::here("plots", "01_build_spe", "all_expr_chrM_ratio.pdf"),
-  assayname = "counts"
-)
-
-
-
-# Genes with no reads -----------------------------------------------------
-stopifnot()
-
-
-# Spots without no genes --------------------------------------------------
-
+# vis_grid_gene(
+#   spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
+#   geneid = "sum_umi",
+#   pdf = here::here("plots", "01_build_spe", "out_tissue_sum_umi_all.pdf"),
+#   assayname = "counts",
+#   auto_crop = FALSE
+# )
+# # Error in frame_lims$y_min:frame_lims$y_max : NA/NaN argument
+# # Auto_crop doesn't work in this case.
+# 
+# summary(spe_raw$expr_chrM_ratio[which(!colData(spe_raw)$in_tissue)])
+# # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+# #  0.0000  0.1500  0.1947  0.2072  0.2500  1.0000      12
+# 
+# vis_grid_gene(
+#   spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
+#   geneid = "expr_chrM_ratio",
+#   pdf = here::here("plots", "01_build_spe", "out_tissue_expr_chrM_ratio_all.pdf"),
+#   assayname = "counts",
+#   auto_crop = FALSE
+# )
+# 
+# vis_grid_gene(
+#   spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
+#   geneid = "sum_gene",
+#   pdf = here::here("plots", "01_build_spe", "out_tissue_sum_gene_all.pdf"),
+#   assayname = "counts"
+# )
+# 
+# summary(spe$sum_umi)
+# # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# # 1    1358    2310    2674    3540   46881
+# vis_grid_gene(
+#   spe = spe,
+#   geneid = "sum_umi",
+#   pdf = here::here("plots", "01_build_spe", "in_tissue_sum_umi_all.pdf"),
+#   assayname = "counts"
+# )
+# 
+# summary(spe$sum_gene)
+# # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# # 1     910    1426    1508    1999    8344
+# 
+# vis_grid_gene(
+#   spe = spe,
+#   geneid = "sum_gene",
+#   pdf = here::here("plots", "01_build_spe", "in_tissue_sum_gene_all.pdf"),
+#   assayname = "counts"
+# )
+# 
+# summary(spe$expr_chrM_ratio)
+# # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# # 0.00000 0.07279 0.10440 0.12106 0.15513 1.00000
+# vis_grid_gene(
+#   spe = spe,
+#   geneid = "expr_chrM_ratio",
+#   pdf = here::here("plots", "01_build_spe", "in_tissue_expr_chrM_ratio_all.pdf"),
+#   assayname = "counts"
+# )
+# 
+# vis_grid_gene(
+#   spe = spe_raw,
+#   geneid = "sum_umi",
+#   pdf = here::here("plots", "01_build_spe", "all_sum_umi.pdf"),
+#   assayname = "counts"
+# )
+# 
+# vis_grid_gene(
+#   spe = spe_raw,
+#   geneid = "sum_gene",
+#   pdf = here::here("plots", "01_build_spe", "all_sum_gene.pdf"),
+#   assayname = "counts"
+# )
+# 
+# vis_grid_gene(
+#   spe = spe_raw,
+#   geneid = "expr_chrM_ratio",
+#   pdf = here::here("plots", "01_build_spe", "all_expr_chrM_ratio.pdf"),
+#   assayname = "counts"
+# )
+# 
+# 
+# 
+# # Genes with no reads -----------------------------------------------------
+# stopifnot()
+# 
+# 
+# 
+# pryr::object_size(spe)
 
