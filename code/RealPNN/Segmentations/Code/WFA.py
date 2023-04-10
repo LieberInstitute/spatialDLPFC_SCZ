@@ -170,11 +170,12 @@ dapi_img = Image.open(img_A1)
 dapi_img.seek(2)
 dapi = np.array(dapi_img, dtype = 'uint8')
 dapi_c = cv2.cvtColor(dapi,cv2.COLOR_BGR2RGB)
+thresh_c = cv2.cvtColor(thresh_segmented_wfa, cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(dapi_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print("found", len(dapi_contours), "DAPI")
-dapi_cnt = cv2.drawContours(img_th_c, dapi_contours, -1, (255, 153, 255), 2) #pink
+dapi_cnt = cv2.drawContours(thresh_c, dapi_contours, -1, (255, 0, 0), 2) #pink = (255, 153, 255)
 for cnt in dapi_contours:
     if wfa_contours == dapi_contours:
         wfa_dapi_masked = cv2.drawContours(img_th_c, wfa_cnt, -1, (0, 0, 0), -1) #pink
@@ -184,6 +185,14 @@ ax.imshow(dapi_cnt)
 fig.show()
 cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/A1_Claudin_bounding_box_test.tif', cont_claudin)
 
+gray_segmented_dapi = cv2.cvtColor(dapi_cnt,cv2.COLOR_RGB2GRAY)
+thresh_segmented_dapi = cv2.threshold(gray_segmented_dapi, np.mean(gray_segmented_dapi), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(thresh_segmented_dapi, cmap = 'gray')
+fig.show()
+
+
+cv2.imwrite
 
 # drawing neun contours
 neun_img = Image.open(img_B2)
