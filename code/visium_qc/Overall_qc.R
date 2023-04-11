@@ -6,6 +6,7 @@ library(pryr)                 # Check spe size
 library(spatialLIBD)
 
 
+
 # File Paths --------------------------------------------------------------
 path_raw_spe <- here("processed-data/rds/spe",
                      "01_build_spe/", "spe_raw.rds")
@@ -22,14 +23,51 @@ raw_spe <- readRDS(
   path_raw_spe
 )
 
+spe <- raw_spe
 
-# Spot Analysis -----------------------------------------------------------
+# is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
+# # This is eqquivalent to 
+# # is_mito <- which(seqnames(spe) == "chrM")
+# rowData(spe)$gene_name[is_mito]           # Show mt gene names
+# 
+# spe <- addPerCellQC(spe, subsets = list(mito = is_mito))
+
+
+plot_metric(spe, "sum_umi")
+plot_metric(spe, "sum_gene")
+plot_metric(spe, "expr_chrM")
+plot_metric(spe, "expr_chrM_ratio", include_log = FALSE)
+
+# One spot Mt counts are just 0
+sum(spe$expr_chrM==0)
+spe[,spe$expr_chrM==0]
+
+
+# TODO:
+# plot_metric(spe, "cell_count", include_log =FALSE)
+
+
+
+
+# Spots Filtering ---------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 
 # * Remove spots without counts ---------------------------------------------
 no_expr_spot <- colSums(counts(raw_spe)) != 0
-  
-spe <- raw_spe[, no_expr_spot]
-ncol(spe)
+
+spe <- spe[, no_expr_spot]
+dim(spe)
 
 
 # * Remove spots outside of tissue area ------------------------------------
@@ -58,7 +96,7 @@ vis_grid_clus(
   pdf_file = file.path(
     fldr_qc_plots,
     "in_tissue_grid.pdf"  # Plot File Name
-    ),
+  ),
   sort_clust = FALSE,
   colors = c("FALSE" = "grey90", "TRUE" = "orange")
 )
@@ -67,13 +105,20 @@ vis_grid_clus(
 
 
 
+# Feature/Gene Analysis -----------------------------------------------------
+# * Remove Genes with 0 count ---------------------------------------------
 
+gene_sum <- rowSums(counts(raw_spe))
+mean(gene_sum == 0)     # High percentage of non expressing gene
+spe <- raw_spe[gene_sum != 0,]
+dim(spe)
 
+# * (Optional) Remove Genes with 0 variance ---------------------------------------------
+gene_var <- counts(spe) |> MatrixGenerics::rowVars()
+if(mean(gene_var == 0) != 0){
+  spe <- spe[gene_var != 0, ]
+}
 
-## Roughly speaking, looks very nice.
-
-
-# TODO: how many proportion of the spots have missing
 
 # summary(spe_raw$sum_umi[which(!colData(spe_raw)$in_tissue)])
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
