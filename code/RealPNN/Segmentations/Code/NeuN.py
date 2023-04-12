@@ -165,7 +165,7 @@ fig.show()
 # for pix intensity threshold
 #find the contours,
 #get all pixles within the contour, get mean pixels intensity of the contour,
-plot histogram, based on that, get the threshold value, set that to be the threhold for neun segmentation
+#plot histogram, based on that, get the threshold value, set that to be the threhold for neun segmentation
 
 
 # for row in range(neun.shape[0]):
