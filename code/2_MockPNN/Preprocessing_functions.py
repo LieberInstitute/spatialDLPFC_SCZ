@@ -44,14 +44,7 @@ def histo(img, bins = 30, range1 = [0,1]):
     # change the contrast such that the order[3:8] are only visible and rest are all masked
     img[img <= ([(bins[i+1])   for i in order[7:8]])] = 0.0 # select the bin, below which the pix intensities will be blackened
     img[img <= ([(bins[i+1])   for i in order[2:3]])] = 0.0
-    # img[img <= ([(bins[i+1])   for i in order[2:3]])] = 0.0
-    # img[img <= ([(bins[i+1])   for i in order[7:]])] = 0.0
     print("0 init done!")
-    # img[img >= ([(bins[i+1])   for i in order[3:4]])] = 1.0
-    # img[img >= ([(bins[i+1])   for i in order[4:5]])] = 1.0
-    # img[img >= ([(bins[i+1])   for i in order[5:6]])] = 1.0
-    # img[img >= ([(bins[i+1])   for i in order[6:7]])] = 1.0
-    img[img >= ([(bins[i+1])   for i in order[4:5]])] = 1.0
     img[img >= ([(bins[i+1])   for i in order[3:4]])] = 1.0
     img[img >= ([(bins[i+1])   for i in order[5:6]])] = 1.0
     print("1 init done!")
