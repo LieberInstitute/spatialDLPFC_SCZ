@@ -7,21 +7,22 @@ Channel3 = NeuN,
 Channel4 = WFA
 '''
 
-from __future__ import print_function
-from skimage.feature import peak_local_max
-from skimage.segmentation import find_boundaries, watershed
+# from __future__ import print_function
+# from skimage.feature import peak_local_max
+# from skimage.segmentation import find_boundaries, watershed
 from scipy import ndimage
-import argparse
-from argparse import ArgumentParser
-import imutils
+# import argparse
+# from argparse import ArgumentParser
+# import imutils
 import numpy as np
 import pyhere
-from pyhere import here
-from pylab import xticks
-from pathlib import Path
+# from pyhere import here
+# from pylab import xticks
+# from pathlib import Path
 import pandas as pd
 import PIL
-from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
+from PIL import Image
+# ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
 import matplotlib
 import matplotlib.pyplot as plt
@@ -32,21 +33,21 @@ import scipy
 from scipy.spatial.distance import *
 import skimage
 from skimage import *
-from skimage import feature, segmentation, draw, measure, morphology
-from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
-from skimage.draw import polygon_perimeter
+# from skimage import feature, segmentation, draw, measure, morphology
+# from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
+# from skimage.draw import polygon_perimeter
 from itertools import product
 from collections import defaultdict
-from shapely.geometry import Point
-from shapely.geometry.polygon import Polygon
+# from shapely.geometry import Point
+# from shapely.geometry.polygon import Polygon
 from stitched_functions import read_img, watershed_segmentation, save_coordinates
 from stitched_functions import draw_contours, all_pixels
 
 
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
-source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
+source_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
+dst_dir_claudin = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'Claudin', 'claudin_binarized') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
 
 
 # image paths
@@ -136,3 +137,24 @@ claudin_contoured_img = draw_contours.draw_all_contours(claudin_c, claudin_conto
 A1 = pd.read_csv(csv_A1)
 contour_img, claudin_df_all, mean_pix_int_list = all_pixels.all_pix_pnns(A1, claudin_contoured_img, claudin)
 claudin_df_all.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_pix_info.csv')
+
+
+# detecting claudin contours
+claudin_img = Image.open(img_A1)
+claudin_img.seek(1)
+claudin = np.array(claudin_img, dtype = 'uint8')
+# claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
+gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
+_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (255, 153, 255), 2) #pink
+# print("found", len(claudin_contours))
+area_ = []
+for cnt in claudin_contours:
+    x,y,w,h = cv2.boundingRect(cnt)
+    area = cv2.contourArea(cnt)
+    area_.append(area)
+    if area<1000:
+        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), 2) #green
+    elif area>=10000:
+        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+50+w+100, y+50+h+100), (255,255,0), 2) #yellow
