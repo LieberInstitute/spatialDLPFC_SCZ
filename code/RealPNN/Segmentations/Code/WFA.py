@@ -104,9 +104,9 @@ wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (255, 255, 0), 1) # yello
 for cnt in wfa_contours:
     x,y,w,h = cv2.boundingRect(cnt)
     area = cv2.contourArea(cnt)
-    if area >=50:
+    if area >=100:
         wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,255,0), 2)
-    elif area<50:
+    elif area<100:
         wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), -1)
     # if area<1000:
     #     cla_rect = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), 2) #green
