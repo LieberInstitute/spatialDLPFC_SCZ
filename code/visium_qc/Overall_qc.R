@@ -2,8 +2,9 @@
 library(here)
 library(SpatialExperiment)
 library(scater)
-library(pryr)                 # Check spe size
+# library(pryr)                 # Check spe size
 library(spatialLIBD)
+library(tidyverse)
 
 
 
@@ -15,7 +16,12 @@ path_clean_spe <- here("process-data/rds/spe",
                        "spe_clean.rds")
 
 fldr_qc_plots <- here("plots", "02_visium_qc")
+
+fldr_tissue_plots <- here("plots", "02_visium_qc",
+                          "in_tissue_plots")
+
 dir.create( fldr_qc_plots, recursive = T)
+dir.create(fldr_tissue_plots, recursive = T)
 
 
 
@@ -37,6 +43,40 @@ spe <- raw_spe
 # rowData(spe)$gene_name[is_mito]           # Show mt gene names
 # 
 # spe <- addPerCellQC(spe, subsets = list(mito = is_mito))
+
+
+## In Tissue Plot -----------------------------------------------------------------
+spe$sample_id |> unique() |> 
+  walk(
+    .f = ~vis_clus(
+      spe,
+      sampleid = .x,
+      clustervar = "in_tissue",
+      colors = c(
+        "TRUE" = "transparent",
+        "FALSE" = "grey90"#, "TRUE" = "orange"
+        # TODO: try this with transparent
+        ) #,
+      # alpha = 0.5
+      ) |> 
+      ggsave(
+        filename = file.path(
+          fldr_tissue_plots,
+          paste0(.x,".pdf")
+        ),
+        height = 8,
+        width = 8
+      )
+  )
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------------------
 
 
 lib_size_thres <- isOutlier(spe_in_tissue$sum_umi,
