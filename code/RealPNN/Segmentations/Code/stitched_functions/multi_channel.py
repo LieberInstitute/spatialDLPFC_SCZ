@@ -47,7 +47,7 @@ import tifffile
 
 # Load the images
 Image.MAX_IMAGE_PIXELS = None
-image_DAPI = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/V12F14-053_A1_dapi_binarized.tif'))
+image_DAPI = np.array(Image.open(pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'DAPI', 'DAPI_binarized', 'V12F14-053_A1_dapi_binarized.tif'))) #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/V12F14-053_A1_dapi_binarized.tif'))
 image_claudin = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/V12F14-053_A1_claudin_binarized.tif'))
 image_NeuN = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_binarized/V12F14-053_A1_neun_binarized.tif'))
 image_WFA = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/WFA_binarized/V12F14-053_A1_wfa_binarized.tif'))
@@ -72,13 +72,11 @@ tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-da
 
 # automate this for all the images in the directory
 Image.MAX_IMAGE_PIXELS = None
-dapi_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/'
-neun_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_binarized/'
-claudin_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
-wfa_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/WFA_binarized/'
-af_seg_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/'
-
-
+dapi_seg_dir = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'DAPI', 'DAPI_binarized') # '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/'
+neun_seg_dir = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'NeuN', 'NeuN_binarized') # '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/NeuN_binarized/'
+claudin_seg_dir = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations','Claudin','claudin_binarized') # '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
+wfa_seg_dir = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations','WFA', 'WFA_binarized') # '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/WFA_binarized/'
+af_seg_dir = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations','AF','AF_segmented_binary') # '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/'
 
 
 dir_list = [dapi_seg_dir, claudin_seg_dir, neun_seg_dir, wfa_seg_dir, af_seg_dir]

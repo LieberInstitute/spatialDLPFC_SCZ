@@ -7,39 +7,25 @@ Channel3 = NeuN,
 Channel4 = WFA
 '''
 
-# from __future__ import print_function
-# from skimage.feature import peak_local_max
-# from skimage.segmentation import find_boundaries, watershed
+
 from scipy import ndimage
-# import argparse
-# from argparse import ArgumentParser
-# import imutils
 import numpy as np
 import pyhere
-# from pyhere import here
-# from pylab import xticks
-# from pathlib import Path
 import pandas as pd
 import PIL
 from PIL import Image
-# ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
 import matplotlib
 import matplotlib.pyplot as plt
-import sys
+# import sys
 import cv2
 import math
 import scipy
-from scipy.spatial.distance import *
+# from scipy.spatial.distance import *
 import skimage
-from skimage import *
-# from skimage import feature, segmentation, draw, measure, morphology
-# from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
-# from skimage.draw import polygon_perimeter
+# from skimage import *
 from itertools import product
 from collections import defaultdict
-# from shapely.geometry import Point
-# from shapely.geometry.polygon import Polygon
 from stitched_functions import read_img, watershed_segmentation, save_coordinates
 from stitched_functions import draw_contours, all_pixels
 
@@ -139,7 +125,7 @@ contour_img, claudin_df_all, mean_pix_int_list = all_pixels.all_pix_pnns(A1, cla
 claudin_df_all.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_pix_info.csv')
 
 
-# detecting claudin contours
+# detecting claudin contours -- taken from WFA code
 claudin_img = Image.open(img_A1)
 claudin_img.seek(1)
 claudin = np.array(claudin_img, dtype = 'uint8')
