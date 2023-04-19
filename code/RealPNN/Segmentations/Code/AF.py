@@ -30,8 +30,8 @@ from stitched_functions import read_img, watershed_segmentation
 from stitched_functions import *
 
 # directory path
-source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/'
+source_dir = pyhere.here('processed-data', 'VistoSeg','captureAreas') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
+dst_dir = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'AF', 'AF_segmented_binary') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/'
 
 # file paths for test images
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
@@ -42,9 +42,6 @@ img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
 
 img_af, af_shifted, af_gray, af_thresh = read_img.read_and_preprocess(img_D1, 0)
 plot_im(af_thresh)
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(dapi_thresh, cmap = 'gray')
-# fig.show()
 af_labels, af_localmax = watershed_segmentation.find_labels(af_thresh)
 afx, afy, afw, afh, af_area, af_segmented = watershed_segmentation.draw_rect_dapi(af_labels, af_gray, img_af)
 af_df = save_coordinates.create_df(afx, afy, afw, afh, af_area, img_af, 'autofluorescence')
