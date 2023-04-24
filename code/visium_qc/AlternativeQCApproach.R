@@ -1,42 +1,27 @@
+spe <- raw_spe
+
+
+col_df <- colData(spe) |> data.frame()
+
+thres_df <- col_df |> filter(in_tissue == FALSE) |> 
+  group_by(sample_id) |> 
+  summarize(
+    sum_umi_thres = median(sum_umi)
+  )
+
+col_df <- col_df |> 
+  left_join(thres_df, by = "sample_id") |> 
+  mutate(outlier = factor(sum_umi <= sum_umi_thres))
+
+colData(spe)$outlier <- col_df$outlier
+
+
 library(escheR)
-
-vis_gene(
-  spe,
-  sampleid = "Br5367_D1",
-  geneid = "sum_umi"
-) 
-
-make_escheR(spe[, spe$sample_id == "Br5367_D1"]) |> 
+make_escheR(spe[, spe$sample_id == "Br2378_D1" & spe$in_tissue == TRUE]) |> 
   add_fill(var = "sum_umi") |> 
-  add_ground(var = "in_tissue", stroke = 0.2) +
-  # scale_fill_viridis_c(trans="log10") +
-  scale_colour_manual(values = c("grey", "transparent"))
-
-make_escheR(spe[, spe$sample_id == "Br5367_D1"]) |> 
-  add_fill(var = "sum_gene") |> 
-  add_ground(var = "in_tissue", stroke = 0.2) +
-  # scale_fill_viridis_c(trans="log10") +
-  scale_colour_manual(values = c("grey", "transparent"))
-
-make_escheR(spe[, spe$sample_id == "Br5367_D1"]) |> 
-  add_fill(var = "sum_gene") |> 
-  add_ground(var = "in_tissue", stroke = 0.2) +
-  # scale_fill_viridis_c(trans="log10") +
-  scale_colour_manual(values = c("grey", "transparent"))
-
-make_escheR(spe[, spe$sample_id == "Br5367_D1"]) |> 
-  add_fill(var = "expr_chrM_ratio") |> 
-  add_ground(var = "in_tissue", stroke = 0.2) +
-  # scale_fill_viridis_c(trans="log10") +
-  scale_colour_manual(values = c("grey", "transparent"))
-
-
-
-make_escheR(spe[, spe$sample_id == "Br2719_A1"]) |> 
-  add_fill(var = "sum_umi") |> 
-  add_ground(var = "in_tissue", stroke = 0.2) +
-  # scale_fill_viridis_c(trans="log10") +
-  scale_colour_manual(values = c("grey", "transparent"))
+  add_ground(var = "outlier", stroke = 0.2) +
+  scale_fill_viridis_c(trans="log10") +
+  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "transparent"))
 
 
 make_escheR(spe[, spe$sample_id == "Br5182_C1"]) |> 
