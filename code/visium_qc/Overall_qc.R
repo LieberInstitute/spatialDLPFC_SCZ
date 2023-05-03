@@ -114,15 +114,29 @@ spe[,spe$expr_chrM==0]
 
 ##  Visualize Outliers ------------------------------------------------------
 
-qcfilter <- DataFrame(
+qcfilter <- data.frame(
   low_lib_size = isOutlier(spe_in_tissue$sum_umi, type = "lower",
-                           log = TRUE, batch = spe_in_tissue$sample_id_short),
+                           log = TRUE, batch = spe_in_tissue$sample_id),
   low_n_features = isOutlier(spe_in_tissue$sum_gene, type = "lower", log = TRUE,
-                             batch = spe_in_tissue$sample_id_short),
+                             batch = spe_in_tissue$sample_id),
   high_subsets_Mito_percent = isOutlier(spe_in_tissue$expr_chrM_ratio,
+                                        log = FALSE,
                                         type = "higher",
-                                        batch = spe_in_tissue$sample_id_short)
+                                        batch = spe_in_tissue$sample_id)
 )
+
+## Summary statistics
+# Number of spots excluding
+cbind(qcfilter, sample_id = spe_in_tissue$sample_id) |>
+  group_by(sample_id) |> 
+  summarize(
+    n_lib_size = sum(low_lib_size),
+    perc_lib_size = n_lib_size/n(),
+    n_low_n_features = sum(low_n_features),
+    perc_low_n_features = n_low_n_features/n(),
+    high_subsets_Mito_percent = sum(high_subsets_Mito_percent),
+  )
+
 
 library(escheR) # NOTE: escheR > 0.99.8
 
@@ -132,6 +146,7 @@ spe_in_tissue$low_lib_size <- qcfilter$low_lib_size |> factor()
 spe_in_tissue$low_n_features <- qcfilter$low_n_features |> factor()
 spe_in_tissue$high_subsets_Mito_percent <- qcfilter$high_subsets_Mito_percent |>
   factor()
+
 
 spe$sample_id |> unique() |> 
   walk(
