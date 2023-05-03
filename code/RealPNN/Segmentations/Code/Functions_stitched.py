@@ -6,6 +6,8 @@ Channel2 = DAPI,
 Channel3 = NeuN,
 Channel4 = WFA
 '''
+
+
 from __future__ import print_function
 from skimage.feature import peak_local_max
 from skimage.segmentation import find_boundaries, watershed
