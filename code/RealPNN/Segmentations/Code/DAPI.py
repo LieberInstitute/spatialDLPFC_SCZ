@@ -11,6 +11,8 @@ Channel4 = WFA
 from scipy import ndimage
 import imutils
 import numpy as np
+import argparse
+from argparse import ArgumentParser
 import pyhere
 from pyhere import here
 from pathlib import Path
