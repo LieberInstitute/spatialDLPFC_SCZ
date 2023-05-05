@@ -1,13 +1,14 @@
-# Experiment Master File --------------------------------------------------
+# Input File Path -------------------------------------
 
-master_file_path <- here("raw-data", "sample_info",
-                         "Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx") 
+## Experiment Master File --------------------------------------------------
+input_exp_raw_file <- here("raw-data", "experiment_info",
+                         "VisiumSPG_PNN_Master.xlsx") 
 
 
 
 
-# Data Warehouse Folder Path -------------------------------------------------------
-raw_folder_path <- file.path(
+## Data Warehouse Folder Path -----------------------------------------------
+input_data_wh_folder <- file.path(
   # TODO: change drive path (if necessary) 
   "/dcs04/lieber/lcolladotor/rawDataTDSC_LIBD001",
   "raw-data",  
@@ -19,12 +20,14 @@ raw_folder_path <- file.path(
 )
 
 
+
+# Outputs File Path -------------------------------------
 # Default Path for Preprocess Outputs -------------------------------------
 # No need to change
 
-# fastq folder saving the soft links
-fastq_fldr_path <- here("raw-data", "FASTQ")
+## fastq soft links  
+processed_fastq_fldr <- here("raw-data", "FASTQ")
 
-# spaceranger folder
+## spaceranger folder 
 # TODO: update the name
-processed_fldr_path <- here("processed-data", "spaceranger")
+processed_sparang_fldr <- here("processed-data", "spaceranger")
