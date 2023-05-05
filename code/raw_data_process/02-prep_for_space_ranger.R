@@ -1,3 +1,13 @@
+# TODO: move this to space ranger part
+# # Create Space Ranger folder if not exists
+# mkdir_if_not_exist(
+#   processed_sparang_fldr, 
+#   recursive = TRUE # Create "raw-data" folder if not exists
+# )
+
+# stopifnot(dir.exists(processed_sparang_fldr))
+
+
 # See which samples needs to be run with 
 finished_df <- 
   data.frame(
@@ -23,7 +33,7 @@ sr_success_brs <- file.exists(
 
 finished_df <- finished_df[sr_success_brs, , drop = FALSE]
 
-loupe_path <- here("processed-data", "VistoSeg", "loupe/")
+loupe_path <- here("processed-data", "VistoSeg", "loupe")
 
 to_run_df <- dplyr::anti_join(
   x = fs_df,
@@ -34,8 +44,8 @@ to_run_df <- dplyr::anti_join(
     sample_name  = sample_fld_name,
     slide_id =  `Slide SN #`,
     array_id = `Array #`,
-    img_path = glue("{loupe_path}{slide_id}_{array_id}.tif"),
-    json_path =glue("{loupe_path}{slide_id}_{array_id}.json"),
+    img_path = file.path(loupe_path, glue("{slide_id}_{array_id}.tif")),
+    json_path =file.path(loupe_path, glue("{slide_id}_{array_id}.json")),
     fastq_path = raw_data_path,
   )
 
