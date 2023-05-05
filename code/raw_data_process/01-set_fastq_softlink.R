@@ -31,7 +31,7 @@ stopifnot(all(!is.null(raw_df_expr_meta$`Sample #`)))
 # Create file system data frame for folder names + fastq file names
 fs_df <- raw_df_expr_meta |>
   transmute(
-    sample_fld_name = glue("Br{BrNumbr}_{`Array #`}"),
+    sample_fld_name = glue("{`Slide #`}_{`Array #`}"),
     fastq_fldr_path = paste0(processed_fastq_fldr, "/", sample_fld_name),
     fastq_name_start = glue("{`Sample #`}-{Experimenter}"),
     # Information Needs for spaceranger script
