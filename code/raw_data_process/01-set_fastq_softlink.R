@@ -2,7 +2,7 @@
 check_fastq_files_exist <- function(
     fastq_name_start,    # The start of fastq file name
     fastq_fldr_path      # The sample-specific fastq folder
-    ) {
+) {
   tmp_fastq_files <- grep( 
     pattern = paste0(fastq_name_start,
                      "[^/]*",
