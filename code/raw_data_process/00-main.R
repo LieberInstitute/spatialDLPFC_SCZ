@@ -16,6 +16,7 @@ source(
   )
 )
 
+
 # Load File Path ----------------------------------------------------------
 here("code", "raw_data_process",
      "file_paths.R") |> 
@@ -26,11 +27,18 @@ here("code", "raw_data_process",
 # Manually process
 # Pre-requisite to run successfully space ranger
 
+# Create Preporcess Meta File --------------------------------------------
+here("code", "raw_data_process",
+     "001-create_process_meta.R") |> 
+  source()
+
+
+
 
 # Copy Raw Data File ------------------------------------------------------
 # https://github.com/LieberInstitute/spatialDLPFC_SCZ/issues/10
 here("code", "raw_data_process",
-     "01-create_data_folders.R") |> 
+     "01-set_fastq_softlink.R") |> 
   source()
 
 # Run Space Ranger --------------------------------------------------------
