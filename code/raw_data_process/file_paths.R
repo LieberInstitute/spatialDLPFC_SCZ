@@ -31,3 +31,6 @@ processed_fastq_fldr <- here("raw-data", "FASTQ")
 ## spaceranger folder 
 # TODO: update the name
 processed_sparang_fldr <- here("processed-data", "spaceranger")
+
+## Loupe Output folder 
+processed_loupe_fldr <- here("processed-data", "VistpSeg", "loupe")
