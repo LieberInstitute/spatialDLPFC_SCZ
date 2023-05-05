@@ -16,29 +16,6 @@ check_fastq_files_exist <- function(
 }
 
 
-# Import Sample Meta Data From Master Excel File --------------------------
-raw_df_expr_meta <- readxl::read_excel(
-  path = input_exp_raw_file,
-  col_names = TRUE,
-  sheet = "Summary"
-)
-
-# Error prevention
-# Note: all `Sample #` should have value
-stopifnot(all(!is.null(raw_df_expr_meta$`Sample #`)))
-
-
-# Create file system data frame for folder names + fastq file names
-fs_df <- raw_df_expr_meta |>
-  transmute(
-    sample_fld_name = glue("{`Slide #`}_{`Array #`}"),
-    fastq_fldr_path = paste0(processed_fastq_fldr, "/", sample_fld_name),
-    fastq_name_start = glue("{`Sample #`}-{Experimenter}"),
-    # Information Needs for spaceranger script
-    `Slide #`, `Array #`
-  )
-
-
 # Create Sample Specific Folder -------------------------------------------
 # Create "FASTQ" folder if not exists
 mkdir_if_not_exist(
@@ -54,7 +31,7 @@ stopifnot(dir.exists(processed_fastq_fldr))
 # Create A Softlink -------------------------------------------------------
 raw_all_fastq_files <- list.files(input_data_wh_folder, full.names = TRUE)
 
-fs_df |> 
+expr_meta |> 
   pwalk(.f = function(fastq_fldr_path,
                       fastq_name_start, ...){
     
