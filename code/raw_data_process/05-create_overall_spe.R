@@ -104,6 +104,7 @@ length(no_expr)
 length(no_expr) / nrow(spe) * 100
 # [1] 18.9503
 
+spe_raw$ManualAnnotation <- NULL
 spe_raw <- spe
 
 dir.create(
