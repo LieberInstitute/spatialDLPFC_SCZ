@@ -3,7 +3,7 @@ library(here)
 library(SpatialExperiment)
 library(scater)
 # library(pryr)                 # Check spe size
-library(spatialLIBD)
+# library(spatialLIBD)
 library(tidyverse)
 
 
@@ -22,7 +22,7 @@ fldr_tissue_plots <- here("plots", "02_visium_qc",
 fldr_outlier_plots <- here("plots", "02_visium_qc",
                            "outlier_highlight")
 
-dir.create( fldr_qc_plots, recursive = T)
+dir.create(fldr_qc_plots, recursive = T)
 dir.create(fldr_tissue_plots, recursive = T)
 dir.create(fldr_outlier_plots, recursive = T)
 
@@ -72,44 +72,104 @@ spe$sample_id |> unique() |>
   )
 
 ## Create Thresholds -----------------------------------------------------------
+### scater Threshold -----------------------------------------------------------
 spe_in_tissue <- spe[, spe$in_tissue==TRUE]
 
-lib_size_thres <- isOutlier(spe_in_tissue$sum_umi,
-                            type = "lower",
-                            log = TRUE,
-                            batch = spe_in_tissue$sample_id) |> 
+scater_umi_thres <- isOutlier(spe_in_tissue$sum_umi,
+                              type = "lower",
+                              log = TRUE,
+                              batch = spe_in_tissue$sample_id) |>
   attr(which = "thresholds")
 
-n_gene_thres <- isOutlier(spe[, spe$in_tissue==TRUE]$sum_gene,
-                          type = "lower",
-                          log = TRUE,
-                          batch = spe_in_tissue$sample_id) |> 
+scater_gene_thres <- isOutlier(spe_in_tissue$sum_gene,
+                               type = "lower",
+                               log = TRUE,
+                               batch = spe_in_tissue$sample_id) |>
   attr(which = "thresholds")
 
-mt_perc_thres <- isOutlier(spe[, spe$in_tissue==TRUE]$expr_chrM_ratio,
-                           type = "higher",
-                           log = TRUE,
-                           batch = spe_in_tissue$sample_id) |> 
+scater_mt_perc_thres <- isOutlier(spe_in_tissue$expr_chrM_ratio,
+                                  type = "higher",
+                                  log = TRUE,
+                                  batch = spe_in_tissue$sample_id) |>
   attr(which = "thresholds")
 
+# Making sure the samples are in the same order.
+stopifnot(colnames(scater_umi_thres) == colnames(scater_gene_thres),
+          colnames(scater_umi_thres) == colnames(scater_mt_perc_thres))
 
-metadata(spe) <- list(
-  sum_umi_thres = lib_size_thres,
-  sum_gene_thres = n_gene_thres,
-  expr_chrM_ratio_thres = mt_perc_thres
-)
+scater_thres_df <- 
+  data.frame(
+    scater_umi_thres = (scater_umi_thres |> t()) [, "lower"],
+    scater_gene_thres = (scater_gene_thres |> t()) [, "lower"],
+    scater_mt_perc_thres = (scater_mt_perc_thres |> t()) [, "higher"]
+  ) |> 
+  rownames_to_column(var = "sample_id")
 
 
-plot_metric(spe, "sum_umi")
-plot_metric(spe, "sum_gene")
-plot_metric(spe, "expr_chrM")
-plot_metric(spe, "expr_chrM_ratio", include_log = FALSE)
-# TODO:
-# plot_metric(spe, "cell_count", include_log =FALSE)
+### Out_tissue (OT) Threshold -------------------------------------
+col_df <- colData(spe) |> data.frame()
+
+OT_thres_df <- col_df |> filter(in_tissue == FALSE) |> 
+  group_by(sample_id) |> 
+  summarize(
+    OT_umi_thres = median(sum_umi),
+    OT_gene_thres = median(sum_gene),
+    OT_mt_perc_thres = median(expr_chrM_ratio)
+  ) |> 
+  ungroup()
+
+### Joint (OT, scater) Threshold -------------------------------------
+col_df <- col_df |> 
+  left_join(scater_thres_df, by = "sample_id") |> 
+  left_join(OT_thres_df, by = "sample_id") |> 
+  mutate(
+    # Create joint threshold, min(scater, OT)
+    joint_umi_thres = min(scater_umi_thres, OT_umi_thres),
+    joint_gene_thres = min(scater_gene_thres, OT_gene_thres),
+    joint_mt_perc_thres = max(scater_mt_perc_thres, OT_mt_perc_thres),
+    # Column for scater outliers
+    scater_umi_outlier = factor(sum_umi <= scater_umi_thres),
+    scater_gene_outlier = factor(sum_gene <= scater_gene_thres),
+    scater_mt_perc_outlier = factor( expr_chrM_ratio >= scater_mt_perc_thres),
+    # Column for OT outliers
+    OT_umi_outlier = factor(sum_umi <= OT_umi_thres),
+    OT_gene_outlier = factor(sum_gene <= OT_gene_thres),
+    OT_mt_perc_outlier = factor( expr_chrM_ratio >= OT_mt_perc_thres),
+    # Column for joint outliers
+    joint_umi_outlier = factor(sum_umi <= joint_umi_thres),
+    joint_gene_outlier = factor(sum_gene <= joint_gene_thres),
+    joint_mt_perc_outlier = factor( expr_chrM_ratio >= joint_mt_perc_thres)
+  ) # |> 
+  # select(-ends_with("thres"))
+
+# Force out_tissue to be NA
+col_df[col_df$in_tissue==FALSE, endsWith(colnames(col_df), "outlier")] <- NA
+
+
+
+colData(spe) <- DataFrame(col_df)
+
+
+
+
+# Plot Thresholds ---------------------------------------------------------
+# TODO: Re-write these
+# metadata(spe) <- list(
+#   sum_umi_thres = lib_size_thres,
+#   sum_gene_thres = n_gene_thres,
+#   expr_chrM_ratio_thres = mt_perc_thres
+# )
+# plot_metric(spe, "sum_umi")
+# plot_metric(spe, "sum_gene")
+# plot_metric(spe, "expr_chrM")
+# plot_metric(spe, "expr_chrM_ratio", include_log = FALSE)
+# # TODO:
+# # plot_metric(spe, "cell_count", include_log =FALSE)
 
 # One spot Mt counts are just 0
 sum(spe$expr_chrM==0)
 spe[,spe$expr_chrM==0]
+
 
 
 ##  Visualize Outliers ------------------------------------------------------
@@ -241,123 +301,3 @@ vis_grid_clus(
   sort_clust = FALSE,
   colors = c("FALSE" = "grey90", "TRUE" = "orange")
 )
-
-
-
-
-
-# Feature/Gene Analysis -----------------------------------------------------
-# * Remove Genes with 0 count ---------------------------------------------
-
-gene_sum <- rowSums(counts(raw_spe))
-mean(gene_sum == 0)     # High percentage of non expressing gene
-spe <- raw_spe[gene_sum != 0,]
-dim(spe)
-
-# * (Optional) Remove Genes with 0 variance ---------------------------------------------
-gene_var <- counts(spe) |> MatrixGenerics::rowVars()
-if(mean(gene_var == 0) != 0){
-  spe <- spe[gene_var != 0, ]
-}
-
-
-# summary(spe_raw$sum_umi[which(!colData(spe_raw)$in_tissue)])
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# 0.0    66.0   170.0   291.6   326.0 39053.0
-
-# hist(log10(spe_raw$sum_umi[which(!colData(spe_raw)$in_tissue)]))
-# 0  1  2  3  4  5
-# 12 17 50 59 65 81
-
-
-# TODO: error
-# vis_grid_gene(
-#   spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
-#   geneid = "sum_umi",
-#   pdf = here::here("plots", "01_build_spe", "out_tissue_sum_umi_all.pdf"),
-#   assayname = "counts",
-#   auto_crop = FALSE
-# )
-# # Error in frame_lims$y_min:frame_lims$y_max : NA/NaN argument
-# # Auto_crop doesn't work in this case.
-# 
-# summary(spe_raw$expr_chrM_ratio[which(!colData(spe_raw)$in_tissue)])
-# # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
-# #  0.0000  0.1500  0.1947  0.2072  0.2500  1.0000      12
-# 
-# vis_grid_gene(
-#   spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
-#   geneid = "expr_chrM_ratio",
-#   pdf = here::here("plots", "01_build_spe", "out_tissue_expr_chrM_ratio_all.pdf"),
-#   assayname = "counts",
-#   auto_crop = FALSE
-# )
-# 
-# vis_grid_gene(
-#   spe = spe_raw[, which(!colData(spe_raw)$in_tissue)],
-#   geneid = "sum_gene",
-#   pdf = here::here("plots", "01_build_spe", "out_tissue_sum_gene_all.pdf"),
-#   assayname = "counts"
-# )
-# 
-# summary(spe$sum_umi)
-# # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# # 1    1358    2310    2674    3540   46881
-# vis_grid_gene(
-#   spe = spe,
-#   geneid = "sum_umi",
-#   pdf = here::here("plots", "01_build_spe", "in_tissue_sum_umi_all.pdf"),
-#   assayname = "counts"
-# )
-# 
-# summary(spe$sum_gene)
-# # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# # 1     910    1426    1508    1999    8344
-# 
-# vis_grid_gene(
-#   spe = spe,
-#   geneid = "sum_gene",
-#   pdf = here::here("plots", "01_build_spe", "in_tissue_sum_gene_all.pdf"),
-#   assayname = "counts"
-# )
-# 
-# summary(spe$expr_chrM_ratio)
-# # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# # 0.00000 0.07279 0.10440 0.12106 0.15513 1.00000
-# vis_grid_gene(
-#   spe = spe,
-#   geneid = "expr_chrM_ratio",
-#   pdf = here::here("plots", "01_build_spe", "in_tissue_expr_chrM_ratio_all.pdf"),
-#   assayname = "counts"
-# )
-# 
-# vis_grid_gene(
-#   spe = spe_raw,
-#   geneid = "sum_umi",
-#   pdf = here::here("plots", "01_build_spe", "all_sum_umi.pdf"),
-#   assayname = "counts"
-# )
-# 
-# vis_grid_gene(
-#   spe = spe_raw,
-#   geneid = "sum_gene",
-#   pdf = here::here("plots", "01_build_spe", "all_sum_gene.pdf"),
-#   assayname = "counts"
-# )
-# 
-# vis_grid_gene(
-#   spe = spe_raw,
-#   geneid = "expr_chrM_ratio",
-#   pdf = here::here("plots", "01_build_spe", "all_expr_chrM_ratio.pdf"),
-#   assayname = "counts"
-# )
-# 
-# 
-# 
-# # Genes with no reads -----------------------------------------------------
-# stopifnot()
-# 
-# 
-# 
-# pryr::object_size(spe)
-
