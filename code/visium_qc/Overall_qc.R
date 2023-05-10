@@ -3,7 +3,7 @@ library(here)
 library(SpatialExperiment)
 library(scater)
 # library(pryr)                 # Check spe size
-# library(spatialLIBD)
+library(spatialLIBD)
 library(tidyverse)
 
 
@@ -128,31 +128,78 @@ col_df <- col_df |>
     joint_gene_thres = min(scater_gene_thres, OT_gene_thres),
     joint_mt_perc_thres = max(scater_mt_perc_thres, OT_mt_perc_thres),
     # Column for scater outliers
-    scater_umi_outlier = factor(sum_umi <= scater_umi_thres),
-    scater_gene_outlier = factor(sum_gene <= scater_gene_thres),
-    scater_mt_perc_outlier = factor( expr_chrM_ratio >= scater_mt_perc_thres),
+    scater_umi_outlier = (sum_umi <= scater_umi_thres),
+    scater_gene_outlier = (sum_gene <= scater_gene_thres),
+    scater_mt_perc_outlier = ( expr_chrM_ratio >= scater_mt_perc_thres),
     # Column for OT outliers
-    OT_umi_outlier = factor(sum_umi <= OT_umi_thres),
-    OT_gene_outlier = factor(sum_gene <= OT_gene_thres),
-    OT_mt_perc_outlier = factor( expr_chrM_ratio >= OT_mt_perc_thres),
+    OT_umi_outlier = (sum_umi <= OT_umi_thres),
+    OT_gene_outlier = (sum_gene <= OT_gene_thres),
+    OT_mt_perc_outlier = ( expr_chrM_ratio >= OT_mt_perc_thres),
     # Column for joint outliers
-    joint_umi_outlier = factor(sum_umi <= joint_umi_thres),
-    joint_gene_outlier = factor(sum_gene <= joint_gene_thres),
-    joint_mt_perc_outlier = factor( expr_chrM_ratio >= joint_mt_perc_thres)
+    joint_umi_outlier = (sum_umi <= joint_umi_thres),
+    joint_gene_outlier = (sum_gene <= joint_gene_thres),
+    joint_mt_perc_outlier = ( expr_chrM_ratio >= joint_mt_perc_thres)
   ) # |> 
-  # select(-ends_with("thres"))
+# select(-ends_with("thres"))
 
 # Force out_tissue to be NA
 col_df[col_df$in_tissue==FALSE, endsWith(colnames(col_df), "outlier")] <- NA
 
 
+# Summary Statistics of Outlier Spots -------------------------------------
+## scater -------------------------------------
+col_df |> 
+  filter(in_tissue == TRUE) |> 
+  group_by(sample_id) |> 
+  summarize(
+    n_umi_outlier = sum(scater_umi_outlier),
+    perc_umi_outlier = n_umi_outlier/n(),
+    n_gene_outlier = sum(scater_umi_outlier),
+    perc_gene_outlier = n_gene_outlier/n(),
+    n_mt_perc_outlier = sum(scater_mt_perc_outlier),
+    perc_mt_perc_outlier = n_mt_perc_outlier/n()
+  )
 
-colData(spe) <- DataFrame(col_df)
 
 
 
 
-# Plot Thresholds ---------------------------------------------------------
+## OT -------------------------------------
+col_df |> 
+  filter(in_tissue == TRUE) |> 
+  group_by(sample_id) |> 
+  summarize(
+    n_umi_outlier = sum(OT_umi_outlier),
+    perc_umi_outlier = n_umi_outlier/n(),
+    n_gene_outlier = sum(OT_umi_outlier),
+    perc_gene_outlier = n_gene_outlier/n(),
+    n_mt_perc_outlier = sum(OT_mt_perc_outlier),
+    perc_mt_perc_outlier = n_mt_perc_outlier/n()
+  )
+
+
+## Joint -------------------------------------
+col_df |> 
+  filter(in_tissue == TRUE) |> 
+  group_by(sample_id) |> 
+  summarize(
+    n_umi_outlier = sum(joint_umi_outlier),
+    perc_umi_outlier = n_umi_outlier/n(),
+    n_gene_outlier = sum(joint_umi_outlier),
+    perc_gene_outlier = n_gene_outlier/n(),
+    n_mt_perc_outlier = sum(joint_mt_perc_outlier),
+    perc_mt_perc_outlier = n_mt_perc_outlier/n()
+  )
+
+
+
+
+
+
+
+
+
+## Plot Thresholds ---------------------------------------------------------
 # TODO: Re-write these
 # metadata(spe) <- list(
 #   sum_umi_thres = lib_size_thres,
@@ -174,63 +221,62 @@ spe[,spe$expr_chrM==0]
 
 ##  Visualize Outliers ------------------------------------------------------
 
-qcfilter <- data.frame(
-  low_lib_size = isOutlier(spe_in_tissue$sum_umi, type = "lower",
-                           log = TRUE, batch = spe_in_tissue$sample_id),
-  low_n_features = isOutlier(spe_in_tissue$sum_gene, type = "lower", log = TRUE,
-                             batch = spe_in_tissue$sample_id),
-  high_subsets_Mito_percent = isOutlier(spe_in_tissue$expr_chrM_ratio,
-                                        log = FALSE,
-                                        type = "higher",
-                                        batch = spe_in_tissue$sample_id)
-)
-
-## Summary statistics
-# Number of spots excluding
-cbind(qcfilter, sample_id = spe_in_tissue$sample_id) |>
-  group_by(sample_id) |> 
-  summarize(
-    n_lib_size = sum(low_lib_size),
-    perc_lib_size = n_lib_size/n(),
-    n_low_n_features = sum(low_n_features),
-    perc_low_n_features = n_low_n_features/n(),
-    high_subsets_Mito_percent = sum(high_subsets_Mito_percent),
-  )
+# qcfilter <- data.frame(
+#   low_lib_size = isOutlier(spe_in_tissue$sum_umi, type = "lower",
+#                            log = TRUE, batch = spe_in_tissue$sample_id),
+#   low_n_features = isOutlier(spe_in_tissue$sum_gene, type = "lower", log = TRUE,
+#                              batch = spe_in_tissue$sample_id),
+#   high_subsets_Mito_percent = isOutlier(spe_in_tissue$expr_chrM_ratio,
+#                                         log = FALSE,
+#                                         type = "higher",
+#                                         batch = spe_in_tissue$sample_id)
+# )
 
 
 library(escheR) # NOTE: escheR > 0.99.8
 
 # smp_id <- "Br5367_D1"
 
-spe_in_tissue$low_lib_size <- qcfilter$low_lib_size |> factor()
-spe_in_tissue$low_n_features <- qcfilter$low_n_features |> factor()
-spe_in_tissue$high_subsets_Mito_percent <- qcfilter$high_subsets_Mito_percent |>
-  factor()
+# spe_in_tissue$low_lib_size <- qcfilter$low_lib_size |> factor()
+# spe_in_tissue$low_n_features <- qcfilter$low_n_features |> factor()
+# spe_in_tissue$high_subsets_Mito_percent <- qcfilter$high_subsets_Mito_percent |>
+#   factor()
+# Update Spe with
+colData(spe) <- DataFrame(col_df)
 
+file.path(fldr_outlier_plots,
+          c("scater", "OT", "joint")) |> 
+walk( .f = dir.create)
 
-spe$sample_id |> unique() |> 
-  walk(
-    .f = function(smp_id){
+expand.grid(
+  sample_id = col_df$sample_id |> unique(),
+  method = c("scater", "OT", "joint")
+) |> 
+  pwalk(
+    .f = function(sample_id, method){
       
+      spe_in_tissue <- spe[, spe$in_tissue == TRUE]
+      # method <- "OT"
+      # browser()
       ggpubr::ggarrange(
         
-        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == smp_id]) |> 
+        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
           add_fill(var = "sum_umi") |> 
-          add_ground(var = "low_lib_size", stroke = 0.5) +
+          add_ground(var = paste0(method, "_umi_outlier"), stroke = 0.5) +
           scale_fill_viridis_c(trans="log2") +
           scale_colour_manual(values = c("transparent", "red")) +
-          labs(Title = "Library Size"),
+          labs(Title = "sum_umi"),
         
-        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == smp_id]) |> 
+        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
           add_fill(var = "sum_gene") |> 
-          add_ground(var = "low_n_features", stroke = 0.5) +
+          add_ground(var = paste0(method, "_gene_outlier"), stroke = 0.5) +
           scale_fill_viridis_c(trans="log2") +
           scale_colour_manual(values = c("transparent", "red")) +
-          labs(Title = "# of Features"),
+          labs(Title = "sum_gene"),
         
-        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == smp_id]) |> 
+        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
           add_fill(var = "expr_chrM_ratio") |> 
-          add_ground(var = "high_subsets_Mito_percent", stroke = 0.5) +
+          add_ground(var = paste0(method, "_mt_perc_outlier"), stroke = 0.5) +
           scale_fill_viridis_c() +
           scale_colour_manual(values = c("transparent", "red")) +
           labs(Title = "Mito %"),
@@ -239,7 +285,8 @@ spe$sample_id |> unique() |>
         ggsave(
           filename = file.path(
             fldr_outlier_plots,
-            paste0(smp_id,".pdf")
+            method,
+            paste0(sample_id,".pdf")
           ),
           height = 12,
           width = 6
@@ -272,32 +319,32 @@ dim(spe)
 
 
 # * Remove spots outside of tissue area ------------------------------------
-stopifnot(is.logical(spe$in_tissue))
-
-# Evaluate if in-tissue definition is accurate
-vis_grid_clus(
-  spe = spe,
-  clustervar = "in_tissue",
-  pdf_file = file.path(
-    fldr_qc_plots,
-    "in_tissue_grid_raw.pdf"  # Plot File Name
-  ),
-  sort_clust = FALSE,
-  colors = c("FALSE" = "grey90", "TRUE" = "orange")
-)
-
-# Note, if in_tissue is integer, please convert it to a logic variable
-spe <- spe[, spe$in_tissue]
-ncol(spe)
-
-# Visual Validation
-vis_grid_clus(
-  spe = spe,
-  clustervar = "in_tissue",
-  pdf_file = file.path(
-    fldr_qc_plots,
-    "in_tissue_grid.pdf"  # Plot File Name
-  ),
-  sort_clust = FALSE,
-  colors = c("FALSE" = "grey90", "TRUE" = "orange")
-)
+# stopifnot(is.logical(spe$in_tissue))
+# 
+# # Evaluate if in-tissue definition is accurate
+# vis_grid_clus(
+#   spe = spe,
+#   clustervar = "in_tissue",
+#   pdf_file = file.path(
+#     fldr_qc_plots,
+#     "in_tissue_grid_raw.pdf"  # Plot File Name
+#   ),
+#   sort_clust = FALSE,
+#   colors = c("FALSE" = "grey90", "TRUE" = "orange")
+# )
+# 
+# # Note, if in_tissue is integer, please convert it to a logic variable
+# spe <- spe[, spe$in_tissue]
+# ncol(spe)
+# 
+# # Visual Validation
+# vis_grid_clus(
+#   spe = spe,
+#   clustervar = "in_tissue",
+#   pdf_file = file.path(
+#     fldr_qc_plots,
+#     "in_tissue_grid.pdf"  # Plot File Name
+#   ),
+#   sort_clust = FALSE,
+#   colors = c("FALSE" = "grey90", "TRUE" = "orange")
+# )
