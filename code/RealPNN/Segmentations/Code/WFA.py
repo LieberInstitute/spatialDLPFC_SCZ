@@ -99,6 +99,9 @@ img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
 wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print("found", len(wfa_contours), "in", os.path.basename(img_A1))
 wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (255, 255, 0), 1) # yellow all contours
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(wfa_cnt)
+fig.show()
 for cnt in wfa_contours:
     x,y,w,h = cv2.boundingRect(cnt)
     area = cv2.contourArea(cnt)
