@@ -60,8 +60,6 @@ dpx, dpy, dpw, dph, area, ws_img_bb = draw_rect_dapi(labels, gray, dapi_clr)
 cv2.imwrite('/users/ukaipa/PNN/One_img/dapi_stitched_segmented_C1_run2.tif', ws_img_bb)
 
 
-
-
 im_wfa, wfa = read_norm(img_C1, 4)
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(wfa, cmap = 'gray')
