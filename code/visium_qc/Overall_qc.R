@@ -118,15 +118,22 @@ OT_thres_df <- col_df |> filter(in_tissue == FALSE) |>
   ) |> 
   ungroup()
 
-### Joint (OT, scater) Threshold -------------------------------------
-col_df <- col_df |> 
-  left_join(scater_thres_df, by = "sample_id") |> 
-  left_join(OT_thres_df, by = "sample_id") |> 
+
+joint_thres_df <- full_join(
+  scater_thres_df, OT_thres_df, by = "sample_id"
+) |> rowwise() |> 
   mutate(
     # Create joint threshold, min(scater, OT)
     joint_umi_thres = min(scater_umi_thres, OT_umi_thres),
     joint_gene_thres = min(scater_gene_thres, OT_gene_thres),
-    joint_mt_perc_thres = max(scater_mt_perc_thres, OT_mt_perc_thres),
+    joint_mt_perc_thres = max(scater_mt_perc_thres, OT_mt_perc_thres)
+  ) |> 
+  ungroup()
+
+### Joint (OT, scater) Threshold -------------------------------------
+col_df <- col_df |> 
+  left_join(joint_thres_df, by = "sample_id") |> 
+  mutate(
     # Column for scater outliers
     scater_umi_outlier = (sum_umi <= scater_umi_thres),
     scater_gene_outlier = (sum_gene <= scater_gene_thres),
@@ -234,7 +241,7 @@ spe[,spe$expr_chrM==0]
 
 
 library(escheR) # NOTE: escheR > 0.99.8
-
+library(ggpubr)
 # smp_id <- "Br5367_D1"
 
 # spe_in_tissue$low_lib_size <- qcfilter$low_lib_size |> factor()
@@ -257,7 +264,6 @@ expand.grid(
       
       spe_in_tissue <- spe[, spe$in_tissue == TRUE]
       # method <- "OT"
-      # browser()
       ggpubr::ggarrange(
         
         make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
