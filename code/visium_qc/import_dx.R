@@ -102,3 +102,16 @@ clean_df <- clean_df |>
 
 # table(clean_df$dx)
 
+
+# Descriptive Table -------------------------------------------------------
+library(gtsummary)
+
+# expr_meta <- read_csv()
+
+
+# TODO: merge with expr_meta brain informaiton
+clean_df %>%
+  select(age, sex, dx) |> 
+  tbl_summary(by = dx)
+
+
