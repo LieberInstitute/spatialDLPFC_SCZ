@@ -29,8 +29,24 @@ input_data_wh_folder <- file.path(
 processed_fastq_fldr <- here("raw-data", "FASTQ")
 
 ## spaceranger folder 
-# TODO: update the name
 processed_sparang_fldr <- here("processed-data", "spaceranger")
 
 ## Loupe Output folder 
 processed_loupe_fldr <- here("processed-data", "VistpSeg", "loupe")
+
+
+
+# Parameter Files ---------------------------------------------------------
+
+
+## Lib Path ----------------------------------------------------------------
+# Space Ranger Path
+lib_sparanger <- here("code", "raw_data_process", "spaceranger")
+
+
+pmtr_sparanger <- file.path(lib_sparanger, "parameters")
+mkdir_if_not_exist(pmtr_sparanger)
+
+
+#TODO: create these folders
+

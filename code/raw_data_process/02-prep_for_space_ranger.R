@@ -8,77 +8,101 @@
 # stopifnot(dir.exists(processed_sparang_fldr))
 
 
-# See which samples needs to be run with 
-finished_df <- 
+# expr_meta
+
+# Check success run -------------------------------------------------------
+
+have_SR_summary <- function(smp_slide_id){
+  file.exists(
+    here(
+      processed_sparang_fldr,
+      smp_slide_id,
+      "outs","web_summary.html")
+  )
+}
+
+SR_folders_df <-
   data.frame(
-    sample_fld_name = grep(
-      pattern = "^Br",
+    sample_name = grep(
+      pattern = "^V",
       x = list.files(
-        here("processed-data", "spaceranger")
+        processed_sparang_fldr
       ),
       value = TRUE
     )
-  )
+  ) |> 
+  mutate(
+    success = have_SR_summary(sample_name)
+  ) |> 
+  filter(success == TRUE)
 
 
 
-# Add error prevention to check if
-# the spaceranger run is acutally finished
 
-sr_success_brs <- file.exists(
-  here("processed-data", "spaceranger",
-       finished_df$sample_fld_name,
-       "outs","web_summary.html")
-)
-
-finished_df <- finished_df[sr_success_brs, , drop = FALSE]
-
-loupe_path <- here("processed-data", "VistoSeg", "loupe")
+# loupe_path <- here("processed-data", "VistoSeg", "loupe")
 
 to_run_df <- dplyr::anti_join(
-  x = fs_df,
-  y = finished_df,
-  by = "sample_fld_name"
-) |> 
-  transmute(
-    sample_name  = sample_fld_name,
-    slide_id =  `Slide SN #`,
-    array_id = `Array #`,
-    img_path = file.path(loupe_path, glue("{slide_id}_{array_id}.tif")),
-    json_path =file.path(loupe_path, glue("{slide_id}_{array_id}.json")),
-    fastq_path = raw_data_path,
+  x = expr_meta,
+  y = SR_folders_df,
+  by = "sample_name"
+)
+
+# save_path <- here("code", "spaceranger",
+#  "parameters")
+# mkdir_if_not_exist(save_path, recursive = TRUE)
+
+# (Optional) TODO: clean up to run log and parameter files
+
+#  Set up jobs ------------------------------------------------------------
+to_run_df |> 
+  pwalk(
+    .f = function(
+    sample_name,
+    `Slide #`,
+    `Array #`,
+    loupe_file_path,
+    fastq_fldr_path,
+    ...
+    ){
+      browser()
+      # for(i in 1:nrow(to_run_df)){
+      # sample_name <- to_run_df$sample_name[i]
+      
+      # to_run_df |> 
+      #   filter(sample_name == sample_name) |> 
+      c(
+        sample_name,
+        `Slide #`,
+        `Array #`,
+        paste0(loupe_file_path, ".tif"),
+        paste0(loupe_file_path, ".json"),
+        fastq_fldr_path
+      ) |> 
+        write.table(
+          file=file.path(pmtr_sparanger,
+                         paste0(sample_name,".tsv")),
+          quote=F, col.names=F, row.names=F, sep="\t",
+          append = FALSE
+        )
+      
+      # Assemble the job submission command
+      job_sub_commond <- paste(
+        "qsub",
+        "-N", paste0("run_SR_", sample_name), #Sample specific job name
+        "-wd", lib_sparanger, # Starting directory
+        file.path(lib_sparanger, "spaceranger.sh"),
+        sep = " "
+      )
+      
+      
+      # Run Spaceranger for each sample as a job
+      system(
+        job_sub_commond
+      )
+    }
+    # }
   )
 
-save_path <- here("code", "spaceranger",
-                  "parameters")
-
-mkdir_if_not_exist(save_path, recursive = TRUE)
-
-if(nrow(to_run_df) != 0){
-  for(i in 1:nrow(to_run_df)){
-    sample_name <- to_run_df$sample_name[i]
-    write.table(to_run_df[i,], 
-                file=paste0(save_path,"/",
-                            sample_name,".tsv"),
-                quote=F, col.names=F, row.names=F, sep="\t",
-    )
-    
-    # Assemble the job submission command
-    job_sub_commond <- paste(
-      "qsub",
-      "-N", sample_name, #Sample specific job name
-      "-wd", here("code", "spaceranger"), # Starting directory
-      here("code", "spaceranger", "spaceranger.sh"),
-      sep = " "
-    )
-    
-    
-    # Run Spaceranger for each sample as a job
-    system(
-      job_sub_commond
-    )
-  }
-}
 
 
 
