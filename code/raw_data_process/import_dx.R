@@ -4,13 +4,12 @@ library(tidyverse)
 library(cellranger) # Extract excel file
 
 
+source(here("code", "raw_data_process", "file_paths.R"))
 
-# File Path ---------------------------------------------------------------
-path_raw_dx <- "~/DLPFC cross-disorders brain collection bookkeeping updated 03_28_2023.xlsx"
 
 # Import Excel File -------------------------------------------------------
 raw_df <- readxl::read_excel(
-  path = path_raw_dx,
+  path = input_raw_dx_file,
   sheet = "Big_240_DLPFC_Dissections",
   col_names = TRUE,
   # First row is grouped cell names, hence starting second row
@@ -103,15 +102,5 @@ clean_df <- clean_df |>
 # table(clean_df$dx)
 
 
-# Descriptive Table -------------------------------------------------------
-library(gtsummary)
-
-# expr_meta <- read_csv()
-
-
-# TODO: merge with expr_meta brain informaiton
-clean_df %>%
-  select(age, sex, dx) |> 
-  tbl_summary(by = dx)
 
 
