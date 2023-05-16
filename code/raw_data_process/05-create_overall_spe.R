@@ -6,21 +6,38 @@ library(tidyverse)
 
 # TODO: replace this part with the preprocess_meta_file
 
-sample_info <- data.frame(
-  sample_id = list.files(
-    here("processed-data", "spaceranger"),
-    pattern = "^Br"
-  )
-) |> 
-  mutate(
-    sample_path = file.path(
-      here::here("processed-data", "spaceranger"),
-      sample_id,
-      "outs"
+# sample_info <- data.frame(
+#   sample_id = list.files(
+#     here("processed-data", "spaceranger"),
+#     pattern = "^V"
+#   )
+# ) |> 
+#   mutate(
+#     sample_path = file.path(
+#       here::here("processed-data", "spaceranger"),
+#       sample_id,
+#       "outs"
+#     )
+#   )
+
+
+
+expr_meta <- read.csv(
+  here("code", "raw_data_process",
+       "sample_meta_path.csv"),
+  header = TRUE
+)
+
+stopifnot(
+  all(
+    file.exists(
+      file.path(
+        expr_meta$sr_fldr_path,
+        "outs"
+      )
     )
   )
-
-stopifnot(all(file.exists(sample_info$sample_path)))
+)
 
 ## Related to https://github.com/drighelli/SpatialExperiment/issues/135
 stopifnot(packageVersion("SpatialExperiment") >= "1.9.5")
@@ -30,8 +47,8 @@ stopifnot(packageVersion("spatialLIBD") >= "1.11.10")
 ## Build SPE object
 Sys.time()
 spe <- spatialLIBD::read10xVisiumWrapper(
-  sample_info$sample_path,
-  sample_info$sample_id,
+  samples = file.path(expr_meta$sr_fldr_path,"outs"),
+  sample_id = expr_meta$sample_name,
   type = "sparse",
   data = "raw",
   images = c("lowres", "hires", "detected", "aligned"),
@@ -40,10 +57,16 @@ spe <- spatialLIBD::read10xVisiumWrapper(
 )
 Sys.time()
 
-# TODO: Confirm if the number of samples match with meta
+# Confirm if the number of samples match with meta
+stopifnot( nrow(expr_meta) == length(unique(spe$sample_id)))
 
+spe_raw$ManualAnnotation <- NULL
 
-## TODO Add the experimental information
+## TODO: Add the experimental information
+### TODO: read in meta information
+source(here("code", "raw_data_process", "import_dx.R"))
+col_df <- colData(spe) |> data.frame() |> left_join(clean_df, by = "brain_num")
+
 # spe$key <- paste0(colnames(spe), "_", spe$sample_id) # In spatialLIBD::read10xVisiumWrapper
 # spe$subject <- sample_info$subjects[match(spe$sample_id, sample_info$sample_id)]
 # spe$region <- sample_info$regions[match(spe$sample_id, sample_info$sample_id)]
@@ -63,33 +86,33 @@ Sys.time()
 # spe$expr_chrM_ratio <- spe$expr_chrM / spe$sum_umi
 
 # TODO: add this information
-# ## Read in cell counts and segmentation results
-# segmentations_list <- lapply(sample_info$sample_id, function(sampleid) {
-#   current <- sample_info$sample_path[sample_info$sample_id == sampleid]
-#   file <- file.path(current, "spatial", "tissue_spot_counts.csv")
-#   if (!file.exists(file)) {
-#     return(NULL)
-#   }
-#   x <- read.csv(file)
-#   x$key <- paste0(x$barcode, "_", sampleid)
-#   return(x)
-# })
-# ## Merge them (once the these files are done, this could be replaced by an rbind)
+## Read in cell counts and segmentation results
+segmentations_list <- lapply(spe$sample_id, function(sampleid) {
+  current <- expr_meta$sr_fldr_path[expr_meta$sr_fldr_path == sampleid]
+  file <- file.path(current, "spatial", "tissue_spot_counts.csv")
+  if (!file.exists(file)) {
+    return(NULL)
+  }
+  x <- read.csv(file)
+  x$key <- paste0(x$barcode, "_", sampleid)
+  return(x)
+})
+## Merge them (once the these files are done, this could be replaced by an rbind)
 # segmentations <- Reduce(function(...) merge(..., all = TRUE), segmentations_list[lengths(segmentations_list) > 0])
-# 
+
 # ## Add the information
 # segmentation_match <- match(spe$key, segmentations$key)
 # segmentation_info <- segmentations[segmentation_match, -which(colnames(segmentations) %in% c("barcode", "tissue", "row", "col", "imagerow", "imagecol", "key")), drop = FALSE]
 # colData(spe) <- cbind(colData(spe), segmentation_info)
 
-vis_grid_gene(
-  spe = spe,
-  geneid = "Ndata",
-  pdf = here::here("plots", "01_build_spe", "seg_count.pdf"),
-  assayname = "counts",
-  auto_crop = FALSE,
-  spatial = FALSE
-)
+# vis_grid_gene(
+#   spe = spe,
+#   geneid = "Ndata",
+#   pdf = here::here("plots", "01_build_spe", "seg_count.pdf"),
+#   assayname = "counts",
+#   auto_crop = FALSE,
+#   spatial = FALSE
+# )
 
 # mean(spe$count)
 # pdf(here::here("plots", "01_build_spe", "cells_per_spot.pdf"))
@@ -97,25 +120,25 @@ vis_grid_gene(
 # dev.off()
 
 ## Remove genes with no data
-no_expr <- which(rowSums(counts(spe)) == 0)
+# no_expr <- which(rowSums(counts(spe)) == 0)
 
-length(no_expr)
+# length(no_expr)
 # [1] 6936
-length(no_expr) / nrow(spe) * 100
+# length(no_expr) / nrow(spe) * 100
 # [1] 18.9503
 
-spe_raw$ManualAnnotation <- NULL
-spe_raw <- spe
+
+# spe_raw <- spe
 
 dir.create(
   here::here("processed-data", "rds", 
-                      "spe", "01_build_spe"),
-           recursive = T
-  )
+             "spe", "01_build_spe"),
+  recursive = T
+)
 
 saveRDS(spe_raw, 
-     file = here::here("processed-data", "rds", 
-                       "spe", "01_build_spe", "spe_raw.rds"))
+        file = here::here("processed-data", "rds", 
+                          "spe", "01_build_spe", "spe_raw.rds"))
 
 
 

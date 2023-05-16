@@ -1,3 +1,5 @@
+source(here("code", "raw_data_process", "fun_mkdir_if_not_exist.R"))
+
 # Input File Path -------------------------------------
 
 ## Experiment Master File --------------------------------------------------
@@ -19,6 +21,9 @@ input_data_wh_folder <- file.path(
   ) 
 )
 
+
+# Dx File Path ---------------------------------------------------------------
+input_raw_dx_file <- "~/DLPFC cross-disorders brain collection bookkeeping updated 03_28_2023.xlsx"
 
 
 # Outputs File Path -------------------------------------
