@@ -57,8 +57,11 @@ spe <- spatialLIBD::read10xVisiumWrapper(
 )
 Sys.time()
 
+# Confirm the number of spots are correct
+stopifnot(ncol(spe) != length(unique(spe$sample_id))*4992)
+
 # Confirm if the number of samples match with meta
-stopifnot( nrow(expr_meta) == length(unique(spe$sample_id)))
+stopifnot(nrow(expr_meta) == length(unique(spe$sample_id)))
 
 spe$ManualAnnotation <- NULL
 
@@ -101,10 +104,9 @@ metadata(spe) <- clean_df |>
 
 # TODO: add this information
 ## Read in cell counts and segmentation results
-segmentations_list <- lapply(#unique(spe$sample_id), 
-  unique(expr_meta$sample_name), # TEST only
+seg_df <- map_dfr(unique(spe$sample_id), 
                              function(sampleid) {
-  
+  # browser()
   current <- expr_meta$sr_fldr_path[expr_meta$sample_name == sampleid]
   file <- file.path(current, "outs/spatial", "tissue_spot_counts.csv")
   if (!file.exists(file)) {
@@ -115,13 +117,24 @@ segmentations_list <- lapply(#unique(spe$sample_id),
   x$key <- paste0(x$barcode, "_", sampleid)
   return(x)
 })
-## Merge them (once the these files are done, this could be replaced by an rbind)
-# segmentations <- Reduce(function(...) merge(..., all = TRUE), segmentations_list[lengths(segmentations_list) > 0])
 
-# ## Add the information
-# segmentation_match <- match(spe$key, segmentations$key)
-# segmentation_info <- segmentations[segmentation_match, -which(colnames(segmentations) %in% c("barcode", "tissue", "row", "col", "imagerow", "imagecol", "key")), drop = FALSE]
-# colData(spe) <- cbind(colData(spe), segmentation_info)
+stopifnot(nrow(seg_df) == ncol(spe))
+
+# TODO: clean up names for seg_df
+# name starts with SPG_
+# ends with P and N
+colnames(seg_df) <- paste0("spg_", colnames(seg_df))
+
+col_data_df <- colData(spe) |> data.frame() |> 
+  left_join(
+    seg_df, by = c("key" = "spg_key"),
+    relationship = "one-to-one"
+  )
+
+# Add the information
+colData(spe) <- DataFrame(col_data_df)
+
+
 
 # vis_grid_gene(
 #   spe = spe,
@@ -145,6 +158,7 @@ segmentations_list <- lapply(#unique(spe$sample_id),
 # length(no_expr) / nrow(spe) * 100
 # [1] 18.9503
 
+# TODO: clean up 
 
 # spe_raw <- spe
 
@@ -154,7 +168,7 @@ dir.create(
   recursive = T
 )
 
-saveRDS(spe_raw, 
+saveRDS(spe, 
         file = here::here("processed-data", "rds", 
                           "spe", "01_build_spe", "spe_raw.rds"))
 
