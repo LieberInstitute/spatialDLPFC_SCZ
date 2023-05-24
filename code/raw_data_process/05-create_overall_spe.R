@@ -69,7 +69,11 @@ spe$ManualAnnotation <- NULL
 ### TODO: read in meta information
 source(here("code", "raw_data_process", "import_dx.R"))
 # Save the dx data as the meta data
-metadata(spe) <- clean_df
+# TODO: subsetting only the info that is relavent to the current samples
+
+metadata(spe) <- clean_df |> 
+  filter(brain_num %in% paste0("Br", expr_meta$BrNumbr)) |> 
+  unique()            # TODO: to delete unique after test
 
 
 # col_df <- colData(spe) |> data.frame() |> 
