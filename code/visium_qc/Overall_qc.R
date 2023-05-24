@@ -240,7 +240,7 @@ spe[,spe$expr_chrM==0]
 # )
 
 
-library(escheR) # NOTE: escheR > 0.99.8
+library(escheR) # NOTE: escheR > 1.1.1
 library(ggpubr)
 # smp_id <- "Br5367_D1"
 
@@ -251,56 +251,119 @@ library(ggpubr)
 # Update Spe with
 colData(spe) <- DataFrame(col_df)
 
-file.path(fldr_outlier_plots,
-          c("scater", "OT", "joint")) |> 
-walk( .f = dir.create)
+# Depreciate
+# file.path(fldr_outlier_plots,
+#           c("scater", "OT", "joint")) |> 
+#   walk( .f = dir.create)
 
+
+#TODO: may be it would be better just make 3*4 panels
 expand.grid(
-  sample_id = col_df$sample_id |> unique(),
-  method = c("scater", "OT", "joint")
+  sample_id = col_df$sample_id |> unique()#,
+  # method = c("scater", "OT", "joint")
 ) |> 
   pwalk(
     .f = function(sample_id, method){
       
+      
       spe_in_tissue <- spe[, spe$in_tissue == TRUE]
       # method <- "OT"
+      method = c("scater", "OT", "joint")
+      
+      # browser()
+      
+      # UMI Plots
+      sum_UMI_plots <- lapply(
+        c("scater", "OT", "joint"),
+        FUN = function(method){
+          make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
+            add_fill(var = "sum_umi") |> 
+            add_ground(var = paste0(method, "_umi_outlier"), stroke = 0.5) +
+            scale_fill_viridis_c(trans="log2") +
+            scale_colour_manual(values = c("transparent", "red")) +
+            labs(Title = "sum_umi")
+        }
+      ) |> 
+        ggarrange(plotlist = _, ncol = 3, nrow = 1,
+                  labels = c("scater", "OT", "joint"),
+                  common.legend = TRUE,
+                  legend = "none")
+      
+      sum_gene_plots <- lapply(
+        c("scater", "OT", "joint"),
+        FUN = function(method){
+          make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
+            add_fill(var = "sum_gene") |> 
+            add_ground(var = paste0(method, "_gene_outlier"), stroke = 0.5) +
+            scale_fill_viridis_c(trans="log2") +
+            scale_colour_manual(values = c("transparent", "red")) +
+            labs(Title = "sum_gene")
+        }
+      ) |> 
+        ggarrange(plotlist = _, ncol = 3, nrow = 1,
+                  # labels = c("scater", "OT", "joint"),
+                  common.legend = TRUE,
+                  legend = "none")
+      
+      mt_perc_plots <- lapply(
+        c("scater", "OT", "joint"),
+        FUN = function(method){
+          make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
+            add_fill(var = "expr_chrM_ratio") |> 
+            add_ground(var = paste0(method, "_mt_perc_outlier"), stroke = 0.5) +
+            scale_fill_viridis_c() +
+            scale_colour_manual(values = c("transparent", "red")) +
+            labs(Title = "Mito %")
+        }
+      ) |> 
+        ggarrange(plotlist = _, ncol = 3, nrow = 1,
+                  # labels = c("scater", "OT", "joint"),
+                  common.legend = TRUE,
+                  legend = "none"
+                  )
+      
+      
+      
       ggpubr::ggarrange(
-        
-        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
-          add_fill(var = "sum_umi") |> 
-          add_ground(var = paste0(method, "_umi_outlier"), stroke = 0.5) +
-          scale_fill_viridis_c(trans="log2") +
-          scale_colour_manual(values = c("transparent", "red")) +
-          labs(Title = "sum_umi"),
-        
-        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
-          add_fill(var = "sum_gene") |> 
-          add_ground(var = paste0(method, "_gene_outlier"), stroke = 0.5) +
-          scale_fill_viridis_c(trans="log2") +
-          scale_colour_manual(values = c("transparent", "red")) +
-          labs(Title = "sum_gene"),
-        
-        make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
-          add_fill(var = "expr_chrM_ratio") |> 
-          add_ground(var = paste0(method, "_mt_perc_outlier"), stroke = 0.5) +
-          scale_fill_viridis_c() +
-          scale_colour_manual(values = c("transparent", "red")) +
-          labs(Title = "Mito %"),
-        ncol = 1
+        sum_UMI_plots,
+        sum_gene_plots,
+        mt_perc_plots,
+        # make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
+        #   add_fill(var = "sum_umi") |> 
+        #   add_ground(var = paste0(method, "_umi_outlier"), stroke = 0.5) +
+        #   scale_fill_viridis_c(trans="log2") +
+        #   scale_colour_manual(values = c("transparent", "red")) +
+        #   labs(Title = "sum_umi"),
+        # 
+        # make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
+        #   add_fill(var = "sum_gene") |> 
+        #   add_ground(var = paste0(method, "_gene_outlier"), stroke = 0.5) +
+        #   scale_fill_viridis_c(trans="log2") +
+        #   scale_colour_manual(values = c("transparent", "red")) +
+        #   labs(Title = "sum_gene"),
+        # 
+        # make_escheR(spe_in_tissue[, spe_in_tissue$sample_id == sample_id]) |> 
+        #   add_fill(var = "expr_chrM_ratio") |> 
+        #   add_ground(var = paste0(method, "_mt_perc_outlier"), stroke = 0.5) +
+        #   scale_fill_viridis_c() +
+        #   scale_colour_manual(values = c("transparent", "red")) +
+        #   labs(Title = "Mito %"),
+        ncol = 1,
+        labels = c("UMI", "GENE", "Mt_Perc")
       ) |> 
         ggsave(
           filename = file.path(
             fldr_outlier_plots,
-            method,
             paste0(sample_id,".pdf")
           ),
           height = 12,
-          width = 6
+          width = 12
         )
-      
-      
     }
   )
+
+
+
 
 # TODO: is there a big difference between log2 and log10 outlier detection?
 
