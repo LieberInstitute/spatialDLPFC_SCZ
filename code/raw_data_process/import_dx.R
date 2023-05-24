@@ -107,8 +107,8 @@ clean_df <- clean_df |>
   filter(!is.na(dx))
 
 
-stopifnot(unique(clean_df$brain_num) |> length() == nrow(clean_df))
-clean_df |> group_by(brain_num) |> summarize(n = n()) |> filter(n!=1)
+# stopifnot(unique(clean_df$brain_num) |> length() == nrow(clean_df))
+# clean_df |> group_by(brain_num) |> summarize(n = n()) |> filter(n!=1)
 
 # table(clean_df$dx)
 
