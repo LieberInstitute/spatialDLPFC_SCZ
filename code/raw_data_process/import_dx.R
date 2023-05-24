@@ -20,6 +20,7 @@ raw_df <- readxl::read_excel(
   # Only include relevent columns
   select(
     brain_num = `Brain #`,
+    call = CALL,
     dx_raw = "Diagnosis", 
     age = "AGE",
     sex = "SEX"#,
@@ -60,8 +61,14 @@ stopifnot(
   all(str_length(clean_df$brain_num)==6)
 )
 
+# Clean up CALL column ------------------------------------------------
+clean_df <- clean_df |> filter(call == "PASS")
 
-# Clean up dx column
+# Validation
+stopifnot(unique(clean_df$brain_num) |> length() == nrow(clean_df))
+# clean_df |> group_by(brain_num) |> summarize(n = n()) |> filter(n!=1)
+
+# Clean up dx column --------------------------------------------------
 
 # Helper functions
 # Change all elements starting with "sc" to scz (lower case)
@@ -98,6 +105,10 @@ clean_df <- clean_df |>
     )
   ) |> 
   filter(!is.na(dx))
+
+
+stopifnot(unique(clean_df$brain_num) |> length() == nrow(clean_df))
+clean_df |> group_by(brain_num) |> summarize(n = n()) |> filter(n!=1)
 
 # table(clean_df$dx)
 
