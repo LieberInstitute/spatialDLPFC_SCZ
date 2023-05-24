@@ -60,12 +60,22 @@ Sys.time()
 # Confirm if the number of samples match with meta
 stopifnot( nrow(expr_meta) == length(unique(spe$sample_id)))
 
-spe_raw$ManualAnnotation <- NULL
+spe$ManualAnnotation <- NULL
+
+# Only for testing purpose
+# spe <- readRDS(here("processed-data/rds/spe","01_build_spe/", "spe_raw.rds"))
 
 ## TODO: Add the experimental information
 ### TODO: read in meta information
 source(here("code", "raw_data_process", "import_dx.R"))
-col_df <- colData(spe) |> data.frame() |> left_join(clean_df, by = "brain_num")
+# Save the dx data as the meta data
+metadata(spe) <- clean_df
+
+
+# col_df <- colData(spe) |> data.frame() |> 
+#   mutate(brain_num = str_remove(sample_id , "_[a-zA-Z][0-9]")) |>
+#   left_join(clean_df, by = "brain_num")
+
 
 # spe$key <- paste0(colnames(spe), "_", spe$sample_id) # In spatialLIBD::read10xVisiumWrapper
 # spe$subject <- sample_info$subjects[match(spe$sample_id, sample_info$sample_id)]
@@ -87,10 +97,14 @@ col_df <- colData(spe) |> data.frame() |> left_join(clean_df, by = "brain_num")
 
 # TODO: add this information
 ## Read in cell counts and segmentation results
-segmentations_list <- lapply(spe$sample_id, function(sampleid) {
-  current <- expr_meta$sr_fldr_path[expr_meta$sr_fldr_path == sampleid]
-  file <- file.path(current, "spatial", "tissue_spot_counts.csv")
+segmentations_list <- lapply(#unique(spe$sample_id), 
+  unique(expr_meta$sample_name), # TEST only
+                             function(sampleid) {
+  
+  current <- expr_meta$sr_fldr_path[expr_meta$sample_name == sampleid]
+  file <- file.path(current, "outs/spatial", "tissue_spot_counts.csv")
   if (!file.exists(file)) {
+    warning(sampleid, "doesn't have outs/spatial/tissue_spot_counts.csv.")
     return(NULL)
   }
   x <- read.csv(file)
