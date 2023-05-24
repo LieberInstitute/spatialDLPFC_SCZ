@@ -363,11 +363,29 @@ expand.grid(
   )
 
 
+# Remove Outliers ---------------------------------------------------------
 
+ret_spe <- spe[, spe$in_tissue == TRUE & (!spe$joint_umi_outlier & !spe$joint_gene_outlier)]
+
+# Validation
+stopifnot(all(ret_spe$in_tissue ==TRUE))
+stopifnot(all(ret_spe$joint_umi_outlier ==FALSE))
+stopifnot(all(ret_spe$joint_gene_outlier ==FALSE))
+
+# Save output
+
+
+saveRDS(
+  ret_spe,
+  here::here("processed-data", "rds", "spe", "spe_after_spot_qc.rds")
+)
 
 # TODO: is there a big difference between log2 and log10 outlier detection?
 
 
+
+
+# Remove Outlier Spots ----------------------------------------------------
 
 
 
