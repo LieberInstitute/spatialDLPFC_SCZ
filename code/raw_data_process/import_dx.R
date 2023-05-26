@@ -20,7 +20,7 @@ raw_df <- readxl::read_excel(
   # Only include relevent columns
   select(
     brain_num = `Brain #`,
-    call = CALL,
+    SCZ_study = `Study 1`,
     dx_raw = "Diagnosis", 
     age = "AGE",
     sex = "SEX"#,
@@ -61,11 +61,11 @@ stopifnot(
   all(str_length(clean_df$brain_num)==6)
 )
 
-# Clean up CALL column ------------------------------------------------
-clean_df <- clean_df |> filter(call == "PASS")
+# Include in SCZ(PNN) study column ------------------------------------------------
+clean_df <- clean_df |> filter(!is.na(SCZ_study))
 
 # Validation
-stopifnot(unique(clean_df$brain_num) |> length() == nrow(clean_df))
+stopifnot(all(!duplicated(clean_df$brain_num)))
 # clean_df |> group_by(brain_num) |> summarize(n = n()) |> filter(n!=1)
 
 # Clean up dx column --------------------------------------------------
@@ -104,7 +104,8 @@ clean_df <- clean_df |>
       TRUE ~ NA_character_
     )
   ) |> 
-  filter(!is.na(dx))
+  filter(!is.na(dx)) |> 
+  select(-SCZ_study)
 
 
 # stopifnot(unique(clean_df$brain_num) |> length() == nrow(clean_df))

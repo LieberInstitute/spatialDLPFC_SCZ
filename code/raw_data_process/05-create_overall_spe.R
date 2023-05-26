@@ -126,7 +126,7 @@ source(here("code", "raw_data_process", "import_dx.R"))
 metadata(spe) <- clean_df |> 
   # mutate(BrNumbr = str_remove(brain_num, "Br")) |>
   filter(brain_num %in% expr_meta$BrNumbr) |> 
-  unique() |>             # TODO: to delete unique after test
+  # unique() |>             # TODO: to delete unique after test
   # TODO: add sample_id to the dataset
   left_join(
     expr_meta |> 
