@@ -68,22 +68,6 @@ spe$ManualAnnotation <- NULL
 # Only for testing purpose
 # spe <- readRDS(here("processed-data/rds/spe","01_build_spe/", "spe_raw.rds"))
 
-## TODO: Add the experimental information
-### TODO: read in meta information
-source(here("code", "raw_data_process", "import_dx.R"))
-# Save the dx data as the meta data
-# TODO: subsetting only the info that is relavent to the current samples
-
-metadata(spe) <- clean_df |> 
-  filter(brain_num %in% paste0("Br", expr_meta$BrNumbr)) |> 
-  unique()            # TODO: to delete unique after test
-
-
-# col_df <- colData(spe) |> data.frame() |> 
-#   mutate(brain_num = str_remove(sample_id , "_[a-zA-Z][0-9]")) |>
-#   left_join(clean_df, by = "brain_num")
-
-
 # spe$key <- paste0(colnames(spe), "_", spe$sample_id) # In spatialLIBD::read10xVisiumWrapper
 # spe$subject <- sample_info$subjects[match(spe$sample_id, sample_info$sample_id)]
 # spe$region <- sample_info$regions[match(spe$sample_id, sample_info$sample_id)]
@@ -94,15 +78,6 @@ metadata(spe) <- clean_df |>
 # spe$sample_id <- gsub("_2", "", spe$sample_id)
 
 
-
-
-## Add information used by spatialLIBD
-# Seems incorprated in spatialLIBD::read10xVisiumWrapper
-# is_mito <- which(seqnames(spe) == "chrM")
-# spe$expr_chrM <- colSums(counts(spe)[is_mito, , drop = FALSE])
-# spe$expr_chrM_ratio <- spe$expr_chrM / spe$sum_umi
-
-# TODO: add this information
 ## Read in cell counts and segmentation results
 seg_df <- map_dfr(unique(spe$sample_id), 
                              function(sampleid) {
@@ -129,6 +104,13 @@ col_data_df <- colData(spe) |> data.frame() |>
   left_join(
     seg_df, by = c("key" = "spg_key"),
     relationship = "one-to-one"
+  ) |> 
+  left_join(
+    expr_meta |> 
+      select(
+        sample_name, 
+        BrNumbr),
+    by = c("sample_id" = "sample_name")
   )
 
 # Add the information
@@ -136,31 +118,23 @@ colData(spe) <- DataFrame(col_data_df)
 
 
 
-# vis_grid_gene(
-#   spe = spe,
-#   geneid = "Ndata",
-#   pdf = here::here("plots", "01_build_spe", "seg_count.pdf"),
-#   assayname = "counts",
-#   auto_crop = FALSE,
-#   spatial = FALSE
-# )
+## Add Dx Information ---------
+### read in meta information
+source(here("code", "raw_data_process", "import_dx.R"))
 
-# mean(spe$count)
-# pdf(here::here("plots", "01_build_spe", "cells_per_spot.pdf"))
-# boxplot(spe$count)
-# dev.off()
+# Save the dx data as the meta data
+metadata(spe) <- clean_df |> 
+  # mutate(BrNumbr = str_remove(brain_num, "Br")) |>
+  filter(brain_num %in% expr_meta$BrNumbr) |> 
+  unique() |>             # TODO: to delete unique after test
+  # TODO: add sample_id to the dataset
+  left_join(
+    expr_meta |> 
+      select(BrNumbr, sample_name
+            ),
+    by = c("brain_num" = "BrNumbr")
+  )
 
-## Remove genes with no data
-# no_expr <- which(rowSums(counts(spe)) == 0)
-
-# length(no_expr)
-# [1] 6936
-# length(no_expr) / nrow(spe) * 100
-# [1] 18.9503
-
-# TODO: clean up 
-
-# spe_raw <- spe
 
 dir.create(
   here::here("processed-data", "rds", 
