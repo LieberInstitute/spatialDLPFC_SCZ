@@ -1,0 +1,209 @@
+Adding LIBD modules
+Loading git
+Loading LIBD module for git-status-size/github
+Loading LIBD module for git-lfs/2.8.0
+Loading LIBD module for rmate/1.5.10
+Loading LIBD module for ruby/3.1.2
+Loading conda_R/4.2
+**** Job starts ****
+Wed Sep 14 10:39:16 EDT 2022
+**** JHPCE info ****
+User: lcollado
+Job id: 9931501
+Job name: read_spaceranger_metrics
+Hostname: compute-095.cm.cluster
+Task id: undefined
+Unloading conda_R/4.2
+Loading conda_R/4.2
+
+Currently Loaded Modules:
+  1) matlab/R2019a     6) COMMUNITY_CENTOS7_DEFAULT_ENV  11) ruby/3.1.2
+  2) stata/17          7) JHPCE_CENTOS7_DEFAULT_ENV      12) rmate/1.5.10
+  3) JHPCE_tools/1.0   8) git-status-size/github         13) conda/3-4.11.0
+  4) sge/8.1.9         9) git/2.28.0                     14) conda_R/4.2
+  5) gcc/4.4.7        10) git-lfs/2.8.0
+
+ 
+
+here() starts at /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+2022-09-14 10:39:20 processing directory /dcs04/lieber/lcolladotor/pilotHb_LIBD001/Visium_Hb/processed-data/01_spaceranger
+2022-09-14 10:39:20 processing directory /dcs04/lieber/lcolladotor/with10x_LIBD001/Visium_IF_AD/processed-data/spaceranger
+2022-09-14 10:39:20 processing directory /dcs04/lieber/lcolladotor/spatialDLPFC_LIBD4035/spatialDLPFC/processed-data/rerun_spaceranger
+2022-09-14 10:39:20 processing directory /dcs04/lieber/lcolladotor/spatialDLPFC_LIBD4035/spatialDLPFC/processed-data/01_spaceranger_IF
+2022-09-14 10:39:20 processing directory /dcs04/lieber/marmaypag/lifespanDG_LIBD001/spatial_DG_lifespan/processed-data/01_spaceranger
+2022-09-14 10:39:21 processing directory /dcs04/lieber/marmaypag/spatialNac_LIBD4125/spatial_NAc/processed-data/01_spaceranger
+2022-09-14 10:39:21 processing directory /dcs04/lieber/lcolladotor/spatialHPC_LIBD4035/spatial_hpc/processed-data/01_spaceranger/spaceranger_novaseq
+2022-09-14 10:39:21 processing directory /dcs04/lieber/lcolladotor/spatialHPC_LIBD4035/spatial_hpc/processed-data/01_spaceranger/spaceranger_2022-04-12_SPag033122
+2022-09-14 10:39:22 processing directory /dcs04/lieber/lcolladotor/pilotLC_LIBD001/locus-c/processed_data/spaceranger/KMay_2021-07-09
+2022-09-14 10:39:22 processing directory /dcs04/lieber/lcolladotor/pilotLC_LIBD001/locus-c/processed_data/spaceranger/Linda_2021-05-21
+2022-09-14 10:39:22 processing directory /dcs04/lieber/lcolladotor/pilotLC_LIBD001/locus-c/processed_data/spaceranger/NextSeqMiSeq
+                                    Visium_HB 
+                                            3 
+                                 Visium_IF_AD 
+                                           10 
+                                 spatialDLPFC 
+                                           30 
+                              spatailDLPFC_IF 
+                                            4 
+                         spatiall_DG_lifespan 
+                                           12 
+                                  spatial_NAc 
+                                           16 
+              spatial_hpc/spaceranger_novaseq 
+                                            8 
+spatial_hpc/spaceranger_2022-04-12_SPag033122 
+                                           24 
+                      locus-c/KMay_2021-07-09 
+                                            4 
+                     locus-c/Linda_2021-05-21 
+                                            3 
+                         locus-c/NextSeqMiSeq 
+                                            2 
+                                   HumanPilot 
+                                           12 
+Converting Estimated.Number.of.Spots to a number
+Converting Mean.Reads.per.Spot to a number
+Converting Median.Genes.per.Spot to a number
+Converting Number.of.Reads to a number
+Converting Total.Genes.Detected to a number
+Converting Median.UMI.Counts.per.Spot to a number
+Removing the % symbol and converting Valid.Barcodes to a number
+Removing the % symbol and converting Sequencing.Saturation to a number
+Removing the % symbol and converting Q30.Bases.in.Barcode to a number
+Removing the % symbol and converting Q30.Bases.in.RNA.Read to a number
+Removing the % symbol and converting Q30.Bases.in.Sample.Index to a number
+Removing the % symbol and converting Q30.Bases.in.UMI to a number
+Removing the % symbol and converting Reads.Mapped.to.Genome to a number
+Removing the % symbol and converting Reads.Mapped.Confidently.to.Genome to a number
+Removing the % symbol and converting Reads.Mapped.Confidently.to.Intergenic.Regions to a number
+Removing the % symbol and converting Reads.Mapped.Confidently.to.Intronic.Regions to a number
+Removing the % symbol and converting Reads.Mapped.Confidently.to.Exonic.Regions to a number
+Removing the % symbol and converting Reads.Mapped.Confidently.to.Transcriptome to a number
+Removing the % symbol and converting Reads.Mapped.Antisense.to.Gene to a number
+Removing the % symbol and converting Fraction.Reads.in.Spots to a number
+Converting Valid.Barcodes to a proportion
+Converting Sequencing.Saturation to a proportion
+Converting Q30.Bases.in.Barcode to a proportion
+Converting Q30.Bases.in.RNA.Read to a proportion
+Converting Q30.Bases.in.Sample.Index to a proportion
+Converting Q30.Bases.in.UMI to a proportion
+Converting Reads.Mapped.to.Genome to a proportion
+Converting Reads.Mapped.Confidently.to.Genome to a proportion
+Converting Reads.Mapped.Confidently.to.Intergenic.Regions to a proportion
+Converting Reads.Mapped.Confidently.to.Intronic.Regions to a proportion
+Converting Reads.Mapped.Confidently.to.Exonic.Regions to a proportion
+Converting Reads.Mapped.Confidently.to.Transcriptome to a proportion
+Converting Reads.Mapped.Antisense.to.Gene to a proportion
+Converting Fraction.Reads.in.Spots to a proportion
+ [1] "Estimated.Number.of.Spots"                     
+ [2] "Mean.Reads.per.Spot"                           
+ [3] "Median.Genes.per.Spot"                         
+ [4] "Number.of.Reads"                               
+ [5] "Valid.Barcodes"                                
+ [6] "Sequencing.Saturation"                         
+ [7] "Q30.Bases.in.Barcode"                          
+ [8] "Q30.Bases.in.RNA.Read"                         
+ [9] "Q30.Bases.in.Sample.Index"                     
+[10] "Q30.Bases.in.UMI"                              
+[11] "Reads.Mapped.to.Genome"                        
+[12] "Reads.Mapped.Confidently.to.Genome"            
+[13] "Reads.Mapped.Confidently.to.Intergenic.Regions"
+[14] "Reads.Mapped.Confidently.to.Intronic.Regions"  
+[15] "Reads.Mapped.Confidently.to.Exonic.Regions"    
+[16] "Reads.Mapped.Confidently.to.Transcriptome"     
+[17] "Reads.Mapped.Antisense.to.Gene"                
+[18] "Fraction.Reads.in.Spots"                       
+[19] "Total.Genes.Detected"                          
+[20] "Median.UMI.Counts.per.Spot"                    
+[21] "summary_file"                                  
+[22] "slide_serial_capture_area"                     
+[23] "Sample.ID"                                     
+[1] "Mean.Reads.Under.Tissue.per.Spot"    
+[2] "Valid.UMIs"                          
+[3] "Fraction.Reads.in.Spots.Under.Tissue"
+character(0)
+Joining, by = c("Sample.ID", "Number.of.Spots.Under.Tissue", "Number.of.Reads",
+"Mean.Reads.per.Spot", "Fraction.of.Spots.Under.Tissue",
+"Median.Genes.per.Spot", "Median.UMI.Counts.per.Spot", "Valid.Barcodes",
+"Sequencing.Saturation", "Q30.Bases.in.Barcode", "Q30.Bases.in.RNA.Read",
+"Q30.Bases.in.UMI", "Reads.Mapped.to.Genome",
+"Reads.Mapped.Confidently.to.Genome",
+"Reads.Mapped.Confidently.to.Intergenic.Regions",
+"Reads.Mapped.Confidently.to.Intronic.Regions",
+"Reads.Mapped.Confidently.to.Exonic.Regions",
+"Reads.Mapped.Confidently.to.Transcriptome", "Reads.Mapped.Antisense.to.Gene",
+"Total.Genes.Detected", "summary_file", "slide_serial_capture_area")
+                                               Has capture area info?
+study_name                                      FALSE TRUE Sum
+  HumanPilot                                       12    0  12
+  locus-c/KMay_2021-07-09                           0    4   4
+  locus-c/Linda_2021-05-21                          0    3   3
+  locus-c/NextSeqMiSeq                              0    2   2
+  spatailDLPFC_IF                                   0    4   4
+  spatial_hpc/spaceranger_2022-04-12_SPag033122     0   24  24
+  spatial_hpc/spaceranger_novaseq                   0    8   8
+  spatial_NAc                                       0   16  16
+  spatialDLPFC                                      0   30  30
+  spatiall_DG_lifespan                              0   12  12
+  Visium_HB                                         0    3   3
+  Visium_IF_AD                                      0   10  10
+  Sum                                              12  116 128
+[1] "Reproducibility information:"
+[1] "2022-09-14 10:39:26 EDT"
+   user  system elapsed 
+  1.725   0.229   8.721 
+─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.1 Patched (2022-08-30 r82775)
+ os       CentOS Linux 7 (Core)
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       US/Eastern
+ date     2022-09-14
+ pandoc   2.19.2 @ /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/bin/pandoc
+
+─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ assertthat    0.2.1   2019-03-21 [2] CRAN (R 4.2.1)
+ cli           3.3.0   2022-04-25 [2] CRAN (R 4.2.1)
+ DBI           1.1.3   2022-06-18 [2] CRAN (R 4.2.1)
+ dplyr       * 1.0.10  2022-09-01 [1] CRAN (R 4.2.1)
+ fansi         1.0.3   2022-03-24 [2] CRAN (R 4.2.1)
+ generics      0.1.3   2022-07-05 [2] CRAN (R 4.2.1)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.1)
+ here        * 1.0.1   2020-12-13 [2] CRAN (R 4.2.1)
+ lifecycle     1.0.1   2021-09-24 [2] CRAN (R 4.2.1)
+ magrittr      2.0.3   2022-03-30 [2] CRAN (R 4.2.1)
+ pillar        1.8.1   2022-08-19 [2] CRAN (R 4.2.1)
+ pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.1)
+ purrr         0.3.4   2020-04-17 [2] CRAN (R 4.2.1)
+ R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.1)
+ rlang         1.0.5   2022-08-31 [1] CRAN (R 4.2.1)
+ rprojroot     2.0.3   2022-04-02 [2] CRAN (R 4.2.1)
+ sessioninfo * 1.2.2   2021-12-06 [2] CRAN (R 4.2.1)
+ tibble        3.1.8   2022-07-22 [2] CRAN (R 4.2.1)
+ tidyselect    1.1.2   2022-02-21 [2] CRAN (R 4.2.1)
+ utf8          1.2.2   2021-07-24 [2] CRAN (R 4.2.1)
+ vctrs         0.4.1   2022-04-13 [2] CRAN (R 4.2.1)
+
+ [1] /users/lcollado/R/4.2
+ [2] /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/R/4.2/lib64/R/site-library
+ [3] /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/R/4.2/lib64/R/library
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+**** Job ends ****
+Wed Sep 14 10:39:27 EDT 2022

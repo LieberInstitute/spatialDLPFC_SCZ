@@ -1,0 +1,248 @@
+Adding LIBD modules
+Loading git
+Loading LIBD module for git-status-size/github
+Loading LIBD module for git-lfs/2.8.0
+Loading LIBD module for rmate/1.5.10
+Loading LIBD module for ruby/3.1.2
+Loading conda_R/4.2
+**** Job starts ****
+Wed Sep 14 10:37:36 EDT 2022
+**** JHPCE info ****
+User: lcollado
+Job id: 9931496
+Job name: read_summaries
+Hostname: compute-095.cm.cluster
+Task id: undefined
+Unloading conda_R/4.2
+Loading conda_R/4.2
+
+Currently Loaded Modules:
+  1) matlab/R2019a     6) COMMUNITY_CENTOS7_DEFAULT_ENV  11) ruby/3.1.2
+  2) stata/17          7) JHPCE_CENTOS7_DEFAULT_ENV      12) rmate/1.5.10
+  3) JHPCE_tools/1.0   8) git-status-size/github         13) conda/3-4.11.0
+  4) sge/8.1.9         9) git/2.28.0                     14) conda_R/4.2
+  5) gcc/4.4.7        10) git-lfs/2.8.0
+
+ 
+
+here() starts at /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/LC/Visium LC pilot_072120 Master.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/LC/Visium_LC_050321_Master_HD_Round2.xlsx"
+New names:
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...13`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...15`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/LC/Visium_LC_061621_Master_HD_Round3.xlsx"
+New names:
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...13`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...15`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_DG_lifespan/Visium_HPC_Round1_20220113_Master_ADR.xlsx"
+New names:
+• `Dilution (1:n)` -> `Dilution (1:n)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1:n)` -> `Dilution (1:n)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+• `` -> `...23`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_DG_lifespan/Visium_HPC_Round2_20220223_Master_ADR.xlsx"
+New names:
+• `Dilution (1:n)` -> `Dilution (1:n)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1:n)` -> `Dilution (1:n)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_DG_lifespan/Visium_HPC_Round3_20220707_Master_ADR.xlsx"
+New names:
+• `Dilution factor` -> `Dilution factor...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution factor` -> `Dilution factor...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_hpc/Visium_HPC_Round1+2_110321_Master_SCP.xlsx"
+New names:
+• `Dilution (1:5)` -> `Dilution (1:5)...10`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...15`
+• `Dilution (1:5)` -> `Dilution (1:5)...16`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...17`
+• `` -> `...24`
+• `` -> `...26`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_hpc/Visium_HPC_Round3-8_033022_SCP.xlsx"
+New names:
+• `Dilution (1:N)` -> `Dilution (1:N)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1:N)` -> `Dilution (1:N)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+• `` -> `...23`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx"
+New names:
+• `Dilution (1 in N)` -> `Dilution (1 in N)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1 in N)` -> `Dilution (1 in N)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx"
+New names:
+• `Dilution (1 in N)` -> `Dilution (1 in N)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1 in N)` -> `Dilution (1 in N)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium-samples-for-seq-1v_svb-16v_svb.xlsx"
+New names:
+• `Dilution (1 in N)` -> `Dilution (1 in N)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1 in N)` -> `Dilution (1 in N)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_IF/Visium_IF_DLPFC_MasterExcel_01262022.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC/Visium_DLPFC_all4rounds_manually_merged.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/Visium_HB/HB_3rounds_mater_sheet.xlsx"
+New names:
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/Visium_IF_AD/Visium_IF_AD_ITG_MasterExcelSummarySheet.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/LC/Visium LC pilot_072120 Master.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/LC/Visium_LC_050321_Master_HD_Round2.xlsx"
+New names:
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...13`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...15`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/LC/Visium_LC_061621_Master_HD_Round3.xlsx"
+New names:
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...13`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...15`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_DG_lifespan/Visium_HPC_Round1_20220113_Master_ADR.xlsx"
+New names:
+• `Dilution (1:n)` -> `Dilution (1:n)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1:n)` -> `Dilution (1:n)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+• `` -> `...23`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_DG_lifespan/Visium_HPC_Round2_20220223_Master_ADR.xlsx"
+New names:
+• `Dilution (1:n)` -> `Dilution (1:n)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1:n)` -> `Dilution (1:n)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_DG_lifespan/Visium_HPC_Round3_20220707_Master_ADR.xlsx"
+New names:
+• `Dilution factor` -> `Dilution factor...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution factor` -> `Dilution factor...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_hpc/Visium_HPC_Round1+2_110321_Master_SCP.xlsx"
+New names:
+• `Dilution (1:5)` -> `Dilution (1:5)...10`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...15`
+• `Dilution (1:5)` -> `Dilution (1:5)...16`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...17`
+• `` -> `...24`
+• `` -> `...26`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_hpc/Visium_HPC_Round3-8_033022_SCP.xlsx"
+New names:
+• `Dilution (1:N)` -> `Dilution (1:N)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1:N)` -> `Dilution (1:N)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+• `` -> `...23`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx"
+New names:
+• `Dilution (1 in N)` -> `Dilution (1 in N)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1 in N)` -> `Dilution (1 in N)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx"
+New names:
+• `Dilution (1 in N)` -> `Dilution (1 in N)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1 in N)` -> `Dilution (1 in N)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium-samples-for-seq-1v_svb-16v_svb.xlsx"
+New names:
+• `Dilution (1 in N)` -> `Dilution (1 in N)...9`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Dilution (1 in N)` -> `Dilution (1 in N)...15`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_IF/Visium_IF_DLPFC_MasterExcel_01262022.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC/Visium_DLPFC_all4rounds_manually_merged.xlsx"
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/Visium_HB/HB_3rounds_mater_sheet.xlsx"
+New names:
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...14`
+• `Agilent [pg/ul]` -> `Agilent [pg/ul]...16`
+[1] "/dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/Visium_IF_AD/Visium_IF_AD_ITG_MasterExcelSummarySheet.xlsx"
+
+                    Date imaged                          issues 
+                              1                               1 
+                      KAPA (pM)                      KAPA ng/ul 
+                              1                               1 
+                 linda's number                          number 
+                              1                               1 
+                   qbit (ng/uL)                      resequence 
+                              1                               1 
+                          Round                     sample name 
+                              1                               1 
+                      sequenced                      Sequenced? 
+                              1                               1 
+Est Read Pairs (60000 per spot)              Will be Sequenced? 
+                              2                               2 
+                   Experiment #               Total Volume [ul] 
+                              3                               3 
+                           Note                    [cDNA] pg/ul 
+                              5                              16 
+               % Coverage Array                 Agilent [pg/ul] 
+                             16                              16 
+                        Array #                 Ave frag length 
+                             16                              16 
+                          Brain                  cDNA Amp Cycle 
+                             16                              16 
+                  cDNA Input ng                              Ct 
+                             16                              16 
+                 Est Read Pairs                      index_name 
+                             16                              16 
+                      index(i7)           index2_workflow_a(i5) 
+                             16                              16 
+          index2_workflow_b(i5)                        Sample # 
+                             16                              16 
+                     sheet_file                       SI cycles 
+                             16                              16 
+                        Slide #                          Tissue 
+                             16                              16 
+                  Total cDNA ng 
+                             16 
+[1] "Reproducibility information:"
+[1] "2022-09-14 10:37:44 EDT"
+   user  system elapsed 
+  5.072   0.214   6.083 
+─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.1 Patched (2022-08-30 r82775)
+ os       CentOS Linux 7 (Core)
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       US/Eastern
+ date     2022-09-14
+ pandoc   2.19.2 @ /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/bin/pandoc
+
+─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ cellranger    1.1.0   2016-07-27 [2] CRAN (R 4.2.1)
+ cli           3.3.0   2022-04-25 [2] CRAN (R 4.2.1)
+ fansi         1.0.3   2022-03-24 [2] CRAN (R 4.2.1)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.1)
+ here        * 1.0.1   2020-12-13 [2] CRAN (R 4.2.1)
+ lifecycle     1.0.1   2021-09-24 [2] CRAN (R 4.2.1)
+ magrittr      2.0.3   2022-03-30 [2] CRAN (R 4.2.1)
+ pillar        1.8.1   2022-08-19 [2] CRAN (R 4.2.1)
+ pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.1)
+ readxl      * 1.4.1   2022-08-17 [2] CRAN (R 4.2.1)
+ rlang         1.0.5   2022-08-31 [1] CRAN (R 4.2.1)
+ rprojroot     2.0.3   2022-04-02 [2] CRAN (R 4.2.1)
+ sessioninfo * 1.2.2   2021-12-06 [2] CRAN (R 4.2.1)
+ tibble        3.1.8   2022-07-22 [2] CRAN (R 4.2.1)
+ utf8          1.2.2   2021-07-24 [2] CRAN (R 4.2.1)
+ vctrs         0.4.1   2022-04-13 [2] CRAN (R 4.2.1)
+
+ [1] /users/lcollado/R/4.2
+ [2] /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/R/4.2/lib64/R/site-library
+ [3] /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/R/4.2/lib64/R/library
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+**** Job ends ****
+Wed Sep 14 10:37:44 EDT 2022

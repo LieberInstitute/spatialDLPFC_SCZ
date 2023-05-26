@@ -1,0 +1,529 @@
+Adding LIBD modules
+Loading git
+Loading LIBD module for git-status-size/github
+Loading LIBD module for git-lfs/2.8.0
+Loading LIBD module for rmate/1.5.10
+Loading LIBD module for ruby/3.1.2
+Loading conda_R/4.2
+**** Job starts ****
+Wed Sep 14 13:51:53 EDT 2022
+**** JHPCE info ****
+User: lcollado
+Job id: 9932625
+Job name: merge_metrics
+Hostname: compute-095.cm.cluster
+Task id: undefined
+Unloading conda_R/4.2
+Loading conda_R/4.2
+
+Currently Loaded Modules:
+  1) matlab/R2019a     6) COMMUNITY_CENTOS7_DEFAULT_ENV  11) ruby/3.1.2
+  2) stata/17          7) JHPCE_CENTOS7_DEFAULT_ENV      12) rmate/1.5.10
+  3) JHPCE_tools/1.0   8) git-status-size/github         13) conda/3-4.11.0
+  4) sge/8.1.9         9) git/2.28.0                     14) conda_R/4.2
+  5) gcc/4.4.7        10) git-lfs/2.8.0
+
+ 
+
+here() starts at /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+    [cDNA] pg/ul % Coverage Array Agilent [pg/ul] Array # Ave frag length
+8        7428.61              100         26955.4      D1             449
+137      7428.61              100         26955.4      D1             449
+     Brain cDNA Amp Cycle cDNA Input ng Ct Est Read Pairs index_name  index(i7)
+8   Br5558             18       74.2861  0        2.5e+08   SI-TT-H7 ACCTCGAGCT
+137 Br5558             18       74.2861  0        2.5e+08   SI-TT-H7 ACCTCGAGCT
+    index2_workflow_a(i5) index2_workflow_b(i5) Sample #
+8              TGTGTTCGAT            ATCGAACACA     4v_h
+137            TGTGTTCGAT            ATCGAACACA     4v_h
+                                                                                                                             sheet_file
+8   /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/LC/Visium_LC_050321_Master_HD_Round2.xlsx
+137     /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/Visium_HB/HB_3rounds_mater_sheet.xlsx
+    SI cycles    Slide # Tissue Total cDNA ng slide_serial_capture_area
+8          19 V10U24-093     HB      297.1444             V10U24-093-D1
+137        19 V10U24-093     HB      297.1444             V10U24-093-D1
+ [1] Sample.ID                                     
+ [2] Number.of.Spots.Under.Tissue                  
+ [3] Number.of.Reads                               
+ [4] Mean.Reads.per.Spot                           
+ [5] Mean.Reads.Under.Tissue.per.Spot              
+ [6] Fraction.of.Spots.Under.Tissue                
+ [7] Median.Genes.per.Spot                         
+ [8] Median.UMI.Counts.per.Spot                    
+ [9] Valid.Barcodes                                
+[10] Valid.UMIs                                    
+[11] Sequencing.Saturation                         
+[12] Q30.Bases.in.Barcode                          
+[13] Q30.Bases.in.RNA.Read                         
+[14] Q30.Bases.in.UMI                              
+[15] Reads.Mapped.to.Genome                        
+[16] Reads.Mapped.Confidently.to.Genome            
+[17] Reads.Mapped.Confidently.to.Intergenic.Regions
+[18] Reads.Mapped.Confidently.to.Intronic.Regions  
+[19] Reads.Mapped.Confidently.to.Exonic.Regions    
+[20] Reads.Mapped.Confidently.to.Transcriptome     
+[21] Reads.Mapped.Antisense.to.Gene                
+[22] Fraction.Reads.in.Spots.Under.Tissue          
+[23] Total.Genes.Detected                          
+[24] summary_file                                  
+[25] slide_serial_capture_area                     
+[26] study_name                                    
+<0 rows> (or 0-length row.names)
+   [cDNA] pg/ul % Coverage Array Agilent [pg/ul] Array # Ave frag length  Brain
+56      3332.02               95         4900.66      A1             484 Br6423
+57      2505.30               90         5950.68      B1             460 Br6423
+58      3574.75               99        10394.07      C1             435 Br6423
+59      4025.89              100        10285.29      D1             450 Br6423
+60      4379.00              100        11420.46      A1             459 Br6522
+61      4000.63               90        11280.21      B1             436 Br6522
+62      2836.86               90         9958.80      C1             452 Br6522
+63      1530.50               90         8753.14      D1             455 Br6522
+64      1177.20               95            0.00      A1              NA   <NA>
+65       886.18               90            0.00      B1              NA   <NA>
+66       694.13               99            0.00      C1              NA   <NA>
+67      1160.60              100            0.00      D1              NA   <NA>
+68       718.70              100            0.00      A1              NA   <NA>
+69       182.94               90            0.00      B1              NA   <NA>
+70       653.77               90            0.00      C1              NA   <NA>
+71       341.95               90            0.00      D1              NA   <NA>
+92      2099.77              100        27832.68      A1             459   2719
+93      3321.34               90        40962.48      B1             443   3942
+94      3090.33               80        34620.36      C1             452   5182
+95      2861.49               80        44211.60      D1             453   5367
+96      1140.95               80        30506.16      A1             455   1526
+97      2638.20               90        34412.40      B1             453   1958
+98      1483.41               90        39618.60      C1             443   2039
+99      3977.85               95        38960.76      D1             455   2378
+   cDNA Amp Cycle cDNA Input ng    Ct Est Read Pairs index_name  index(i7)
+56             18      33.32020 17.82      285000000   SI-TT-A1 GTAACATGCG
+57             18      25.05300 18.01      270000000   SI-TT-B1 ACAGTAACTA
+58             18      35.74750 17.57      297000000   SI-TT-C1 TGCGCGGTTT
+59             18      40.25890 17.27      300000000   SI-TT-D1 TGCAATGTTC
+60             17      43.79000 16.28      300000000   SI-TT-E1 TTATTCGAGG
+61             17      40.00630 16.30      270000000   SI-TT-F1 AAGATTGGAT
+62             17      28.36860 16.64      270000000   SI-TT-G1 TGTAGTCATT
+63             17      15.30500 16.95      270000000   SI-TT-H1 ACAATGTGAA
+64             17      41.20200 16.53      285000000       <NA>       <NA>
+65             17      31.01630 17.00      270000000       <NA>       <NA>
+66             17      24.29455 16.76      297000000       <NA>       <NA>
+67             17      40.62100 17.21      300000000       <NA>       <NA>
+68             17      25.15450 17.00      300000000       <NA>       <NA>
+69             17       6.40290 17.51      270000000       <NA>       <NA>
+70             17      22.88195 17.10      270000000       <NA>       <NA>
+71             17      11.96825 17.19      270000000       <NA>       <NA>
+92             14      20.99770 14.31      250000000   SI-TT-D2 TTAATACGCG
+93             14      33.21340 13.80      225000000   SI-TT-E2 ATGGAGGGAG
+94             14      30.90330 14.20      200000000   SI-TT-F2 AAGGGCCGCA
+95             14      28.61490 13.63      200000000   SI-TT-G2 CATGTGGGTT
+96             14      11.40950 14.16      200000000   SI-TT-H2 TAGCATAGTG
+97             14      26.38200 14.10      225000000   SI-TT-A3 CACTACGAAA
+98             14      14.83410 14.05      225000000   SI-TT-B3 CACGGTGAAT
+99             14      39.77850 14.16      237500000   SI-TT-C3 ATGGCTTGTG
+   index2_workflow_a(i5) index2_workflow_b(i5) Sample #
+56            AGTGTTACCT            AGGTAACACT  17v_svb
+57            ACAGTTCGTT            AACGAACTGT  18v_svb
+58            CAAGGATAAA            TTTATCCTTG  19v_svb
+59            GCTTGTCGAA            TTCGACAAGC  20v_svb
+60            CTGTCCTGCT            AGCAGGACAG  21v_svb
+61            AGCGGGATTT            AAATCCCGCT  22v_svb
+62            CTTGATCGTA            TACGATCAAG  23v_svb
+63            CGTACCGTTA            TAACGGTACG  24v_svb
+64                  <NA>                  <NA>  25v_svb
+65                  <NA>                  <NA>  26v_svb
+66                  <NA>                  <NA>  27v_svb
+67                  <NA>                  <NA>  28v_svb
+68                  <NA>                  <NA>  29v_svb
+69                  <NA>                  <NA>  30v_svb
+70                  <NA>                  <NA>  31v_svb
+71                  <NA>                  <NA>  32v_svb
+92            CACCTCGGGT            ACCCGAGGTG        1
+93            ATAACCCATT            AATGGGTTAT        2
+94            CTGATTCCTC            GAGGAATCAG        3
+95            GATTCCTTTA            TAAAGGAATC        4
+96            CGGCTCTGTC            GACAGAGCCG        5
+97            TTAGACTGAT            ATCAGTCTAA        6
+98            GTTCGTCACA            TGTGACGAAC        7
+99            GAATGTTGTG            CACAACATTC        8
+                                                                                                                                                            sheet_file
+56               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx
+57               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx
+58               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx
+59               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx
+60               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx
+61               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx
+62               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx
+63               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round3_072822_SVB-complete_info.xlsx
+64               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx
+65               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx
+66               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx
+67               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx
+68               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx
+69               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx
+70               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx
+71               /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatial_NAc/Visium_NAc_Round4_081022_SVB-complete_info.xlsx
+92 /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx
+93 /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx
+94 /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx
+95 /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx
+96 /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx
+97 /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx
+98 /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx
+99 /dcs04/lieber/lcolladotor/with10x_LIBD001/ranger_metrics/raw-data/spaceranger/sample_info/spatialDLPFC_SCZ_PNN/Visium_IF_SCZ_PNN_1stRound_08142022_MasterExcel.xlsx
+   SI cycles    Slide # Tissue Total cDNA ng slide_serial_capture_area
+56        17 V11U23-403    NAc      133.2808             V11U23-403-A1
+57        17 V11U23-403    NAc      100.2120             V11U23-403-B1
+58        17 V11U23-403    NAc      142.9900             V11U23-403-C1
+59        17 V11U23-403    NAc      161.0356             V11U23-403-D1
+60        17 V11U23-405    NAc      175.1600             V11U23-405-A1
+61        17 V11U23-405    NAc      160.0252             V11U23-405-B1
+62        17 V11U23-405    NAc      113.4744             V11U23-405-C1
+63        17 V11U23-405    NAc       61.2200             V11U23-405-D1
+64        NA V11D01-385    NAc       47.0880             V11D01-385-A1
+65        NA V11D01-385    NAc       35.4472             V11D01-385-B1
+66        NA V11D01-385    NAc       27.7652             V11D01-385-C1
+67        NA V11D01-385    NAc       46.4240             V11D01-385-D1
+68        NA V11D01-386    NAc       28.7480             V11D01-386-A1
+69        NA V11D01-386    NAc        7.3176             V11D01-386-B1
+70        NA V11D01-386    NAc       26.1508             V11D01-386-C1
+71        NA V11D01-386    NAc       13.6780             V11D01-386-D1
+92        17 V12F14-053  DLPFC       83.9908             V12F14-053-A1
+93        17 V12F14-053  DLPFC      132.8536             V12F14-053-B1
+94        17 V12F14-053  DLPFC      123.6132             V12F14-053-C1
+95        17 V12F14-053  DLPFC      114.4596             V12F14-053-D1
+96        18 V12F14-057  DLPFC       45.6380             V12F14-057-A1
+97        17 V12F14-057  DLPFC      105.5280             V12F14-057-B1
+98        18 V12F14-057  DLPFC       59.3364             V12F14-057-C1
+99        17 V12F14-057  DLPFC      159.1140             V12F14-057-D1
+   Sample.ID Number.of.Spots.Under.Tissue Number.of.Reads Mean.Reads.per.Spot
+56      <NA>                           NA              NA                  NA
+57      <NA>                           NA              NA                  NA
+58      <NA>                           NA              NA                  NA
+59      <NA>                           NA              NA                  NA
+60      <NA>                           NA              NA                  NA
+61      <NA>                           NA              NA                  NA
+62      <NA>                           NA              NA                  NA
+63      <NA>                           NA              NA                  NA
+64      <NA>                           NA              NA                  NA
+65      <NA>                           NA              NA                  NA
+66      <NA>                           NA              NA                  NA
+67      <NA>                           NA              NA                  NA
+68      <NA>                           NA              NA                  NA
+69      <NA>                           NA              NA                  NA
+70      <NA>                           NA              NA                  NA
+71      <NA>                           NA              NA                  NA
+92      <NA>                           NA              NA                  NA
+93      <NA>                           NA              NA                  NA
+94      <NA>                           NA              NA                  NA
+95      <NA>                           NA              NA                  NA
+96      <NA>                           NA              NA                  NA
+97      <NA>                           NA              NA                  NA
+98      <NA>                           NA              NA                  NA
+99      <NA>                           NA              NA                  NA
+   Mean.Reads.Under.Tissue.per.Spot Fraction.of.Spots.Under.Tissue
+56                               NA                             NA
+57                               NA                             NA
+58                               NA                             NA
+59                               NA                             NA
+60                               NA                             NA
+61                               NA                             NA
+62                               NA                             NA
+63                               NA                             NA
+64                               NA                             NA
+65                               NA                             NA
+66                               NA                             NA
+67                               NA                             NA
+68                               NA                             NA
+69                               NA                             NA
+70                               NA                             NA
+71                               NA                             NA
+92                               NA                             NA
+93                               NA                             NA
+94                               NA                             NA
+95                               NA                             NA
+96                               NA                             NA
+97                               NA                             NA
+98                               NA                             NA
+99                               NA                             NA
+   Median.Genes.per.Spot Median.UMI.Counts.per.Spot Valid.Barcodes Valid.UMIs
+56                    NA                         NA             NA         NA
+57                    NA                         NA             NA         NA
+58                    NA                         NA             NA         NA
+59                    NA                         NA             NA         NA
+60                    NA                         NA             NA         NA
+61                    NA                         NA             NA         NA
+62                    NA                         NA             NA         NA
+63                    NA                         NA             NA         NA
+64                    NA                         NA             NA         NA
+65                    NA                         NA             NA         NA
+66                    NA                         NA             NA         NA
+67                    NA                         NA             NA         NA
+68                    NA                         NA             NA         NA
+69                    NA                         NA             NA         NA
+70                    NA                         NA             NA         NA
+71                    NA                         NA             NA         NA
+92                    NA                         NA             NA         NA
+93                    NA                         NA             NA         NA
+94                    NA                         NA             NA         NA
+95                    NA                         NA             NA         NA
+96                    NA                         NA             NA         NA
+97                    NA                         NA             NA         NA
+98                    NA                         NA             NA         NA
+99                    NA                         NA             NA         NA
+   Sequencing.Saturation Q30.Bases.in.Barcode Q30.Bases.in.RNA.Read
+56                    NA                   NA                    NA
+57                    NA                   NA                    NA
+58                    NA                   NA                    NA
+59                    NA                   NA                    NA
+60                    NA                   NA                    NA
+61                    NA                   NA                    NA
+62                    NA                   NA                    NA
+63                    NA                   NA                    NA
+64                    NA                   NA                    NA
+65                    NA                   NA                    NA
+66                    NA                   NA                    NA
+67                    NA                   NA                    NA
+68                    NA                   NA                    NA
+69                    NA                   NA                    NA
+70                    NA                   NA                    NA
+71                    NA                   NA                    NA
+92                    NA                   NA                    NA
+93                    NA                   NA                    NA
+94                    NA                   NA                    NA
+95                    NA                   NA                    NA
+96                    NA                   NA                    NA
+97                    NA                   NA                    NA
+98                    NA                   NA                    NA
+99                    NA                   NA                    NA
+   Q30.Bases.in.UMI Reads.Mapped.to.Genome Reads.Mapped.Confidently.to.Genome
+56               NA                     NA                                 NA
+57               NA                     NA                                 NA
+58               NA                     NA                                 NA
+59               NA                     NA                                 NA
+60               NA                     NA                                 NA
+61               NA                     NA                                 NA
+62               NA                     NA                                 NA
+63               NA                     NA                                 NA
+64               NA                     NA                                 NA
+65               NA                     NA                                 NA
+66               NA                     NA                                 NA
+67               NA                     NA                                 NA
+68               NA                     NA                                 NA
+69               NA                     NA                                 NA
+70               NA                     NA                                 NA
+71               NA                     NA                                 NA
+92               NA                     NA                                 NA
+93               NA                     NA                                 NA
+94               NA                     NA                                 NA
+95               NA                     NA                                 NA
+96               NA                     NA                                 NA
+97               NA                     NA                                 NA
+98               NA                     NA                                 NA
+99               NA                     NA                                 NA
+   Reads.Mapped.Confidently.to.Intergenic.Regions
+56                                             NA
+57                                             NA
+58                                             NA
+59                                             NA
+60                                             NA
+61                                             NA
+62                                             NA
+63                                             NA
+64                                             NA
+65                                             NA
+66                                             NA
+67                                             NA
+68                                             NA
+69                                             NA
+70                                             NA
+71                                             NA
+92                                             NA
+93                                             NA
+94                                             NA
+95                                             NA
+96                                             NA
+97                                             NA
+98                                             NA
+99                                             NA
+   Reads.Mapped.Confidently.to.Intronic.Regions
+56                                           NA
+57                                           NA
+58                                           NA
+59                                           NA
+60                                           NA
+61                                           NA
+62                                           NA
+63                                           NA
+64                                           NA
+65                                           NA
+66                                           NA
+67                                           NA
+68                                           NA
+69                                           NA
+70                                           NA
+71                                           NA
+92                                           NA
+93                                           NA
+94                                           NA
+95                                           NA
+96                                           NA
+97                                           NA
+98                                           NA
+99                                           NA
+   Reads.Mapped.Confidently.to.Exonic.Regions
+56                                         NA
+57                                         NA
+58                                         NA
+59                                         NA
+60                                         NA
+61                                         NA
+62                                         NA
+63                                         NA
+64                                         NA
+65                                         NA
+66                                         NA
+67                                         NA
+68                                         NA
+69                                         NA
+70                                         NA
+71                                         NA
+92                                         NA
+93                                         NA
+94                                         NA
+95                                         NA
+96                                         NA
+97                                         NA
+98                                         NA
+99                                         NA
+   Reads.Mapped.Confidently.to.Transcriptome Reads.Mapped.Antisense.to.Gene
+56                                        NA                             NA
+57                                        NA                             NA
+58                                        NA                             NA
+59                                        NA                             NA
+60                                        NA                             NA
+61                                        NA                             NA
+62                                        NA                             NA
+63                                        NA                             NA
+64                                        NA                             NA
+65                                        NA                             NA
+66                                        NA                             NA
+67                                        NA                             NA
+68                                        NA                             NA
+69                                        NA                             NA
+70                                        NA                             NA
+71                                        NA                             NA
+92                                        NA                             NA
+93                                        NA                             NA
+94                                        NA                             NA
+95                                        NA                             NA
+96                                        NA                             NA
+97                                        NA                             NA
+98                                        NA                             NA
+99                                        NA                             NA
+   Fraction.Reads.in.Spots.Under.Tissue Total.Genes.Detected summary_file
+56                                   NA                   NA         <NA>
+57                                   NA                   NA         <NA>
+58                                   NA                   NA         <NA>
+59                                   NA                   NA         <NA>
+60                                   NA                   NA         <NA>
+61                                   NA                   NA         <NA>
+62                                   NA                   NA         <NA>
+63                                   NA                   NA         <NA>
+64                                   NA                   NA         <NA>
+65                                   NA                   NA         <NA>
+66                                   NA                   NA         <NA>
+67                                   NA                   NA         <NA>
+68                                   NA                   NA         <NA>
+69                                   NA                   NA         <NA>
+70                                   NA                   NA         <NA>
+71                                   NA                   NA         <NA>
+92                                   NA                   NA         <NA>
+93                                   NA                   NA         <NA>
+94                                   NA                   NA         <NA>
+95                                   NA                   NA         <NA>
+96                                   NA                   NA         <NA>
+97                                   NA                   NA         <NA>
+98                                   NA                   NA         <NA>
+99                                   NA                   NA         <NA>
+   study_name study_name_short     study_name_sheet sample_status
+56       <NA>             <NA>          spatial_NAc      Pre: ok?
+57       <NA>             <NA>          spatial_NAc      Pre: ok?
+58       <NA>             <NA>          spatial_NAc      Pre: ok?
+59       <NA>             <NA>          spatial_NAc      Pre: ok?
+60       <NA>             <NA>          spatial_NAc      Pre: ok?
+61       <NA>             <NA>          spatial_NAc      Pre: ok?
+62       <NA>             <NA>          spatial_NAc      Pre: ok?
+63       <NA>             <NA>          spatial_NAc      Pre: ok?
+64       <NA>             <NA>          spatial_NAc      Pre: ok?
+65       <NA>             <NA>          spatial_NAc      Pre: ok?
+66       <NA>             <NA>          spatial_NAc      Pre: ok?
+67       <NA>             <NA>          spatial_NAc      Pre: ok?
+68       <NA>             <NA>          spatial_NAc      Pre: ok?
+69       <NA>             <NA>          spatial_NAc      Pre: ok?
+70       <NA>             <NA>          spatial_NAc      Pre: ok?
+71       <NA>             <NA>          spatial_NAc      Pre: ok?
+92       <NA>             <NA> spatialDLPFC_SCZ_PNN      Pre: ok?
+93       <NA>             <NA> spatialDLPFC_SCZ_PNN      Pre: ok?
+94       <NA>             <NA> spatialDLPFC_SCZ_PNN      Pre: ok?
+95       <NA>             <NA> spatialDLPFC_SCZ_PNN      Pre: ok?
+96       <NA>             <NA> spatialDLPFC_SCZ_PNN      Pre: ok?
+97       <NA>             <NA> spatialDLPFC_SCZ_PNN      Pre: ok?
+98       <NA>             <NA> spatialDLPFC_SCZ_PNN      Pre: ok?
+99       <NA>             <NA> spatialDLPFC_SCZ_PNN      Pre: ok?
+[1] "Reproducibility information:"
+[1] "2022-09-14 13:51:56 EDT"
+   user  system elapsed 
+  1.236   0.155   1.545 
+─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.1 Patched (2022-08-30 r82775)
+ os       CentOS Linux 7 (Core)
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       US/Eastern
+ date     2022-09-14
+ pandoc   2.19.2 @ /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/bin/pandoc
+
+─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ assertthat    0.2.1   2019-03-21 [2] CRAN (R 4.2.1)
+ cli           3.3.0   2022-04-25 [2] CRAN (R 4.2.1)
+ DBI           1.1.3   2022-06-18 [2] CRAN (R 4.2.1)
+ dplyr       * 1.0.10  2022-09-01 [1] CRAN (R 4.2.1)
+ fansi         1.0.3   2022-03-24 [2] CRAN (R 4.2.1)
+ generics      0.1.3   2022-07-05 [2] CRAN (R 4.2.1)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.1)
+ here        * 1.0.1   2020-12-13 [2] CRAN (R 4.2.1)
+ lifecycle     1.0.1   2021-09-24 [2] CRAN (R 4.2.1)
+ magrittr      2.0.3   2022-03-30 [2] CRAN (R 4.2.1)
+ pillar        1.8.1   2022-08-19 [2] CRAN (R 4.2.1)
+ pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.1)
+ purrr         0.3.4   2020-04-17 [2] CRAN (R 4.2.1)
+ R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.1)
+ rlang         1.0.5   2022-08-31 [1] CRAN (R 4.2.1)
+ rprojroot     2.0.3   2022-04-02 [2] CRAN (R 4.2.1)
+ sessioninfo * 1.2.2   2021-12-06 [2] CRAN (R 4.2.1)
+ tibble        3.1.8   2022-07-22 [2] CRAN (R 4.2.1)
+ tidyselect    1.1.2   2022-02-21 [2] CRAN (R 4.2.1)
+ utf8          1.2.2   2021-07-24 [2] CRAN (R 4.2.1)
+ vctrs         0.4.1   2022-04-13 [2] CRAN (R 4.2.1)
+
+ [1] /users/lcollado/R/4.2
+ [2] /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/R/4.2/lib64/R/site-library
+ [3] /jhpce/shared/jhpce/core/conda/miniconda3-4.11.0/envs/svnR-4.2/R/4.2/lib64/R/library
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+**** Job ends ****
+Wed Sep 14 13:51:56 EDT 2022
