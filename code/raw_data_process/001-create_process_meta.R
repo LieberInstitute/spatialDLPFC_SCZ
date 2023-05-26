@@ -14,6 +14,7 @@ expr_meta <- raw_df_expr_meta |>
   select(`Experiment #`:`Array #`) |>
   # rename_all(tolower) |> 
   mutate(
+    BrNumbr = paste0("Br", BrNumbr),
     sample_name = glue("{`Slide #`}_{`Array #`}"),
     # Fastq Softlinks Folder
     fastq_fldr_path = file.path(processed_fastq_fldr, sample_name),
