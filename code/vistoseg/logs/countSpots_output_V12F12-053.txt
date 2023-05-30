@@ -1,0 +1,93 @@
+**** Job starts ****
+Wed May 10 12:06:55 EDT 2023
+**** JHPCE info ****
+User: ukaipa
+Job id: 3141850
+Job name: countNuclei_V12F14-053_D1.sh
+Hostname: compute-095.cm.cluster
+Task id: undefined
+****
+Sample id: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/all_channels_segemented/Test2/V12F14-053_D1.mat
+****
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2019 The MathWorks, Inc.
+                  R2019a (9.6.0.1072779) 64-bit (glnxa64)
+                               March 8, 2019
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+loading data
+4992 Visium spots detected
+Building spot grid
+56404 AF ROIS detected
+12653 Claudin5 ROIS detected
+23056 DAPI ROIS detected
+18813 NeuN ROIS detected
+5116 WFA ROIS detected
+counting dots per Visium spot
+100 spots finished in time 1173.6584s
+200 spots finished in time 2375.2992s
+300 spots finished in time 3434.0218s
+400 spots finished in time 4488.5295s
+500 spots finished in time 5612.5377s
+600 spots finished in time 6779.2899s
+700 spots finished in time 7920.4984s
+800 spots finished in time 8997.9659s
+900 spots finished in time 10049.4389s
+1000 spots finished in time 11096.2779s
+1100 spots finished in time 12132.2706s
+1200 spots finished in time 13172.5715s
+1300 spots finished in time 14201.9899s
+1400 spots finished in time 15247.1882s
+1500 spots finished in time 16297.7946s
+1600 spots finished in time 17341.5258s
+1700 spots finished in time 18383.8909s
+1800 spots finished in time 19425.9864s
+1900 spots finished in time 20475.5537s
+2000 spots finished in time 21535.637s
+2100 spots finished in time 22577.8137s
+2200 spots finished in time 23610.137s
+2300 spots finished in time 24644.2331s
+2400 spots finished in time 25678.0137s
+2500 spots finished in time 26710.4053s
+2600 spots finished in time 27742.9787s
+2700 spots finished in time 28771.5539s
+2800 spots finished in time 29697.3241s
+2900 spots finished in time 30630.9799s
+3000 spots finished in time 31547.9182s
+3100 spots finished in time 32463.6818s
+3200 spots finished in time 33379.1479s
+3300 spots finished in time 34294.955s
+3400 spots finished in time 35210.0587s
+3500 spots finished in time 36131.4875s
+3600 spots finished in time 37046.7013s
+3700 spots finished in time 37961.6477s
+3800 spots finished in time 38876.7828s
+3900 spots finished in time 39791.256s
+4000 spots finished in time 40705.5289s
+4100 spots finished in time 41623.6035s
+4200 spots finished in time 42541.9693s
+4300 spots finished in time 43457.4064s
+4400 spots finished in time 44375.2865s
+4500 spots finished in time 45291.7794s
+4600 spots finished in time 46206.6723s
+4700 spots finished in time 47122.0515s
+4800 spots finished in time 48037.3069s
+4900 spots finished in time 48951.8306s
+writing table
+
+ans = 
+
+  struct with fields:
+
+          AF: [4992x1 double]
+    Claudin5: [4992x1 double]
+        DAPI: [4992x1 double]
+        NeuN: [4992x1 double]
+         WFA: [4992x1 double]
+
+>> **** Job ends ****
+Thu May 11 01:57:39 EDT 2023
