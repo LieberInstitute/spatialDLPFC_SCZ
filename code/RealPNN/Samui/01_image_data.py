@@ -48,3 +48,22 @@ json_path = here(
 
 out_dir = here('processed-data', 'Samui', 'V12F14-053_A1') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Samui/V12F14-053_A1/
 
+
+################################################################################
+#   Read in sample info and clean
+################################################################################
+
+#   Read in sample info, subset to relevant columns, and clean
+sample_info = (pd.read_excel(sample_info_path)
+    .query('`Sequenced? ` == "Yes"')
+    .filter(["Br####", "Slide SN #", "Array #", "Sample #"])
+    #   Clean up column names
+    .rename(
+        columns = {
+            "Br####": "br_num",
+            "Slide SN #": "sample_id",
+            "Array #": "array_num",
+            "Sample #": "sample_num"
+        }
+    )
+)
