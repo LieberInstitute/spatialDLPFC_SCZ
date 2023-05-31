@@ -67,3 +67,23 @@ sample_info = (pd.read_excel(sample_info_path)
         }
     )
 )
+
+#   Prepend "Br" tp brain number and make a string
+sample_info['br_num'] = "Br" + sample_info['br_num'].astype(str)
+
+#   Add diagnosis using brain number
+sample_info['diagnosis'] = sample_info['br_num'].replace(sample_dx)
+
+#   Fix the experiment number column (use strings of integers)
+sample_info['experiment_num'] = ((sample_info['sample_num'] - 1) // 4  + 1).astype(str)
+
+#   Different forms of sample IDs appear to be used for spaceranger outputs
+#   and raw images
+sample_info = (sample_info
+    .assign(
+        spaceranger_id = sample_info['sample_id'].transform(lambda x: x.replace('-', '')) +
+            '_' + sample_info['array_num'] + '_' + sample_info['br_num'],
+        image_id = 'VIFAD' + sample_info['experiment_num'] + '_' + sample_info['sample_id'] + '_' + sample_info['array_num']
+    )
+)
+
