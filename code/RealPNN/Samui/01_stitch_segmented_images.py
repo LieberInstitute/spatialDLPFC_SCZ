@@ -17,10 +17,12 @@ import cv2
 import tifffile
 import matplotlib.pyplot as plt
 
-raw_img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12F14-057_A1.tif')
-seg_img_A1 = pyhere.here('processed-data', 'RealPNN', 'all_channels_segemented', 'Test2', 'V12F14-057_A1.tif')
+raw_img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12F14-053_A1.tif')
+seg_img_A1 = pyhere.here('processed-data', 'RealPNN', 'all_channels_segemented', 'Test2', 'V12F14-053_A1.tif')
+dst_dir = pyhere.here('processed-data', 'Samui', 'V12F14-053_A1')
 
 # find the right shape parameter
+Image.MAX_IMAGE_PIXELS = None
 raw_A1 = Image.open(raw_img_A1)
 seg_A1 = Image.open(seg_img_A1)
 
@@ -38,4 +40,4 @@ for ch_num in range(5):
 
 samui_img = np.concatenate((new_im_raw, new_im_seg), axis = 0)
 
-tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Samui/V12F14-053_A1/new_im_full.tif', samui_img)
+tifffile.imwrite(dst_dir + os.path.basename(seg_img_A1), samui_img)
