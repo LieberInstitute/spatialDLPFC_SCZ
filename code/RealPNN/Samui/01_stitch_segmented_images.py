@@ -14,6 +14,7 @@ import pyhere
 import os
 import pyhere
 import cv2
+import tifffile
 import matplotlib.pyplot as plt
 
 raw_img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12F14-057_A1.tif')
@@ -39,15 +40,29 @@ for ch_num_raw in range(5):
 
 # each image has 5 channels, there are 2 images, the new image has 10 channels
 # seek one channel, convert to array, save it in the new image
+
+# raw image added to new image
 new_im_raw = np.zeros((5, (np.array(Image.open(raw_img_A1))).shape[0], (np.array(Image.open(raw_img_A1))).shape[1]),  dtype=np.uint8)
 for ch_num in range(5):
-    print("first", ch_num)
     raw_A1.seek(ch_num)
-    print("second", ch_num)
     new_im_raw[ch_num] = raw_A1
-    print("last", ch_num)
 
 tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Samui/V12F14-053_A1/new_im1.tif', new_im_raw)
+
+new_im_seg = np.zeros((5, (np.array(Image.open(seg_img_A1))).shape[0], (np.array(Image.open(seg_img_A1))).shape[1]),  dtype=np.uint8)
+for ch_num in range(5):
+    seg_A1.seek(ch_num)
+    new_im_seg[ch_num] = seg_A1
+tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Samui/V12F14-053_A1/new_im2.tif', new_im_seg)
+
+samui_img = np.concatenate((new_im_raw, new_im_seg), axis = 0)
+
+tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Samui/V12F14-053_A1/new_im_full.tif', samui_img)
+
+
+
+
+
 
 new_im_seg = np.zeros((5, (np.array(Image.open(raw_img_A1))).shape[0], (np.array(Image.open(raw_img_A1))).shape[1]),  dtype=np.uint8)
 for ch_num in range(5):
