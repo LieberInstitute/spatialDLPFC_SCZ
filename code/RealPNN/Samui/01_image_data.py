@@ -12,6 +12,8 @@ from loopy.sample import Sample
 from loopy.utils.utils import remove_dupes, Url
 
 spot_diameter_m = 55e-6 # 55-micrometer diameter for Visium spot
+
+# file paths
 img_channels = ['DAPI', 'Claudin-5', 'NeuN', 'WFA', 'Lipofuscin', 'segmented_DAPI',
     'segmented_Claudin', 'segmented_NeuN', 'segmented_WFA', 'segmented_Lipofuscin']
 default_channels = {'blue': 'DAPI', 'red': 'WFA'}
@@ -23,20 +25,29 @@ json_path = here('processed-data', 'spaceranger', 'V12F14-053_A1', 'outs', 'spat
 
 out_dir = here('processed-data', 'Samui')
 
-#   Read in sample info, subset to relevant columns, and clean
+# Read in sample info, subset to relevant columns, and clean
 sample_info = (pd.read_excel(master_excel_path)
     .query('`Will be Sequenced? ` == "Yes"')
     .filter(["BrNumbr", "Slide #", "Array #", "Sample #"])
     #   Clean up column names
     .rename(
         columns = {
-            "Br####": "br_num",
-            "Slide SN #": "sample_id",
+            "BrNumbr": "br_num",
+            "Slide #": "sample_id",
             "Array #": "array_num",
             "Sample #": "sample_num"
         }
     )
 )
 
+# extract the experiment number based on the sample number
+sample_info['experiment_num'] = (((sample_info['sample_num'].str.extract(r'(\d+)').astype(int)) -1) // 8 + 1).astype(str)
 
-
+# Different forms of sample IDs appear to be used for spaceranger outputs and raw images
+sample_info = (sample_info
+    .assign(
+        spaceranger_id = sample_info['sample_id'].apply(lambda x: x.replace('-', '')) +
+            '_' + sample_info['array_num'].astype(str) + '_' + sample_info['br_num'].astype(str),
+        image_id = 'VIFAD' + sample_info['sample_num'].str.extract(r'(\d+)').astype(str).squeeze() + '_' + sample_info['sample_id'] + '_' + sample_info['array_num'].astype(str)
+    )
+)
