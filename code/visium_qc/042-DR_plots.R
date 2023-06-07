@@ -29,10 +29,13 @@ plotPCA(spe, color_by = "sample_id")
 plotPCA(spe, color_by = "slide_num")
 
 
-
+set.seed(1)
 spe <- runUMAP(spe) # TODO: edit this
 
 
+
+
 plotUMAP(spe, color_by = "sample_id") 
+plotUMAP(spe[, spe$sample_id="V12F14-057_A1"], color_by = "sample_id")
 plotUMAP(spe, color_by = "slide_num")
 plotUMAP(spe, color_by = "dx")
