@@ -198,7 +198,12 @@ col_df |>
     perc_mt_perc_outlier = n_mt_perc_outlier/n()
   )
 
-
+# spe_in_tissue$low_lib_size <- qcfilter$low_lib_size |> factor()
+# spe_in_tissue$low_n_features <- qcfilter$low_n_features |> factor()
+# spe_in_tissue$high_subsets_Mito_percent <- qcfilter$high_subsets_Mito_percent |>
+#   factor()
+# Update Spe with
+colData(spe) <- DataFrame(col_df)
 
 
 
@@ -244,12 +249,7 @@ library(escheR) # NOTE: escheR > 1.1.1
 library(ggpubr)
 # smp_id <- "Br5367_D1"
 
-# spe_in_tissue$low_lib_size <- qcfilter$low_lib_size |> factor()
-# spe_in_tissue$low_n_features <- qcfilter$low_n_features |> factor()
-# spe_in_tissue$high_subsets_Mito_percent <- qcfilter$high_subsets_Mito_percent |>
-#   factor()
-# Update Spe with
-colData(spe) <- DataFrame(col_df)
+
 
 # Depreciate
 # file.path(fldr_outlier_plots,
@@ -365,7 +365,9 @@ expand.grid(
 
 # Remove Outliers ---------------------------------------------------------
 
-ret_spe <- spe[, spe$in_tissue == TRUE & (!spe$joint_umi_outlier & !spe$joint_gene_outlier)]
+spe$is_outlier <- spe$joint_umi_outlier | spe$joint_gene_outlier
+
+ret_spe <- spe[, spe$in_tissue == TRUE & (!spe$is_outlier)]
 
 # Validation
 stopifnot(all(ret_spe$in_tissue ==TRUE))
@@ -383,26 +385,43 @@ saveRDS(
 # TODO: is there a big difference between log2 and log10 outlier detection?
 
 
+# Outlier Statistics ------------------------------------------------------
+
+
 
 
 # Remove Outlier Spots ----------------------------------------------------
+n_outlier_spot <- sum(spe$is_outlier & spe$in_tissue, na.rm = TRUE)
+n_total_spot <- sum(spe$in_tissue, na.rm = TRUE)
+per_outlier_spot <- n_outlier_spot/n_total_spot
 
+col_df <- colData(spe) |> data.frame()
+per_sample_ouliter_n <- col_df |> group_by(sample_id) |> 
+  summarize(n_ouliter = sum(is_outlier & in_tissue, na.rm = TRUE))
 
+per_sample_ouliter_n
+#   sample_id     n_ouliter
+#    <glue>            <int>
+# 1 V12F14-053_A1        53
+# 2 V12F14-053_B1        99
+# 3 V12F14-053_C1       112
+# 4 V12F14-053_D1        74
+# 5 V12F14-057_A1        71
+# 6 V12F14-057_B1        31
+# 7 V12F14-057_C1       101
+# 8 V12F14-057_D1        74
 
-
-
-
-
-
+# Median
+median(per_sample_ouliter_n$n_ouliter)
 
 
 
 
 # * Remove spots without counts ---------------------------------------------
-no_expr_spot <- colSums(counts(raw_spe)) != 0
-
-spe <- spe[, no_expr_spot]
-dim(spe)
+# no_expr_spot <- colSums(counts(raw_spe)) != 0
+# 
+# spe <- spe[, no_expr_spot]
+# dim(spe)
 
 
 # * Remove spots outside of tissue area ------------------------------------
