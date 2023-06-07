@@ -58,7 +58,7 @@ spe <- spatialLIBD::read10xVisiumWrapper(
 Sys.time()
 
 # Confirm the number of spots are correct
-stopifnot(ncol(spe) != length(unique(spe$sample_id))*4992)
+stopifnot(ncol(spe) == length(unique(spe$sample_id))*4992)
 
 # Confirm if the number of samples match with meta
 stopifnot(nrow(expr_meta) == length(unique(spe$sample_id)))
@@ -139,7 +139,7 @@ metadata(spe) <- clean_df |>
 dir.create(
   here::here("processed-data", "rds", 
              "spe", "01_build_spe"),
-  recursive = T
+  recursive = T, showWarnings = FALSE
 )
 
 saveRDS(spe, 
