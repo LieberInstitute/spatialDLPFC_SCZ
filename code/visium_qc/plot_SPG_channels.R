@@ -56,3 +56,27 @@ names(col_df) |>
   )
   
 
+
+# V12F14−057_A1 -----------------------------------------------------------
+channel_plot_list <- names(col_df) |> 
+  grep("^spg_N", x = _,
+       value = TRUE) |> 
+  map(
+    ~ vis_gene(
+      spe = spe[, spe$sample_id=="V12F14-057_A1"],
+      geneid = .x,
+      # geneid = "spg_NDAPI",
+      # pdf = here::here("plots", "02_visium_qc", "SPG",
+      #                  paste0("spot_plot_", 
+      #                         str_remove(.x, "spg_N"), ".pdf")),
+      spatial=FALSE,
+      assayname = "counts",
+      return_plots = TRUE
+    )
+  )
+
+cowplot::plot_grid(plotlist = channel_plot_list, ncol = 3) |> 
+  ggsave(here::here("plots", "02_visium_qc", "SPG",
+                    paste0("spot_plot_V12F14−057_A1_all_channels.pdf")), 
+           plot = _
+         )
