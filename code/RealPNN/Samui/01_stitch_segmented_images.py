@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 raw_img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12F14-053_A1.tif')
 seg_img_A1 = pyhere.here('processed-data', 'RealPNN', 'all_channels_segemented', 'Test2', 'V12F14-053_A1.tif')
-dst_dir = pyhere.here('processed-data', 'Samui', 'V12F14-053_A1')
+dst_dir = pyhere.here('processed-data', 'Samui')
 
 # find the right shape parameter
 Image.MAX_IMAGE_PIXELS = None
