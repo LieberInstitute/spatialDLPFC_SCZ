@@ -40,7 +40,7 @@ col_df |> group_by(sample_id) |>
 #  Per-sample Plots -----------------------------------------------
 
 names(col_df) |> 
-  grep("^spg_N", x = _,
+  grep("^spg_[P|N]", x = _,
        value = TRUE) |> 
   walk(
     ~ vis_grid_gene(
@@ -49,11 +49,27 @@ names(col_df) |>
       # geneid = "spg_NDAPI",
       pdf = here::here("plots", "02_visium_qc", "SPG",
                        paste0("spot_plot_", 
-                              str_remove(.x, "spg_N"), ".pdf")),
+                              str_remove(.x, "spg_"), ".pdf")),
       spatial=FALSE,
       assayname = "counts"
     )
   )
+
+
+# Plot for pvalb to confirm WFA seg ---------------------------------------
+
+
+vis_grid_gene(
+  spe = spe,
+  geneid = "ENSG00000100362",
+  # geneid = "spg_NDAPI",
+  pdf = here::here("plots", "02_visium_qc", "SPG",
+                   paste0("spot_plot_", 
+                          "PVALB_counts", ".pdf")),
+  spatial=FALSE,
+  assayname = "counts"
+)
+
   
 
 
