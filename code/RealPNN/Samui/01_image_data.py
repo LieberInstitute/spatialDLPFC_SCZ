@@ -91,8 +91,6 @@ spot_positions = spot_positions.set_index('barcode')
 test_sample.add_coords(
     tissue_positions, name="coords", mPerPx=m_per_px, size=spot_diameter_m)
 
-
-
 # add csv feature for coordinates
 test_sample.add_csv_feature(
     tissue_positions, name = "Tissue position",
@@ -106,7 +104,8 @@ test_sample.add_csv_feature(spot_positions, name = "Spot coverage",
 test_sample.add_image(tiff = img_path, channels = img_channels, scale = m_per_px,
     defaultChannels = default_channels)
 
-
-
 # write to the output directory
 test_sample.write()
+
+
+# test line
