@@ -50,11 +50,17 @@ end
 
 disp('Stitching final image')
 
-# created by concatenating the individual image fields in the img structure using the cat function
+% created by concatenating the individual image fields in the img structure using the cat function
 finalImage = cat(2, img.DAPI, img.Claudin5, img.NeuN, img.WFA, img.AF);
 
+% Print the shape of the resized image
+disp(['Shape of the finalImage: ', num2str(size(finalImage))]);
+
 disp('Resizing final image')
-resizedImage = imresize(finalImage, 0.5);
+resizedImage = imresize(finalImage, 0.3);
+
+% Print the shape of the resized image
+disp(['Shape of the resized image: ', num2str(size(resizedImage))]);
 
 disp('Saving mat file')
 save(fullfile(myfiles(1).folder,[fname,'.mat']), 'resizedImage', '-v7.3')
