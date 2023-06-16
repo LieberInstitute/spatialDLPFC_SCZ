@@ -54,7 +54,7 @@ disp('Stitching final image')
 finalImage = cat(2, img.DAPI, img.Claudin5, img.NeuN, img.WFA, img.AF);
 
 disp('Resizing final image')
-resizedImage = imresize(finalImage, 0.7);
+resizedImage = imresize(finalImage, 0.5);
 
 disp('Saving mat file')
 save(fullfile(myfiles(1).folder,[fname,'.mat']), 'resizedImage', '-v7.3')
