@@ -1,11 +1,12 @@
-function InFormStitchResized(filename,O,P,fname)
+function InformStitchResized(filename,O,P,fname)
+
 
 % O{1} = 'DAPI';
-% O{2} = 'Abeta';
-% O{3} = 'pTau';
-% O{4} = 'GFAP';
-% O{5} = 'MAP2';
-% O{6} = 'Lipofuscin';
+% O{2} = 'Claudin5';
+% O{3} = 'NeuN';
+% O{4} = 'WFA';
+% O{5} = 'AF';
+
 
 %filename = '/dcs04/lieber/lcolladotor/with10x_LIBD001/Visium_IF_AD/processed-data/Images/InForm/VIFAD1_V10A27-004/20210204_Visium-IF_Scan1*component_data.tif';
 
