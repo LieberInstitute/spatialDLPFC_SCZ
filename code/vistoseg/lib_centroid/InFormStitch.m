@@ -47,6 +47,8 @@ fname = strsplit(fname,'*');
 fname = fname{1};
 end
 
+disp('resizing mat file')
+img_new = imresize(img,0.7);
 disp('Saving mat file')
-save(fullfile(myfiles(1).folder,[fname,'.mat']) , '-struct','img','-v7.3')
+save(fullfile(myfiles(1).folder,[fname,'.mat']) , '-struct','img_new','-v7.3')
 end
