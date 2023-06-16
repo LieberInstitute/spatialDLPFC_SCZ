@@ -62,6 +62,12 @@ resizedImage = imresize(finalImage, 0.3);
 % Print the shape of the resized image
 disp(['Shape of the resized image: ', num2str(size(resizedImage))]);
 
-disp('Saving mat file')
-save(fullfile(myfiles(1).folder,[fname,'.mat']), 'resizedImage', '-v7.3')
+% Save the resized image as a TIFF file
+tifFilename = fullfile(myfiles(1).folder, [fname, '.tif']);
+imwrite(resizedImage, tifFilename);
+
+disp('TIFF file saved: ', tifFilename);
+
+% disp('Saving mat file')
+% save(fullfile(myfiles(1).folder,[fname,'.mat']), 'resizedImage', '-v7.3')
 end
