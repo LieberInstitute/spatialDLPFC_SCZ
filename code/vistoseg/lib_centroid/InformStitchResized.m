@@ -49,6 +49,8 @@ if ~exist('fname','var')
 end
 
 disp('Stitching final image')
+
+# created by concatenating the individual image fields in the img structure using the cat function
 finalImage = cat(2, img.DAPI, img.Claudin5, img.NeuN, img.WFA, img.AF);
 
 disp('Resizing final image')
