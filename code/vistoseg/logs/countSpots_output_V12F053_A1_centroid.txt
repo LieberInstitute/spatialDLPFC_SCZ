@@ -1,0 +1,30 @@
+Adding LIBD modules
+Loading git
+**** Job starts ****
+Wed Jun 21 09:29:32 EDT 2023
+**** JHPCE info ****
+User: ukaipa
+Job id: 3576475
+Job name: countNuclei_V12F14-053_A1.sh
+Hostname: compute-141.cm.cluster
+Task id: undefined
+****
+Sample id: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/all_channels_segemented/Test2/V12F14-053_A1.mat
+****
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2019 The MathWorks, Inc.
+                  R2019a (9.6.0.1072779) 64-bit (glnxa64)
+                               March 8, 2019
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+loading data
+Elapsed time is 7.290255 seconds.
+98386 cells detected
+4992 spots detected
+counting nuclei per spot
+100 spots finished in time 93.7597s
+200 spots finished in time 177.5527s
