@@ -56,30 +56,13 @@ finalImage = cat(2, img.DAPI, img.Claudin5, img.NeuN, img.WFA, img.AF);
 % Print the shape of the resized image
 disp(['Shape of the finalImage: ', num2str(size(finalImage))]);
 
-disp('Resizing final image')
-resizedImage = imresize(finalImage, 0.3);
+% disp('Resizing final image')
+% resizedImage = imresize(finalImage, 0.3);
 
 % Print the shape of the resized image
-disp(['Shape of the resized image: ', num2str(size(resizedImage))]);
-
-% Save the resized image as a TIFF file
-tifFilename = fullfile(myfiles(1).folder, [fname, '.tif']);
-
-t = Tiff(tifFilename, 'w');
-tagstruct.ImageLength = size(resizedImage, 1);
-tagstruct.ImageWidth = size(resizedImage, 2);
-tagstruct.Photometric = Tiff.Photometric.RGB;
-tagstruct.BitsPerSample = 8;
-tagstruct.SamplesPerPixel = 3;
-tagstruct.PlanarConfiguration = Tiff.PlanarConfiguration.Chunky;
-tagstruct.Compression = Tiff.Compression.None;
-t.setTag(tagstruct);
-t.write(resizedImage);
-t.close();
-
-disp('TIFF file saved: ', tifFilename);
+% disp(['Shape of the resized image: ', num2str(size(resizedImage))]);
 
 
-% disp('Saving mat file')
-% save(fullfile(myfiles(1).folder,[fname,'.mat']), 'resizedImage', '-v7.3')
+disp('Saving mat file')
+save(fullfile(myfiles(1).folder,[fname,'.mat']), 'img', '-v7.3')
 end
