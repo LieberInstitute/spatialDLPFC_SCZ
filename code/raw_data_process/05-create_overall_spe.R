@@ -123,7 +123,8 @@ colData(spe) <- DataFrame(col_data_df)
 source(here("code", "raw_data_process", "import_dx.R"))
 
 # Save the dx data as the meta data
-metadata(spe) <- clean_df |> 
+# TODO: fix this part and re-run. dx_df should be an elemnt of metadata, instead of the whole dataset
+metadata(spe)$dx_df <- clean_df |> 
   # mutate(BrNumbr = str_remove(brain_num, "Br")) |>
   filter(brain_num %in% expr_meta$BrNumbr) |> 
   # unique() |>             # TODO: to delete unique after test
