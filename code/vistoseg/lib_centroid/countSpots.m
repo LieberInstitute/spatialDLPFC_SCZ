@@ -38,6 +38,6 @@ count = [];
     end
     
     disp('writing table')
-    writetable(tbl, fullfile(posPath, 'tissue_spot_counts.csv'), 'Delimiter', ',');
+    writetable(tbl, fullfile(posPath, 'tissue_spot_counts_centroid.csv'), 'Delimiter', ',');
 
 end
