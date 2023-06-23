@@ -35,13 +35,14 @@ source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/V
 dst_dir_dapi = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/'
 
 # test file paths
-img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
+img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12D07-334_A1.tif')
 img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_B1.tif'
+
 
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif"):
+    if img_path.endswith(".tif") and ('V12D07') in img_path:
         dapi_img = Image.open(os.path.join(source_dir, img_path))
         dapi_img.seek(2)
         dapi = np.array(dapi_img, dtype = 'uint8')
@@ -54,7 +55,7 @@ for img_path in os.listdir(source_dir):
         for cnt in dapi_contours:
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
-            if area >=50:
+            if area >=100:
                 dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (255,0,0), 1)
             elif area <50:
                 dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), -1)
@@ -65,6 +66,7 @@ for img_path in os.listdir(source_dir):
 
 
 # For one test image
+Image.MAX_IMAGE_PIXELS = None
 dapi_img = Image.open(img_A1)
 dapi_img.seek(2)
 dapi = np.array(dapi_img, dtype = 'uint8')
