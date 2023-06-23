@@ -54,7 +54,7 @@ img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 # WFA threshold
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif"):
+    if img_path.endswith(".tif") and ('V12D07') in img_path:
         wfa_img = Image.open(os.path.join(source_dir, img_path))
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
@@ -67,6 +67,11 @@ for img_path in os.listdir(source_dir):
         wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(wfa_contours), "in", img_path)
         wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (255, 255, 0), 1) # yellow all contours
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_segmented_yellow.tif', wfa_cnt)
+        fig,ax = plt.subplots(figsize = (20,20))
+        ax.imshow(wfa_cnt) # , cmap = 'gray'
+        plt.title(img_path.split('.')[0])
+        fig.show()
         for cnt in wfa_contours:
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
