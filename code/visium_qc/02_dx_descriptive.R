@@ -8,7 +8,7 @@ library(gtsummary)
 spe <- readRDS(here::here("processed-data", "rds", 
                           "spe", "01_build_spe", "spe_raw.rds"))
 
-demo_df <- metadata(spe)
+demo_df <- metadata(spe)$dx_df
 
 # Create Demo Table
 demo_df |> 
