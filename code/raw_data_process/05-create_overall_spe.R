@@ -83,7 +83,10 @@ seg_df <- map_dfr(unique(spe$sample_id),
                              function(sampleid) {
   # browser()
   current <- expr_meta$sr_fldr_path[expr_meta$sample_name == sampleid]
+  # Pixel based;
   file <- file.path(current, "outs/spatial", "tissue_spot_counts.csv")
+  # TODO: centroid based,
+  # file <- file.path(current, "outs/spatial", "tissue_spot_counts_centroid.csv")
   if (!file.exists(file)) {
     warning(sampleid, "doesn't have outs/spatial/tissue_spot_counts.csv.")
     return(NULL)
