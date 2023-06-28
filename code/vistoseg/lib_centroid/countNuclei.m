@@ -26,14 +26,7 @@ prop = [];
         end
     else
         tbl.Properties.VariableNames = {'barcode','tissue','row','col','imagerow','imagecol'};
-        switch nargin
-           case 4
             [count,prop] = countSpots_centroid(BW, R, tbl, posPath);
-           case 3
-            [count,prop] = countSpots(BW, R, tbl, posPath);
-           otherwise
-             disp('not enough inputs')
-        end
         
     end
 end
