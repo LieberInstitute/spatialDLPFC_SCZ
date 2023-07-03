@@ -227,7 +227,7 @@ colData(spe) <- DataFrame(col_df)
 
 # One spot Mt counts are just 0
 sum(spe$expr_chrM==0)
-spe[,spe$expr_chrM==0]
+# spe[,spe$expr_chrM==0]
 
 
 
