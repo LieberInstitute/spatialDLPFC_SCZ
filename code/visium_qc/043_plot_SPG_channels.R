@@ -61,43 +61,103 @@ names(col_df) |>
 
 
 # Plot for pvalb to confirm WFA seg ---------------------------------------
+# vis_grid_gene(
+#   spe = spe,
+#   geneid = "ENSG00000100362",
+#   # geneid = "spg_NDAPI",
+#   pdf = here::here("plots", "02_visium_qc", "SPG",
+#                    paste0("spot_plot_", 
+#                           "PVALB_counts", ".pdf")),
+#   spatial=FALSE,
+#   assayname = "counts"
+# )
 
 
 vis_grid_gene(
   spe = spe,
   geneid = "ENSG00000100362",
   # geneid = "spg_NDAPI",
-  pdf = here::here("plots", "02_visium_qc", "SPG",
+  pdf = here::here("plots", "02_visium_qc", "GE",
                    paste0("spot_plot_", 
-                          "PVALB_counts", ".pdf")),
+                          "PVALB_logcounts", ".pdf")),
   spatial=FALSE,
-  assayname = "counts"
+  assayname = "logcounts"
 )
 
 # Plot for PCP4 to confirm orientation seg ---------------------------------------
+# vis_grid_gene(
+#   spe = spe,
+#   geneid = "ENSG00000183036",
+#   # geneid = "spg_NDAPI",
+#   pdf = here::here("plots", "02_visium_qc", "GE",
+#                    paste0("spot_plot_", 
+#                           "PCP4_counts", ".pdf")),
+#   spatial=FALSE,
+#   assayname = "counts"
+# )
 
-
+# Layer 4
 vis_grid_gene(
   spe = spe,
   geneid = "ENSG00000183036",
   # geneid = "spg_NDAPI",
-  pdf = here::here("plots", "02_visium_qc", "SPG",
-                   paste0("spot_plot_", 
-                          "PCP4_counts", ".pdf")),
-  spatial=FALSE,
-  assayname = "counts"
-)
-
-vis_grid_gene(
-  spe = spe,
-  geneid = "ENSG00000183036",
-  # geneid = "spg_NDAPI",
-  pdf = here::here("plots", "02_visium_qc", "SPG",
+  pdf = here::here("plots", "02_visium_qc", "GE",
                    paste0("spot_plot_", 
                           "PCP4_logcounts", ".pdf")),
   spatial=FALSE,
   assayname = "logcounts"
 )
+
+
+vis_grid_gene(
+  spe = spe,
+  geneid = "ENSG00000171885",
+  # geneid = "spg_NDAPI",
+  pdf = here::here("plots", "02_visium_qc", "GE",
+                   paste0("spot_plot_", 
+                          "AQP4_logcounts", ".pdf")),
+  spatial=FALSE,
+  assayname = "logcounts"
+)
+
+# Layer 5
+vis_grid_gene(
+  spe = spe,
+  geneid = "ENSG00000186854",
+  # geneid = "spg_NDAPI",
+  pdf = here::here("plots", "02_visium_qc", "GE",
+                   paste0("spot_plot_", 
+                          "TRABD2A_logcounts", ".pdf")),
+  spatial=FALSE,
+  assayname = "logcounts"
+)
+
+# Layer 2
+vis_grid_gene(
+  spe = spe,
+  geneid = "ENSG00000115756",
+  # geneid = "spg_NDAPI",
+  pdf = here::here("plots", "02_visium_qc", "GE",
+                   paste0("spot_plot_", 
+                          "HPCAL1_logcounts", ".pdf")),
+  spatial=FALSE,
+  assayname = "logcounts"
+)
+
+
+# White Matter
+vis_grid_gene(
+  spe = spe,
+  geneid = "ENSG00000197971",
+  # geneid = "spg_NDAPI",
+  pdf = here::here("plots", "02_visium_qc", "GE",
+                   paste0("spot_plot_", 
+                          "MBP_logcounts", ".pdf")),
+  spatial=FALSE,
+  assayname = "logcounts"
+)
+
+
 
 
 # WFA - PVAL Quantative Investigation -------------------------------------
