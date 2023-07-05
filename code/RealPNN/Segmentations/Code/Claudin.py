@@ -34,7 +34,7 @@ from stitched_functions import draw_contours, all_pixels
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
 source_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 dst_dir_claudin = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'Claudin', 'claudin_binarized') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
-
+dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
 
 # image paths
 img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
@@ -81,7 +81,7 @@ csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealP
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif"):
+    if img_path.endswith(".tif") and ('V12D07') in img_path:
         claudin_img = Image.open(os.path.join(source_dir, img_path))
         claudin_img.seek(1)
         claudin = np.array(claudin_img, dtype = 'uint8')
@@ -90,7 +90,9 @@ for img_path in os.listdir(source_dir):
         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
         claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(claudin_contours), "in", img_path)
-        cl_cnt = cv2.drawContours(claudin_c, claudin_contours, -1, (0, 0, 0), 1)
+        cl_cnt = cv2.drawContours(claudin_c, claudin_contours, -1, (0, 0, 255), 1)
+        cv2.imwrite(dst_dir_claudin + img_path.split('.')[0] + '_claudin_segmented_red.tif', cl_cnt)
+
         gray_segmented = cv2.cvtColor(cl_cnt,cv2.COLOR_RGB2GRAY)
         thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
         # binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
@@ -133,8 +135,8 @@ claudin = np.array(claudin_img, dtype = 'uint8')
 gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
 _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
 claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-# cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (255, 153, 255), 2) #pink
-# print("found", len(claudin_contours))
+cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (255, 153, 255), 2) #pink
+print("found", len(claudin_contours))
 area_ = []
 for cnt in claudin_contours:
     x,y,w,h = cv2.boundingRect(cnt)
