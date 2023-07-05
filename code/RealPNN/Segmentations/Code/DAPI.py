@@ -51,7 +51,8 @@ for img_path in os.listdir(source_dir):
         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
         dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(dapi_contours), "in", img_path)
-        # dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
+        dp_cnt = cv2.drawContours(dapi_c, dapi_contours, -1, (0, 255, 0), 2)
+        cv2.imwrite(dst_dir_dapi + img_path.split('.')[0] + '_dapi_segmented_green.tif', dp_cnt)
         for cnt in dapi_contours:
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
