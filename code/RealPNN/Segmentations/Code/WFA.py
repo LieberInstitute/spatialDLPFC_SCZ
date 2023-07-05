@@ -2,7 +2,7 @@
 '''
 For Stitched Visium-IF tissue sections from VistoSeg SplitSlide output
 Channel0 = AF
-Channel1 = Claudin - 5 (Alex 488),
+Channel1 = Claudin - 5,
 Channel2 = DAPI,
 Channel3 = NeuN,
 Channel4 = WFA
@@ -54,7 +54,7 @@ img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 # WFA threshold
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V12D07-334_C1') in img_path:
+    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
         wfa_img = Image.open(os.path.join(source_dir, img_path))
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
@@ -67,7 +67,7 @@ for img_path in os.listdir(source_dir):
         wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(wfa_contours), "in", img_path)
         wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (255, 255, 0), 1) # yellow all contours
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_segmented_yellow.tif', wfa_cnt)
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_segmented_blue.tif', wfa_cnt)
         fig,ax = plt.subplots(figsize = (20,20))
         ax.imshow(wfa_cnt) # , cmap = 'gray'
         plt.title(img_path.split('.')[0])
@@ -103,7 +103,7 @@ img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
 # fig.show()
 wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print("found", len(wfa_contours), "in", os.path.basename(img_A1))
-wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (255, 255, 0), 1) # yellow all contours
+wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) # (255, 255, 0) yellow all contours
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(wfa_cnt)
 fig.show()
@@ -201,7 +201,6 @@ ax.imshow(thresh_segmented_dapi, cmap = 'gray')
 fig.show()
 
 
-cv2.imwrite
 
 # drawing neun contours
 neun_img = Image.open(img_B2)
@@ -221,3 +220,40 @@ fig.show()
 cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_C1.tif', claudin)
 
 cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/NeuN/B1_NeuN.tif', neun)
+
+
+# creating a composite of DAPI, NeuN and WFA
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load the image channels
+channels = []
+with Image.open(img_A1) as image:
+    num_frames = image.n_frames
+    for i in range(num_frames):
+        image.seek(i)
+        channel = np.array(image, dtype='uint8')
+        channels.append(channel)
+
+
+# Assign color channels
+blue_channel = channels[2]  # DAPI assigned to blue
+red_channel = channels[3]  # NeuN assigned to red
+green_channel = thresh_segmented_wfa  # channels[4] - WFA assigned to green
+
+# Create the composite image
+composite = np.zeros(channels[2].shape + (3,), dtype='uint8')
+composite[..., 0] = blue_channel  # Blue channel = DAPI
+composite[..., 1] = red_channel  # Red channel = NeuN
+composite[..., 2] = green_channel  # Green channel = WFA
+
+# save the composite image
+cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI_NeuN_segmentedWFA_composite.tif', composite)
+
+
+# Plot the composite image
+fig, ax = plt.subplots(figsize=(20, 20))
+ax.imshow(composite)
+ax.set_axis_off()
+plt.show()
