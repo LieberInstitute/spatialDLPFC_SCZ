@@ -15,7 +15,7 @@ spe$spd <- factor(spe$bayesSpace_harmony_9 %in% c(2,3) , levels = c(TRUE))
 unique(spe$sample_id) |> 
   map(
     .f = function(id){
-      browser()
+      # browser()
       uni_spe <- spe[, spe$sample_id == id]
       stopifnot(ncol(uni_spe)!=0)
       
@@ -27,7 +27,9 @@ unique(spe$sample_id) |>
       make_escheR(uni_spe) |> 
         add_fill(var = "MBP") |> 
         # TODO: check 
-        add_ground(var = "spd")
+        add_ground(var = "spd") +
+        scale_color_manual(values = c("red"),
+                           na.value = "transparent")
     }
    
   )
