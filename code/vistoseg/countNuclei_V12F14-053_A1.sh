@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -l mem_free=100G,h_vmem=100G,h_fsize=10G
-#$ -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/logs/countSpots_output_V12F053_A1_centroid.txt
-#$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/logs/countSpots_error_V12F053_A1_centroid.txt
+#$ -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/CN_V12F14-053_A1_output.txt
+#$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/CN_V12F14-053_A1_error.txt
 #$ -m be
 #$ -M uma.kaipa.94@gmail.com
 
