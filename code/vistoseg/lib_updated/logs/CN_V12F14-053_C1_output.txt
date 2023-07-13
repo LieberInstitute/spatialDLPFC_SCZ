@@ -24,3 +24,35 @@ For product information, visit www.mathworks.com.
 loading data
 >> **** Job ends ****
 Thu Jul 13 12:11:23 EDT 2023
+Adding LIBD modules
+Loading git
+**** Job starts ****
+Thu Jul 13 12:19:46 EDT 2023
+**** JHPCE info ****
+User: ukaipa
+Job id: 3626474
+Job name: countNuclei_V12F14-053_C1.sh
+Hostname: compute-129.cm.cluster
+Task id: undefined
+****
+Sample id: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/segmented_channels_stitched/Test2/V12F14-053_C1.mat
+****
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2019 The MathWorks, Inc.
+                  R2019a (9.6.0.1072779) 64-bit (glnxa64)
+                               March 8, 2019
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+loading data
+4992 Visium spots detected
+Building spot grid
+95251 AF ROIS detected
+13155 Claudin5 ROIS detected
+27727 DAPI ROIS detected
+18407 NeuN ROIS detected
+15208 WFA ROIS detected
+counting dots per Visium spot
