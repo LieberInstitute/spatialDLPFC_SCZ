@@ -32,17 +32,15 @@ from stitched_functions import draw_contours, all_pixels
 
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
-source_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_claudin = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'Claudin', 'claudin_binarized') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
-dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
+img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
+dst_dir_claudin = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'Claudin', 'claudin_binarized')
+# dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
+dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/'
 
 # image paths
-img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
-img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_B1.tif'
-img_C2 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif'
-# img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
-# img_D1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_D1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_D1.tif
-# img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
+img_A1_r1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
+img_D1_r2 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12D07-334_D1.tif')
+img_B1_r2 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12D07-334_B1.tif')
 
 # csv paths
 csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/Data_files/V12F14-053_A1_info.csv'
@@ -64,27 +62,15 @@ csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealP
 #         clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
 #         img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
 
-# watershed segmentations claudin
-# img_claudin, claudin_shifted, claudin_gray, claudin_thresh = read_img.read_and_preprocess(img_D1, 3)
-# plot_im(img_claudin)
-# fig,ax = plt.subplots(figsize = (20,20))
-# ax.imshow(neun_thresh, cmap = 'gray')
-# fig.show()
-# claudin_labels, claudin_localmax = watershed_segmentation.find_labels(claudin_thresh)
-# clx, cly, clw, clh, cl_area, claudin_segmented = watershed_segmentation.draw_rect_dapi(claudin_labels, claudin_gray, claudin_neun)
-# cv2.imwrite('/users/ukaipa/PNN/One_img/claudin_stitched_segmented_D1_run1.tif', claudin_segmented)
-# print("segmented image saved")
-# claudin_df = save_coordinates.create_df(clx, cly, clw, clh, cl_area, img_claudin, 'Claudin')
-
-
 
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
-for img_path in os.listdir(source_dir):
+for img_path in os.listdir(img_dir):
     if img_path.endswith(".tif") and ('V12D07') in img_path:
         claudin_img = Image.open(os.path.join(source_dir, img_path))
         claudin_img.seek(1)
         claudin = np.array(claudin_img, dtype = 'uint8')
+        print("Raw image stats-", "\nMean:\t", claudin.mean(), "\nMax:\t", claudin.max(), "\nMin:\t", claudin.min())
         claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
         gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
@@ -109,33 +95,22 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(binary_segmented, cmap = 'gray')
 fig.show()
 
-# tested out deriving all pixels from within the contour
-Image.MAX_IMAGE_PIXELS = None
-claudin_img = Image.open(img_A1)
-claudin_img.seek(2)
-claudin = np.array(claudin_img, dtype = 'uint8') # (17799, 16740)
-claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
-gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
-_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
-claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print(len(claudin_contours))
-claudin_contoured_img = draw_contours.draw_all_contours(claudin_c, claudin_contours, (0, 255, 0), 2) #dp_cnt = cv2.drawContours(dapi_c, contours, -1, (0, 255, 0), 2)
-# cv2.imwrite(dst_dir_dapi + os.basename(img_A1)[0] + '_claudin_contours_thresholded.tif', claudin_contoured_img)
-# claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, img_A1, 'Claudin-5')
-A1 = pd.read_csv(csv_A1)
-contour_img, claudin_df_all, mean_pix_int_list = all_pixels.all_pix_pnns(A1, claudin_contoured_img, claudin)
-claudin_df_all.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_pix_info.csv')
-
 
 # detecting claudin contours -- taken from WFA code
-claudin_img = Image.open(img_A1)
+claudin_img = Image.open(img_B1_r2)
 claudin_img.seek(1)
 claudin = np.array(claudin_img, dtype = 'uint8')
-# claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
+print("Raw image stats-", "\nMean:\t", claudin.mean(), "\nMax:\t", claudin.max(), "\nMin:\t", claudin.min())
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(claudin, cmap = 'gray')
+fig.show()
+
+claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(claudin_c,cv2.COLOR_RGB2GRAY)
-_,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
+# thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, 25)
+_,thresh = cv2.threshold(gray, 50, 100, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV,
 claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-cla_cnt = cv2.drawContours(img_th_c, claudin_contours, -1, (255, 153, 255), 2) #pink
+cla_cnt = cv2.drawContours(claudin_c, claudin_contours, -1, (255, 153, 255), 2) #pink
 print("found", len(claudin_contours))
 area_ = []
 for cnt in claudin_contours:
@@ -143,6 +118,70 @@ for cnt in claudin_contours:
     area = cv2.contourArea(cnt)
     area_.append(area)
     if area<1000:
-        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), 2) #green
-    elif area>=10000:
-        cla_rect = cv2.rectangle(img_th_c, (x,y), (x+50+w+100, y+50+h+100), (255,255,0), 2) #yellow
+        cla_rect = cv2.rectangle(claudin_c, (x,y), (x+w, y+h), (0,0,0), -1) #green
+    elif area>=5000:
+        cla_rect = cv2.rectangle(claudin_c, (x,y), (x+50+w+100, y+50+h+100), (255,255,0), 2) #yellow
+
+cv2.imwrite(dst_dir_claudin + 'V12D07-334_B1' + '_claudin_size_thresholded.tif', cla_rect)
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(cla_cnt, cmap = 'gray') #
+fig.show()
+
+
+# trying other thresholds to remove background noise from folds and artifacts
+se=cv2.getStructuringElement(cv2.MORPH_RECT , (8,8))
+bg=cv2.morphologyEx(claudin, cv2.MORPH_DILATE, se)
+out_gray=cv2.divide(claudin, bg, scale=255)
+out_binary=cv2.threshold(out_gray, 0, 255, cv2.THRESH_OTSU )[1]
+
+
+# blur
+blur = cv2.GaussianBlur(gray, (0,0), sigmaX=33, sigmaY=33)
+
+# divide
+divide = cv2.divide(gray, blur, scale=255)
+
+# otsu threshold
+thresh = cv2.threshold(divide, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
+
+# apply morphology
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
+morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+
+############# find the noisy area and try to maks out the noise only from that area ###########
+import cv2
+import numpy as np
+
+# Load the image
+claudin_img = Image.open(img_B1_r2)
+claudin_img.seek(1)
+claudin = np.array(claudin_img, dtype = 'uint8')
+
+# convert to color first, to avoid the error
+claudin_c = cv2.cvtColor(claudin,cv2.COLOR_BGR2RGB)
+
+# Convert the image to grayscale
+gray = cv2.cvtColor(claudin_c, cv2.COLOR_BGR2GRAY)
+
+# Calculate the average pixel intensity of the entire image
+average_intensity = np.mean(gray)
+
+# Threshold the image to create a binary mask of the noisy region
+_, mask = cv2.threshold(gray, average_intensity, 255, cv2.THRESH_BINARY)
+
+# Perform morphological operations to remove noise from the mask
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+opening = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=2)
+
+# Find contours in the mask
+contours, _ = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+# Draw the contours on the original image
+output = claudin_c.copy()
+cv2.drawContours(output, contours, -1, (0, 255, 0), 2)
+
+# Display the result
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(output) # , cmap = 'gray'
+fig.show()
