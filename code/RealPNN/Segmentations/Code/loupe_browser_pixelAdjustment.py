@@ -27,3 +27,23 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(im_arr, cmap = 'gray') #
 fig.show()
 
+# define the alpha and beta
+alpha = 1.5 # Contrast control
+beta = 10 # Brightness control
+
+# call convertScaleAbs function
+adjusted = cv2.convertScaleAbs(im_arr, alpha=alpha, beta=beta)
+
+# define the contrast and brightness value
+contrast = 100. # Contrast control ( 0 to 127)
+brightness = 70. # Brightness control (0-100)
+
+# call addWeighted function. use beta = 0 to effectively only operate on one image
+out = cv2.addWeighted( im_arr, contrast, im_arr, 0, brightness)
+
+cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/V12D07-334_A1_neun_pix_adj.tif', out)
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(out, cmap = 'gray')
+fig.show()
+
