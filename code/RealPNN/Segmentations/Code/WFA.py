@@ -9,6 +9,26 @@ Channel4 = WFA
 '''
 
 
+'''
+Slide 1 = V12F14-053
+Slide 2 = V12F14-057
+Slide 3 = V12D07-334
+Slide 4 = V13M06_279
+Slide 5 = V13M06_280
+Slide 6 = 
+Slide 7 = 
+Slide 8 = 
+Slide 9 = 
+Slide 10 = 
+Slide 11 = 
+Slide 12 = 
+Slide 13 = 
+Slide 14 = 
+Slide 15 = 
+Slide 16 = 
+
+'''
+
 from scipy import ndimage
 import argparse
 from argparse import ArgumentParser
@@ -257,3 +277,5 @@ fig, ax = plt.subplots(figsize=(20, 20))
 ax.imshow(composite)
 ax.set_axis_off()
 plt.show()
+
+
