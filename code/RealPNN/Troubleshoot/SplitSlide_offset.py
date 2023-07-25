@@ -27,10 +27,7 @@ Slide 16 =
 
 '''
 
-from scipy import ndimage
-import argparse
-from argparse import ArgumentParser
-import imutils
+
 import numpy as np
 import pyhere
 from pyhere import here
@@ -46,17 +43,6 @@ import sys
 import cv2
 import math
 import scipy
-from scipy.spatial.distance import *
-import skimage
-from skimage import *
-from skimage import feature, segmentation, draw, measure, morphology
-from skimage.filters import threshold_otsu
-from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
-from skimage.draw import polygon_perimeter
-from itertools import product
-from collections import defaultdict
-from shapely.geometry import Point
-from shapely.geometry.polygon import Polygon
 
 
 #### splislide troubleshoot
