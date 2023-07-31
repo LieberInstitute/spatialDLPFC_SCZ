@@ -17,7 +17,7 @@ spe <- readRDS(here::here(
 
 # Convert to seuList
 seuList <- (unique(spe$sample_id) |> 
-  # TODO: remove the subsetting
+  # TODO: remove the sample subsetting
   set_names(unique(spe$sample_id)))[1:2] |> 
   map(.f = function(id) {
     tmp_spe <- spe[, spe$sample_id == id]
@@ -36,9 +36,9 @@ seuList <- (unique(spe$sample_id) |>
 # Find gene list from pyschENCODE-spaitalDLPFC result
 
 library(tidyverse)
-gene_df_raw <- read_csv(here("code/visium_spatial_clustering/PRECAST/TableS8_sig_genes_FDR5perc_enrichment.csv"))
+gene_df_raw <- read_csv(here("code/spatial_clustering/PRECAST/TableS8_sig_genes_FDR5perc_enrichment.csv"))
 
-gene_df <- gene_df |> 
+gene_df <- gene_df_raw |> 
   filter(spatial_domain_resolution == "Sp09") |> 
   group_by(test) |> 
   arrange(fdr, .by_group = TRUE) |> 
@@ -59,10 +59,50 @@ PRECASTObj <- AddAdjList(preobj, platform = "Visium")
 ## information in the algorithm.
 PRECASTObj <- AddParSetting(PRECASTObj, Sigma_equal = FALSE, coreNum = 8, maxIter = 30, verbose = TRUE)
 
-K <- as.numeric(Sys.getenv("SGE_TASK_ID"))
+# K <- as.numeric(Sys.getenv("SGE_TASK_ID"))
+K <- 8
 
 tic()
 PRECASTObj <- PRECAST(PRECASTObj, K = K)
 toc()
 
-save(PRECASTObj, file = here("processed-data", "06_clustering", "PRECAST", paste0("allSamples_PRECASTObj_nnSVG_2500_",K,".Rdata")))
+dir.create(
+  here("processed-data", "clustering", "PRECAST"),
+  recursive = T, showWarnings = FALSE
+)
+
+
+
+
+# Convert PRECAST to a spe object -----------------------------------------
+
+# Necessary step to get cluster from resList
+PRECASTObj <- SelectModel(PRECASTObj)
+
+seuInt <- IntegrateSpaData(PRECASTObj, species = "Human")
+
+# Merge with spe object
+col_data_df <- seuInt@meta.data |> 
+  mutate(cluster = factor(cluster)) |> 
+  rename_with(~ paste0("PRECAST_", .x)) |> 
+  rownames_to_column(var = "key") |> 
+  right_join(
+    colData(spe) |> data.frame(),
+    by = c("key"),
+    relationship = "one-to-one"
+  )
+
+rownames(col_data_df) <- colnames(spe)
+
+colData(spe) <- DataFrame(col_data_df)
+
+saveRDS(spe, file = here("processed-data", "clustering", "PRECAST", 
+                         paste0("test_PRECASTObj_semi_inform_K",K,".rds")))
+
+
+# Visualize Clustering Result ---------------------------------------------
+# TODO: output
+tmp <- vis_grid_clus(spe,
+              clustervar = "PRECAST_cluster", return_plots = TRUE)
+
+
