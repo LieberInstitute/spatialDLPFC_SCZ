@@ -17,18 +17,18 @@ spe <- readRDS(here::here(
 )
 
 # Create vector of samples for nnSVG on whole tissue
-brains <- as.character(unique(spe$brnum))
 samples <- unique(spe$sample_id)
 # Run nnSVG once per sample whole tissue and store lists of top SVGs
 res_list <- as.list(rep(NA, length(samples)))
 
 names(res_list) <- samples
 
-for (s in seq_along(samples)) {
+
+
+for (s in samples) {
   
   # select sample_id
-  # ix <- spe$brnum == brains[s]
-  ix <- spe$sample_id == samples[s]
+  ix <- spe$sample_id == s
   spe_sub <- spe[, ix]
   
   # run nnSVG filtering for mitochondrial gene and low-expressed genes
@@ -45,12 +45,18 @@ for (s in seq_along(samples)) {
   # store whole tissue results
   message('saving data')
   res_list[[s]] <- rowData(spe_sub)
-  temp = rowData(spe_sub)
-  save(temp, file = here::here("processed-data","07_Feature_selection", "nnSVG", paste0(samples[s], ".Rdata")))
+  # temp = rowData(spe_sub)
+  # save(temp, file = here::here("processed-data","07_Feature_selection", "nnSVG", paste0(samples[s], ".Rdata")))
 }
 
+dir.create(
+  here("processed-data","feature_selection", "nnSVG"),
+  recursive = T, showWarnings = FALSE
+)
+
+
 # save whole tissue nnSVG results
-save(res_list, file = here::here("processed-data","07_Feature_selection", "nnSVG", "nnSVG.Rdata"))
+saveRDS(res_list, file = here::here("processed-data","feature_selection", "nnSVG", "nnSVG.rdata"))
 
 ## Reproducibility information
 print("Reproducibility information:")
