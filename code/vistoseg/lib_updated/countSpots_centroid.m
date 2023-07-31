@@ -33,7 +33,8 @@ for i = 1:nSpots
     spot = regionprops(mask==idx);
       for C = 1:numel(O)
         signal = struct2table(regionprops(mask==idx & BW.(O{C})>0));
-        points = struct2table(regionprops(BW.(O{C}), 'Centroid')).Centroid;
+        points = struct2table(regionprops(BW.(O{C}), 'Centroid'));
+        points = points.Centroid;
         if isempty(points)
             isincircle = 0;
         else 
