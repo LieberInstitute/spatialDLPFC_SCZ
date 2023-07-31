@@ -68,7 +68,8 @@ spe$ManualAnnotation <- NULL
 # Only for testing purpose
 # spe <- readRDS(here("processed-data/rds/spe","01_build_spe/", "spe_raw.rds"))
 
-# spe$key <- paste0(colnames(spe), "_", spe$sample_id) # In spatialLIBD::read10xVisiumWrapper
+# Set names for each spot
+spe$key <- paste0(colnames(spe), "_", spe$sample_id) # In spatialLIBD::read10xVisiumWrapper
 # spe$subject <- sample_info$subjects[match(spe$sample_id, sample_info$sample_id)]
 # spe$region <- sample_info$regions[match(spe$sample_id, sample_info$sample_id)]
 # spe$sex <- sample_info$sex[match(spe$sample_id, sample_info$sample_id)]
@@ -88,7 +89,7 @@ seg_df <- map_dfr(unique(spe$sample_id),
   # TODO: centroid based,
   # file <- file.path(current, "outs/spatial", "tissue_spot_counts_centroid.csv")
   if (!file.exists(file)) {
-    warning(sampleid, "doesn't have outs/spatial/tissue_spot_counts.csv.")
+    warning(sampleid, " doesn't have outs/spatial/tissue_spot_counts.csv")
     return(NULL)
   }
   x <- read.csv(file)
@@ -117,8 +118,8 @@ col_data_df <- colData(spe) |> data.frame() |>
   )
 
 # Add the information
-colData(spe) <- DataFrame(col_data_df)
-
+colData(spe) <- DataFrame(col_data_df)  # Will remove colnames(spe)
+colnames(spe) <- spe$key
 
 
 ## Add Dx Information ---------
@@ -145,6 +146,9 @@ dir.create(
              "spe", "01_build_spe"),
   recursive = T, showWarnings = FALSE
 )
+
+
+stopifnot(!is.null(colnames(spe)))
 
 saveRDS(spe, 
         file = here::here("processed-data", "rds", 
