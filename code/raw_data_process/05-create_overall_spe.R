@@ -141,6 +141,15 @@ metadata(spe)$dx_df <- clean_df |>
   )
 
 
+
+# Add log normalization -----
+library(scater)
+# Create logcounts
+spe <- logNormCounts(spe)
+
+# Save Object -----
+
+
 dir.create(
   here::here("processed-data", "rds", 
              "spe", "01_build_spe"),
