@@ -40,14 +40,18 @@ combined <- correctExperiments(spe_lst,
 set.seed(100)
 combined <- runPCA(combined, subset_row=chosen.hvgs)
 combined <- runTSNE(combined, dimred="PCA")
-plotTSNE(combined, colour_by="batch")
+before_plot <- plotTSNE(combined, colour_by="batch")
+ggplot2::ggsave(here::here("plots/test_tsne_before_MNN_correct.pdf"), before_plot)
 
 
 # Fast MNN
 set.seed(101)
 f.out <- fastMNN(combined, batch=combined$batch, subset.row=chosen.hvgs)
+saveRDS(object = f.out, here("processed-data/rds/spe/test_spe_NMM.rds") )
 
 
 set.seed(103)
 f.out <- runTSNE(f.out, dimred="corrected")
-plotTSNE(f.out, colour_by="batch")
+after_plot <- plotTSNE(f.out, colour_by="batch")
+ggplot2::ggsave(here::here("plots/test_tsne_after_MNN_correct.pdf"), after_plot)
+
