@@ -204,6 +204,7 @@ col_df |>
 #   factor()
 # Update Spe with
 colData(spe) <- DataFrame(col_df)
+colnames(spe) <- spe$key
 
 
 
