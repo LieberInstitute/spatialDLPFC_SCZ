@@ -21,7 +21,7 @@ echo "****"
 
 ## List current modules for reproducibility
 module matlab/R2019a
-fname = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/6_Real_PNN_Slide5/Scan2/V13M06_280.mat'
+fname='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/6_Real_PNN_Slide5/Scan2/V13M06_280.mat'
 
 toolbox='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/'
-matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), splitSlide_IF('$fname)" 
+matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), splitSlide_IF('$fname')" 
