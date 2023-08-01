@@ -7,15 +7,16 @@ disp(['The IF image has ',num2str(numel(O)),' channels'])
 
 [y,~,~] = size(img.(O{1}));
 
+
 tic
 disp('Splitting whole slide into individual capture areas')
 
 for i = 1:numel(O)
     tic
-    I1.(O{i}) = img.(O{i})(1:round(y/4),:);
-    I2.(O{i}) = img.(O{i})(round(y/4)+1:round(y/4)*2,:);
-    I3.(O{i}) = img.(O{i})((round(y/4)*2)+1:round(y/4)*3,:);
-    I4.(O{i}) = img.(O{i})((round(y/4)*3)+1:end,:);
+    I1.(O{i}) = img.(O{I})(1:(round(y/4))+2500,:);
+    I2.(O{i}) = img.(O{i})(round(y/4)+2501:(round(y/4)*2)+2500,:);
+    I3.(O{i}) = img.(O{i})((round(y/4)*2)+2501:(round(y/4)*3)+2500,:);
+    I4.(O{i}) = img.(O{i})((round(y/4)*3)+2501:end,:);
     toc
 end
 
