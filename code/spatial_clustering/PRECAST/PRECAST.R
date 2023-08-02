@@ -12,13 +12,12 @@ library("PRECAST")
 
 #TODO: replace this path
 spe <- readRDS(here::here(
-  "processed-data/rds/spe/01_build_spe/spe_raw.rds")
+  "processed-data/rds/spe/spe_after_spot_qc.rds")
 )
 
 # Convert to seuList
-seuList <- (unique(spe$sample_id) |> 
-  # TODO: remove the sample subsetting
-  set_names(unique(spe$sample_id)))[1:2] |> 
+seuList <- unique(spe$sample_id) |> 
+  set_names(unique(spe$sample_id)) |> 
   map(.f = function(id) {
     tmp_spe <- spe[, spe$sample_id == id]
     
