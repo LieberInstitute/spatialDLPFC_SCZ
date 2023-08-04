@@ -20,7 +20,7 @@ spe_lst <- unique(spe$sample_id) |>
 tmp <- multiBatchNorm(spe_lst)
 
 ## What is the diff between `multiBatchNorm` and lognorm
-# TODO
+# TODO:
 
 
 # Create modelGeneVar for each item of the list
