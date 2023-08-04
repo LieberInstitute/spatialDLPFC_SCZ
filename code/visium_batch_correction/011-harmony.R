@@ -20,39 +20,39 @@ spe <- readRDS(
 )
 
 
-
-
 # Create logcounts
-spe <- logNormCounts(spe)
-
+stopifnot("logcounts" %in% assayNames(spe))
 
 
 ## From
 ## http://bioconductor.org/packages/release/bioc/vignettes/scran/inst/doc/scran.html#4_variance_modelling
-dec <- modelGeneVar(spe,
-                    block = spe$sample_id#,
-                    # BPPARAM = MulticoreParam(4)
-)
+# dec <- modelGeneVar(spe,
+#                     block = spe$sample_id#,
+#                     # BPPARAM = MulticoreParam(4)
+# )
+# 
+# pdf(
+#   # TODO: change path
+#   here::here("plots", "01_build_spe", "test_scran_modelGeneVar_final.pdf"),
+#   useDingbats = FALSE
+# )
+# mapply(function(block, blockname) {
+#   plot(
+#     block$mean,
+#     block$total,
+#     xlab = "Mean log-expression",
+#     ylab = "Variance",
+#     main = blockname
+#   )
+#   curve(metadata(block)$trend(x),
+#         col = "blue",
+#         add = TRUE
+#   )
+# }, dec$per.block, names(dec$per.block))
+# dev.off()
 
-pdf(
-  # TODO: change path
-  here::here("plots", "01_build_spe", "test_scran_modelGeneVar_final.pdf"),
-  useDingbats = FALSE
-)
-mapply(function(block, blockname) {
-  plot(
-    block$mean,
-    block$total,
-    xlab = "Mean log-expression",
-    ylab = "Variance",
-    main = blockname
-  )
-  curve(metadata(block)$trend(x),
-        col = "blue",
-        add = TRUE
-  )
-}, dec$per.block, names(dec$per.block))
-dev.off()
+dec <- readRDS(here(fld_ftr_slct, "HVG_imp2.rds"))
+
 
 top.hvgs <- getTopHVGs(dec, prop = 0.1)
 length(top.hvgs)
@@ -148,8 +148,20 @@ ggplot(
 dev.off()
 
 
-### harmony batch correction
+### harmony batch correction ----
 spe <- RunHarmony(spe, "sample_id", verbose = F)
+
+
+fld_batch_correct <- here("processed-data", "rds", "spe", "batch_corrected")
+dir.create(path = fld_batch_correct,
+           showWarnings = FALSE, recursive = TRUE)
+
+saveRDS(spe, file = here::here(fld_batch_correct,
+                            "test_spe_harmony.rds"))
+
+
+
+### Validation of Batch Effect Correction ----
 set.seed(1)
 
 # TODO: check what is the output for Harmony dimred, is it gene expression or PCAs?
@@ -172,26 +184,7 @@ ggplot(
 dev.off()
 
 
-########### for bayesSpace
-
-## do offset so we can run BayesSpace
-auto_offset_row <- as.numeric(factor(unique(spe$sample_id))) * 100
-names(auto_offset_row) <- unique(spe$sample_id)
-# TODO: rename the row and col to show it is concatenated.
-spe$row <- colData(spe)$array_row + auto_offset_row[spe$sample_id]
-spe$col <- colData(spe)$array_col
-
-## Set the BayesSpace metadata using code from
-## https://github.com/edward130603/BayesSpace/blob/master/R/spatialPreprocess.R#L43-L46
-
-# TODO: to remove this after generating new data. doesn't needs this because dx_df becomes a element
-metadata(spe) <- list()
-metadata(spe)$BayesSpace.data <- list(platform = "Visium", is.enhanced = FALSE)
-
-message("Running spatialCluster()")
-
 # Sys.time()
 #TODO: change path
-save(spe, file = here::here("processed-data", "rds", "spe",
-                            "01_build_spe", "test_spe_filtered_final.rds"))
+
 # Sys.time()
