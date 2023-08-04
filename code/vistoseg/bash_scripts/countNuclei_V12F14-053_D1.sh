@@ -1,5 +1,5 @@
 #!/bin/bash
-#$ -l mem_free=100G,h_vmem=100G,h_fsize=10G
+#$ -l mem_free=50G,h_vmem=50G,h_fsize=10G
 #$ -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/CN_V12F14-053_D1_output.txt
 #$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/CN_V12F14-053_D1_error.txt
 #$ -m be
