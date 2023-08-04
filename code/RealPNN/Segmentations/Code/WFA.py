@@ -1,6 +1,8 @@
 import PIL
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
+import numpy as np
+import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import sys
@@ -32,7 +34,7 @@ img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 # WFA threshold
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
+    if img_path.endswith(".tif") and ('V12D07-334_A1') in img_path:
         wfa_img = Image.open(os.path.join(source_dir, img_path))
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
