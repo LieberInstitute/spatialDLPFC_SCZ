@@ -51,6 +51,7 @@ stopifnot("logcounts" %in% assayNames(spe))
 # }, dec$per.block, names(dec$per.block))
 # dev.off()
 
+fld_ftr_slct <- here("processed-data/rds/feature_selection")
 dec <- readRDS(here(fld_ftr_slct, "HVG_imp2.rds"))
 
 
