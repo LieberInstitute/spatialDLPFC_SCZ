@@ -1,6 +1,6 @@
 #!/bin/bash
 #$ -pe local 5
-#$ -l mem_free=80G,h_vmem=80G,h_fsize=20G
+#$ -l mem_free=100G,h_vmem=100G,h_fsize=100G
 #$ -o //dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_V13M06-279_output.txt
 #$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_V13M06-279_error.txt
 #$ -m be
