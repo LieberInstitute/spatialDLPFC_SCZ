@@ -77,7 +77,7 @@ bayesSpace_name <- paste0("bayesSpace_harmony_", k)
 colnames(colData(spe))[ncol(colData(spe))] <- bayesSpace_name
 
 
-fld_data_spatialcluster <- here("process-data", "rds", "spatial_cluster")
+fld_data_spatialcluster <- here("processed-data", "rds", "spatial_cluster")
 dir.create(
   file.path(fld_data_spatialcluster, "BayesSpace"),
   showWarnings = FALSE,
