@@ -56,8 +56,20 @@ set.seed(101)
 # NOTE: is there a diff if I use spe, instead of combine from `correctExperiments`
 f.out <- fastMNN(combined, batch=combined$batch, subset.row=chosen.hvgs)
 
+
+# NOTE: f.out is a singlecellexperiment
+#       It is not easy to convert back to SPE object because of dimensionality diff
+#       Stick with singlecellexperiment
+# fld_batch_correct <- here("processed-data", "rds", "spe", "batch_corrected")
+# f.out <- readRDS(here("processed-data/rds/spe/batch_corrected/test_spe_MNN.rds"))
+
+
+
 fld_batch_correct <- here("processed-data", "rds", "spe", "batch_corrected")
 saveRDS(object = f.out, here(fld_batch_correct, "test_spe_MNN.rds") )
+
+# assays(spe, withDimnames = FALSE)$reconstructed <- assays(f.out)$reconstructed
+
 
 
 # set.seed(103)
