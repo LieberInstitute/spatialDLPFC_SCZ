@@ -13,9 +13,9 @@ disp('Splitting whole slide into individual capture areas')
 
 for i = 1:numel(O)
     tic
-    I1.(O{i}) = img.(O{i})(1:(ceil(y/4))+,:);
-    I2.(O{i}) = img.(O{i})(ceil(y/4)+1:(ceil(y/4)*2),:);
-    I3.(O{i}) = img.(O{i})((ceil(y/4)*2)+1:(ceil(y/4)*3),:);
+    I1.(O{i}) = img.(O{i})(1:ceil(y/4),:);
+    I2.(O{i}) = img.(O{i})(ceil(y/4)+1:ceil(y/4)*2,:);
+    I3.(O{i}) = img.(O{i})((ceil(y/4)*2)+1:ceil(y/4)*3,:);
     I4.(O{i}) = img.(O{i})((ceil(y/4)*3)+1:end,:);
     toc
 end
