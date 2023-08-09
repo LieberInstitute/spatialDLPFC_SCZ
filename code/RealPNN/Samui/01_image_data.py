@@ -79,7 +79,7 @@ spot_positions = pd.read_csv(spot_counts_path, #"y", "x",
                              header = 1,
                              names = ["barcode",  "NAF", "PAF", "NClaudin5", "PClaudin5", "NDAPI", "PDAPI", "NNeuN", "PNeuN", "NWFA", "PWFA"],
                              usecols=columns_to_read)
-spot_positions.index.name = "barcode"
+spot_positions.index = spot_positions.barcode
 
 spot_positions.index = spot_positions.index.astype(str)
 spot_positions.index.is_unique  # Verify if the index is unique
