@@ -14,19 +14,18 @@ from loopy.utils.utils import remove_dupes, Url
 spot_diameter_m = 55e-6 # 55-micrometer diameter for Visium spot
 
 # file paths
-img_channels = ['Autofluorescence', 'Claudin5', 'DAPI', 'NeuN', 'WFA', 'segmented_DAPI',
+img_channels = ['Lipofuscin', 'Claudin5', 'DAPI', 'NeuN', 'WFA', 'segmented_DAPI',
     'segmented_Claudin', 'segmented_NeuN', 'segmented_WFA', 'segmented_Lipofuscin']
 default_channels = {'blue': 'DAPI', 'red': 'WFA'}
 
 master_excel_path = here('raw-data', 'experiment_info', 'VisiumSPG_PNN_Master.xlsx')
-
-img_path = here('processed-data', 'Samui', 'V12F14-053_A1_.tif')
+img_path = here('processed-data', 'Samui', 'section_053_A1V12F14-053_A1.tif')
 json_path = here('processed-data', 'spaceranger', 'V12F14-053_A1', 'outs', 'spatial', 'scalefactors_json.json')
 tissue_positions_path = here('processed-data', 'spaceranger', 'V12F14-053_A1', 'outs', 'spatial', 'tissue_positions.csv')
-spot_counts_path = here('processed-data', 'spaceranger', 'V12F14-053_A1', 'outs', 'spatial', 'tissue_spot_counts_V12F14-053_A1_pixel_counts.csv')
+spot_counts_path = here('processed-data', 'spaceranger', 'V12F14-053_A1', 'outs', 'spatial', 'tissue_spot_counts_correct_counts.csv')
 
 
-out_dir = here('processed-data', 'Samui4')
+out_dir = here('processed-data', 'Samui', 'section_053_A1')
 
 # Read in sample info, subset to relevant columns, and clean
 sample_info = (pd.read_excel(master_excel_path)
@@ -76,16 +75,14 @@ tissue_positions.index.is_unique
 # read the spot counts/positions file #"imagerow", "imagecol",
 columns_to_read = ["barcode",  "NAF", "PAF", "NClaudin5", "PClaudin5", "NDAPI", "PDAPI", "NNeuN", "PNeuN", "NWFA", "PWFA"]
 spot_positions = pd.read_csv(spot_counts_path, #"y", "x",
-                             header = 1,
-                             names = ["barcode",  "NAF", "PAF", "NClaudin5", "PClaudin5", "NDAPI", "PDAPI", "NNeuN", "PNeuN", "NWFA", "PWFA"],
+                             # header = 1,
+                             # names = ["barcode",  "NAF", "PAF", "NClaudin5", "PClaudin5", "NDAPI", "PDAPI", "NNeuN", "PNeuN", "NWFA", "PWFA"],
                              usecols=columns_to_read)
-spot_positions.index = spot_positions.barcode
 
+spot_positions.set_index("barcode", inplace=True) # Set 'barcode' as the index column
 spot_positions.index = spot_positions.index.astype(str)
 spot_positions.index.is_unique  # Verify if the index is unique
 
-# Set 'barcode' as the index column
-spot_positions = spot_positions.set_index('barcode')
 
 # add the tissue positions for test sample
 test_sample.add_coords(
@@ -108,4 +105,3 @@ test_sample.add_image(tiff = img_path, channels = img_channels, scale = m_per_px
 test_sample.write()
 
 
-# test line
