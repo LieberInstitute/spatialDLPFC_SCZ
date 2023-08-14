@@ -25,7 +25,8 @@ tissue_positions_path = here('processed-data', 'spaceranger', 'V12F14-053_A1', '
 spot_counts_path = here('processed-data', 'spaceranger', 'V12F14-053_A1', 'outs', 'spatial', 'tissue_spot_counts_correct_counts.csv')
 
 
-out_dir = here('processed-data', 'Samui', 'section_053_A1')
+# out_dir = here('processed-data', 'Samui', 'section_053_A1')
+out_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Samui/section_053_A1_/'
 
 # Read in sample info, subset to relevant columns, and clean
 sample_info = (pd.read_excel(master_excel_path)
@@ -73,7 +74,7 @@ tissue_positions.index = tissue_positions.index.astype(str)
 tissue_positions.index.is_unique
 
 # read the spot counts/positions file #"imagerow", "imagecol",
-columns_to_read = ["barcode",  "NAF", "PAF", "NClaudin5", "PClaudin5", "NDAPI", "PDAPI", "NNeuN", "PNeuN", "NWFA", "PWFA"]
+columns_to_read = ["barcode",  "NAF", "PAF", "CNAF", "NClaudin5", "PClaudin5", "CNClaudin5", "NDAPI", "PDAPI", "CNDAPI", "NNeuN", "PNeuN", "CNNeuN", "NWFA", "PWFA", "CNWFA"]
 spot_positions = pd.read_csv(spot_counts_path, #"y", "x",
                              # header = 1,
                              # names = ["barcode",  "NAF", "PAF", "NClaudin5", "PClaudin5", "NDAPI", "PDAPI", "NNeuN", "PNeuN", "NWFA", "PWFA"],
