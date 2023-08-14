@@ -32,7 +32,7 @@ from stitched_functions import draw_contours, save_coordinates
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_dapi = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/DAPI/DAPI_binarized/'
+dst_dir_dapi = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/DAPI/test_slide3/'
 
 # test file paths
 img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12D07-334_A1.tif')
@@ -42,7 +42,7 @@ img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V12D07') in img_path:
+    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
         dapi_img = Image.open(os.path.join(source_dir, img_path))
         dapi_img.seek(2)
         dapi = np.array(dapi_img, dtype = 'uint8')
@@ -52,12 +52,12 @@ for img_path in os.listdir(source_dir):
         dapi_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(dapi_contours), "in", img_path)
         dp_cnt = cv2.drawContours(dapi_c, dapi_contours, -1, (0, 255, 0), 2)
-        cv2.imwrite(dst_dir_dapi + img_path.split('.')[0] + '_dapi_segmented_green.tif', dp_cnt)
+        # cv2.imwrite(dst_dir_dapi + img_path.split('.')[0] + '_dapi_segmented_green.tif', dp_cnt)
         for cnt in dapi_contours:
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
             if area >=100:
-                dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (255,0,0), 1)
+                dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), 1)
             elif area <50:
                 dp_cnt = cv2.rectangle(dapi_c, (x,y), (x+w, y+h), (0,0,0), -1)
         gray_segmented = cv2.cvtColor(dp_cnt,cv2.COLOR_RGB2GRAY)
