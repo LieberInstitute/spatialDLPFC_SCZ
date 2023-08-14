@@ -33,9 +33,10 @@ from stitched_functions import draw_contours, all_pixels
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
 img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
-dst_dir_claudin = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'Claudin', 'claudin_binarized')
+img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
+# dst_dir_claudin = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'Claudin', 'claudin_binarized')
 # dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
-dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/'
+dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/test_slide3/'
 
 # image paths
 img_A1_r1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
@@ -66,8 +67,8 @@ csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealP
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(img_dir):
-    if img_path.endswith(".tif") and ('V12D07') in img_path:
-        claudin_img = Image.open(os.path.join(source_dir, img_path))
+    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
+        claudin_img = Image.open(os.path.join(img_dir, img_path))
         claudin_img.seek(1)
         claudin = np.array(claudin_img, dtype = 'uint8')
         print("Raw image stats-", "\nMean:\t", claudin.mean(), "\nMax:\t", claudin.max(), "\nMin:\t", claudin.min())
@@ -76,9 +77,15 @@ for img_path in os.listdir(img_dir):
         _,thresh = cv2.threshold(gray, np.mean(gray), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU) #_INV
         claudin_contours,_ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(claudin_contours), "in", img_path)
-        cl_cnt = cv2.drawContours(claudin_c, claudin_contours, -1, (0, 0, 255), 1)
-        cv2.imwrite(dst_dir_claudin + img_path.split('.')[0] + '_claudin_segmented_red.tif', cl_cnt)
-
+        cl_cnt = cv2.drawContours(claudin_c, claudin_contours, -1, (0, 255, 0), 2)
+        # cv2.imwrite(dst_dir_claudin + img_path.split('.')[0] + '_claudin_segmented_red.tif', cl_cnt)
+        for cnt in claudin_contours:
+            x,y,w,h = cv2.boundingRect(cnt)
+            area = cv2.contourArea(cnt)
+            if area<5000:
+                cla_rect = cv2.rectangle(claudin_c, (x,y), (x+w, y+h), (0,0,0), 1) #green
+            elif area>=5000:
+                cla_rect = cv2.rectangle(claudin_c, (x,y), (x+50+w+100, y+50+h+100), (0,0,0), -1) #yellow
         gray_segmented = cv2.cvtColor(cl_cnt,cv2.COLOR_RGB2GRAY)
         thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
         # binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
@@ -93,6 +100,7 @@ for img_path in os.listdir(img_dir):
 
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(binary_segmented, cmap = 'gray')
+
 fig.show()
 
 
