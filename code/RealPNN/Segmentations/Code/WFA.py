@@ -1,3 +1,13 @@
+'''
+For Stitched Visium-IF tissue sections from VistoSeg SplitSlide output
+Channel0 = AF
+Channel1 = Claudin - 5 (Alex 488),
+Channel2 = DAPI,
+Channel3 = NeuN,
+Channel4 = WFA
+'''
+
+
 import PIL
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
 import os
@@ -25,7 +35,7 @@ from shapely.geometry.polygon import Polygon
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/WFA/WFA_binarized/'
+dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/WFA_test_slide3/'
 
 # file paths for test
 Image.MAX_IMAGE_PIXELS = None
@@ -34,39 +44,42 @@ img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 # WFA threshold
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V12D07-334_A1') in img_path:
+    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
         wfa_img = Image.open(os.path.join(source_dir, img_path))
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
         wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
-        hierachy, img_threshold = cv2.threshold(wfa,  100, 150, cv2.THRESH_BINARY)
+        hierachy, img_threshold = cv2.threshold(wfa,  80, 150, cv2.THRESH_BINARY)
         img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(img_th_c)
         # fig.show()
         wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(wfa_contours), "in", img_path)
-        wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (255, 255, 0), 1) # yellow all contours
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_segmented_blue.tif', wfa_cnt)
-        fig,ax = plt.subplots(figsize = (20,20))
-        ax.imshow(wfa_cnt) # , cmap = 'gray'
-        plt.title(img_path.split('.')[0])
-        fig.show()
+        wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) # yellow all contours
+        # cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_segmented.tif', wfa_cnt)
+        # fig,ax = plt.subplots(figsize = (20,20))
+        # ax.imshow(wfa_cnt) # , cmap = 'gray'
+        # plt.title(img_path.split('.')[0])
+        # fig.show()
         for cnt in wfa_contours:
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
             if area >=50:
-                wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), 1)
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1)
             elif area<50:
-                wfa_cnt = cv2.rectangle(wfa_c, (x,y), (x+w, y+h), (0,0,0), -1)
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1)
         gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
         thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
         # binary_segmented_wfa = cv2.normalize(np.array(thresh_segmented_wfa, dtype = 'uint8'), np.zeros(np.array(thresh_segmented_wfa, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
         # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(binary_segmented_wfa, cmap = 'gray')
+        # ax.imshow(thresh_segmented_wfa, cmap = 'gray')
+        # plt.title(img_path.split('.')[0])
         # fig.show()
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_binarized.tif', thresh_segmented_wfa)
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_tested.tif', thresh_segmented_wfa)
         # approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
+
+
 # wfa contours for 1 image
 Image.MAX_IMAGE_PIXELS = None
 wfa_img = Image.open(img_A1)
