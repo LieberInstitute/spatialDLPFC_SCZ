@@ -1,5 +1,5 @@
 #!/bin/bash
-#$ -l mem_free=50G,h_vmem=50G,h_fsize=10G
+#$ -l mem_free=50G,h_vmem=50G,h_fsize=50G
 #$ -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/CN_V12F14-057_C1_output.txt
 #$ -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/CN_V12F14-057_C1_error.txt
 #$ -m be
@@ -21,7 +21,7 @@ echo "****"
 
 ## List current modules for reproducibility
 module matlab/R2019a
-mask='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/all_channels_segemented/Test2/V12F14-057_C1.mat'
+mask='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/segmented_channels_stitched/Test2/V12F14-057_C1.mat'
 jsonname='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/V12F14-057_C1/outs/spatial/scalefactors_json.json'
 posname='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/V12F14-057_C1/outs/spatial/tissue_positions.csv'
 
