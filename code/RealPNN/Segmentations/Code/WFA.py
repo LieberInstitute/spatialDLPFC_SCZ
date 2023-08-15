@@ -67,7 +67,7 @@ for img_path in os.listdir(source_dir):
             area = cv2.contourArea(cnt)
             if area >=50:
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1)
-            elif area<50:
+            elif area<150:
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1)
         gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
         thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, np.mean(gray_segmented_wfa), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
