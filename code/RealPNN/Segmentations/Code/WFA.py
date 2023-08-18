@@ -35,7 +35,7 @@ from shapely.geometry.polygon import Polygon
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/WFA_test_slide3/'
+dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/test_slide3/'
 
 # file paths for test
 Image.MAX_IMAGE_PIXELS = None
@@ -44,12 +44,12 @@ img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 # WFA threshold
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
+    if img_path.endswith(".tif") and ('V12D07-334_A1') in img_path:
         wfa_img = Image.open(os.path.join(source_dir, img_path))
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
         wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
-        hierachy, img_threshold = cv2.threshold(wfa,  80, 150, cv2.THRESH_BINARY)
+        hierachy, img_threshold = cv2.threshold(wfa,  80, 255, cv2.THRESH_BINARY) # 150
         img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(img_th_c)
@@ -57,7 +57,17 @@ for img_path in os.listdir(source_dir):
         wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(wfa_contours), "in", img_path)
         wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) # yellow all contours
-        # cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_segmented.tif', wfa_cnt)
+        gray_contoured_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
+        # binarized_image = np.where(gray_contoured_wfa > 80, 255, 0).astype(np.uint8)
+        binarized_image = np.zeros_like(gray_contoured_wfa, dtype=np.uint8)
+        for y in range(gray_contoured_wfa.shape[0]):
+            for x in range(gray_contoured_wfa.shape[1]):
+                if gray_contoured_wfa[y, x] > 80:
+                    binarized_image[y, x] = 255
+                else:
+                    binarized_image[y, x] = 0
+
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_contours_A1_.tif', binarized_image)
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(wfa_cnt) # , cmap = 'gray'
         # plt.title(img_path.split('.')[0])
@@ -76,7 +86,7 @@ for img_path in os.listdir(source_dir):
         # ax.imshow(thresh_segmented_wfa, cmap = 'gray')
         # plt.title(img_path.split('.')[0])
         # fig.show()
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_tested.tif', thresh_segmented_wfa)
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_test.tif', thresh_segmented_wfa)
         # approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
 
 
