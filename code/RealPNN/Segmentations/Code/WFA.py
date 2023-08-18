@@ -64,13 +64,14 @@ for img_path in os.listdir(source_dir):
         # ax.imshow(wfa_cnt) # , cmap = 'gray'
         # plt.title(img_path.split('.')[0])
         # fig.show()
+        area = []
         for cnt in wfa_contours:
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
-            if area >=50 and area<500:
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,255,0), -1) # rectangle
-            elif: # area<150 and area>=10000
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), -1) # rectangle
+            if area >=50 and area<5000:
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,255,0), 2) # rectangle
+            else: # area<150 and area>=10000
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), 2) # rectangle
         # gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
         # thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
         # binary_segmented_wfa = cv2.normalize(np.array(thresh_segmented_wfa, dtype = 'uint8'), np.zeros(np.array(thresh_segmented_wfa, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
@@ -78,7 +79,8 @@ for img_path in os.listdir(source_dir):
         # ax.imshow(thresh_segmented_wfa, cmap = 'gray')
         # plt.title(img_path.split('.')[0])
         # fig.show()
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_seg_.tif', wfa_cnt)
+        area = np.array(area, dtype = 'uint8')
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_seg___.tif', wfa_cnt)
         # approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
 
 
