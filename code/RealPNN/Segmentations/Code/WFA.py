@@ -28,8 +28,8 @@ from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,bl
 from skimage.draw import polygon_perimeter
 from itertools import product
 from collections import defaultdict
-from shapely.geometry import Point
-from shapely.geometry.polygon import Polygon
+# from shapely.geometry import Point
+# from shapely.geometry.polygon import Polygon # shapely module error
 
 # directory path
 Image.MAX_IMAGE_PIXELS = None
@@ -51,36 +51,31 @@ for img_path in os.listdir(source_dir):
         wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
         hierachy, img_threshold = cv2.threshold(wfa,  80, 255, cv2.THRESH_BINARY) # 150
         img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
-        # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(img_th_c)
-        # fig.show()
         wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(wfa_contours), "in", img_path)
-        wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) # yellow all contours
-        # gray_contoured_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
-        # binarized_image = cv2.threshold(gray_contoured_wfa, 80 , 255, cv2.THRESH_BINARY)[1] #_INV #| cv2.THRESH_OTSU
-        # cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_contours.tif', binarized_image)
-        # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(wfa_cnt) # , cmap = 'gray'
-        # plt.title(img_path.split('.')[0])
-        # fig.show()
-        area = []
+        # wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) # yellow all contours
+        area_ = []
+        count_outside_range = 0
         for cnt in wfa_contours:
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
-            if area >=50 and area<5000:
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,255,0), 2) # rectangle
+            area_.append(area) # max(area_) = 1809854.0
+            # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
+            if area >= 100 and area<100000:
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1) # rectangle
             else: # area<150 and area>=10000
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), 2) # rectangle
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
+                if area >= 100000:
+                    text = f"{area:.2f}"
+                    text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 5.0, 1)[0]
+                    text_x = x + (w - text_size[0]) // 2
+                    text_y = y + (h + text_size[1]) // 2
+                    cv2.putText(wfa_cnt, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 255, 0), 2)
+                    count_outside_range += 1
         # gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
         # thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
-        # binary_segmented_wfa = cv2.normalize(np.array(thresh_segmented_wfa, dtype = 'uint8'), np.zeros(np.array(thresh_segmented_wfa, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(thresh_segmented_wfa, cmap = 'gray')
-        # plt.title(img_path.split('.')[0])
-        # fig.show()
-        area = np.array(area, dtype = 'uint8')
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_seg___.tif', wfa_cnt)
+        print("Contours with area greater than 100000:", count_outside_range)
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '___wfa__seg___box_print.tif', wfa_cnt)
         # approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
 
 
