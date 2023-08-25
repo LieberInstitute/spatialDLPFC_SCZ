@@ -290,3 +290,6 @@ metadata = {'axes': 'YXZ', 'channel_names': channel_names} #ZYX right ones
 
 # Save the new image with metadata using tifffile module
 tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/all_channels_segemented/Test2/V12F14-053_D1.tif', new_image, metadata=metadata)
+
+
+### code to do this for multiple images in onr slide
