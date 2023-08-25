@@ -293,3 +293,20 @@ tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-da
 
 
 ### code to do this for multiple images in onr slide
+A1_images, B1_images, C1_images, D1_images = [], [], [], []
+A1_paths, B1_paths, C1_paths, D1_paths = [], [], [], []
+
+
+for folder in folder_names:
+    filenames = os.listdir(folder)
+    if len(filenames) >= 4:  # Check if there are at least 4 files in the folder
+        for filename in filenames:
+            filename_parts = filename.split('.')[0].split('_')
+            if len(filename_parts) == 4 and filename_parts[1] in ['A1', 'B1', 'C1', 'D1']:
+                # if filename_parts[1] == 'A1':
+                #     A1_image_path = os.path.join(folder, filename)
+                #     print("first", A1_image_path)
+                #     A1_paths.append(A1_image_path)
+                #     A1_ = np.array(Image.open(A1_image_path))
+                #     print("first___", A1_image_path)
+                #     A1_images.append(A1_)
