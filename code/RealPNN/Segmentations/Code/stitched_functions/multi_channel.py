@@ -332,3 +332,14 @@ for folder in folder_names:
                     print("second__", D1_image_path)
                     D1_images.append(D1_)
 
+# stack all the 5 channels for the 4 tissue sections
+A1_combined5 = np.stack(A1_images) # (5, 20997, 18600)
+B1_combined5 = np.stack(B1_images) # (5, 18497, 18600)
+C1_combined5 = np.stack(C1_images) # (5, 18497, 18600)
+D1_combined5 = np.stack(D1_images) # (5, 15997, 18600)
+
+tifffile.imwrite(stitched_dir + 'A1_stitched.tif', A1_combined5)
+tifffile.imwrite(stitched_dir + 'B1_stitched.tif', B1_combined5)
+tifffile.imwrite(stitched_dir + 'C1_stitched.tif', C1_combined5)
+tifffile.imwrite(stitched_dir + 'D1_stitched.tif', D1_combined5)
+
