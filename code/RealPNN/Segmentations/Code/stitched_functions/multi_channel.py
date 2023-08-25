@@ -310,3 +310,25 @@ for folder in folder_names:
                 #     A1_ = np.array(Image.open(A1_image_path))
                 #     print("first___", A1_image_path)
                 #     A1_images.append(A1_)
+                if filename_parts[1] == 'B1':
+                    B1_image_path = os.path.join(folder, filename)
+                    print("second", B1_image_path)
+                    B1_paths.append(B1_image_path)
+                    B1_ = np.array(Image.open(B1_image_path))
+                    print("second__", B1_image_path)
+                    B1_images.append(B1_)
+                elif filename_parts[1] == 'C1':
+                    C1_image_path = os.path.join(folder, filename)
+                    print("third", C1_image_path)
+                    C1_paths.append(C1_image_path)
+                    C1_ = np.array(Image.open(C1_image_path))
+                    print("second__", C1_image_path)
+                    C1_images.append(C1_)
+                elif filename_parts[1] == 'D1':
+                    D1_image_path = os.path.join(folder, filename)
+                    print("fourth", D1_image_path)
+                    D1_paths.append(D1_image_path)
+                    D1_ = np.array(Image.open(D1_image_path))
+                    print("second__", D1_image_path)
+                    D1_images.append(D1_)
+
