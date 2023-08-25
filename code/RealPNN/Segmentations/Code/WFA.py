@@ -61,20 +61,18 @@ for img_path in os.listdir(source_dir):
             area = cv2.contourArea(cnt)
             area_.append(area) # max(area_) = 1809854.0
             # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
-            if area in [535359.00, 1397823.00, 148415.00, 1809854.00]: # area<150 and area>=10000
-                print(f"Area {area} satisfies condition 1")
-                wfa_cnt = img_th_c.copy()
+            if area in [535359.00, 1397823.00, 148415.00]: # area<150 and area>=10000
+            #     # print(f"Area {area} satisfies condition 1")
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
-            elif area >= 200 and area<1000000:
-                print(f"Area {area} satisfies condition 2")
+            elif area >= 200 and area<=1809854: #1809854.00
+                # print(f"Area {area} satisfies condition 2")
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1) # rectangle
             else:
                 # print(f"Area {area} satisfies the else condition")
-                wfa_cnt = img_th_c.copy()
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
                 # if area >= 100000:
                 #     text = f"{area:.2f}"
-                #     text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 5.0, 1)[0]
+                #     text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 5.0, 2)[0]
                 #     text_x = x + (w - text_size[0]) // 2
                 #     text_y = y + (h + text_size[1]) // 2
                 #     cv2.putText(wfa_cnt, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 255, 0), 2)
@@ -84,7 +82,6 @@ for img_path in os.listdir(source_dir):
         # print("Contours with area greater than 100000:", count_outside_range)
         cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '___wfa__seg___box_.tif', wfa_cnt)
         # approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
-
 
 # wfa contours for 1 image
 Image.MAX_IMAGE_PIXELS = None
@@ -221,3 +218,46 @@ fig, ax = plt.subplots(figsize=(20, 20))
 ax.imshow(composite)
 ax.set_axis_off()
 plt.show()
+
+
+
+##### V12D07-334_C1
+Image.MAX_IMAGE_PIXELS = None
+for img_path in os.listdir(source_dir):
+    if img_path.endswith(".tif") and ('V12D07-334_D1') in img_path:
+        wfa_img = Image.open(os.path.join(source_dir, img_path))
+        wfa_img.seek(4)
+        wfa = np.array(wfa_img, dtype = 'uint8')
+        wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
+        hierachy, img_threshold = cv2.threshold(wfa,  80, 255, cv2.THRESH_BINARY) # 150
+        img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
+        wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(wfa_contours), "in", img_path)
+        # wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) # yellow all contours
+        area_ = []
+        count_outside_range = 0
+        for cnt in wfa_contours:
+            x,y,w,h = cv2.boundingRect(cnt)
+            area = cv2.contourArea(cnt)
+            area_.append(area) # max(area_) = 1809854.0
+            # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
+            # if area in [535359.00, 1397823.00, 148415.00]: # area<150 and area>=10000
+            #     # print(f"Area {area} satisfies condition 1")
+            #     wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
+            if area >= 100 and area<=100000: #1809854.00
+                # print(f"Area {area} satisfies condition 2")
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1) # rectangle
+            else:
+                # print(f"Area {area} satisfies the else condition")
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
+                # if area >= 100000:
+                #     text = f"{area:.2f}"
+                #     text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 5.0, 2)[0]
+                #     text_x = x + (w - text_size[0]) // 2
+                #     text_y = y + (h + text_size[1]) // 2
+                #     cv2.putText(wfa_cnt, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 255, 0), 2)
+                #     count_outside_range += 1
+        gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
+        thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 50, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '__wfa.tif', thresh_segmented_wfa)
+
