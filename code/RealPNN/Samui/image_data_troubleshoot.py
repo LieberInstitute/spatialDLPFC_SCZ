@@ -28,4 +28,22 @@ img_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Vis
 
 
 # out_dir = here('processed-data', 'Samui', 'section_053_A1')
-out_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Samui/section_053_A1_/'
+out_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Samui/section_V13M06-279_A1/'
+
+# Read in sample info, subset to relevant columns, and clean
+sample_info = (pd.read_excel(master_excel_path)
+    .query('`Will be Sequenced? ` == "Yes"')
+    .filter(["BrNumbr", "Slide #", "Array #", "Sample #"])
+    #   Clean up column names
+    .rename(
+        columns = {
+            "BrNumbr": "br_num",
+            "Slide #": "sample_id",
+            "Array #": "array_num",
+            "Sample #": "sample_num"
+        }
+    )
+)
+
+# extract the experiment number based on the sample number
+sample_info['experiment_num'] = (((sample_info['sample_num'].str.extract(r'(\d+)').astype(int)) -1) // 8 + 1).astype(str)
