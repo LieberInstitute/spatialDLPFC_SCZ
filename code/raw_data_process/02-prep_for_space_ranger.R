@@ -86,11 +86,25 @@ to_run_df |>
         )
       
       # Assemble the job submission command
+      
+      # SGE version (Deprecated)
+      # job_sub_commond <- paste(
+      #   "qsub",
+      #   "-N", paste0("run_SR_", sample_name), #Sample specific job name
+      #   "-wd", lib_sparanger, # Starting directory
+      #   file.path(lib_sparanger, "spaceranger_SGE.sh"),
+      #   sep = " "
+      # )
+      
+      
+      # SLURM Implementation
+      # TODO: write a SLURM version
+      stop("SLURM version has not been implemented yet.")
       job_sub_commond <- paste(
         "qsub",
         "-N", paste0("run_SR_", sample_name), #Sample specific job name
         "-wd", lib_sparanger, # Starting directory
-        file.path(lib_sparanger, "spaceranger.sh"),
+        file.path(lib_sparanger, "spaceranger_SLURM.sh"),
         sep = " "
       )
       
