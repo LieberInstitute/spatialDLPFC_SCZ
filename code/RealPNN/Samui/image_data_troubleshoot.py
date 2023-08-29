@@ -49,10 +49,13 @@ sample_info = (pd.read_excel(master_excel_path)
 sample_info['experiment_num'] = (((sample_info['sample_num'].str.extract(r'(\d+)').astype(int)) -1) // 8 + 1).astype(str)
 
 # create the data structure needed for Samui using the image data
-test_sample = Sample(name = 'V12F14-053_A1', path = out_dir)
+test_sample = Sample(name = 'V13M06-279_A1', path = out_dir)
+
+# adding this variable by calculating this from another json file
+m_per_px = 4.211664472772355e-07
 
 # add the IF image for test sample
-test_sample.add_image(tiff = img_path, channels = img_channels, scale = m_per_px,
+test_sample.add_image(tiff = img_path, channels = img_channels, # scale = m_per_px,
     defaultChannels = default_channels)
 
 # write to the output directory
