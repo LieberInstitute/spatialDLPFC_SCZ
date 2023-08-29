@@ -17,7 +17,9 @@ input_data_wh_folder <- file.path(
   c(
     #TODO: add here when more subfolder
     "2023-01-29_SPag010323",
-    "2022-12-13_SPag120622_2"
+    "2022-12-13_SPag120622_2",
+    "2023-06-29_KMay061223/KMay061223-391095963/",
+    "2023-08-24_SPag080923_S4/"
   ) 
 )
 
@@ -37,7 +39,7 @@ processed_fastq_fldr <- here("raw-data", "FASTQ")
 processed_sparang_fldr <- here("processed-data", "spaceranger")
 
 ## Loupe Output folder 
-processed_loupe_fldr <- here("processed-data", "VistpSeg", "loupe")
+processed_loupe_fldr <- here("processed-data", "VistoSeg", "loupe")
 
 
 
