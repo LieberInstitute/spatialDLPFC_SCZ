@@ -14,7 +14,8 @@ from loopy.utils.utils import remove_dupes, Url
 spot_diameter_m = 55e-6 # 55-micrometer diameter for Visium spot
 
 # file paths
-img_channels = ['Lipofuscin', 'Claudin5', 'DAPI', 'NeuN', 'WFA', 'segmented_DAPI',
+img_channels = ['Lipofuscin', 'Claudin5', 'DAPI', 'NeuN', 'WFA'
+                'segmented_DAPI',
     'segmented_Claudin', 'segmented_NeuN', 'segmented_WFA', 'segmented_Lipofuscin']
 default_channels = {'blue': 'DAPI', 'red': 'WFA'}
 
