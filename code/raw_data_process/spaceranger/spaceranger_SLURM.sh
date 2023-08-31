@@ -1,10 +1,11 @@
 #!/bin/bash
+##SBATCH --mem=1G
 #SBATCH --mem=80G
-#SBATCH -n 8
+#SBATCH --node=1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu   # TODO: edit this mail address
-#SBATCH --output=logs/${SLURM_JOB_NAME}.txt   # file to collect standard output
-#SBATCH --error=logs/${SLURM_JOB_NAME}.txt    # file to collect standard output
+#SBATCH --output=logs/%x.txt   # file to collect standard output
+#SBATCH --error=logs/%x.txt    # file to collect standard output
 
 
 echo "**** Job starts ****"
@@ -14,7 +15,7 @@ echo "**** JHPCE info ****"
 echo "User: ${USER}"
 echo "Job id: ${SLURM_JOBID}"
 echo "Job name: ${SLURM_JOB_NAME}"
-echo "Hostname: ${SLURM_NODENAME}"
+echo "Hostname: ${SLURM_CLUSTER_NAME}"
 echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 
 ## load SpaceRanger
@@ -28,12 +29,12 @@ module list
 # TODO: change $JOB_NAME to slurm version
 # TODO: change {SGE_TASK_ID} to just 1
 
-# SAMPLE=$(awk 'BEGIN {FS="\t"} {print $1}' parameters/${SLURM_JOB_NAME}.tsv | awk "NR==1")
-# SLIDE=$(awk 'BEGIN {FS="\t"} {print $2}' parameters/${SLURM_JOB_NAME}.tsv | awk "NR==1")
-# CAPTUREAREA=$(awk 'BEGIN {FS="\t"} {print $3}' parameters/${SLURM_JOB_NAME}.tsv | awk "NR==1")
-# IMAGEPATH=$(awk 'BEGIN {FS="\t"} {print $4}' parameters/${SLURM_JOB_NAME}.tsv | awk "NR==1")
-# LOUPEPATH=$(awk 'BEGIN {FS="\t"} {print $5}' parameters/${SLURM_JOB_NAME}.tsv | awk "NR==1")
-# FASTQPATH=$(awk 'BEGIN {FS="\t"} {print $6}' parameters/${SLURM_JOB_NAME}.tsv | awk "NR==1")
+SAMPLE=$(awk 'BEGIN {FS="\t"} {print $1}' parameters/${SLURM_JOB_NAME}.tsv)
+SLIDE=$(awk 'BEGIN {FS="\t"} {print $2}' parameters/${SLURM_JOB_NAME}.tsv)
+CAPTUREAREA=$(awk 'BEGIN {FS="\t"} {print $3}' parameters/${SLURM_JOB_NAME}.tsv)
+IMAGEPATH=$(awk 'BEGIN {FS="\t"} {print $4}' parameters/${SLURM_JOB_NAME}.tsv)
+LOUPEPATH=$(awk 'BEGIN {FS="\t"} {print $5}' parameters/${SLURM_JOB_NAME}.tsv)
+FASTQPATH=$(awk 'BEGIN {FS="\t"} {print $6}' parameters/${SLURM_JOB_NAME}.tsv)
 
 echo "Processing sample ${SAMPLE} from slide ${SLIDE} and capture area ${CAPTUREAREA} with image ${IMAGEPATH} and aligned with ${LOUPEPATH} with FASTQs: ${FASTQPATH}"
 date
