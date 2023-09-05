@@ -1,7 +1,7 @@
 #!/bin/bash
-##SBATCH --mem=1G
-#SBATCH --mem=80G
-#SBATCH --node=1
+#SBATCH --mem=1G
+##SBATCH --mem=80G
+#SBATCH -n 1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu   # TODO: edit this mail address
 #SBATCH --output=logs/%x.txt   # file to collect standard output
