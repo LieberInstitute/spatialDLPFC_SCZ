@@ -51,13 +51,13 @@ expr_meta |>
     if(length(list.files(fastq_fldr_path)) != 0){
       return()
     }
-    
+    # browser()
     raw_fast_paths <- grep(
       # TODO: ask someone to clean up this regex
       pattern = paste0(
         "[^/]*", # File path prefix
-        "/", `Sample #`, # Starts with /xxv or /PNN-xxv
-        # "(/|`/PNN-`)", `Sample #`, # Starts with /xxv or /PNN-xxv
+        # "/", `Sample #`, # Starts with /xxv
+        "(/|/PNN-)", `Sample #`, # Starts with /xxv or /PNN-xxv
         "[-]", Experimenter, #e.g. `-shk` or `-SHK`
         "[^/]*",
         "\\.fastq\\.gz$"),
@@ -65,6 +65,13 @@ expr_meta |>
       ignore.case = TRUE,
       value = TRUE
     )
+    
+    # Only for quick debugging
+    # grep(
+    #   pattern = `Sample #`,
+    #   x = raw_all_fastq_files,
+    #   ignore.case = TRUE,
+    #   value = TRUE)
     
     
     # Error Prevention
