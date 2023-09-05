@@ -16,10 +16,13 @@ input_data_wh_folder <- file.path(
   "raw-data",  
   c(
     #TODO: add here when more subfolder
+    # NOTE: should not contain the dash at the end
+    # Wrong example "2023-06-29_KMay061223/KMay061223-391095963/"
+    # Correct example "2023-06-29_KMay061223/KMay061223-391095963"
     "2023-01-29_SPag010323",
     "2022-12-13_SPag120622_2",
-    "2023-06-29_KMay061223/KMay061223-391095963/",
-    "2023-08-24_SPag080923_S4/"
+    "2023-06-29_KMay061223/KMay061223-391095963",
+    "2023-08-24_SPag080923_S4"
   ) 
 )
 
