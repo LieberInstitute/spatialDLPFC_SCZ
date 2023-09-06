@@ -1,7 +1,7 @@
 # TODO: move this to space ranger part
 # # Create Space Ranger folder if not exists
 # mkdir_if_not_exist(
-#   processed_sparang_fldr, 
+#   processed_sparang_fldr,
 #   recursive = TRUE # Create "raw-data" folder if not exists
 # )
 
@@ -30,16 +30,22 @@ SR_folders_df <-
       ),
       value = TRUE
     )
-  ) |> 
+  ) |>
   mutate(
     success = have_SR_summary(sample_name)
-  ) |> 
+  ) |>
   filter(success == TRUE)
 
 
 
 
 # loupe_path <- here("processed-data", "VistoSeg", "loupe")
+
+# expr_meta <- readr::read_csv(
+#   file = here("code", "raw_data_process",
+#               "sample_meta_path.csv")
+# )
+
 
 to_run_df <- dplyr::anti_join(
   x = expr_meta,
@@ -54,7 +60,8 @@ to_run_df <- dplyr::anti_join(
 # (Optional) TODO: clean up to run log and parameter files
 
 #  Set up jobs ------------------------------------------------------------
-to_run_df |> 
+to_run_df |>
+  # filter(`Sample #` == "13v") |>  # TODO: delete for latter
   pwalk(
     .f = function(
     sample_name,
@@ -64,12 +71,8 @@ to_run_df |>
     fastq_fldr_path,
     ...
     ){
-      browser()
-      # for(i in 1:nrow(to_run_df)){
-      # sample_name <- to_run_df$sample_name[i]
-      
-      # to_run_df |> 
-      #   filter(sample_name == sample_name) |> 
+      # browser()
+
       c(
         sample_name,
         `Slide #`,
@@ -77,7 +80,8 @@ to_run_df |>
         paste0(loupe_file_path, ".tif"),
         paste0(loupe_file_path, ".json"),
         fastq_fldr_path
-      ) |> 
+      ) |>
+        t() |>
         write.table(
           file=file.path(pmtr_sparanger,
                          paste0(sample_name,".tsv")),
@@ -98,16 +102,15 @@ to_run_df |>
       
       
       # SLURM Implementation
-      # TODO: write a SLURM version
-      stop("SLURM version has not been implemented yet.")
       job_sub_commond <- paste(
-        "qsub",
-        "-N", paste0("run_SR_", sample_name), #Sample specific job name
-        "-wd", lib_sparanger, # Starting directory
+        "sbatch",
+        "--job-name", sample_name, #Sample specific job name
+        "--chdir", lib_sparanger, # Starting directory
         file.path(lib_sparanger, "spaceranger_SLURM.sh"),
         sep = " "
       )
       
+      stop("SLURM version has not been tested yet.")
       
       # Run Spaceranger for each sample as a job
       system(
