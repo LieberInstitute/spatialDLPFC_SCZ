@@ -110,7 +110,7 @@ to_run_df |>
         sep = " "
       )
       
-      stop("SLURM version has not been tested yet.")
+      # stop("SLURM version has not been tested yet.")
       
       # Run Spaceranger for each sample as a job
       system(
