@@ -1,7 +1,8 @@
 #!/bin/bash
-#SBATCH --mem=1G
-##SBATCH --mem=80G
-#SBATCH -n 1
+##SBATCH --mem=1G   # Only for debug
+##SBATCH -n 1         # Only for debug
+#SBATCH --mem=80G
+#SBATCH -n 8
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu   # TODO: edit this mail address
 #SBATCH --output=logs/%x.txt   # file to collect standard output
@@ -20,7 +21,7 @@ echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 
 ## load SpaceRanger
 # TODO: should we use paceranger 2.1 or 2.0
-module load spaceranger/2.0.0
+module load spaceranger/2.1.0
 
 ## List current modules for reproducibility
 module list
@@ -47,22 +48,23 @@ ls -lh ${LOUPEPATH}
 # export NUMBA_NUM_THREADS=1
 
 ## Run SpaceRanger
-# TODO: Compare this to Ryan's code
-# spaceranger count \
-#     --id=${SAMPLE} \
-#     --transcriptome=/dcs04/lieber/lcolladotor/annotationFiles_LIBD001/10x/refdata-gex-GRCh38-2020-A \
-#     --fastqs=${FASTQPATH} \
-#     --darkimage=${IMAGEPATH} \
-#     --slide=${SLIDE} \
-#     --area=${CAPTUREAREA} \
-#     --loupe-alignment=${LOUPEPATH} \
-#     --jobmode=local \
-#     --localcores=9 \
-#     --localmem=81
+# TODO: possibly change the localcores and localmem as the system setting
+spaceranger count \
+    --id=${SAMPLE} \
+    --transcriptome=/dcs04/lieber/lcolladotor/annotationFiles_LIBD001/10x/refdata-gex-GRCh38-2020-A \
+    --fastqs=${FASTQPATH} \
+    --darkimage=${IMAGEPATH} \
+    --slide=${SLIDE} \
+    --area=${CAPTUREAREA} \
+    --loupe-alignment=${LOUPEPATH} \
+    --jobmode=local \
+    --localcores=8 \
+    --localmem=80
+
 
 ## Update file permission
 # TODO: uncomment at the end
-# sh /dcs04/lieber/lcolladotor/_jhpce_org_LIBD001/update_permissions_spatialteam.sh ${SAMPLE}
+sh /dcs04/lieber/lcolladotor/_jhpce_org_LIBD001/update_permissions_spatialteam.sh ${SAMPLE}
 
 
 ## Move output
