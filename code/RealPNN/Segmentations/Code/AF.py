@@ -5,7 +5,10 @@ Channel1 = Claudin - 5 (Alex 488),
 Channel2 = DAPI,
 Channel3 = NeuN,
 Channel4 = WFA
+
 '''
+
+#jgsrjsr
 
 from __future__ import print_function
 from skimage.feature import peak_local_max
@@ -30,7 +33,7 @@ from stitched_functions import read_img, watershed_segmentation
 from stitched_functions import *
 
 # directory path
-source_dir = pyhere.here('processed-data', 'VistoSeg','captureAreas') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
+# source_dir = pyhere.here('processed-data', 'VistoSeg','captureAreas') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 dst_dir = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'AF', 'test_slide3') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/'
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 dst_dir_af = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/AF/test_slide3/'
