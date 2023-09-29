@@ -91,3 +91,4 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(thresh_segmented, cmap='gray')
 fig.show()
 
+
