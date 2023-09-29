@@ -35,7 +35,7 @@ from collections import defaultdict
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/test_slide3/'
+dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/slide4/'
 
 # file paths for test
 Image.MAX_IMAGE_PIXELS = None
@@ -44,13 +44,18 @@ img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 # WFA threshold
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V12D07-334_B1') in img_path:
+    if img_path.endswith(".tif") and ('V13M06-279_A1') in img_path:
         wfa_img = Image.open(os.path.join(source_dir, img_path))
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
         wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
-        hierachy, img_threshold = cv2.threshold(wfa,  80, 255, cv2.THRESH_BINARY) # 150
+        adjusted = cv2.convertScaleAbs(wfa, alpha=0.3, beta=10)
+        hierachy, img_threshold = cv2.threshold(adjusted,  50, 255, cv2.THRESH_BINARY) # 150
         img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
+        # fig,ax = plt.subplots(figsize = (20,20))
+        # ax.imshow(img_threshold, cmap = 'gray')
+        # fig.show()
+        # cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_thresholded.tif', img_threshold)
         wfa_contours,_ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("found", len(wfa_contours), "in", img_path)
         # wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) # yellow all contours
@@ -61,15 +66,18 @@ for img_path in os.listdir(source_dir):
             area = cv2.contourArea(cnt)
             area_.append(area) # max(area_) = 1809854.0
             # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
-            if area in [535359.00, 1397823.00, 148415.00]: # area<150 and area>=10000
+            if area<1000 and area>=10000: # area<150 and area>=10000
             #     # print(f"Area {area} satisfies condition 1")
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
-            elif area >= 200 and area<=1809854: #1809854.00
-                # print(f"Area {area} satisfies condition 2")
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1) # rectangle
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (255, 153, 255), -1) # rectangle
             else:
-                # print(f"Area {area} satisfies the else condition")
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
+                # print(f"Area {area} satisfies condition 2")
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,255,0), 1) # rectangle
+        fig,ax = plt.subplots(figsize = (20,20))
+        ax.imshow(wfa_cnt)
+        fig.show()
+            # else:
+            #     # print(f"Area {area} satisfies the else condition")
+            #     wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
                 # if area >= 100000:
                 #     text = f"{area:.2f}"
                 #     text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 5.0, 2)[0]
@@ -80,7 +88,7 @@ for img_path in os.listdir(source_dir):
         # gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
         # thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
         # print("Contours with area greater than 100000:", count_outside_range)
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '___wfa__seg___box_.tif', wfa_cnt)
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_seg.tif', wfa_cnt)
         # approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
 
 # wfa contours for 1 image
