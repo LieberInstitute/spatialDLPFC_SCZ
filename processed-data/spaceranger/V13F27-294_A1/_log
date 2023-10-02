@@ -1,0 +1,195 @@
+Martian Runtime - v4.0.10
+2023-09-29 16:41:45 [build  ] Built with Go version go1.20.2 X:nocoverageredesign
+2023-09-29 16:41:45 [cmdline] mrp __V13F27-294_A1.mro V13F27-294_A1 --jobmode=local --localcores=8 --localmem=80
+2023-09-29 16:41:45 [pid    ] 1117268
+2023-09-29 16:41:45 [environ] SHELL=/bin/bash
+2023-09-29 16:41:45 [environ] SLURM_STEP_NUM_TASKS=1
+2023-09-29 16:41:45 [environ] SLURM_JOB_USER=bguo
+2023-09-29 16:41:45 [environ] SLURM_TASKS_PER_NODE=8
+2023-09-29 16:41:45 [environ] SLURM_JOB_UID=42678
+2023-09-29 16:41:45 [environ] SLURM_CPU_BIND=quiet,mask_cpu:0x000040000040
+2023-09-29 16:41:45 [environ] SLURM_TASK_PID=1020383
+2023-09-29 16:41:45 [environ] CONDA_EXE=/jhpce/shared/jhpce/core/conda/miniconda3-23.3.1/bin/conda
+2023-09-29 16:41:45 [environ] SLURM_LOCALID=0
+2023-09-29 16:41:45 [environ] SLURM_SUBMIT_DIR=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100
+2023-09-29 16:41:45 [environ] SLURM_CPU_BIND_VERBOSE=quiet
+2023-09-29 16:41:45 [environ] HOSTNAME=compute-119
+2023-09-29 16:41:45 [environ] JAVA_HOME=/jhpce/shared/community/core/conda_R/4.3/lib/jvm
+2023-09-29 16:41:45 [environ] CONDA_TOOLCHAIN_BUILD=x86_64-conda-linux-gnu
+2023-09-29 16:41:45 [environ] SLURM_STEP_NODELIST=compute-148
+2023-09-29 16:41:45 [environ] JAVA_LD_LIBRARY_PATH=/jhpce/shared/community/core/conda_R/4.3/lib/jvm/lib/server
+2023-09-29 16:41:45 [environ] SLURM_NODE_ALIASES=(null)
+2023-09-29 16:41:45 [environ] SLURM_CLUSTER_NAME=jhpce3
+2023-09-29 16:41:45 [environ] SLURM_CPUS_ON_NODE=8
+2023-09-29 16:41:45 [environ] SLURM_JOB_CPUS_PER_NODE=8
+2023-09-29 16:41:45 [environ] PWD=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/raw_data_process/spaceranger
+2023-09-29 16:41:45 [environ] SLURM_GTIDS=0
+2023-09-29 16:41:45 [environ] LOGNAME=bguo
+2023-09-29 16:41:45 [environ] XDG_SESSION_TYPE=tty
+2023-09-29 16:41:45 [environ] CONDA_PREFIX=/jhpce/shared/community/core/conda_R/4.3
+2023-09-29 16:41:45 [environ] SLURM_JOB_PARTITION=shared
+2023-09-29 16:41:45 [environ] SLURM_JOB_NUM_NODES=1
+2023-09-29 16:41:45 [environ] SLURM_STEPID=0
+2023-09-29 16:41:45 [environ] SLURM_CPU_BIND_LIST=0x000040000040
+2023-09-29 16:41:45 [environ] CONDA_TOOLCHAIN_HOST=x86_64-conda-linux-gnu
+2023-09-29 16:41:45 [environ] SLURM_JOBID=258373
+2023-09-29 16:41:45 [environ] SLURM_PTY_PORT=60683
+2023-09-29 16:41:45 [environ] SLURM_JOB_QOS=normal
+2023-09-29 16:41:45 [environ] SLURM_LAUNCH_NODE_IPADDR=192.168.11.17
+2023-09-29 16:41:45 [environ] HOME=/users/bguo
+2023-09-29 16:41:45 [environ] SLURM_PTY_WIN_ROW=23
+2023-09-29 16:41:45 [environ] LANG=C
+2023-09-29 16:41:45 [environ] SLURM_CPU_BIND_TYPE=mask_cpu:
+2023-09-29 16:41:45 [environ] LS_COLORS=di=0;32:ln=0;36:so=0;35:pi=0;93:ex=0;31:bd=0;34;46:cd=0;34;43:su=0;41:sg=0;46:tw=0;47:ow=0;43:fi=0;33
+2023-09-29 16:41:45 [environ] SLURM_PROCID=0
+2023-09-29 16:41:45 [environ] CONDA_PROMPT_MODIFIER=(/jhpce/shared/community/core/conda_R/4.3) 
+2023-09-29 16:41:45 [environ] TMPDIR=/tmp
+2023-09-29 16:41:45 [environ] SLURM_NTASKS=8
+2023-09-29 16:41:45 [environ] LD=/jhpce/shared/community/core/conda_R/4.3/bin/x86_64-conda-linux-gnu-ld
+2023-09-29 16:41:45 [environ] SLURM_TOPOLOGY_ADDR=compute-119
+2023-09-29 16:41:45 [environ] SSH_CONNECTION=10.203.203.95 63729 162.129.223.103 22
+2023-09-29 16:41:45 [environ] SLURM_DISTRIBUTION=cyclic
+2023-09-29 16:41:45 [environ] SLURM_TOPOLOGY_ADDR_PATTERN=node
+2023-09-29 16:41:45 [environ] JAVA_LD_LIBRARY_PATH_BACKUP=
+2023-09-29 16:41:45 [environ] SLURM_SRUN_COMM_HOST=192.168.11.17
+2023-09-29 16:41:45 [environ] XDG_SESSION_CLASS=user
+2023-09-29 16:41:45 [environ] SLURM_SCRIPT_CONTEXT=prolog_task
+2023-09-29 16:41:45 [environ] SLURM_MEM_PER_NODE=81920
+2023-09-29 16:41:45 [environ] SLURM_WORKING_CLUSTER=jhpce3:usher05:6817:9728:109
+2023-09-29 16:41:45 [environ] TERM=xterm-256color
+2023-09-29 16:41:45 [environ] HOST=x86_64-conda-linux-gnu
+2023-09-29 16:41:45 [environ] SLURM_PTY_WIN_COL=83
+2023-09-29 16:41:45 [environ] USER=bguo
+2023-09-29 16:41:45 [environ] LIBRARY_PATH=/jhpce/shared/community/core/conda_R/4.3/lib
+2023-09-29 16:41:45 [environ] SLURM_NODELIST=compute-119
+2023-09-29 16:41:45 [environ] ENVIRONMENT=BATCH
+2023-09-29 16:41:45 [environ] CONDA_SHLVL=1
+2023-09-29 16:41:45 [environ] SLURM_SRUN_COMM_PORT=60684
+2023-09-29 16:41:45 [environ] SLURM_STEP_ID=0
+2023-09-29 16:41:45 [environ] SLURM_PRIO_PROCESS=0
+2023-09-29 16:41:45 [environ] SLURM_NPROCS=8
+2023-09-29 16:41:45 [environ] SHLVL=3
+2023-09-29 16:41:45 [environ] SLURM_NNODES=1
+2023-09-29 16:41:45 [environ] XDG_SESSION_ID=4294967295
+2023-09-29 16:41:45 [environ] SLURM_SUBMIT_HOST=compute-148.cm.cluster
+2023-09-29 16:41:45 [environ] LD_GOLD=/jhpce/shared/community/core/conda_R/4.3/bin/x86_64-conda-linux-gnu-ld.gold
+2023-09-29 16:41:45 [environ] CONDA_PYTHON_EXE=/jhpce/shared/jhpce/core/conda/miniconda3-23.3.1/bin/python
+2023-09-29 16:41:45 [environ] XDG_RUNTIME_DIR=/run/user/42678
+2023-09-29 16:41:45 [environ] SLURM_JOB_ID=258373
+2023-09-29 16:41:45 [environ] SLURM_NODEID=0
+2023-09-29 16:41:45 [environ] SLURM_STEP_NUM_NODES=1
+2023-09-29 16:41:45 [environ] SSH_CLIENT=10.203.203.95 63729 22
+2023-09-29 16:41:45 [environ] CONDA_DEFAULT_ENV=/jhpce/shared/community/core/conda_R/4.3
+2023-09-29 16:41:45 [environ] OMP_NUM_THREADS=1
+2023-09-29 16:41:45 [environ] JAVA_HOME_CONDA_BACKUP=
+2023-09-29 16:41:45 [environ] SLURM_STEP_TASKS_PER_NODE=1
+2023-09-29 16:41:45 [environ] XDG_DATA_DIRS=/users/bguo/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+2023-09-29 16:41:45 [environ] SLURM_CONF=/etc/slurm/slurm.conf
+2023-09-29 16:41:45 [environ] PATH=/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/lib/bin:/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/external/martian/bin:/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/external/anaconda/bin:/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/bin/tenkit:/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/bin:/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0:/jhpce/shared/community/core/conda_R/4.3/bin:/jhpce/shared/community/core/conda_R/4.3/texlive/bin/x86_64-linux:/jhpce/shared/community/core/conda_R/4.3/R/bin:/jhpce/shared/jhpce/core/conda/miniconda3-23.3.1/condabin:/jhpce/shared/jhpce/core/conda/miniconda3-23.3.1/bin:/jhpce/shared/jhpce/core/JHPCE_tools/3.0/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/users/bguo/bin
+2023-09-29 16:41:45 [environ] SLURM_JOB_NAME=V13F27-294_A1
+2023-09-29 16:41:45 [environ] SSH_TTY=/dev/pts/53
+2023-09-29 16:41:45 [environ] SLURM_STEP_LAUNCHER_PORT=60684
+2023-09-29 16:41:45 [environ] SLURM_JOB_GID=100
+2023-09-29 16:41:45 [environ] CONDA_BUILD_SYSROOT=/jhpce/shared/community/core/conda_R/4.3/x86_64-conda-linux-gnu/sysroot
+2023-09-29 16:41:45 [environ] SLURM_JOB_NODELIST=compute-119
+2023-09-29 16:41:45 [environ] BASH_FUNC_ml%%=() {  eval "$($LMOD_DIR/ml_cmd "$@")"
+}
+2023-09-29 16:41:45 [environ] BASH_FUNC_which%%=() {  ( alias;
+ eval ${which_declare} ) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot $@
+}
+2023-09-29 16:41:45 [environ] BASH_FUNC_module%%=() {  if [ -z "${LMOD_SH_DBG_ON+x}" ]; then
+ case "$-" in 
+ *v*x*)
+ __lmod_sh_dbg='vx'
+ ;;
+ *v*)
+ __lmod_sh_dbg='v'
+ ;;
+ *x*)
+ __lmod_sh_dbg='x'
+ ;;
+ esac;
+ fi;
+ if [ -n "${__lmod_sh_dbg:-}" ]; then
+ set +$__lmod_sh_dbg;
+ echo "Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output" 1>&2;
+ fi;
+ eval "$($LMOD_CMD shell "$@")" && eval "$(${LMOD_SETTARG_CMD:-:} -s sh)";
+ __lmod_my_status=$?;
+ if [ -n "${__lmod_sh_dbg:-}" ]; then
+ echo "Shell debugging restarted" 1>&2;
+ set -$__lmod_sh_dbg;
+ fi;
+ unset __lmod_sh_dbg;
+ return $__lmod_my_status
+}
+2023-09-29 16:41:45 [environ] BASH_FUNC_scl%%=() {  if [ "$1" = "load" -o "$1" = "unload" ]; then
+ eval "module $@";
+ else
+ /usr/bin/scl "$@";
+ fi
+}
+2023-09-29 16:41:45 [environ] BASH_FUNC__module_raw%%=() {  eval `/usr/bin/tclsh /usr/share/Modules/libexec/modulecmd.tcl bash "$@"`;
+ _mlstatus=$?;
+ return $_mlstatus
+}
+2023-09-29 16:41:45 [environ] _=/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/spaceranger
+2023-09-29 16:41:45 [environ] LC_CTYPE=en_US.UTF-8
+2023-09-29 16:41:45 [environ] PYTHONNOUSERSITE=1
+2023-09-29 16:41:45 [environ] MKL_CBWR=COMPATIBLE
+2023-09-29 16:41:45 [environ] HDF5_USE_FILE_LOCKING=FALSE
+2023-09-29 16:41:45 [environ] RUST_BACKTRACE=1
+2023-09-29 16:41:45 [environ] PYTHONPATH=/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/lib/python:/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/external/martian/adapters/python
+2023-09-29 16:41:45 [environ] TENX_PRODUCT=spaceranger
+2023-09-29 16:41:45 [environ] TENX_VERSION=spaceranger-2.1.0
+2023-09-29 16:41:45 [environ] TENX_COPYRIGHT=Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
+2023-09-29 16:41:45 [options] --localcores=8
+2023-09-29 16:41:45 [options] --localmem=80
+2023-09-29 16:41:45 [environ] MROPATH=/jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/mro
+2023-09-29 16:41:45 [version] MRO Version=spaceranger-2.1.0
+2023-09-29 16:41:45 [options] --jobmode=local
+2023-09-29 16:41:45 [options] --vdrmode=rolling
+2023-09-29 16:41:45 [options] --profile=disable
+2023-09-29 16:41:45 [options] --stackvars=false
+2023-09-29 16:41:45 [options] --zip=false
+2023-09-29 16:41:45 [options] --limit-loadavg=false
+2023-09-29 16:41:45 [options] --noexit=false
+2023-09-29 16:41:45 [options] --nopreflight=false
+2023-09-29 16:41:45 [jobmngr] Job config = /jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/external/martian/jobmanagers/config.json
+2023-09-29 16:41:45 [jobmngr] Using 8 cores, per --localcores option.
+2023-09-29 16:41:45 [jobmngr] Using 80 GB, per --localmem option.
+2023-09-29 16:41:46 [sysinfo] linux amd64
+2023-09-29 16:41:46 [sysinfo] Linux kernel release version: 5.14.0-284.11.1.el9_2.x86_64
+2023-09-29 16:41:46 [sysinfo] glibc version: 2.34
+2023-09-29 16:41:46 [filesys] Pipestance path /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/raw_data_process/spaceranger/V13F27-294_A1
+2023-09-29 16:41:46 [filesys] Pipestance filesystem type nfs
+2023-09-29 16:41:46 [filesys] 116 TB and 226,061,484,461 inodes available.
+2023-09-29 16:41:46 [filesys] Pipestance filesystem nfs4 mount options: rw,noatime,rw,vers=4.2,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=192.168.11.119,local_lock=none,addr=192.168.11.209
+2023-09-29 16:41:46 [filesys] Pipestance directory permissions drwxrwx--- owned by uid 42678 gid 100
+2023-09-29 16:41:46 [filesys] Bin path /jhpce/shared/libd/core/spaceranger/2.1.0/spaceranger-2.1.0/external/martian/bin
+2023-09-29 16:41:46 [filesys] Bin filesystem type nfs
+2023-09-29 16:41:46 [filesys] Bin filesystem nfs4 mount options: rw,noatime,nodiratime,rw,vers=4.0,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=192.168.11.119,local_lock=none,addr=192.168.11.205
+2023-09-29 16:41:46 [filesys] Executable file permissions -rwxrwxr-x owned by uid 42086 gid 4217
+2023-09-29 16:41:46 [user   ] User bguo uid 42678 / gid 100
+Serving UI at http://compute-119.cm.cluster:39849?auth=ubrWjXYG3aIkJlvv0cQs18oJcoShM7AmkSTXfJPO8eQ
+
+Running preflight checks (please wait)...
+2023-09-29 16:41:46 [runtime] (ready)           ID.V13F27-294_A1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT_LOCAL
+2023-09-29 16:41:46 [runtime] (run:local)       ID.V13F27-294_A1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT_LOCAL.fork0.chnk0.main
+2023-09-29 16:41:46 [runtime] (ready)           ID.V13F27-294_A1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+2023-09-29 16:41:46 [runtime] (run:local)       ID.V13F27-294_A1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT.fork0.split
+2023-09-29 16:41:52 [runtime] (split_complete)  ID.V13F27-294_A1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+2023-09-29 16:41:52 [runtime] (run:local)       ID.V13F27-294_A1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT.fork0.join
+2023-09-29 16:42:58 [runtime] (failed)          ID.V13F27-294_A1.SPATIAL_RNA_COUNTER_CS.SPACERANGER_PREFLIGHT
+
+[error] You provided --slide=V13F27-294 --area=A1, but the loupe alignment file says V13F27-293-A1
+
+2023-09-29 16:42:58 Shutting down.
+2023-09-29 16:42:58 [jobmngr] Highest memory usage observed: {
+  "rss": 231383040,
+  "shared": 97472512,
+  "vmem": 2866483200,
+  "text": 6545408,
+  "stack": 315297792,
+  "proc_count": 27
+}
