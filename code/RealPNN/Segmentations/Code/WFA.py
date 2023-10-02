@@ -49,8 +49,8 @@ for img_path in os.listdir(source_dir):
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
         wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
-        adjusted = cv2.convertScaleAbs(wfa, alpha=0.3, beta=10) # decreased the contrast of the original image for better segmentation
-        hierachy, img_threshold = cv2.threshold(adjusted,  50, 255, cv2.THRESH_BINARY) # 150
+        # adjusted = cv2.convertScaleAbs(wfa, alpha=0.3, beta=10) # decreased the contrast of the original image for better segmentation
+        hierachy, img_threshold = cv2.threshold(wfa_c,  50, 255, cv2.THRESH_BINARY) # 150
         img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(img_threshold, cmap = 'gray')
@@ -67,7 +67,7 @@ for img_path in os.listdir(source_dir):
             area_.append(area) # max(area_) = 1809854.0
             # print(area)
             # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
-            if area<=500: # area<150 and area>=10000 and area>=100000
+            if area<=100: # area<150 and area>=10000 and area>=100000
                 # print(f"Area {area} satisfies condition 1")
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
             else:
