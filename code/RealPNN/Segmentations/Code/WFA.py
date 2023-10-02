@@ -49,7 +49,7 @@ for img_path in os.listdir(source_dir):
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
         wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
-        adjusted = cv2.convertScaleAbs(wfa, alpha=0.3, beta=10)
+        adjusted = cv2.convertScaleAbs(wfa, alpha=0.3, beta=10) # decreased the contrast of the original image for better segmentation
         hierachy, img_threshold = cv2.threshold(adjusted,  50, 255, cv2.THRESH_BINARY) # 150
         img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
         # fig,ax = plt.subplots(figsize = (20,20))
@@ -68,13 +68,17 @@ for img_path in os.listdir(source_dir):
             # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
             if area<1000 and area>=10000: # area<150 and area>=10000
             #     # print(f"Area {area} satisfies condition 1")
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (255, 153, 255), -1) # rectangle
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle 255, 153, 255
             else:
                 # print(f"Area {area} satisfies condition 2")
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,255,0), 1) # rectangle
-        fig,ax = plt.subplots(figsize = (20,20))
-        ax.imshow(wfa_cnt)
-        fig.show()
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1) # rectangle
+        gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
+        thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_seg.tif', thresh_segmented_wfa)
+
+        # fig,ax = plt.subplots(figsize = (20,20))
+        # ax.imshow(wfa_cnt)
+        # fig.show()
             # else:
             #     # print(f"Area {area} satisfies the else condition")
             #     wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
@@ -85,10 +89,10 @@ for img_path in os.listdir(source_dir):
                 #     text_y = y + (h + text_size[1]) // 2
                 #     cv2.putText(wfa_cnt, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 255, 0), 2)
                 #     count_outside_range += 1
-        # gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
-        # thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
+        gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
+        thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
         # print("Contours with area greater than 100000:", count_outside_range)
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_seg.tif', wfa_cnt)
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_seg.tif', thresh_segmented_wfa)
         # approx, contours, shape, contour_img = detect_shape_pnns(img_th_c, wfa_contours)
 
 # wfa contours for 1 image
@@ -269,3 +273,6 @@ for img_path in os.listdir(source_dir):
         thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 50, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
         cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '__wfa.tif', thresh_segmented_wfa)
 
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(wfa_cnt)
+fig.show()
