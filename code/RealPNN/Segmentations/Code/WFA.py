@@ -44,7 +44,7 @@ img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Visto
 # WFA threshold
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V13M06-279_A1') in img_path:
+    if img_path.endswith(".tif") and ('V13M06-279_B1') in img_path:
         wfa_img = Image.open(os.path.join(source_dir, img_path))
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
