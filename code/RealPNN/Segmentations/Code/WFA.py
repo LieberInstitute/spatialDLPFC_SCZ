@@ -65,16 +65,17 @@ for img_path in os.listdir(source_dir):
             x,y,w,h = cv2.boundingRect(cnt)
             area = cv2.contourArea(cnt)
             area_.append(area) # max(area_) = 1809854.0
+            # print(area)
             # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
-            if area<1000 and area>=10000: # area<150 and area>=10000
-            #     # print(f"Area {area} satisfies condition 1")
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle 255, 153, 255
+            if area<=500: # area<150 and area>=10000 and area>=100000
+                # print(f"Area {area} satisfies condition 1")
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
             else:
                 # print(f"Area {area} satisfies condition 2")
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1) # rectangle
-        gray_segmented_wfa = cv2.cvtColor(wfa_cnt,cv2.COLOR_RGB2GRAY)
+        gray_segmented_wfa = cv2.cvtColor(img_th_c,cv2.COLOR_RGB2GRAY)
         thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_seg.tif', thresh_segmented_wfa)
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa__seg_.tif', thresh_segmented_wfa)
 
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(wfa_cnt)
