@@ -50,7 +50,7 @@ for img_path in os.listdir(source_dir):
         wfa = np.array(wfa_img, dtype = 'uint8')
         wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
         # adjusted = cv2.convertScaleAbs(wfa, alpha=0.3, beta=10) # decreased the contrast of the original image for better segmentation
-        hierachy, img_threshold = cv2.threshold(wfa_c,  50, 255, cv2.THRESH_BINARY) # 150
+        hierachy, img_threshold = cv2.threshold(wfa,  50, 255, cv2.THRESH_BINARY) # 150
         img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(img_threshold, cmap = 'gray')
