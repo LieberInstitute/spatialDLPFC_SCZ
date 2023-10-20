@@ -72,6 +72,8 @@ echo "Moving results to new location"
 date
 # TODO: check if the path is actually correct becasue moving the folder position
 mkdir -p /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/
+# TODO: move fails if sample folder from prev run already there
+# Possibly with -f (doesn't work)
 mv ${SAMPLE} /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/
 
 
