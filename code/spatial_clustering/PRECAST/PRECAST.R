@@ -35,7 +35,15 @@ seuList <- unique(spe$sample_id) |>
 # Find gene list from pyschENCODE-spaitalDLPFC result
 
 library(tidyverse)
-gene_df_raw <- read_csv(here("code/spatial_clustering/PRECAST/TableS8_sig_genes_FDR5perc_enrichment.csv"))
+gene_df_raw <- read.csv(
+  here("code/spatial_clustering/PRECAST",
+       "TableS8_sig_genes_FDR5perc_enrichment.csv")
+)
+
+# gene_df_raw <- read_csv(
+#   here("code/spatial_clustering/PRECAST",
+#        "TableS8_sig_genes_FDR5perc_enrichment.csv")
+#   )
 
 gene_df <- gene_df_raw |> 
   filter(spatial_domain_resolution == "Sp09") |> 
@@ -46,7 +54,7 @@ gene_df <- gene_df_raw |>
 
 
 
-  
+
 set.seed(1)
 preobj <- CreatePRECASTObject(seuList = seuList,
                               selectGenesMethod=NULL,
@@ -61,14 +69,10 @@ PRECASTObj <- AddParSetting(PRECASTObj, Sigma_equal = FALSE, coreNum = 8, maxIte
 # K <- as.numeric(Sys.getenv("SGE_TASK_ID"))
 K <- 8
 
-tic()
+# tic()
 PRECASTObj <- PRECAST(PRECASTObj, K = K)
-toc()
+# toc()
 
-dir.create(
-  here("processed-data", "clustering", "PRECAST"),
-  recursive = T, showWarnings = FALSE
-)
 
 
 
@@ -79,6 +83,13 @@ dir.create(
 PRECASTObj <- SelectModel(PRECASTObj)
 
 seuInt <- IntegrateSpaData(PRECASTObj, species = "Human")
+
+
+# Find Marker Genes -------------------------------------------------------
+
+library(Seurat)
+dat_deg <- FindAllMarkers(seuInt)
+
 
 # Merge with spe object
 col_data_df <- seuInt@meta.data |> 
@@ -95,13 +106,33 @@ rownames(col_data_df) <- colnames(spe)
 
 colData(spe) <- DataFrame(col_data_df)
 
-saveRDS(spe, file = here("processed-data", "clustering", "PRECAST", 
-                         paste0("test_PRECASTObj_semi_inform_K",K,".rds")))
+fld_data_spatialcluster <- here("processed-data", "rds", "spatial_cluster")
+dir.create(
+  file.path(fld_data_spatialcluster, "PRECAST"),
+  recursive = T, showWarnings = FALSE
+)
+
+
+saveRDS(
+  spe, 
+  file = file.path(
+    fld_data_spatialcluster, "PRECAST", 
+    paste0("test_PRECASTObj_semi_inform_K",K,".rds")
+  )
+)
+
+saveRDS(
+  seuInt, 
+  file = file.path(
+    fld_data_spatialcluster, "PRECAST", 
+    paste0("test_seuIntObj_semi_inform_K",K,".rds")
+  )
+)
 
 
 # Visualize Clustering Result ---------------------------------------------
 # TODO: output
 tmp <- vis_grid_clus(spe,
-              clustervar = "PRECAST_cluster", return_plots = TRUE)
+                     clustervar = "PRECAST_cluster", return_plots = TRUE)
 
 
