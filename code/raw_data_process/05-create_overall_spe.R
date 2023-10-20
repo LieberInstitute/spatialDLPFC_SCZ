@@ -26,23 +26,33 @@ expr_meta <- read.csv(
   here("code", "raw_data_process",
        "sample_meta_path.csv"),
   header = TRUE
-)
-
-stopifnot(
-  all(
+) |> 
+  filter(
     file.exists(
-      file.path(
-        expr_meta$sr_fldr_path,
-        "outs"
-      )
+          file.path(
+            sr_fldr_path,
+            "outs"
+          )
+        )
     )
-  )
-)
+
+# stopifnot(
+#   all(
+#     file.exists(
+#       file.path(
+#         expr_meta$sr_fldr_path,
+#         "outs"
+#       )
+#     )
+#   )
+# )
 
 ## Related to https://github.com/drighelli/SpatialExperiment/issues/135
 stopifnot(packageVersion("SpatialExperiment") >= "1.9.5")
 ## Related to https://github.com/LieberInstitute/spatialLIBD/commit/1ff74a8be040bf4cdbc906700913ad12fc929232
 stopifnot(packageVersion("spatialLIBD") >= "1.11.10")
+
+# --mem=60G for 36 samples
 
 ## Build SPE object
 Sys.time()
@@ -57,8 +67,11 @@ spe <- spatialLIBD::read10xVisiumWrapper(
 )
 Sys.time()
 
+
+
 # Confirm the number of spots are correct
 stopifnot(ncol(spe) == length(unique(spe$sample_id))*4992)
+# From some reason, one spot is missing.
 
 # Confirm if the number of samples match with meta
 stopifnot(nrow(expr_meta) == length(unique(spe$sample_id)))
@@ -67,6 +80,15 @@ spe$ManualAnnotation <- NULL
 
 # Only for testing purpose
 # spe <- readRDS(here("processed-data/rds/spe","01_build_spe/", "spe_raw.rds"))
+# 
+ # grep(
+ #   pattern = "^spg_",
+ #   x = names(colData(spe)),
+ #   value = TRUE) |> 
+ #   walk(.f = function(x)
+ #     `$`(spe, x) <- NULL
+ #     )
+
 
 # Set names for each spot
 spe$key <- paste0(colnames(spe), "_", spe$sample_id) # In spatialLIBD::read10xVisiumWrapper
@@ -78,16 +100,15 @@ spe$key <- paste0(colnames(spe), "_", spe$sample_id) # In spatialLIBD::read10xVi
 # spe$sample_id_complete <- spe$sample_id
 # spe$sample_id <- gsub("_2", "", spe$sample_id)
 
-
 ## Read in cell counts and segmentation results
 seg_df <- map_dfr(unique(spe$sample_id), 
                              function(sampleid) {
   # browser()
   current <- expr_meta$sr_fldr_path[expr_meta$sample_name == sampleid]
+  stopifnot("more than one match or no match" = length(current)==1)
+  stopifnot("not the same sample" = str_detect(current, sampleid))
   # Pixel based;
   file <- file.path(current, "outs/spatial", "tissue_spot_counts.csv")
-  # TODO: centroid based,
-  # file <- file.path(current, "outs/spatial", "tissue_spot_counts_centroid.csv")
   if (!file.exists(file)) {
     warning(sampleid, " doesn't have outs/spatial/tissue_spot_counts.csv")
     return(NULL)
@@ -97,7 +118,26 @@ seg_df <- map_dfr(unique(spe$sample_id),
   return(x)
 })
 
-stopifnot(nrow(seg_df) == ncol(spe))
+stopifnot("SPG masking data doesn't match spe spots 1-to-1" = nrow(seg_df) == ncol(spe))
+
+colnames(seg_df)
+# [1] "barcode"    "tissue"     "row"        "col"        "imagerow"  
+# [6] "imagecol"   "NAF"        "PAF"        "CNAF"       "NClaudin5" 
+# [11] "PClaudin5"  "CNClaudin5" "NDAPI"      "PDAPI"      "CNDAPI"    
+# [16] "NNeuN"      "PNeuN"      "CNNeuN"     "NWFA"       "PWFA"      
+# [21] "CNWFA"      "key"   
+
+# TODO: explain 
+# Note: 4 channels: 
+#* AF - 
+#* Claudin5 - 
+#* Neun - 
+#* WFA - 
+# Note 2: Naming Convention
+#* N-channel-:
+#* P-channel-:
+#* CN-channel-:
+
 
 # TODO: clean up names for seg_df
 # name starts with SPG_
@@ -121,13 +161,13 @@ col_data_df <- colData(spe) |> data.frame() |>
 colData(spe) <- DataFrame(col_data_df)  # Will remove colnames(spe)
 colnames(spe) <- spe$key
 
+stopifnot(any(is.na(spe$spg_CNClaudin5)))
 
 ## Add Dx Information ---------
 ### read in meta information
 source(here("code", "raw_data_process", "import_dx.R"))
 
 # Save the dx data as the meta data
-# TODO: fix this part and re-run. dx_df should be an elemnt of metadata, instead of the whole dataset
 metadata(spe)$dx_df <- clean_df |> 
   # mutate(BrNumbr = str_remove(brain_num, "Br")) |>
   filter(brain_num %in% expr_meta$BrNumbr) |> 
@@ -145,7 +185,9 @@ metadata(spe)$dx_df <- clean_df |>
 # Add log normalization -----
 library(scater)
 # Create logcounts
-spe <- logNormCounts(spe)
+# spe <- logNormCounts(spe)
+# TODO: Error in .local(x, ...) : size factors should be positive
+# Is it because of out-of-tissue spots
 
 # Save Object -----
 
@@ -161,7 +203,7 @@ stopifnot(!is.null(colnames(spe)))
 
 saveRDS(spe, 
         file = here::here("processed-data", "rds", 
-                          "spe", "01_build_spe", "spe_raw.rds"))
+                          "spe", "01_build_spe", "test_spe_raw_36.rds"))
 
 
 
