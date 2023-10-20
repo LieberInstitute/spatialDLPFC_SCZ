@@ -35,7 +35,8 @@ ex_row_id <- grep(
   pattern = "^Ex:.*",
   x = raw_df$brain_num)
 
-clean_df <- raw_df[-ex_row_id,]
+clean_df <- raw_df[-ex_row_id,] |> 
+  filter_all(any_vars(!is.na(.))) # Remove empty rows.
 
 # Validation
 # if row starts with "Ex:" in dx column
@@ -49,7 +50,7 @@ stopifnot(
 # Clean up brain number column--------------------------------------------------
 # Remove all " - xxNotesxx"
 clean_df$brain_num  <-  gsub(
-  pattern = " - .*$",
+  pattern = "\\s?-\\s?.*$",
   replacement = "",
   x = clean_df$brain_num
 )
@@ -62,9 +63,12 @@ stopifnot(
 )
 
 # Include in SCZ(PNN) study column ------------------------------------------------
-clean_df <- clean_df |> filter(!is.na(SCZ_study))
+# clean_df <- clean_df |> filter(!is.na(SCZ_study))
 
 # Validation
+
+clean_df <- clean_df[!duplicated(clean_df$brain_num), ]
+
 stopifnot(all(!duplicated(clean_df$brain_num)))
 # clean_df |> group_by(brain_num) |> summarize(n = n()) |> filter(n!=1)
 
