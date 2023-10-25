@@ -47,7 +47,7 @@ from stitched_functions import draw_contours, all_pixels
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_neun = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/NeuN/test_slide3/'
+dst_dir_neun = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/NeuN/slide4/'
 
 # test images
 img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
@@ -86,7 +86,7 @@ csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealP
 Image.MAX_IMAGE_PIXELS = None
 img_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_A1.tif'
 for img_path in os.listdir(img_dir):
-    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
+    if img_path.endswith(".tif") and ('V13M06-279') in img_path:
         neun_img = Image.open(os.path.join(img_dir, img_path))
         neun_img.seek(3)
         neun = np.array(neun_img, dtype = 'uint8')
@@ -104,15 +104,15 @@ for img_path in os.listdir(img_dir):
             x,y,w,h = cv2.boundingRect(cnt)
             neun_area = cv2.contourArea(cnt)
             if neun_area >=100:
-                neun_cnt = cv2.rectangle(neun_c, (x,y), (x+w, y+h), (0,0,0), 1)
+                neun_cnt = cv2.rectangle(neun_c, (x,y), (x+w, y+h), (0,255,0), 2)
             elif neun_area <100:
-                neun_cnt = cv2.rectangle(neun_c, (x,y), (x+w, y+h), (0,0,0), -1)
-        gray_segmented = cv2.cvtColor(neun_cnt,cv2.COLOR_RGB2GRAY)
-        thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
+                neun_cnt = cv2.rectangle(neun_c, (x,y), (x+w, y+h), (255,0,0), -1)
+        # gray_segmented = cv2.cvtColor(neun_cnt,cv2.COLOR_RGB2GRAY)
+        # thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
         # binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        # fig,ax = plt.subplots(figsize = (20,20))
-        # ax.imshow(thresh_segmented, cmap = 'gray')
-        # fig.show()
+        fig,ax = plt.subplots(figsize = (20,20))
+        ax.imshow(neun_cnt) # , cmap = 'gray'
+        fig.show()
         # nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_all_contours(neun_c, neun_contours, (0,255,0), 2)
         # neun_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, img_path.split('.')[0], 'NeuN')
         # neun_df.to_csv(dst_dir_neun + img_path.split('.')[0] + '_info.csv')
