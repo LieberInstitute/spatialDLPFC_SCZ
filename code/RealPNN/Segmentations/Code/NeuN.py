@@ -110,13 +110,13 @@ for img_path in os.listdir(img_dir):
         # gray_segmented = cv2.cvtColor(neun_cnt,cv2.COLOR_RGB2GRAY)
         # thresh_segmented = cv2.threshold(gray_segmented, np.mean(gray_segmented), 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #_INV
         # binary_segmented = cv2.normalize(np.array(thresh_segmented, dtype = 'uint8'), np.zeros(np.array(thresh_segmented, dtype = 'uint8').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
-        fig,ax = plt.subplots(figsize = (20,20))
-        ax.imshow(neun_cnt) # , cmap = 'gray'
-        fig.show()
+        # fig,ax = plt.subplots(figsize = (20,20))
+        # ax.imshow(neun_cnt) # , cmap = 'gray'
+        # fig.show()
         # nnx, nny, nnw, nnh, nn_area, neun_segmented = draw_contours.draw_all_contours(neun_c, neun_contours, (0,255,0), 2)
         # neun_df = save_coordinates.create_df(nnx, nny, nnw, nnh, nn_area, img_path.split('.')[0], 'NeuN')
         # neun_df.to_csv(dst_dir_neun + img_path.split('.')[0] + '_info.csv')
-        cv2.imwrite(dst_dir_neun + img_path.split('.')[0] + '_neun_binarized.tif', thresh_segmented)
+        cv2.imwrite(dst_dir_neun + img_path.split('.')[0] + '_neun_clr_segmented.tif', neun_cnt)
 
 
 # tested out deriving all pixels from within the contour
