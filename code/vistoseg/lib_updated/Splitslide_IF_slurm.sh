@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --mem=20G
+#SBATCH --mem=50G
 #SBATCH --job-name=SplitSlide_slides_14_15_16
-#SBATCH -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_slides_14_15_16_output_$SLURM_ARRAY_TASK_ID.log
-#SBATCH -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_slides_14_15_16_error_$SLURM_ARRAY_TASK_ID.log
+#SBATCH -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/SS_slides_14_15_16_output_$SLURM_ARRAY_TASK_ID.log
+#SBATCH -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/SS_slides_14_15_16_error_$SLURM_ARRAY_TASK_ID.log
 #SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=uma.kaipa.94@gmail.com
 #SBATCH -c 5
