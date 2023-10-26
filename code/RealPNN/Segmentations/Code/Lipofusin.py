@@ -36,7 +36,7 @@ from stitched_functions import *
 # source_dir = pyhere.here('processed-data', 'VistoSeg','captureAreas') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 dst_dir = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'AF', 'test_slide3') #'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/'
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_af = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/AF/test_slide3/'
+dst_dir_af = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/AF/slide5/'
 
 # file paths for test images
 img_C1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-057_C1.tif') # /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-057_C1.tif
@@ -65,7 +65,7 @@ for img_path in os.listdir(img_dir):
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
+    if img_path.endswith(".tif") and ('V13M06-280') in img_path:
         af_img = Image.open(os.path.join(source_dir, img_path))
         af_img.seek(0)
         af = np.array(af_img, dtype = 'uint8')
