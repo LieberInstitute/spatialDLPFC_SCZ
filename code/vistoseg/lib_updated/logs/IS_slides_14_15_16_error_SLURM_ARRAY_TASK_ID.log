@@ -1,0 +1,4 @@
+/var/spool/slurm/d/job614862/slurm_script: line 47: 1707631 Killed                  matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), splitSlide_IF('$fname1')"
+/var/spool/slurm/d/job614862/slurm_script: line 49: 1708066 Killed                  matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), splitSlide_IF('$fname2')"
+/var/spool/slurm/d/job614862/slurm_script: line 51: 1708449 Killed                  matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), splitSlide_IF('$fname3')"
+slurmstepd: error: Detected 3 oom-kill event(s) in StepId=614862.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
