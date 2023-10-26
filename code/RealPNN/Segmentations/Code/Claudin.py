@@ -26,8 +26,8 @@ import skimage
 # from skimage import *
 from itertools import product
 from collections import defaultdict
-from stitched_functions import read_img, watershed_segmentation, save_coordinates
-from stitched_functions import draw_contours, all_pixels
+# from stitched_functions import read_img, watershed_segmentation, save_coordinates
+# from stitched_functions import draw_contours, all_pixels
 
 
 # directory path
@@ -36,7 +36,7 @@ img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 # dst_dir_claudin = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'Claudin', 'claudin_binarized')
 # dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
-dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/test_slide3/'
+dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/slide4/'
 
 # image paths
 img_A1_r1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
@@ -67,7 +67,7 @@ csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealP
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(img_dir):
-    if img_path.endswith(".tif") and ('V12D07-334') in img_path:
+    if img_path.endswith(".tif") and ('V13M06-279') in img_path:
         claudin_img = Image.open(os.path.join(img_dir, img_path))
         claudin_img.seek(1)
         claudin = np.array(claudin_img, dtype = 'uint8')
