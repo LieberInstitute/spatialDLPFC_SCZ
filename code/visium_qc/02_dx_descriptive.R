@@ -20,13 +20,16 @@ if("Br3942" %in% demo_df$brain_num){
 }
 stopifnot(nrow(demo_df) == 63) # Should remove Br3942
 
+# TODO: change variable names
+
 # TODO: save the demo_df to an excel file
 
-# TODO: change variable names
 
 
 # Create Demo Table
+
 demo_df |> 
+  # TODO: add more demo vars
   select(age, sex, dx) |>
   tbl_summary(by = dx,
               type = list(age ~ "continuous"),

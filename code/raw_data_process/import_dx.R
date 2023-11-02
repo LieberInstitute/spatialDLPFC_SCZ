@@ -28,7 +28,8 @@ raw_df <- readxl::read_excel(
     "Dissection Date"
     #  Seems to be notes
     # "opiate dx"
-  )
+  ) |> 
+  mutate(race = "CAUC") # NOTE: "all donors in this study are European ancestry"
 
 # Remove example row based on "Ex" --------------------------------------
 ex_row_id <- grep(
