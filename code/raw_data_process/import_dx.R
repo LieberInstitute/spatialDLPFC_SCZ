@@ -23,9 +23,9 @@ raw_df <- readxl::read_excel(
     SCZ_study = `Study 1`,
     dx_raw = "Diagnosis", 
     age = "AGE",
-    sex = "SEX"#,
-    # TODO: what variables these are
-    # "PMI", "RIN",
+    sex = "SEX",
+    "PMI", "RIN",
+    "Dissection Date"
     #  Seems to be notes
     # "opiate dx"
   )
