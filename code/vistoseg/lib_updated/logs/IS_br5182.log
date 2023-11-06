@@ -1,10 +1,10 @@
 **** Job starts ****
-Mon Nov  6 11:35:28 AM EST 2023
+Mon Nov  6 11:50:49 AM EST 2023
 **** JHPCE info ****
 User: ukaipa
-Job id: 721504
+Job id: 721512
 Job name: InFormStitch_br5182_manual_annoataion_single_section_stitch
-Node name: compute-115
+Node name: compute-099
 ****
 Sample id:  br5182 br2039
 ****
@@ -20,11 +20,12 @@ For online documentation, see https://www.mathworks.com/support
 For product information, visit www.mathworks.com.
  
 Extracting coordinates
-Elapsed time is 0.100854 seconds.
+Elapsed time is 0.072705 seconds.
 Stitching DAPI
-Elapsed time is 83.137979 seconds.
-Stitching Claudin5
-Elapsed time is 40.807837 seconds.
-Stitching NeuN
-Elapsed time is 34.797523 seconds.
-Stitching WFA
+{Error using horzcat
+Dimensions of arrays being concatenated are not consistent.
+
+Error in InFormStitch (line 37)
+Iy = [Iy,Ix];
+} 
+>> 
