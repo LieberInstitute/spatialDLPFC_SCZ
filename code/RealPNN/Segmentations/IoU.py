@@ -13,6 +13,7 @@ import math
 import scipy
 from scipy.spatial.distance import *
 from scipy.signal import convolve2d
+from scipy.optimize import linear_sum_assignment
 import skimage
 from skimage import feature, segmentation, draw, measure, morphology
 from skimage.morphology import (erosion,dilation,opening,closing,white_tophat,black_tophat,skeletonize,convex_hull_image)
@@ -92,7 +93,7 @@ for img_path in os.listdir(source_dir):
         df_wfa_cv['y3'] = df_wfa_cv['y1'] + df_wfa_cv['Height']
         df_wfa_cv['x4'], df_wfa_cv['y4'] = df_wfa_cv['x2'], df_wfa_cv['y3']
         df_wfa_cv = df_wfa_cv[['img_file_name', 'type_of_object', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4', 'Width', 'Height', 'Area', 'total_number_pnns']]
-        df_wfa_cv.to_csv(dst_dir_csv + img_path.split('.')[0] + 'wfa_seg.csv')
+        df_wfa_cv.to_csv(dst_dir_csv + img_path.split('.')[0] + '_wfa_seg.csv')
 
 
 # match the tile numbers from annotation images to segmented images and overlay the boxes
@@ -126,6 +127,7 @@ for filename1 in os.listdir(folder1_path):
 
 # folder to save all the overlaid images
 dst_dir_overlay = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_segmented_overlaid_annotations/'
+annotations_pixels = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations_in_pixels/'
 
 # Process the matched files
 for part, (file1, file2) in matching_files.items():
@@ -145,12 +147,11 @@ for part, (file1, file2) in matching_files.items():
     df_manual_test['xc'], df_manual_test['yc'], df_manual_test['x1'], df_manual_test['y1'] = np.int0(np.ceil(df_manual_test['xc'])), np.int0(np.ceil(df_manual_test['yc'])), np.int0(np.ceil(df_manual_test['x1'])), np.int0(np.ceil(df_manual_test['y1'])) # convert x,y,bx,by from floating point to integers (doing it after, reduces round off errors)
     df_manual_test['x2'], df_manual_test['y2'], df_manual_test['x3'], df_manual_test['y3'], df_manual_test['x4'], df_manual_test['y4'] = np.int0(np.ceil(df_manual_test['x2'])), np.int0(np.ceil(df_manual_test['y2'])), np.int0(np.ceil(df_manual_test['x3'])), np.int0(np.ceil(df_manual_test['y3'])), np.int0(np.ceil(df_manual_test['x4'])), np.int0(np.ceil(df_manual_test['y4']))
     df_manual_test = df_manual_test[['Area', 'Perimeter', 'Mean', 'Min', 'Max', 'xc', 'yc', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3' , 'x4' , 'y4', 'Width', 'Height', 'Ch']] # rearranging the columns
-    segmented_img = Image.open(os.path.join(folder1_path,file1))
-    overlay_img = draw_rect(df_manual_test, (np.array(segmented_img, dtype = 'uint8')))
-    cv2.imwrite(dst_dir_overlay + file1.split('.')[0] + '_overlay_rect.tif', overlay_img) # actual = green box, predicted = red box
+    df_manual_test.to_csv(annotations_pixels + file1.split('.')[0] + '_manual_annotations.csv')
+    # segmented_img = Image.open(os.path.join(folder1_path,file1))
+    # overlay_img = draw_rect(df_manual_test, (np.array(segmented_img, dtype = 'uint8')))
+    # cv2.imwrite(dst_dir_overlay + file1.split('.')[0] + '_overlay_rect.tif', overlay_img) # actual = green box, predicted = red box
 
-
-    
 
 #2b - segment br5182 = ntc and br2039 = scz using the CV algorithm (the whole tissue section) and save it
 #3 - overlay the manual annotation boxes on the segmented images, just on the wfa channel
@@ -163,25 +164,56 @@ def calculate_iou(box1, box2):
     y1 = max(box1[1], box2[1])
     x2 = min(box1[2], box2[2])
     y2 = min(box1[3], box2[3])
-
     # Calculate the area of the intersection rectangle
     intersection_area = max(0, x2 - x1) * max(0, y2 - y1)
-
     # Calculate the areas of both bounding boxes
     area_box1 = (box1[2] - box1[0]) * (box1[3] - box1[1])
     area_box2 = (box2[2] - box2[0]) * (box2[3] - box2[1])
-
     # Calculate the IoU
     iou = intersection_area / float(area_box1 + area_box2 - intersection_area)
-
     return iou
 
 # Define the list of ground truth bounding boxes and predicted bounding boxes
 ground_truth_boxes = [(x1, y1, x2, y2), (x1, y1, x2, y2), ...]  # Replace with your actual values
 predicted_boxes = [(x1, y1, x2, y2), (x1, y1, x2, y2), ...]  # Replace with your actual values
 
+# match the file names from the ground truth and predicted boxes 
+ground_truth_folder = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
+predicted_folder = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_cv_segmentation_csv_files/'
+
+
+matching_files_boxes = {}
+
+# Iterate through the filenames in both folders
+for filename1 in os.listdir(annotations_pixels):
+    for filename2 in os.listdir(predicted_folder):
+        # Extract the part enclosed in square brackets from both filenames
+        part1 = filename1.split('[')[-1].split(']')[0]
+        part2 = filename2.split('[')[-1].split(']')[0]
+        # If the extracted parts match, add the filenames to the dictionary
+        if part1 == part2:
+            matching_files[part1] = (filename1, filename2)
+
+# Process the matched files
+for part, (file1, file2) in matching_files_boxes.items():
+    # Perform operations on the matched files here
+    print(f"Matching part: {part}")
+    print(f"Matching file in folder 1: {file1}")
+    print(f"Matching file in folder 2: {file2}")
+    df_gt = pd.read_csv(os.path.join(annotations_pixels,file1.split('.')[0] + '_manual_annotations.csv'))
+    df_pred = pd.read_csv(os.path.join(predicted_folder, file2.split('.')[0] + 'wfa_seg.csv'))
+    ground_truth_boxes = df_gt[['x1', 'y1', 'x2', 'y2']].values.tolist()
+    predicted_boxes = df_pred[['x1', 'y1', 'x2', 'y2']].values.tolist()
+    # Initialize a matrix to store the IoU values
+    iou_matrix = np.zeros((len(ground_truth_boxes), len(predicted_boxes)))
+    # Calculate IoU for all pairs of ground truth and predicted bounding boxes
+    for i, gt_box in enumerate(ground_truth_boxes):
+        for j, pred_box in enumerate(predicted_boxes):
+            iou_matrix[i, j] = calculate_iou(gt_box, pred_box)
+
+
 # Initialize a matrix to store the IoU values
-iou_matrix = np.zeros((len(ground_truth_boxes), len(predicted_boxes))
+iou_matrix = np.zeros((len(ground_truth_boxes), len(predicted_boxes)))
 
 # Calculate IoU for all pairs of ground truth and predicted bounding boxes
 for i, gt_box in enumerate(ground_truth_boxes):
