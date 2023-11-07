@@ -180,7 +180,6 @@ cv2.imwrite("multichannel_image.tif", multichannel_image)
 
 
 
-OMJGSRJH
 
 
 from PIL import Image
@@ -292,7 +291,7 @@ metadata = {'axes': 'YXZ', 'channel_names': channel_names} #ZYX right ones
 tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/all_channels_segemented/Test2/V12F14-053_D1.tif', new_image, metadata=metadata)
 
 
-### code to do this for multiple images in onr slide
+### code to do this for multiple images in one slide
 A1_images, B1_images, C1_images, D1_images = [], [], [], []
 A1_paths, B1_paths, C1_paths, D1_paths = [], [], [], []
 
@@ -303,13 +302,13 @@ for folder in folder_names:
         for filename in filenames:
             filename_parts = filename.split('.')[0].split('_')
             if len(filename_parts) == 4 and filename_parts[1] in ['A1', 'B1', 'C1', 'D1']:
-                # if filename_parts[1] == 'A1':
-                #     A1_image_path = os.path.join(folder, filename)
-                #     print("first", A1_image_path)
-                #     A1_paths.append(A1_image_path)
-                #     A1_ = np.array(Image.open(A1_image_path))
-                #     print("first___", A1_image_path)
-                #     A1_images.append(A1_)
+                if filename_parts[1] == 'A1':
+                    A1_image_path = os.path.join(folder, filename)
+                    print("first", A1_image_path)
+                    A1_paths.append(A1_image_path)
+                    A1_ = np.array(Image.open(A1_image_path))
+                    print("first___", A1_image_path)
+                    A1_images.append(A1_)
                 if filename_parts[1] == 'B1':
                     B1_image_path = os.path.join(folder, filename)
                     print("second", B1_image_path)
