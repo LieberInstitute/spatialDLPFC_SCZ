@@ -221,13 +221,22 @@ for i, gt_box in enumerate(ground_truth_boxes):
 cost_matrix = -iou_matrix  # Invert IoU scores to turn it into a minimization problem
 gt_indices, pred_indices = linear_sum_assignment(cost_matrix)
 
+# Initialize dictionaries to count overlaps for ground truth and predicted boxes
+gt_overlap_counts = {i: 0 for i in range(len(ground_truth_boxes))}
+pred_overlap_counts = {j: 0 for j in range(len(predicted_boxes))}
+
+
 # Iterate through matched pairs
 for gt_idx, pred_idx in zip(gt_indices, pred_indices):
     gt_box = ground_truth_boxes[gt_idx]
     pred_box = predicted_boxes[pred_idx]
     iou = iou_matrix[gt_idx, pred_idx]
-    
+    # Increment overlap counts for the matched ground truth and predicted boxes
+    gt_overlap_counts[gt_idx] += 1
+    pred_overlap_counts[pred_idx] += 1
+
     # Perform your operations on matched pairs here
+
 # Count how many ground truth boxes overlap with each predicted box
 gt_matches = np.sum(iou_matrix > threshold, axis=0)
 
