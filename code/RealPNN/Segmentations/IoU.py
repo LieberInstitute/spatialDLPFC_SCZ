@@ -40,7 +40,10 @@ df_manual_test['xc'], df_manual_test['yc'], df_manual_test['x1'], df_manual_test
 df_manual_test['x2'], df_manual_test['y2'], df_manual_test['x3'], df_manual_test['y3'], df_manual_test['x4'], df_manual_test['y4'] = np.int0(np.ceil(df_manual_test['x2'])), np.int0(np.ceil(df_manual_test['y2'])), np.int0(np.ceil(df_manual_test['x3'])), np.int0(np.ceil(df_manual_test['y3'])), np.int0(np.ceil(df_manual_test['x4'])), np.int0(np.ceil(df_manual_test['y4']))
 df_manual_test = df_manual_test[['Area', 'Perimeter', 'Mean', 'Min', 'Max', 'xc', 'yc', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3' , 'x4' , 'y4', 'Width', 'Height', 'Ch']] # rearranging the columns
 
-#2 - segment br5182 = ntc and br2039 = scz using the CV algorithm
+#2a - segment all the single tiles from both ntc and scz samples and save them in a folder (then later, all the manual annoations can be overlaid on the segmented tiles)
+Image.MAX_IMAGE_PIXELS = None
+
+#2b - segment br5182 = ntc and br2039 = scz using the CV algorithm (the whole tissue section) and save it
 #3 - overlay the manual annotation boxes on the segmented images, just on the wfa channel
 #4 - this gives figure a,b,c
 #5 - for the math,
