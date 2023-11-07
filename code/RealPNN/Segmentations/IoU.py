@@ -87,8 +87,33 @@ for img_path in os.listdir(source_dir):
         cv2.imwrite(dst_dir + img_path.split('.')[0] + '_wfa__seg.tif', wfa_cnt)
 
 # match the tile numbers from annotation images to segmented images and overlay the boxes
+# Get a list of filenames in each folder
+folder1_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_segmented_CV_IoU_test/'
+folder2_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Images/'
+# Get a list of filenames in each folder
+# folder1_files = 
+# folder2_files = 
 
+# Create a dictionary to store the filenames with matching parts
+matching_files = {}
 
+# Iterate through the filenames in both folders
+for filename1 in os.listdir(folder1_path):
+    for filename2 in os.listdir(folder2_path):
+        # Extract the part enclosed in square brackets from both filenames
+        part1 = filename1.split('[')[-1].split(']')[0]
+        part2 = filename2.split('[')[-1].split(']')[0]
+        # If the extracted parts match, add the filenames to the dictionary
+        if part1 == part2:
+            matching_files[part1] = (filename1, filename2)
+
+# Process the matched files
+for part, (file1, file2) in matching_files.items():
+    # Perform operations on the matched files here
+    print(f"Matching part: {part}")
+    print(f"Matching file in folder 1: {file1}")
+    print(f"Matching file in folder 2: {file2}")
+    
 
 #2b - segment br5182 = ntc and br2039 = scz using the CV algorithm (the whole tissue section) and save it
 #3 - overlay the manual annotation boxes on the segmented images, just on the wfa channel
