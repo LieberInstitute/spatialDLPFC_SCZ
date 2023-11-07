@@ -40,8 +40,9 @@ img_NTC = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_S
 img_SCZ = pyhere.here('raw-data', 'images', '2_MockPNN', '20220712_VIF_MockPNN_Strong_SCZ_C1_Br2039_MLtraining', '20220712_VIF_MockPNN_Strong_SCZ_Scan1_[10629,49106]_component_data.tif')
 img_test = pyhere.here('raw-data', 'images', '2_MockPNN', 'Training_tiles', '20220712_VIF_MockPNN_Strong_Scan1_[7851,47718]_component_data_12.tif') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
 csv_test = pyhere.here('processed-data', '2_MockPNN', 'Training_tiles', 'Manual_annotations', 'Annotations', '20220712_VIF_MockPNN_Strong_Scan1_[7851,47718]_component_data_12.csv') #20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01
+csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[7851,52577]_component_data_20.csv'
 
-img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles/20220712_VIF_MockPNN_Strong_Scan1_[7851,47718]_component_data_12.tif'
+img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_raw_no_annotations/20220712_VIF_MockPNN_Strong_Scan1_[7851,52577]_component_data_20.tif'
 
 # read the tile and the manual annotation csv
 img_wfa = Image.open(img_test)
@@ -148,7 +149,7 @@ for cnt in contours1:
         rect = cv2.minAreaRect(cnt)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
-        out_img1 = cv2.drawContours(out_img1,[box],0,(0,0,0),1) # comment out if contour box is not needed
+        out_img1 = cv2.drawContours(out_img1,[box],0,(0,255,0),2) # comment out if contour box is not needed
 
 fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(out_img1)
@@ -212,7 +213,7 @@ box2 = [[ml['x1'], ml['y1']], [ml['x2'], ml['y2']],
 
 
 
-# draw a rectangle from the manual annotations csv on the contour detected image
+# draw a rectangle from the manual annotations csv on the contour detected image --> works to overlay annotations over segmentations
 def draw_rect(df_manual_test, contour_img):
     for box in range(len(df_manual_test['x1'])):
         print(box)
@@ -222,4 +223,4 @@ def draw_rect(df_manual_test, contour_img):
     fig.show()
     return contour_img
 
-
+draw_rect(df_manual_test, out_img1)
