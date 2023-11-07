@@ -169,9 +169,13 @@ def calculate_iou(box1, box2):
     # Calculate the areas of both bounding boxes
     area_box1 = (box1[2] - box1[0]) * (box1[3] - box1[1])
     area_box2 = (box2[2] - box2[0]) * (box2[3] - box2[1])
+    # Check if either bounding box has zero area
+    if area_box1 == 0 or area_box2 == 0:
+        return 0.0
     # Calculate the IoU
     iou = intersection_area / float(area_box1 + area_box2 - intersection_area)
     return iou
+
 
 # Define the list of ground truth bounding boxes and predicted bounding boxes
 ground_truth_boxes = [(x1, y1, x2, y2), (x1, y1, x2, y2), ...]  # Replace with your actual values
@@ -204,22 +208,26 @@ for part, (file1, file2) in matching_files_boxes.items():
     df_pred = pd.read_csv(os.path.join(predicted_folder, file2.split('.')[0] + 'wfa_seg.csv'))
     ground_truth_boxes = df_gt[['x1', 'y1', 'x2', 'y2']].values.tolist()
     predicted_boxes = df_pred[['x1', 'y1', 'x2', 'y2']].values.tolist()
-    # Initialize a matrix to store the IoU values
-    iou_matrix = np.zeros((len(ground_truth_boxes), len(predicted_boxes)))
-    # Calculate IoU for all pairs of ground truth and predicted bounding boxes
-    for i, gt_box in enumerate(ground_truth_boxes):
-        for j, pred_box in enumerate(predicted_boxes):
-            iou_matrix[i, j] = calculate_iou(gt_box, pred_box)
-
-
-# Initialize a matrix to store the IoU values
-iou_matrix = np.zeros((len(ground_truth_boxes), len(predicted_boxes)))
+    
 
 # Calculate IoU for all pairs of ground truth and predicted bounding boxes
+iou_matrix = np.zeros((len(ground_truth_boxes), len(predicted_boxes))) # Initialize a matrix to store the IoU values
 for i, gt_box in enumerate(ground_truth_boxes):
     for j, pred_box in enumerate(predicted_boxes):
         iou_matrix[i, j] = calculate_iou(gt_box, pred_box)
 
+# Using the Hungarian algorithm to find the optimal assignment
+# The linear_sum_assignment function minimizes the assignment cost, so we may want to invert the IoU scores
+cost_matrix = -iou_matrix  # Invert IoU scores to turn it into a minimization problem
+gt_indices, pred_indices = linear_sum_assignment(cost_matrix)
+
+# Iterate through matched pairs
+for gt_idx, pred_idx in zip(gt_indices, pred_indices):
+    gt_box = ground_truth_boxes[gt_idx]
+    pred_box = predicted_boxes[pred_idx]
+    iou = iou_matrix[gt_idx, pred_idx]
+    
+    # Perform your operations on matched pairs here
 # Count how many ground truth boxes overlap with each predicted box
 gt_matches = np.sum(iou_matrix > threshold, axis=0)
 
