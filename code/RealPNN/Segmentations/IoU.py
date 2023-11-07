@@ -227,6 +227,9 @@ pred_overlap_counts = {j: 0 for j in range(len(predicted_boxes))}
 
 
 # Iterate through matched pairs
+# Now we have counts of overlaps for each ground truth and predicted box
+# gt_overlap_counts[i] contains the number of overlaps for ground truth box i
+# pred_overlap_counts[j] contains the number of overlaps for predicted box j
 for gt_idx, pred_idx in zip(gt_indices, pred_indices):
     gt_box = ground_truth_boxes[gt_idx]
     pred_box = predicted_boxes[pred_idx]
@@ -243,9 +246,41 @@ gt_matches = np.sum(iou_matrix > threshold, axis=0)
 # Count how many predicted boxes overlap with each ground truth box
 pred_matches = np.sum(iou_matrix > threshold, axis=1)
 
-# You can then access the counts of matches for each predicted and ground truth box.
+# We can then access the counts of matches for each predicted and ground truth box.
 # gt_matches[i] contains the number of ground truth boxes that overlap with predicted box i.
 # pred_matches[j] contains the number of predicted boxes that overlap with ground truth box j.
+
+#### visualizing these results
+# Load the raw image
+raw_image = Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_raw_no_annotations/20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01.tif')
+raw_image.seek(3)
+raw_image = np.array(raw_image, dtype = np.int8)
+raw_image_bgr = cv2.cvtColor(raw_image, cv2.COLOR_GRAY2BGR)
+
+# Iterate through matched pairs and draw rectangles on the image
+for gt_idx, pred_idx in zip(gt_indices, pred_indices):
+    gt_box = ground_truth_boxes[gt_idx]
+    pred_box = predicted_boxes[pred_idx]
+    # Draw rectangles for ground truth and predicted boxes
+    color_gt = (0, 0, 255)  # Red for ground truth
+    color_pred = (0, 255, 0)  # Green for predicted
+    thickness = 2  # Line thickness
+    # Draw ground truth box
+    x1, y1, x2, y2 = gt_box
+    cv2.rectangle(raw_image_bgr, (x1, y1), (x2, y2), color_gt, thickness)
+    # Draw predicted box
+    x1, y1, x2, y2 = pred_box
+    cv2.rectangle(raw_image_bgr, (x1, y1), (x2, y2), color_pred, thickness)
+
+fig,ax = plt.subplots(figsize = (20,20))
+ax.imshow(raw_image)
+fig.show()
+# Save or display the image with rectangles
+cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test_images/output_image_with_rectangles.png', raw_image)  # Save the image
+# cv2.imshow('Image with Rectangles', raw_image)  # Display the image (uncomment if needed)
+# cv2.waitKey(0)  # Wait for a key press to close the displayed image
+# cv2.destroyAllWindows()  # Close OpenCV windows
+
 
 #7 - find the number of overlaps in the zero PNN tiles as well
 #8 - find the IoUs for all of the overlaps
