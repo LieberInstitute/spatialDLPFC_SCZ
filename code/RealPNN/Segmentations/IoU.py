@@ -42,6 +42,53 @@ df_manual_test = df_manual_test[['Area', 'Perimeter', 'Mean', 'Min', 'Max', 'xc'
 
 #2a - segment all the single tiles from both ntc and scz samples and save them in a folder (then later, all the manual annoations can be overlaid on the segmented tiles)
 Image.MAX_IMAGE_PIXELS = None
+source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_raw_no_annotations/' # folder where all the selected tiles exist
+dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_segmented_CV_IoU_test/' # where all the segmented tiles are located
+
+# segment all the individual tiles
+for img_path in os.listdir(source_dir):
+    if img_path.endswith(".tif"):
+        # print(img_path)
+        wfa_img = Image.open(os.path.join(source_dir, img_path))
+        wfa_img.seek(3)
+        # wfa = np.array(wfa_img, dtype = 'uint8')
+        wfa = cv2.normalize(np.array(wfa_img, dtype = 'float32'), np.zeros(np.array(wfa_img, dtype = 'float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+        # cv2.imwrite(dst_dir + img_path.split('.')[0] + '_raw.tif', wfa)
+        wfa_c = cv2.cvtColor(np.array(wfa*255, dtype = np.uint8),cv2.COLOR_BGR2RGB)
+        # cv2.imwrite(dst_dir + img_path.split('.')[0] + '_colored.tif', wfa_c)
+        # adjusted = cv2.convertScaleAbs(wfa, alpha=0.3, beta=10) # decreased the contrast of the original image for better segmentation
+        wfa_gry = skimage.color.rgb2gray(wfa_c)
+        hierachy, img_threshold = cv2.threshold(np.array(wfa_gry*255, dtype = np.uint8),  100, 255, cv2.THRESH_BINARY) # 150
+        img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
+        img_threshold_gry = cv2.cvtColor(img_th_c, cv2.COLOR_BGR2GRAY)
+        # fig,ax = plt.subplots(figsize = (20,20))
+        # ax.imshow(img_threshold, cmap = 'gray')
+        # fig.show()
+        # cv2.imwrite(dst_dir + img_path.split('.')[0] + '_thresholded.tif', img_threshold)
+        wfa_contours,_ = cv2.findContours(img_threshold_gry, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print("found", len(wfa_contours), "in", img_path)
+        # wfa_cnt = cv2.drawContours(img_th_c, wfa_contours, -1, (0, 0, 0), 1) # yellow all contours
+        area_ = []
+        count_outside_range = 0
+        for cnt in wfa_contours:
+            x,y,w,h = cv2.boundingRect(cnt)
+            area = cv2.contourArea(cnt)
+            area_.append(area) # max(area_) = 1809854.0
+            # print(area)
+            # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
+            if area>=3000: # area<150 and area>=10000 and area>=100000
+                # print(f"Area {area} satisfies condition 1")
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
+            else:
+                # print(f"Area {area} satisfies condition 2")
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,255,0), 2) # rectangle
+        # gray_segmented_wfa = cv2.cvtColor(img_th_c,cv2.COLOR_RGB2GRAY)
+        # thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
+        cv2.imwrite(dst_dir + img_path.split('.')[0] + '_wfa__seg.tif', wfa_cnt)
+
+# match the tile numbers from annotation images to segmented images and overlay the boxes
+
+
 
 #2b - segment br5182 = ntc and br2039 = scz using the CV algorithm (the whole tissue section) and save it
 #3 - overlay the manual annotation boxes on the segmented images, just on the wfa channel
