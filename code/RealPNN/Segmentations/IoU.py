@@ -27,19 +27,6 @@ from shapely.geometry.polygon import Polygon
 csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[7851,52577]_component_data_20.csv'
 img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_raw_no_annotations/20220712_VIF_MockPNN_Strong_Scan1_[7851,52577]_component_data_20.tif'
 
-# Preprocessing the manual annotations csv
-conv_factor = 2.0112375738 # the fiji annotations are measured in microns and they need to be translated to pixels (1860/924.81)
-df_manual_test = pd.read_csv(csv_test) # read the manual annotations csv into dataframe
-df_manual_test = df_manual_test.rename(columns = {'X': 'xc', 'Y': 'yc', 'BX': 'x1', 'BY': 'y1', 'Perim.': 'Perimeter'}) # xc,yc are the centroids of the BB
-df_manual_test.loc[:,['xc']], df_manual_test.loc[:,['yc']], df_manual_test.loc[:,['x1']], df_manual_test.loc[:,['y1']], df_manual_test['Width'], df_manual_test['Height'] = df_manual_test['xc']*conv_factor, df_manual_test['yc']*conv_factor, df_manual_test['x1']*conv_factor, df_manual_test['y1']*conv_factor, df_manual_test['Width']*conv_factor, df_manual_test['Height']*conv_factor
-df_manual_test['x2'] = (df_manual_test['x1'] + df_manual_test['Width'])
-df_manual_test['y2'], df_manual_test['x3'] = df_manual_test['y1'], df_manual_test['x1']
-df_manual_test['y3'] = (df_manual_test['y1'] + df_manual_test['Height'])
-df_manual_test['x4'], df_manual_test['y4']  = df_manual_test['x2'], df_manual_test['y3'] # Calculating all 4 coordinates of the BB
-df_manual_test['xc'], df_manual_test['yc'], df_manual_test['x1'], df_manual_test['y1'] = np.int0(np.ceil(df_manual_test['xc'])), np.int0(np.ceil(df_manual_test['yc'])), np.int0(np.ceil(df_manual_test['x1'])), np.int0(np.ceil(df_manual_test['y1'])) # convert x,y,bx,by from floating point to integers (doing it after, reduces round off errors)
-df_manual_test['x2'], df_manual_test['y2'], df_manual_test['x3'], df_manual_test['y3'], df_manual_test['x4'], df_manual_test['y4'] = np.int0(np.ceil(df_manual_test['x2'])), np.int0(np.ceil(df_manual_test['y2'])), np.int0(np.ceil(df_manual_test['x3'])), np.int0(np.ceil(df_manual_test['y3'])), np.int0(np.ceil(df_manual_test['x4'])), np.int0(np.ceil(df_manual_test['y4']))
-df_manual_test = df_manual_test[['Area', 'Perimeter', 'Mean', 'Min', 'Max', 'xc', 'yc', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3' , 'x4' , 'y4', 'Width', 'Height', 'Ch']] # rearranging the columns
-
 #2a - segment all the single tiles from both ntc and scz samples and save them in a folder (then later, all the manual annoations can be overlaid on the segmented tiles)
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_raw_no_annotations/' # folder where all the selected tiles exist
@@ -76,23 +63,33 @@ for img_path in os.listdir(source_dir):
             area_.append(area) # max(area_) = 1809854.0
             # print(area)
             # max, avg = max(area_), (sum(area_)/len(area_)).astype('uint8')
-            if area>=3000: # area<150 and area>=10000 and area>=100000
+            if area<500: # ; area>=3000 and area>=3000
                 # print(f"Area {area} satisfies condition 1")
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
-            else:
+            if area>=3000:
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), -1) # rectangle
+            elif 300 <= area <= 3000:
                 # print(f"Area {area} satisfies condition 2")
-                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,255,0), 2) # rectangle
+                wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,255), 2) # red rectangle
         # gray_segmented_wfa = cv2.cvtColor(img_th_c,cv2.COLOR_RGB2GRAY)
         # thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
         cv2.imwrite(dst_dir + img_path.split('.')[0] + '_wfa__seg.tif', wfa_cnt)
 
 # match the tile numbers from annotation images to segmented images and overlay the boxes
+# draw a rectangle from the manual annotations csv on the contour detected image --> works to overlay annotations over segmentations
+def draw_rect(df_manual_test, contour_img):
+    for box in range(len(df_manual_test['x1'])):
+        # print(box)
+        rect = cv2.rectangle(contour_img, (df_manual_test['x1'][box], df_manual_test['y1'][box]), (df_manual_test['x4'][box], df_manual_test['y4'][box]), (0,255,0), 3)
+    # fig,ax = plt.subplots(figsize = (20,20))
+    # ax.imshow(out_img1)
+    # fig.show()
+    return contour_img
+
 # Get a list of filenames in each folder
 folder1_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_segmented_CV_IoU_test/'
-folder2_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Images/'
-# Get a list of filenames in each folder
-# folder1_files = 
-# folder2_files = 
+folder2_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
+
 
 # Create a dictionary to store the filenames with matching parts
 matching_files = {}
@@ -107,12 +104,32 @@ for filename1 in os.listdir(folder1_path):
         if part1 == part2:
             matching_files[part1] = (filename1, filename2)
 
+# folder to save all the overlaid images
+dst_dir_overlay = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_segmented_overlaid_annotations/'
+
 # Process the matched files
 for part, (file1, file2) in matching_files.items():
     # Perform operations on the matched files here
     print(f"Matching part: {part}")
     print(f"Matching file in folder 1: {file1}")
     print(f"Matching file in folder 2: {file2}")
+    # Preprocessing the manual annotations csv
+    conv_factor = 2.0112375738 # the fiji annotations are measured in microns and they need to be translated to pixels (1860/924.81)
+    df_manual_test = pd.read_csv(os.path.join(folder2_path,file2)) # read the manual annotations csv into dataframe
+    df_manual_test = df_manual_test.rename(columns = {'X': 'xc', 'Y': 'yc', 'BX': 'x1', 'BY': 'y1', 'Perim.': 'Perimeter'}) # xc,yc are the centroids of the BB
+    df_manual_test.loc[:,['xc']], df_manual_test.loc[:,['yc']], df_manual_test.loc[:,['x1']], df_manual_test.loc[:,['y1']], df_manual_test['Width'], df_manual_test['Height'] = df_manual_test['xc']*conv_factor, df_manual_test['yc']*conv_factor, df_manual_test['x1']*conv_factor, df_manual_test['y1']*conv_factor, df_manual_test['Width']*conv_factor, df_manual_test['Height']*conv_factor
+    df_manual_test['x2'] = (df_manual_test['x1'] + df_manual_test['Width'])
+    df_manual_test['y2'], df_manual_test['x3'] = df_manual_test['y1'], df_manual_test['x1']
+    df_manual_test['y3'] = (df_manual_test['y1'] + df_manual_test['Height'])
+    df_manual_test['x4'], df_manual_test['y4']  = df_manual_test['x2'], df_manual_test['y3'] # Calculating all 4 coordinates of the BB
+    df_manual_test['xc'], df_manual_test['yc'], df_manual_test['x1'], df_manual_test['y1'] = np.int0(np.ceil(df_manual_test['xc'])), np.int0(np.ceil(df_manual_test['yc'])), np.int0(np.ceil(df_manual_test['x1'])), np.int0(np.ceil(df_manual_test['y1'])) # convert x,y,bx,by from floating point to integers (doing it after, reduces round off errors)
+    df_manual_test['x2'], df_manual_test['y2'], df_manual_test['x3'], df_manual_test['y3'], df_manual_test['x4'], df_manual_test['y4'] = np.int0(np.ceil(df_manual_test['x2'])), np.int0(np.ceil(df_manual_test['y2'])), np.int0(np.ceil(df_manual_test['x3'])), np.int0(np.ceil(df_manual_test['y3'])), np.int0(np.ceil(df_manual_test['x4'])), np.int0(np.ceil(df_manual_test['y4']))
+    df_manual_test = df_manual_test[['Area', 'Perimeter', 'Mean', 'Min', 'Max', 'xc', 'yc', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3' , 'x4' , 'y4', 'Width', 'Height', 'Ch']] # rearranging the columns
+    segmented_img = Image.open(os.path.join(folder1_path,file1))
+    overlay_img = draw_rect(df_manual_test, (np.array(segmented_img, dtype = 'uint8')))
+    cv2.imwrite(dst_dir_overlay + file1.split('.')[0] + '_overlay_rect.tif', overlay_img) # actual = green box, predicted = red box
+
+
     
 
 #2b - segment br5182 = ntc and br2039 = scz using the CV algorithm (the whole tissue section) and save it
