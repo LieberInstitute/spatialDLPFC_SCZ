@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --mem=20G
+#SBATCH --mem=40G
 #SBATCH --job-name=InFormStitch_slides_14_15_16
 #SBATCH -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_slides_14_15_16_output_$SLURM_ARRAY_TASK_ID.log
 #SBATCH -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_slides_14_15_16_error_$SLURM_ARRAY_TASK_ID.log
@@ -43,12 +43,12 @@ toolbox='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_upd
 ## matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), O{1} = 'DAPI'; O{2} = 'Claudin5'; O{3} = 'NeuN'; O{4} = 'WFA'; O{5} = 'AF'; InFormStitch('$path1',O,6,'$fname1')"
 
 ## slide 15
-path2='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/12_Real_PNN_Slide11/20230830_VSPG_PNN_Slide11_Scan1_*_component_data.tif'
+path2='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/16_Real_PNN_Slide15/20230913_VSPG_PNN_Slide15_Scan1_*_component_data.tif'
 fname2='V13M06-344'
 matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), O{1} = 'DAPI'; O{2} = 'Claudin5'; O{3} = 'NeuN'; O{4} = 'WFA'; O{5} = 'AF'; InFormStitch('$path2',O,6,'$fname2')"
 
 ## slide 16
-path3='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/13_Real_PNN_Slide12/20230905_VSPG_PNN_Slide12_Scan1_*_component_data.tif'
+path3='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/RealPNN/17_Real_PNN_Slide16/20230919_VSPG_PNN_Slide16_Scan2_*_component_data.tif'
 fname3='V13F27-336'
 matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), O{1} = 'DAPI'; O{2} = 'Claudin5'; O{3} = 'NeuN'; O{4} = 'WFA'; O{5} = 'AF'; InFormStitch('$path3',O,6,'$fname3')"
 
