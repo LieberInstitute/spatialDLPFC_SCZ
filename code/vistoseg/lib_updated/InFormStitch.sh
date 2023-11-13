@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --mem=40G
-#SBATCH --job-name=InFormStitch_slides_14_15_16
-#SBATCH -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_slides_14_15_16_output_$SLURM_ARRAY_TASK_ID.log
-#SBATCH -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_slides_14_15_16_error_$SLURM_ARRAY_TASK_ID.log
+#SBATCH --job-name=InFormStitch_slides_15_16
+#SBATCH -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_slides_15_16_output.txt
+#SBATCH -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/logs/IS_slides_15_16_error.txt
 #SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=uma.kaipa.94@gmail.com
 #SBATCH -c 5
@@ -25,7 +25,7 @@ echo "Job id: ${job_id}"
 echo "Job name: ${job_name}"
 echo "Node name: ${node_name}"
 echo "****"
-echo "Sample id:  V13M06-343 V13M06-344 V13F27-336"
+echo "Sample id: V13M06-344 V13F27-336"
 echo "****"
 
 ## load MATLAB
