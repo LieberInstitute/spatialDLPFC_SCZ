@@ -36,38 +36,13 @@ img_dir = pyhere.here('processed-data', 'VistoSeg', 'captureAreas')
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 # dst_dir_claudin = pyhere.here('processed-data', 'RealPNN', 'capture_area_segmentations', 'Claudin', 'claudin_binarized')
 # dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/claudin_binarized/'
-dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/slide5/'
-
-# image paths
-img_A1_r1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
-img_D1_r2 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12D07-334_D1.tif')
-img_B1_r2 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12D07-334_B1.tif')
-
-# csv paths
-csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/Data_files/V12F14-053_A1_info.csv'
-
-# claudin segmentations by detecting contours for 1 image
-# im_claudin = read_img.read_and_preprocess(img_C1, 1)
-# plot_im(im_claudin)
-# cla_contours = detect_contours.return_contours(im_claudin)
-# clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
-# claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
-#
-# # claudin segmentations by detecting contours for all images in the directory
-# for img_path in os.listdir(img_dir):
-#     if img_path.endswith(".tif"):
-#         im_claudin = read_img.read_and_preprocess(img_path, 1)
-#         print("read", os.path.basename(img_path))
-#         # plot_im(im_claudin)
-#         cla_contours = detect_contours.return_contours(im_claudin)
-#         clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
-#         img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+dst_dir_claudin = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/slide16/'
 
 
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(img_dir):
-    if img_path.endswith(".tif") and ('V13M06-280') in img_path:
+    if img_path.endswith(".tif") and ('V13F27-336') in img_path:
         claudin_img = Image.open(os.path.join(img_dir, img_path))
         claudin_img.seek(1)
         claudin = np.array(claudin_img, dtype = 'uint8')
@@ -96,6 +71,38 @@ for img_path in os.listdir(img_dir):
         # claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, img_path.split('.')[0], 'Claudin-5')
         # claudin_df.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_info.csv')
         cv2.imwrite(dst_dir_claudin + img_path.split('.')[0] + '_claudin_binarized.tif', thresh_segmented)
+
+
+
+
+
+
+# image paths
+img_A1_r1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12F14-053_A1.tif')
+img_D1_r2 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12D07-334_D1.tif')
+img_B1_r2 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas', 'V12D07-334_B1.tif')
+
+# csv paths
+csv_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/Claudin/Data_files/V12F14-053_A1_info.csv'
+
+# claudin segmentations by detecting contours for 1 image
+# im_claudin = read_img.read_and_preprocess(img_C1, 1)
+# plot_im(im_claudin)
+# cla_contours = detect_contours.return_contours(im_claudin)
+# clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+# claudin_df = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+#
+# # claudin segmentations by detecting contours for all images in the directory
+# for img_path in os.listdir(img_dir):
+#     if img_path.endswith(".tif"):
+#         im_claudin = read_img.read_and_preprocess(img_path, 1)
+#         print("read", os.path.basename(img_path))
+#         # plot_im(im_claudin)
+#         cla_contours = detect_contours.return_contours(im_claudin)
+#         clx,cly,clw,clh, cl_area, seg_cla = draw_contours.draw_detected_contours(im_claudin, 1, cla_contours , (255,0,0), 2)
+#         img_info_claudin = save_coordinates.create_df(clx,cly,clw,clh, cl_area, im_claudin, 'claudin')
+
+
 
 
 fig,ax = plt.subplots(figsize = (20,20))
