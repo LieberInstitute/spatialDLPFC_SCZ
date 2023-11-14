@@ -32,17 +32,13 @@ from stitched_functions import draw_contours, save_coordinates
 # directory path
 Image.MAX_IMAGE_PIXELS = None # increase the max image pixels to avoid decompression error
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_dapi = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/DAPI/slide5/'
-
-# test file paths
-img_A1 = pyhere.here('processed-data', 'VistoSeg', 'captureAreas','V12D07-334_A1.tif')
-img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_B1.tif'
+dst_dir_dapi = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/DAPI/slide16/'
 
 
 # find contours for all images in the dir
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V13M06-280') in img_path:
+    if img_path.endswith(".tif") and ('V13F27-336') in img_path:
         dapi_img = Image.open(os.path.join(source_dir, img_path))
         dapi_img.seek(2)
         dapi = np.array(dapi_img, dtype = 'uint8')
