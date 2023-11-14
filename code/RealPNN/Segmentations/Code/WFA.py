@@ -35,22 +35,18 @@ from collections import defaultdict
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/slide4/'
+dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/slide10/'
 
-# file paths for test
-Image.MAX_IMAGE_PIXELS = None
-img_A1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_A1.tif'
-img_B1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12F14-053_B1.tif'
 # WFA threshold
 Image.MAX_IMAGE_PIXELS = None
 for img_path in os.listdir(source_dir):
-    if img_path.endswith(".tif") and ('V13M06-279_B1') in img_path:
+    if img_path.endswith(".tif") and ('V13F27-295') in img_path:
         wfa_img = Image.open(os.path.join(source_dir, img_path))
         wfa_img.seek(4)
         wfa = np.array(wfa_img, dtype = 'uint8')
         wfa_c = cv2.cvtColor(wfa,cv2.COLOR_BGR2RGB)
         # adjusted = cv2.convertScaleAbs(wfa, alpha=0.3, beta=10) # decreased the contrast of the original image for better segmentation
-        hierachy, img_threshold = cv2.threshold(wfa,  80, 255, cv2.THRESH_BINARY) # 150
+        hierachy, img_threshold = cv2.threshold(wfa,  80, 255, cv2.THRESH_BINARY) # 150;; 80
         img_th_c = cv2.cvtColor(img_threshold,cv2.COLOR_BGR2RGB)
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(img_threshold, cmap = 'gray')
@@ -75,7 +71,7 @@ for img_path in os.listdir(source_dir):
                 wfa_cnt = cv2.rectangle(img_th_c, (x,y), (x+w, y+h), (0,0,0), 1) # rectangle
         gray_segmented_wfa = cv2.cvtColor(img_th_c,cv2.COLOR_RGB2GRAY)
         thresh_segmented_wfa = cv2.threshold(gray_segmented_wfa, 80, 255, cv2.THRESH_BINARY)[1] #_INV # | cv2.THRESH_OTSU
-        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa__seg_controlled_size.tif', thresh_segmented_wfa)
+        cv2.imwrite(dst_dir_wfa + img_path.split('.')[0] + '_wfa_segmented.tif', thresh_segmented_wfa)
 
         # fig,ax = plt.subplots(figsize = (20,20))
         # ax.imshow(wfa_cnt)
