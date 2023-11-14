@@ -24,17 +24,18 @@ from collections import defaultdict
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
-#1 - get the manual annotations image
+#1 - get the manual annotations image <-- run this
 csv_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations/20220712_VIF_MockPNN_Strong_Scan1_[7851,52577]_component_data_20.csv'
 img_test = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_raw_no_annotations/20220712_VIF_MockPNN_Strong_Scan1_[7851,52577]_component_data_20.tif'
 
-#2a - segment all the single tiles from both ntc and scz samples and save them in a folder (then later, all the manual annoations can be overlaid on the segmented tiles)
+#2a - segment all the single tiles from both ntc and scz samples and save them in a folder 
+# (then later, all the manual annoations can be overlaid on the segmented tiles) <-- run this
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_raw_no_annotations/' # folder where all the selected tiles exist
 dst_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_segmented_CV_IoU_test/' # where all the segmented tiles are located
 dst_dir_csv = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_cv_segmentation_csv_files/' # where all the segmented tiles info is located
 
-# segment all the individual tiles
+# segment all the individual tiles <-- run this
 for img_path in os.listdir(source_dir):
     if img_path.endswith(".tif"):
         # print(img_path)
@@ -96,7 +97,7 @@ for img_path in os.listdir(source_dir):
         df_wfa_cv.to_csv(dst_dir_csv + img_path.split('.')[0] + '_wfa_seg.csv')
 
 
-# match the tile numbers from annotation images to segmented images and overlay the boxes
+# match the tile numbers from annotation images to segmented images and overlay the boxes <-- run this
 # draw a rectangle from the manual annotations csv on the contour detected image --> works to overlay annotations over segmentations
 def draw_rect(df_manual_test, contour_img):
     for box in range(len(df_manual_test['x1'])):
@@ -107,15 +108,15 @@ def draw_rect(df_manual_test, contour_img):
     # fig.show()
     return contour_img
 
-# Get a list of filenames in each folder
+# Get a list of filenames in each folder <-- run this
 folder1_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_segmented_CV_IoU_test/'
 folder2_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
 
 
-# Create a dictionary to store the filenames with matching parts
+# Create a dictionary to store the filenames with matching parts <-- run this
 matching_files = {}
 
-# Iterate through the filenames in both folders
+# Iterate through the filenames in both folders <-- run this
 for filename1 in os.listdir(folder1_path):
     for filename2 in os.listdir(folder2_path):
         # Extract the part enclosed in square brackets from both filenames
@@ -125,11 +126,11 @@ for filename1 in os.listdir(folder1_path):
         if part1 == part2:
             matching_files[part1] = (filename1, filename2)
 
-# folder to save all the overlaid images
+# folder to save all the overlaid images <-- run this
 dst_dir_overlay = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_segmented_overlaid_annotations/'
 annotations_pixels = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations_in_pixels/'
 
-# Process the matched files
+# Process the matched files <-- run this
 for part, (file1, file2) in matching_files.items():
     # Perform operations on the matched files here
     print(f"Matching part: {part}")
@@ -157,7 +158,8 @@ for part, (file1, file2) in matching_files.items():
 #3 - overlay the manual annotation boxes on the segmented images, just on the wfa channel
 #4 - this gives figure a,b,c
 #5 - for the math,
-#6 - find the number of overlaps in all 13 ntc and 12 scz tiles
+
+#6 - find the number of overlaps in all 13 ntc and 12 scz tiles <-- run this
 def calculate_iou(box1, box2):
     # Calculate the coordinates of the intersection rectangle
     x1 = max(box1[0], box2[0])
@@ -181,14 +183,14 @@ def calculate_iou(box1, box2):
 ground_truth_boxes = [(x1, y1, x2, y2), (x1, y1, x2, y2), ...]  # Replace with your actual values
 predicted_boxes = [(x1, y1, x2, y2), (x1, y1, x2, y2), ...]  # Replace with your actual values
 
-# match the file names from the ground truth and predicted boxes 
+# match the file names from the ground truth and predicted boxes <-- run this
 ground_truth_folder = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/Experimentation_archive/2_MockPNN/Training_tiles/Manual_annotations/Annotations/'
 predicted_folder = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_cv_segmentation_csv_files/'
 
 
 matching_files_boxes = {}
 
-# Iterate through the filenames in both folders
+# Iterate through the filenames in both folders <-- run this
 for filename1 in os.listdir(annotations_pixels):
     for filename2 in os.listdir(predicted_folder):
         # Extract the part enclosed in square brackets from both filenames
@@ -198,7 +200,7 @@ for filename1 in os.listdir(annotations_pixels):
         if part1 == part2:
             matching_files[part1] = (filename1, filename2)
 
-# Process the matched files
+# Process the matched files <-- run this
 for part, (file1, file2) in matching_files_boxes.items():
     # Perform operations on the matched files here
     print(f"Matching part: {part}")
@@ -210,18 +212,18 @@ for part, (file1, file2) in matching_files_boxes.items():
     predicted_boxes = df_pred[['x1', 'y1', 'x2', 'y2']].values.tolist()
     
 
-# Calculate IoU for all pairs of ground truth and predicted bounding boxes
+# Calculate IoU for all pairs of ground truth and predicted bounding boxes <-- run this
 iou_matrix = np.zeros((len(ground_truth_boxes), len(predicted_boxes))) # Initialize a matrix to store the IoU values
 for i, gt_box in enumerate(ground_truth_boxes):
     for j, pred_box in enumerate(predicted_boxes):
         iou_matrix[i, j] = calculate_iou(gt_box, pred_box)
 
-# Using the Hungarian algorithm to find the optimal assignment
+# Using the Hungarian algorithm to find the optimal assignment <-- run this
 # The linear_sum_assignment function minimizes the assignment cost, so we may want to invert the IoU scores
 cost_matrix = -iou_matrix  # Invert IoU scores to turn it into a minimization problem
 gt_indices, pred_indices = linear_sum_assignment(cost_matrix)
 
-# Initialize dictionaries to count overlaps for ground truth and predicted boxes
+# Initialize dictionaries to count overlaps for ground truth and predicted boxes <-- run this
 gt_overlap_counts = {i: 0 for i in range(len(ground_truth_boxes))}
 pred_overlap_counts = {j: 0 for j in range(len(predicted_boxes))}
 
@@ -250,11 +252,11 @@ pred_matches = np.sum(iou_matrix > threshold, axis=1)
 # gt_matches[i] contains the number of ground truth boxes that overlap with predicted box i.
 # pred_matches[j] contains the number of predicted boxes that overlap with ground truth box j.
 
-#### visualizing these results
+#### visualizing these results <-- run this (problem with this, FIX THIS)
 # Load the raw image
 raw_image = Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_raw_no_annotations/20220712_VIF_MockPNN_Strong_Scan1_[10087,51668]_component_data_01.tif')
 raw_image.seek(3)
-raw_image = np.array(raw_image, dtype = np.int8)
+raw_image = np.array(raw_image, dtype = np.uint8)
 raw_image_bgr = cv2.cvtColor(raw_image, cv2.COLOR_GRAY2BGR)
 
 # Iterate through matched pairs and draw rectangles on the image
@@ -276,7 +278,7 @@ fig,ax = plt.subplots(figsize = (20,20))
 ax.imshow(raw_image)
 fig.show()
 # Save or display the image with rectangles
-cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test_images/output_image_with_rectangles.png', raw_image)  # Save the image
+cv2.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test_images/output_image_with_rectangles.png', raw_image_bgr)  # Save the image
 # cv2.imshow('Image with Rectangles', raw_image)  # Display the image (uncomment if needed)
 # cv2.waitKey(0)  # Wait for a key press to close the displayed image
 # cv2.destroyAllWindows()  # Close OpenCV windows
