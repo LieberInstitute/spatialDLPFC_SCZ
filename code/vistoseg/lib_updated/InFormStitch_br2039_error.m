@@ -16,9 +16,9 @@ tic
 loc = cellfun(@(x) strsplit(x,'_'), {myfiles.name}',  'UniformOutput', false);
 temp = cellfun(@(x) strsplit(x{P},','), loc,  'UniformOutput', false);
 X = cellfun(@(x) str2double(x{1}(2:end)), temp);
-%Y = cellfun(@(x) str2double(x{2}(1:end-1)), temp);
+Y = cellfun(@(x) str2double(x{2}(1:end-1)), temp);
 X = sort(unique(X));
-%Y = sort(unique(Y));
+Y = sort(unique(Y));
 
 toc
 %code manipulated because there was a mismatch in tissue br2039 (10629 has only 11 rows while rest have 12) so the number of rows and columns are displayed to check where the mismatch happens
