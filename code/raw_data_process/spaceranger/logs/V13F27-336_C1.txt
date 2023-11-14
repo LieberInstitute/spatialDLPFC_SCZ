@@ -1,0 +1,79 @@
+**** Job starts ****
+Wed Nov  8 05:32:53 PM EST 2023
+**** JHPCE info ****
+User: bguo
+Job id: 742789
+Job name: V13F27-336_C1
+Hostname: jhpce3
+Task id: 
+Loading LIBD module for spaceranger/2.1.0
+Reference files, for use with the '--transcriptome' argument, can be accessed or downloaded into
+/dcs04/lieber/lcolladotor/annotationFiles_LIBD001/10x. 
+
+Currently Loaded Modules:
+  1) JHPCE_ROCKY9_DEFAULT_ENV   3) conda/3-23.3.1   5) spaceranger/2.1.0
+  2) JHPCE_tools/3.0            4) conda_R/4.3.x
+
+ 
+
+Processing sample V13F27-336_C1 from slide V13F27-336 and capture area C1 with image /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V13F27-336_C1.tif and aligned with /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V13F27-336_C1.json with FASTQs: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/FASTQ/V13F27-336_C1
+Wed Nov  8 05:32:53 PM EST 2023
+ls: cannot access '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V13F27-336_C1.tif': No such file or directory
+ls: cannot access '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V13F27-336_C1.json': No such file or directory
+error: Invalid value "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/loupe/V13F27-336_C1.tif" for '--darkimage <IMG>': No such file or directory
+
+For more information try --help
+**** Updating permissions for V13F27-336_C1 ****
+Wed Nov  8 05:32:54 PM EST 2023
+
+**** Note that warning/error messages are expected for files and directories that you are not the owner of.
+The expected warning/error messages are: 
+    'chgrp: changing group of ‘some_JHPCE_file_path’: Operation not permitted'
+ or 'chmod: changing permissions of ‘some_JHPCE_file_path’: Operation not permitted'.
+If for many files you are not the owner (creator of), you will get lots of these warning/error messages, this is expected!
+Error or warnings with another syntax are likely real. ****
+
+You will need to re-run this script anytime you upload files to JHPCE through Cyberduck / WinSCP as they break the ACLs.
+Every new team member on a given project will likely also need to run this script once.
+
+For more details about setting permissions at JHPCE using ACLs, please check https://lcolladotor.github.io/bioc_team_ds/organizing-your-work.html#setting-jhpce-file-permissions.
+
+This message will be displayed for 90 seconds before the script proceeds.
+That way you will have time enough to read it and/or copy it.
+
+**** Setting read (R), write (W), and execute (X) permissions for hickslab ****
+Wed Nov  8 05:34:29 PM EST 2023
+find: ‘V13F27-336_C1’: No such file or directory
+find: ‘V13F27-336_C1’: No such file or directory
+find: ‘V13F27-336_C1’: No such file or directory
+
+**** Setting read (R), write (W), and execute (X) permissions for lieber_lcolladotor ****
+Wed Nov  8 05:34:34 PM EST 2023
+find: ‘V13F27-336_C1’: No such file or directory
+find: ‘V13F27-336_C1’: No such file or directory
+find: ‘V13F27-336_C1’: No such file or directory
+
+**** Setting read (R), write (W), and execute (X) permissions for lieber_marmaypag ****
+Wed Nov  8 05:34:39 PM EST 2023
+find: ‘V13F27-336_C1’: No such file or directory
+find: ‘V13F27-336_C1’: No such file or directory
+find: ‘V13F27-336_C1’: No such file or directory
+
+**** Running chgrp hickslab ****
+Wed Nov  8 05:34:44 PM EST 2023
+chgrp: cannot access 'V13F27-336_C1': No such file or directory
+
+**** Setting the group sticky bit ****
+Wed Nov  8 05:34:49 PM EST 2023
+find: ‘V13F27-336_C1’: No such file or directory
+chmod: missing operand after ‘g+s’
+Try 'chmod --help' for more information.
+
+**** Checking the nfs4 (ACLs) settings ****
+Wed Nov  8 05:34:54 PM EST 2023
+Failed operation: No such file or directory
+Moving results to new location
+Wed Nov  8 05:34:54 PM EST 2023
+mv: cannot stat 'V13F27-336_C1': No such file or directory
+**** Job ends ****
+Wed Nov  8 05:34:54 PM EST 2023
