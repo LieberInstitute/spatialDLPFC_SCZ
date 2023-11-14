@@ -270,7 +270,7 @@ af_053_C1 = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41
 af_053_D1 = np.array(Image.open('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/capture_area_segmentations/AF/AF_segmented_binary/V12F14-053_D1_af_contours_segmented.tif'))
 
 
-##### Works!!! ----re-run this again to change the wfa channel images
+##### Works!!!
 
 new_image = np.zeros((5, dapi_057_A1.shape[0], dapi_057_A1.shape[1]), dtype=np.uint8)
 
@@ -286,6 +286,7 @@ new_image[4] = af_053_D1
 channel_names = ['DAPI', 'Claudin-5', 'NeuN', 'WFA', 'AF']
 metadata = {'axes': 'YXZ', 'channel_names': channel_names} #ZYX right ones
 
+dst_sl4 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/segmented_channels_stitched/slide4/'
 
 # Save the new image with metadata using tifffile module
 tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/all_channels_segemented/Test2/V12F14-053_D1.tif', new_image, metadata=metadata)
@@ -295,12 +296,19 @@ tifffile.imwrite('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-da
 A1_images, B1_images, C1_images, D1_images = [], [], [], []
 A1_paths, B1_paths, C1_paths, D1_paths = [], [], [], []
 
+folder_names = ['/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/DAPI/slide6/',
+                '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/slide6',
+                '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/NeuN/slide6',
+                '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/slide6',
+                '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/AF/slide6']
 
+# folder_names = ['/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/slide4']
 for folder in folder_names:
     filenames = os.listdir(folder)
     if len(filenames) >= 4:  # Check if there are at least 4 files in the folder
         for filename in filenames:
             filename_parts = filename.split('.')[0].split('_')
+            # print("filename_parts", filename_parts)
             if len(filename_parts) == 4 and filename_parts[1] in ['A1', 'B1', 'C1', 'D1']:
                 if filename_parts[1] == 'A1':
                     A1_image_path = os.path.join(folder, filename)
@@ -337,8 +345,14 @@ B1_combined5 = np.stack(B1_images) # (5, 18497, 18600)
 C1_combined5 = np.stack(C1_images) # (5, 18497, 18600)
 D1_combined5 = np.stack(D1_images) # (5, 15997, 18600)
 
+
+stitched_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/segmented_channels_stitched/slide6/'
+
 tifffile.imwrite(stitched_dir + 'A1_stitched.tif', A1_combined5)
 tifffile.imwrite(stitched_dir + 'B1_stitched.tif', B1_combined5)
 tifffile.imwrite(stitched_dir + 'C1_stitched.tif', C1_combined5)
 tifffile.imwrite(stitched_dir + 'D1_stitched.tif', D1_combined5)
+
+for i in range(len(A1_images)):
+    print(D1_images[i].shape)
 
