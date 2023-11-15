@@ -47,6 +47,14 @@ for csv_cv_file in csv_cv_files:
                         break
 
 
+# function to find mean pixel intensity of pixels with abox
+def calculate_mean_intensity(row):
+    x1, y1, x4, y4 = int(row['x1']), int(row['y1']), int(row['x4']), int(row['y4'])
+    roi = image[y1:y4, x1:x4]
+    mean_intensity = cv2.mean(roi)[0]
+    return mean_intensity
+
+
 # List to store all mean intensity values from all files
 all_mean_intensity_values = []
 # Now, matching_files dictionary contains matching filenames grouped by the numbers within square brackets
@@ -65,18 +73,22 @@ for numbers, files in matching_files.items():
    # Create a list to store normalized mean intensities for the current file
     normalized_mean_intensity_values = []
     # Iterate over bounding boxes and compute mean pixel intensities
-    for index, row in file_ma_df.iterrows():
-        x1, y1, x4, y4 = int(row['x1']), int(row['y1']), int(row['x4']), int(row['y4'])
-        # Extract region of interest (ROI)
-        roi = image[y1:y4, x1:x4]
-        # Compute mean pixel intensities
-        mean_intensity = cv2.mean(roi)[0]
-        mean_intensity_values.append(mean_intensity)
-        # this is to normalize the intensity values
-        # mean_intensity = cv2.mean(roi)[0] / 255.0  # Normalize to the range 0-1
-        # normalized_mean_intensity_values.append(mean_intensity)
+    # for index, row in file_ma_df.iterrows():
+    #     x1, y1, x4, y4 = int(row['x1']), int(row['y1']), int(row['x4']), int(row['y4'])
+    #     # Extract region of interest (ROI)
+    #     roi = image[y1:y4, x1:x4]
+    #     # Compute mean pixel intensities
+    #     mean_intensity = cv2.mean(roi)[0]
+    #     mean_intensity_values.append(mean_intensity)
     # Extend the list with mean intensity values for the current file
     all_mean_intensity_values.extend(mean_intensity_values)
+    # Filter rows with mean_pixel_intensity >= 0.25
+    # Add a new column 'mean_pixel_intensity' to the DataFrame
+    file_ma_df['mean_pixel_intensity'] = file_ma_df.apply(calculate_mean_intensity, axis=1)
+    filtered_df = file_ma_df[file_ma_df['mean_pixel_intensity'] >= 0.25]
+    # Save the filtered DataFrame to a new CSV file
+    output_csv_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/pixel_intensities_filtered_csvs/filtered_data_{numbers}.csv'
+    filtered_df.to_csv(output_csv_path, index=False)
     # Plot histogram
     # plt.hist(mean_intensity_values, bins=50, color='blue', alpha=0.7)
     # plt.title(f'Histogram of Mean Pixel Intensities - Files with numbers {numbers}')
@@ -103,3 +115,36 @@ plt.ylabel('Frequency')
 # Save histogram as an image file
 output_histogram_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_all_normalized__.png'
 plt.savefig(output_histogram_path)
+
+
+
+
+### removing the rows with mean pixle intensities <=0.25 and creating a new filtered df
+# function to find mean pixel intensity of pixels with abox
+def calculate_mean_intensity(row):
+    x1, y1, x4, y4 = int(row['x1']), int(row['y1']), int(row['x4']), int(row['y4'])
+    roi = image[y1:y4, x1:x4]
+    mean_intensity = cv2.mean(roi)[0]
+    return mean_intensity
+
+
+
+# Now, matching_files dictionary contains matching filenames grouped by the numbers within square brackets
+# You can perform further operations on the matched files
+for numbers, files in matching_files.items():
+    # Read the CSV files
+    file_cv_df = pd.read_csv(files['csv_cv'])
+    file_ma_df = pd.read_csv(files['csv_ma'])
+    # Read the image
+    image = Image.open(files['img_raw'])
+    image.seek(3)
+    image = cv2.normalize(np.array(image, dtype='float32'), np.zeros(np.array(image, dtype='float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
+    wfa_c = cv2.cvtColor(np.array(image * 255, dtype=np.uint8), cv2.COLOR_BGR2RGB)
+    # Filter rows with mean_pixel_intensity >= 0.25
+    # Add a new column 'mean_pixel_intensity' to the DataFrame
+    file_ma_df['mean_pixel_intensity'] = file_ma_df.apply(calculate_mean_intensity, axis=1)
+    filtered_df = file_ma_df[file_ma_df['mean_pixel_intensity'] >= 0.25]
+    # Save the filtered DataFrame to a new CSV file
+    output_csv_path = f'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/pixel_intensities_filtered_csvs/filtered_data_{numbers}.csv'
+    filtered_df.to_csv(output_csv_path, index=False)
+    
