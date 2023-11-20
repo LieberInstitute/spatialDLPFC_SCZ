@@ -3,7 +3,6 @@ library(here)
 library(tidyverse)
 library(cellranger) # Extract excel file
 
-
 source(here("code", "raw_data_process", "file_paths.R"))
 
 
@@ -14,7 +13,7 @@ raw_df <- readxl::read_excel(
   col_names = TRUE,
   # First row is grouped cell names, hence starting second row
   range = cellranger::cell_rows(
-    c(2, NA) # TODO: check range
+    c(2, NA)
   ) # Start from the second row
 ) |> 
   # Only include relevent columns
@@ -28,9 +27,7 @@ raw_df <- readxl::read_excel(
     "Dissection Date"
     #  Seems to be notes
     # "opiate dx"
-  ) |> 
-  mutate(race = "CAUC") # NOTE: "all donors in this study are European ancestry"
-
+  ) 
 # Remove example row based on "Ex" --------------------------------------
 ex_row_id <- grep(
   pattern = "^Ex:.*",
@@ -50,11 +47,11 @@ stopifnot(
 
 # Clean up brain number column--------------------------------------------------
 # Remove all " - xxNotesxx"
-clean_df$brain_num  <-  gsub(
-  pattern = "\\s?-\\s?.*$",
-  replacement = "",
-  x = clean_df$brain_num
+clean_df$brain_num  <- str_sub(
+  clean_df$brain_num,
+  1, 6
 )
+
 
 # Validation
 # If all brain numbers are 6 characters
@@ -62,9 +59,6 @@ clean_df$brain_num  <-  gsub(
 stopifnot(
   all(str_length(clean_df$brain_num)==6)
 )
-
-# Include in SCZ(PNN) study column ------------------------------------------------
-# clean_df <- clean_df |> filter(!is.na(SCZ_study))
 
 # Validation
 
@@ -107,17 +101,11 @@ clean_df <- clean_df |>
       str_detect(tolower(dx_raw), "control|neurotypical|ntc") ~ "ntc",
       # Set other dx to NA
       TRUE ~ NA_character_
-    )
+    ),
+    race = "CAUC"  # NOTE: "all donors in this study are European ancestry"
   ) |> 
   filter(!is.na(dx)) |> 
   select(-SCZ_study)
-
-
-# stopifnot(unique(clean_df$brain_num) |> length() == nrow(clean_df))
-# clean_df |> group_by(brain_num) |> summarize(n = n()) |> filter(n!=1)
-
-# table(clean_df$dx)
-
 
 
 
