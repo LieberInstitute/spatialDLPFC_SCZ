@@ -15,7 +15,9 @@ stopifnot(packageVersion("spatialLIBD") >= "1.11.10")
 
 # Load SPE Object ---------------------------------------------------------
 # TODO: add path
-path_raw_spe <- "REPLACE_PATH HERE"
+path_raw_spe <- here(
+  "processed-data/rds/spe","01_build_spe/",
+  "REPLACE_PATH HERE")
 
 # TODO: check if spe exists
 stopifnot(
@@ -126,7 +128,17 @@ colData(spe) <- DataFrame(col_data_df)  # Will remove colnames(spe)
 colnames(spe) <- spe$key
 stopifnot(any(is.na(spe$spg_CNClaudin5)))
 
-# * Save SPE-SPG object ---------------------------------------------------
+# grep(
+#   pattern = "^spg_",
+#   x = names(colData(spe)),
+#   value = TRUE) |> 
+#   walk(.f = function(x)
+#     `$`(spe, x) <- NULL
+#     )
+
+
+
+# Save SPE-SPG object ---------------------------------------------------
 
 stopifnot(!is.null(colnames(spe)))
 
@@ -135,7 +147,7 @@ saveRDS(
   file = here::here("processed-data", "rds",
                     "spe", "01_build_spe",
                     # TODO: rename
-                    "test_raw_spe_spg_36.rds")
+                    "test_raw_spe_w_spg_N63.rds")
 )
 
 
