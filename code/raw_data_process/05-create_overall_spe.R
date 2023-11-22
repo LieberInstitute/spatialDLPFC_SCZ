@@ -117,7 +117,6 @@ metadata(spe)$dx_df <- clean_df |>
   ) |> 
   rename(
     subject = brain_num,
-    dx_short = dx_raw,
     sample_id = sample_name
   ) |> 
   # Remove non DLPFC sample

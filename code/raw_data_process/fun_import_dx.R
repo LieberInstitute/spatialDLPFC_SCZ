@@ -105,7 +105,7 @@ clean_df <- clean_df |>
     race = "CAUC"  # NOTE: "all donors in this study are European ancestry"
   ) |> 
   filter(!is.na(dx)) |> 
-  select(-SCZ_study)
+  select(-c(SCZ_study, dx_raw))
 
 
 
