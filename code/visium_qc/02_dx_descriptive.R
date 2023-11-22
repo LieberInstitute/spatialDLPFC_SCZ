@@ -44,7 +44,7 @@ demo_df_formated <- demo_df |>
 demo_df_formated |> 
   write_csv(
     file = here::here(
-      # TODO: Add Table Folder
+      "manuscript", "tables",
       "stabl_demo_raw.csv")
   )
 
