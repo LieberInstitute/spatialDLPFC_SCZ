@@ -1,49 +1,89 @@
-# Descriptive Table -------------------------------------------------------
-# TODO: move to an analysis
+# Load Pacakges -------------------------------------------------------
 library(gtsummary)
 library(SpatialExperiment)
+library(tidyverse)
+library(sessioninfo)
 
-# expr_meta <- read_csv()
-# list.files(here::here("processed-data", "rds", 
-#                       "spe", "01_build_spe"))
 
-# TODO: readin spe object
-spe <- readRDS(here::here("processed-data", "rds", 
-                          "spe", "01_build_spe", "test_spe_raw_36.rds"))
+# Load SPE Object ---------------------------------------------------------
+spe <- readRDS(
+  here::here("processed-data", "rds", 
+             "spe", "01_build_spe", 
+             "raw_spe_wo_SPG_N63.rds")
+)
 
+
+# Organize Data Frame -----------------------------------------------------
 demo_df <- metadata(spe)$dx_df
 
 # Error Prevention
 if("Br3942" %in% demo_df$brain_num){
-  warning("Br3942 is still in the dataset")
+  warning("Non-DLPFC Sample *Br3942* is still in the dataset")
   demo_df <- demo_df[which(demo_df$brain_num != "Br3942"), ]
 }
 stopifnot(nrow(demo_df) == 63) # Should remove Br3942
 
-# TODO: change variable names
-
-# TODO: save the demo_df to an excel file
-
-
-
-# Create Demo Table
-
-demo_df |> 
-  # TODO: add more demo vars
-  select(age, sex, dx) |>
-  tbl_summary(by = dx,
-              type = list(age ~ "continuous"),
-              statistic = list(age ~ "{mean} ({sd})")
-              ) |> 
-  gtsummary::as_tibble() # |>
-  # gt::gtsave(here("code", "visium_qc", "demo_tab.pdf"))
-
-# TODO: save Supplementary Table 2
+demo_df_formated <- demo_df |> 
+  transmute(
+    `Brain Number (ID)` = subject,
+    `Date Dxt\'d` = `Dissection Date`,
+    Race = race,
+    Sex = sex,
+    Age = age,
+    RIN,
+    PMI,
+    `PrimaryDx` = factor(
+      dx,
+      levels = c("ntc", "scz"),
+      labels = c("Control", "Schizophrenia")
+    )
+  )
 
 
-# `**Characteristic**` `**ntc**, N = 17` `**scz**, N = 18`
-# <chr>                <chr>             <chr>            
-# 1 age                  46 (9)            47 (7)           
-# 2 sex                  NA                NA               
-# 3 F                    9 (53%)           8 (44%)          
-# 4 M                    8 (47%)           10 (56%)    
+#  Save Raw Demo Data as CSV ----------------------------------------------
+demo_df_formated |> 
+  write_csv(
+    file = here::here(
+      # TODO: Add Table Folder
+      "stabl_demo_raw.csv")
+  )
+
+
+
+# Create Demo Compare Table
+demo_df_formated |> 
+  select(-c(`Brain Number (ID)`,
+            `Date Dxt\'d`)) |> 
+  tbl_summary(by = `PrimaryDx`,
+              type = list(
+                Age ~ "continuous",
+                RIN ~ "continuous",
+                PMI ~ "continuous"),
+              statistic = list(
+                Age ~ "{mean} ({sd})",
+                RIN ~ "{mean} ({sd})",
+                PMI ~ "{mean} ({sd})"
+              )
+  ) |> 
+  as_tibble() #|> 
+  # as_hux_xlsx(
+  #   # TODO: change things
+  #   file = here("stabl_demo_compare.xlsx")
+  #   )
+
+# A tibble: 8 × 3
+# `**Characteristic**` `**Control**, N = 31` `**Schizophrenia**, N = 32`
+# <chr>                <chr>                 <chr>                      
+#   1 Race                 NA                    NA                         
+# 2 CAUC                 31 (100%)             32 (100%)                  
+# 3 Sex                  NA                    NA                         
+# 4 F                    15 (48%)              14 (44%)                   
+# 5 M                    16 (52%)              18 (56%)                   
+# 6 Age                  47 (10)               47 (7)                     
+# 7 RIN                  7.80 (7.35, 8.55)     7.85 (7.18, 8.50)          
+# 8 PMI                  26 (22, 31)           26 (19, 33)          
+
+
+# Session Info ------------------------------------------------------------
+session_info()
+
