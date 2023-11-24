@@ -29,7 +29,7 @@ here("code", "raw_data_process",
 
 # Create Preporcess Meta File --------------------------------------------
 here("code", "raw_data_process",
-     "001-create_process_meta.R") |> 
+     "01-create_process_meta.R") |> 
   source()
 
 
@@ -38,13 +38,13 @@ here("code", "raw_data_process",
 # Copy Raw Data File ------------------------------------------------------
 # https://github.com/LieberInstitute/spatialDLPFC_SCZ/issues/10
 here("code", "raw_data_process",
-     "01-set_fastq_softlink.R") |> 
+     "02-set_fastq_softlink.R") |> 
   source()
 
 # Run Space Ranger --------------------------------------------------------
 # https://github.com/LieberInstitute/spatialDLPFC_SCZ/issues/12
 here("code", "raw_data_process",
-     "02-prep_for_space_ranger.R") |> 
+     "03-prep_for_space_ranger.R") |> 
   source()
 
 # Space Ranger QC ---------------------------------------------------------

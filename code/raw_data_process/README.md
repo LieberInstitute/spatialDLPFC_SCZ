@@ -20,10 +20,10 @@ To run the whole sequencing step,
 
 -   `run_main.sh`: the JHPCE job script to run the whole preprocessing step
 -   `00-main.R`: master R file to run each task in the preprocessing step
--   `001-create_process_meta.R`: create a meta csv file, `sample_meta_path.csv`,
+-   `01-create_process_meta.R`: create a meta csv file, `sample_meta_path.csv`,
 that contains sample-specific file paths
--   `01-set_fastq_softlink.R`: Set up soft link from data storage to SCZ project
--   `02-prep_for_space_ranger.R`: Prepare and run `spaceranger`
+-   `02-set_fastq_softlink.R`: Set up soft link from data storage to SCZ project
+-   `03-prep_for_space_ranger.R`: Prepare and run `spaceranger`
 
 -   Utilit Files:
     - `file_path.R`: a master file contains all path needed for the
