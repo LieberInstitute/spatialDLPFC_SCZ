@@ -104,7 +104,7 @@ colnames(spe) <- spe$key
 
 # Add Donor Demo Info as metadata(spe) ---------
 ### read in meta information
-source(here("code", "visium_data_process", "fun_import_dx.R"))
+source(here("code", "analysis/01_build_spe", "fun_import_dx.R"))
 
 # Save the dx data as the meta data
 metadata(spe)$dx_df <- clean_df |> 
@@ -128,7 +128,7 @@ metadata(spe)$dx_df <- clean_df |>
 # Save SPE Object --------------------------------------------------------------
 path_spe_folder <- here::here(
   "processed-data", "rds", 
-  "spe", "01_build_spe"
+  "01_build_spe"
 )
 
 dir.create(
