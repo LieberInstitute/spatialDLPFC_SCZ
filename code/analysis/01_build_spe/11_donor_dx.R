@@ -2,13 +2,14 @@
 library(gtsummary)
 library(SpatialExperiment)
 library(tidyverse)
+library(here)
 library(sessioninfo)
 
 
 # Load SPE Object ---------------------------------------------------------
 spe <- readRDS(
-  here::here("processed-data", "rds", 
-             "spe", "01_build_spe", 
+  here::here("processed-data",
+             "rds", "01_build_spe", 
              "raw_spe_wo_SPG_N63.rds")
 )
 
@@ -17,9 +18,9 @@ spe <- readRDS(
 demo_df <- metadata(spe)$dx_df
 
 # Error Prevention
-if("Br3942" %in% demo_df$brain_num){
+if("Br3942" %in% demo_df$subject){
   warning("Non-DLPFC Sample *Br3942* is still in the dataset")
-  demo_df <- demo_df[which(demo_df$brain_num != "Br3942"), ]
+  demo_df <- demo_df[which(demo_df$subject != "Br3942"), ]
 }
 stopifnot(nrow(demo_df) == 63) # Should remove Br3942
 
@@ -65,11 +66,13 @@ demo_df_formated |>
                 PMI ~ "{mean} ({sd})"
               )
   ) |> 
-  as_tibble() #|> 
-  # as_hux_xlsx(
-  #   # TODO: change things
-  #   file = here("stabl_demo_compare.xlsx")
-  #   )
+  # Note: View output on JHPCE
+  # as_tibble()
+  # Note: save as an xlsx file
+  as_hux_xlsx(
+    file = here("manuscript", "tables",
+                "stabl_demo_compare.xlsx")
+    )
 
 # A tibble: 8 × 3
 # `**Characteristic**` `**Control**, N = 31` `**Schizophrenia**, N = 32`
