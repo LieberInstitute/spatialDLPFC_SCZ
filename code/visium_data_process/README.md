@@ -12,7 +12,7 @@ library(glue)
 
 To run the whole sequencing step,
 
-1.  Set your working directory to the current directory i.e. `cd code/raw_data_process/`
+1.  Set your working directory to the current directory i.e. `cd code/visium_data_process/`
 
 2.  Run `00-main.R` on JHPCE.
 

@@ -38,7 +38,7 @@ stopifnot(
 
 # Load SPG file path ---------------------------------------------
 raw_expr_meta <- read.csv(
-  here("code", "raw_data_process",
+  here("code", "visium_data_process",
        "sample_meta_path.csv"),
   header = TRUE
 ) |> 

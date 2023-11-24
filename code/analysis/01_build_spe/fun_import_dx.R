@@ -3,7 +3,7 @@ library(here)
 library(tidyverse)
 library(cellranger) # Extract excel file
 
-source(here("code", "raw_data_process", "file_paths.R"))
+source(here("code", "visium_data_process", "file_paths.R"))
 
 
 # Import Excel File -------------------------------------------------------

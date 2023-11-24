@@ -17,7 +17,7 @@ stopifnot(packageVersion("spatialLIBD") >= "1.11.10")
 
 # Confirm Space Ranger Output ---------------------------------------------
 raw_expr_meta <- read.csv(
-  here("code", "raw_data_process",
+  here("code", "visium_data_process",
        "sample_meta_path.csv"),
   header = TRUE
 ) |> 
@@ -104,7 +104,7 @@ colnames(spe) <- spe$key
 
 # Add Donor Demo Info as metadata(spe) ---------
 ### read in meta information
-source(here("code", "raw_data_process", "fun_import_dx.R"))
+source(here("code", "visium_data_process", "fun_import_dx.R"))
 
 # Save the dx data as the meta data
 metadata(spe)$dx_df <- clean_df |> 
