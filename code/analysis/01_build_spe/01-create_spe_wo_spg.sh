@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name= 01-create_spe_wo_spg
+#SBATCH --job-name=01-create_spe_wo_spg
 #SBATCH --mem=120G
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
