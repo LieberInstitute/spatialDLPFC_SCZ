@@ -42,7 +42,7 @@ SR_folders_df <-
 # loupe_path <- here("processed-data", "VistoSeg", "loupe")
 
 # expr_meta <- readr::read_csv(
-#   file = here("code", "raw_data_process",
+#   file = here("code", "visium_data_process",
 #               "sample_meta_path.csv")
 # )
 

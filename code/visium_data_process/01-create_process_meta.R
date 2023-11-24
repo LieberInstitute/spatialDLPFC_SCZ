@@ -26,6 +26,6 @@ expr_meta <- raw_df_expr_meta |>
   )
 
 write.csv(expr_meta,
-          file = here("code", "raw_data_process",
+          file = here("code", "visium_data_process",
                       "sample_meta_path.csv"),
           append = FALSE, row.names = FALSE, col.names = FALSE)

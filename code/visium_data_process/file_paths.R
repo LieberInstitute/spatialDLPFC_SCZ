@@ -1,4 +1,4 @@
-source(here("code", "raw_data_process", "fun_mkdir_if_not_exist.R"))
+source(here("code", "visium_data_process", "fun_mkdir_if_not_exist.R"))
 
 # Input File Path -------------------------------------
 
@@ -52,7 +52,7 @@ processed_loupe_fldr <- here("processed-data", "VistoSeg", "loupe")
 
 ## Lib Path ----------------------------------------------------------------
 # Space Ranger Path
-lib_sparanger <- here("code", "raw_data_process", "spaceranger")
+lib_sparanger <- here("code", "visium_data_process", "spaceranger")
 
 
 pmtr_sparanger <- file.path(lib_sparanger, "parameters")
