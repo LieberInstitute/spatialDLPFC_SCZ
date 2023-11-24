@@ -14,11 +14,10 @@ To run the whole sequencing step,
 
 1.  Set your working directory to the current directory i.e. `cd code/raw_data_process/`
 
-2.  Run `qsub run_main.sh` on JHPCE.
+2.  Run `00-main.R` on JHPCE.
 
 # Files:
 
--   `run_main.sh`: the JHPCE job script to run the whole preprocessing step
 -   `00-main.R`: master R file to run each task in the preprocessing step
 -   `01-create_process_meta.R`: create a meta csv file, `sample_meta_path.csv`,
 that contains sample-specific file paths
