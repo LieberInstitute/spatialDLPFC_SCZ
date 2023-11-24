@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=01-create_spe_wo_spg
-#SBATCH --mem=120G
+#SBATCH --mem=75G
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu
