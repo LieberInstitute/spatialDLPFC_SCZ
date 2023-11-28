@@ -10,10 +10,10 @@ library(tidyverse)
 
 # File Paths --------------------------------------------------------------
 path_raw_spe <- here("processed-data/rds/spe",
-                     "01_build_spe/", "spe_raw.rds")
+                     "01_build_spe/", "test_spe_raw_36.rds")
 
 path_clean_spe <- here("process-data/rds/spe",
-                       "spe_clean.rds")
+                       "test_spe_clean_36.rds")
 
 fldr_qc_plots <- here("plots", "02_visium_qc")
 
@@ -39,6 +39,7 @@ raw_spe <- readRDS(
 
 spe <- raw_spe
 
+# CHeck if there's mito genes
 # is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
 # # This is eqquivalent to 
 # # is_mito <- which(seqnames(spe) == "chrM")
@@ -48,28 +49,28 @@ spe <- raw_spe
 
 
 ## In Tissue Plot -----------------------------------------------------------------
-spe$sample_id |> unique() |> 
-  walk(
-    .f = ~vis_clus(
-      spe,
-      sampleid = .x,
-      clustervar = "in_tissue",
-      colors = c(
-        "TRUE" = "transparent",
-        "FALSE" = "grey90"#, "TRUE" = "orange"
-        # TODO: try this with transparent
-      ) #,
-      # alpha = 0.5
-    ) |> 
-      ggsave(
-        filename = file.path(
-          fldr_tissue_plots,
-          paste0(.x,".pdf")
-        ),
-        height = 8,
-        width = 8
-      )
-  )
+# spe$sample_id |> unique() |>
+#   walk(
+#     .f = ~vis_clus(
+#       spe,
+#       sampleid = .x,
+#       clustervar = "in_tissue",
+#       colors = c(
+#         "TRUE" = "transparent",
+#         "FALSE" = "grey90"#, "TRUE" = "orange"
+#         # TODO: try this with transparent
+#       ) #,
+#       # alpha = 0.5
+#     ) |>
+#       ggsave(
+#         filename = file.path(
+#           fldr_tissue_plots,
+#           paste0(.x,".pdf")
+#         ),
+#         height = 8,
+#         width = 8
+#       )
+#   )
 
 ## Create Thresholds -----------------------------------------------------------
 ### scater Threshold -----------------------------------------------------------
@@ -124,15 +125,15 @@ joint_thres_df <- full_join(
 ) |> rowwise() |> 
   mutate(
     # Create joint threshold, min(scater, OT)
-    joint_umi_thres = min(scater_umi_thres, OT_umi_thres),
-    joint_gene_thres = min(scater_gene_thres, OT_gene_thres),
-    joint_mt_perc_thres = max(scater_mt_perc_thres, OT_mt_perc_thres)
+    joint_umi_thres = min(scater_umi_thres, OT_umi_thres, na.rm = TRUE),
+    joint_gene_thres = min(scater_gene_thres, OT_gene_thres, na.rm = TRUE),
+    joint_mt_perc_thres = max(scater_mt_perc_thres, OT_mt_perc_thres, na.rm = TRUE)
   ) |> 
   ungroup()
 
 ### Joint (OT, scater) Threshold -------------------------------------
 col_df <- col_df |> 
-  left_join(joint_thres_df, by = "sample_id") |> 
+  left_join(joint_thres_df, by = "sample_id") |>
   mutate(
     # Column for scater outliers
     scater_umi_outlier = (sum_umi <= scater_umi_thres),
@@ -370,6 +371,11 @@ spe$is_outlier <- spe$joint_umi_outlier | spe$joint_gene_outlier
 
 ret_spe <- spe[, spe$in_tissue == TRUE & (!spe$is_outlier)]
 
+# Code to check if there's wrong expectation 
+# tmp_dat <- colData(spe) |> data.frame()
+# tmp_dat |> filter(in_tissue& is.na(is_outlier)) |> pull(sample_id)
+
+
 # Validation
 stopifnot(all(ret_spe$in_tissue ==TRUE))
 stopifnot(all(ret_spe$joint_umi_outlier ==FALSE))
@@ -380,78 +386,70 @@ stopifnot(all(ret_spe$joint_gene_outlier ==FALSE))
 
 saveRDS(
   ret_spe,
-  here::here("processed-data", "rds", "spe", "spe_after_spot_qc.rds")
+  here::here("processed-data", "rds", "spe", "test_spe_after_spot_qc_36.rds")
 )
 
 # TODO: is there a big difference between log2 and log10 outlier detection?
 
 
-# Outlier Statistics ------------------------------------------------------
-
-
-
-
+# Reporting the statistics Statistics ------------------------------------------------------
 # Remove Outlier Spots ----------------------------------------------------
 n_outlier_spot <- sum(spe$is_outlier & spe$in_tissue, na.rm = TRUE)
 n_total_spot <- sum(spe$in_tissue, na.rm = TRUE)
-per_outlier_spot <- n_outlier_spot/n_total_spot
+(per_outlier_spot <- n_outlier_spot/n_total_spot)
 
 col_df <- colData(spe) |> data.frame()
 per_sample_ouliter_n <- col_df |> group_by(sample_id) |> 
-  summarize(n_ouliter = sum(is_outlier & in_tissue, na.rm = TRUE))
+  summarize(n_outlier = sum(is_outlier & in_tissue, na.rm = TRUE))
 
-per_sample_ouliter_n
-#   sample_id     n_ouliter
-#    <glue>            <int>
-# 1 V12F14-053_A1        53
-# 2 V12F14-053_B1        99
-# 3 V12F14-053_C1       112
-# 4 V12F14-053_D1        74
-# 5 V12F14-057_A1        71
-# 6 V12F14-057_B1        31
-# 7 V12F14-057_C1       101
-# 8 V12F14-057_D1        74
+# * Compare Case-control --------------------------------------------------
+per_sample_ouliter_n |> 
+  left_join(
+    metadata(spe)$dx |> select(sample_name, dx),
+    by = c(
+      "sample_id" = "sample_name"
+    )
+  ) |> 
+  ggplot(aes(x = dx, y = n_outlier, color = dx)) +
+  geom_boxplot()+
+  geom_jitter()
 
-# Median
-median(per_sample_ouliter_n$n_ouliter)
+per_sample_ouliter_n |> 
+  left_join(
+    metadata(spe)$dx |> select(sample_name, dx),
+    by = c(
+      "sample_id" = "sample_name"
+    )
+  ) |> 
+  t.test(n_outlier~dx, data = _)
+
+# Two-sided t-test
+#  p-value = 0.4291
 
 
+# Remaining Spots statistics ----------------------------------------------------
+col_df <- colData(ret_spe) |> data.frame()
+per_sample_n_spot <- col_df |> group_by(sample_id) |> 
+  summarize(n_spot = sum(!is_outlier & in_tissue, na.rm = TRUE))
+
+per_sample_n_spot |> 
+  left_join(
+    metadata(spe)$dx |> select(sample_name, dx),
+    by = c(
+      "sample_id" = "sample_name"
+    )
+  ) |> 
+  t.test(n_spot~dx, data = _)
 
 
-# * Remove spots without counts ---------------------------------------------
-# no_expr_spot <- colSums(counts(raw_spe)) != 0
-# 
-# spe <- spe[, no_expr_spot]
-# dim(spe)
-
-
-# * Remove spots outside of tissue area ------------------------------------
-# stopifnot(is.logical(spe$in_tissue))
-# 
-# # Evaluate if in-tissue definition is accurate
-# vis_grid_clus(
-#   spe = spe,
-#   clustervar = "in_tissue",
-#   pdf_file = file.path(
-#     fldr_qc_plots,
-#     "in_tissue_grid_raw.pdf"  # Plot File Name
-#   ),
-#   sort_clust = FALSE,
-#   colors = c("FALSE" = "grey90", "TRUE" = "orange")
-# )
-# 
-# # Note, if in_tissue is integer, please convert it to a logic variable
-# spe <- spe[, spe$in_tissue]
-# ncol(spe)
-# 
-# # Visual Validation
-# vis_grid_clus(
-#   spe = spe,
-#   clustervar = "in_tissue",
-#   pdf_file = file.path(
-#     fldr_qc_plots,
-#     "in_tissue_grid.pdf"  # Plot File Name
-#   ),
-#   sort_clust = FALSE,
-#   colors = c("FALSE" = "grey90", "TRUE" = "orange")
-# )
+per_sample_n_spot |> 
+  left_join(
+    metadata(spe)$dx |> select(sample_name, dx),
+    by = c(
+      "sample_id" = "sample_name"
+    )
+  ) |> 
+  arrange(n_spot) |> 
+  ggplot(aes(x = dx, y = n_spot, color = dx)) +
+  geom_boxplot(outlier.shape = NA)+
+  geom_jitter()
