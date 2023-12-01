@@ -9,13 +9,22 @@ library("PRECAST")
 # library("tictoc")
 
 
+# Mem requested
+# First try 20G
 
-#TODO: replace this path
+
+# Load QC-ed SPE object --------------------------------------------------
 spe <- readRDS(here::here(
-  "processed-data/rds/spe/spe_after_spot_qc.rds")
+  "processed-data/rds/",
+  #TODO: replace this path
+  "test_spe_after_spot_qc_63.rds")
 )
 
-# Convert to seuList
+
+
+# Create Seurat Object List for PRECAST ----------------------------------
+
+
 seuList <- unique(spe$sample_id) |> 
   set_names(unique(spe$sample_id)) |> 
   map(.f = function(id) {
@@ -32,10 +41,11 @@ seuList <- unique(spe$sample_id) |>
   })
 
 
-# Find gene list from pyschENCODE-spaitalDLPFC result
+# Find gene list from pyschENCODE-spatialDLPFC result
 
 library(tidyverse)
 gene_df_raw <- read.csv(
+  # TODO: edit the path
   here("code/spatial_clustering/PRECAST",
        "TableS8_sig_genes_FDR5perc_enrichment.csv")
 )
@@ -59,12 +69,14 @@ set.seed(1)
 preobj <- CreatePRECASTObject(seuList = seuList,
                               selectGenesMethod=NULL,
                               customGenelist=gene_df$ensembl)
-preobj@seulist
+# preobj@seulist
 
 PRECASTObj <- AddAdjList(preobj, platform = "Visium")
 ## Add a model setting in advance for a PRECASTObj object. verbose =TRUE helps outputing the
 ## information in the algorithm.
-PRECASTObj <- AddParSetting(PRECASTObj, Sigma_equal = FALSE, coreNum = 8, maxIter = 30, verbose = TRUE)
+PRECASTObj <- AddParSetting(PRECASTObj, 
+                            Sigma_equal = FALSE, coreNum = 8,
+                            maxIter = 30, verbose = TRUE)
 
 # K <- as.numeric(Sys.getenv("SGE_TASK_ID"))
 K <- 8
@@ -130,9 +142,15 @@ saveRDS(
 )
 
 
-# Visualize Clustering Result ---------------------------------------------
-# TODO: output
-tmp <- vis_grid_clus(spe,
-                     clustervar = "PRECAST_cluster", return_plots = TRUE)
+# # Visualize Clustering Result ---------------------------------------------
+# # TODO: output
+# tmp <- vis_grid_clus(
+#   spe,
+#   clustervar = "PRECAST_cluster", 
+#   return_plots = TRUE
+# )
 
+
+# Session info ------------------------------------------------------------
+sessioninfo::session_info()
 
