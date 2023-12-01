@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=PRECAST_test
-#SBATCH --mem=75G
+#SBATCH --mem=150G
 #SBATCH -n 8
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu
