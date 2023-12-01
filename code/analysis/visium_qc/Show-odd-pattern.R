@@ -1,8 +1,8 @@
-
 # Load Packages -----------------------------------------------------------
 library(tidyverse)
 library(SpatialExperiment)
 library(spatialLIBD)
+library(scuttle)
 library(sessioninfo)
 
 # Load SPE ----------------------------------------------------------------
@@ -91,6 +91,46 @@ vis_grid_gene(
   point_size = 3)
 
 # Proof showing good after log normalization ------------------------------
+
+## Log lib size norm ----------------------------------------------------
+prob_spe <- logNormCounts(prob_spe)
+prob_spe <- logNormCounts(prob_spe, log = FALSE)
+
+
+## Normalized Plot ---------------------------------------------------------
+prob_spe$norm_sum_umi <- assay(prob_spe, "normcounts") |> colSums()
+vis_grid_gene(
+  prob_spe,
+  geneid = "norm_sum_umi",
+  pdf_file = here(
+    "plots/02_visium_qc/test_oddity",
+    "random_pattern_sum_umi-prob_only-norm.pdf"),
+  sample_order = unique(prob_spe$sample_id) |> sort(),
+  point_size = 3)
+# Note: this is not informative at all, because every spots will be normalized
+#       to have the same UMI
+
+## Lognormalized plot  -----------------------------------------------------
+prob_spe$lognorm_sum_umi <- logcounts(prob_spe) |> colSums()
+vis_grid_gene(
+  prob_spe,
+  geneid = "lognorm_sum_umi",
+  pdf_file = here(
+    "plots/02_visium_qc/test_oddity",
+    "random_pattern_sum_umi-prob_only-lognorm.pdf"),
+  sample_order = unique(prob_spe$sample_id) |> sort(),
+  point_size = 3)
+
+## Lognormalized plot (MOBP)  -----------------------------------------------------
+vis_grid_gene(
+  prob_spe,
+  geneid = rowData(spe)$gene_id[which(rowData(spe)$gene_name == "MOBP")],
+  pdf_file = here(
+    "plots/02_visium_qc/test_oddity",
+    "random_pattern_sum_umi-prob_only-lognorm-MOBP.pdf"),
+  sample_order = unique(prob_spe$sample_id) |> sort(),
+  point_size = 3)
+# TODO: maybe need to change to something else.
 
 
 
