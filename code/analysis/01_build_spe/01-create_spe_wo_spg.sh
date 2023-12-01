@@ -27,6 +27,10 @@ module list
 ## Run code
 Rscript 01-create_spe_wo_spg.R
 
+
+## Memeory stat
+sstat -a -o JobID,MaxVMSizeNode,MaxVMSize,AveVMSize,MaxRSS,AveRS S,MaxDiskRead,MaxDiskWrite,AveCPUFreq,TRESUsageInMax -j ${SLURM_JOB_ID}
+
 echo "**** Job ends ****"
 date
 
