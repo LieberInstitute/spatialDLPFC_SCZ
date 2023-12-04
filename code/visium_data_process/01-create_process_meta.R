@@ -9,10 +9,8 @@ raw_df_expr_meta <- readxl::read_excel(
 # Note: all `Sample #` should have value
 stopifnot(all(!is.null(raw_df_expr_meta$`Sample #`)))
 
-
 expr_meta <- raw_df_expr_meta |> 
   select(`Experiment #`:`Array #`) |>
-  # rename_all(tolower) |> 
   mutate(
     BrNumbr = paste0("Br", BrNumbr),
     sample_name = glue("{`Slide #`}_{`Array #`}"),
@@ -22,7 +20,6 @@ expr_meta <- raw_df_expr_meta |>
     sr_fldr_path = file.path(processed_sparang_fldr, sample_name),
     # Loupe Browser Folder (Pipe into Space Ranger)
     loupe_file_path = file.path(processed_loupe_fldr, sample_name)
-    # TODO: add other
   )
 
 write.csv(expr_meta,

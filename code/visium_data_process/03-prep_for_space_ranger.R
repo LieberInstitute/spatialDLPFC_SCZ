@@ -1,17 +1,4 @@
-# TODO: move this to space ranger part
-# # Create Space Ranger folder if not exists
-# mkdir_if_not_exist(
-#   processed_sparang_fldr,
-#   recursive = TRUE # Create "raw-data" folder if not exists
-# )
-
-# stopifnot(dir.exists(processed_sparang_fldr))
-
-
-# expr_meta
-
 # Check success run -------------------------------------------------------
-
 have_SR_summary <- function(smp_slide_id){
   file.exists(
     here(
@@ -61,7 +48,6 @@ to_run_df <- dplyr::anti_join(
 
 #  Set up jobs ------------------------------------------------------------
 to_run_df |>
-  # filter(`Sample #` == "13v") |>  # TODO: delete for latter
   pwalk(
     .f = function(
     sample_name,
@@ -71,8 +57,7 @@ to_run_df |>
     fastq_fldr_path,
     ...
     ){
-      # browser()
-
+      
       c(
         sample_name,
         `Slide #`,
@@ -117,7 +102,6 @@ to_run_df |>
         job_sub_commond
       )
     }
-    # }
   )
 
 
