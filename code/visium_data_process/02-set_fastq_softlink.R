@@ -1,20 +1,3 @@
-# Helper Function (deprecated) ---------------------------------------------------------
-# check_fastq_files_exist <- function(
-#     fastq_name_start,    # The start of fastq file name
-#     fastq_fldr_path      # The sample-specific fastq folder
-# ) {
-#   tmp_fastq_files <- grep( 
-#     pattern = paste0(fastq_name_start,
-#                      "[^/]*",
-#                      "\\.fastq\\.gz$"),
-#     x = list.files(fastq_fldr_path),
-#     value = TRUE,
-#     ignore.case = TRUE # 2 samples have SHK instead of shk
-#   )
-#   
-#   return(length(tmp_fastq_files)==2)
-# }
-
 
 # Create Sample Specific Folder -------------------------------------------
 # Create "FASTQ" folder if not exists

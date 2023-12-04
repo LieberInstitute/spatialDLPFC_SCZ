@@ -47,17 +47,14 @@ here("code", "visium_data_process",
      "03-prep_for_space_ranger.R") |> 
   source()
 
-# Space Ranger QC ---------------------------------------------------------
+# Space Ranger QC (Deprecated) ---------------------------------------------------------
 # https://github.com/LieberInstitute/spatialDLPFC_SCZ/issues/16
 
-# TODO:  Add here
-
-
-# Nuclei Segmentation with VistoSeg ---------------------------------------
+# Nuclei Segmentation with VistoSeg (Deprecated) ---------------------------------------
 # https://github.com/LieberInstitute/spatialDLPFC_SCZ/issues/14
-here("code", "visium_data_process",
-     "04-vistoseg.R") |> 
-  source()
+# here("code", "visium_data_process",
+#      "04-vistoseg.R") |> 
+#   source()
 
 
 
