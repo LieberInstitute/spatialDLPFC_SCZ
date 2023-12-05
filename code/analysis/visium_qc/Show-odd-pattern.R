@@ -133,6 +133,81 @@ vis_grid_gene(
 # TODO: maybe need to change to something else.
 
 
+# Figure with paneled plots -----------------------------------------------
+library(escheR)
+library(ggpubr)
+
+prob_spe <- spe[, str_starts(spe$sample_id, "V12F14")]
+prob_spe_names <- unique(prob_spe$sample_id) |> sort()
+## Panel - Sum UMI -------------------------------------------------------
+umi_panel_list <- prob_spe_names |> 
+  map(.f = function(.spe_name){
+    tmp_spe <- prob_spe[, prob_spe$sample_id == .spe_name]
+    # browser()
+    
+    tmp_spe |> 
+      # TODO: change the point_size
+      make_escheR() |> 
+      add_fill(var = "sum_umi", point_size = 0.8) +
+      scale_fill_continuous(
+        limits = c(min(prob_spe$sum_umi),
+                   max(prob_spe$sum_umi)),
+        type = "viridis")
+  })
+
+umi_panel_plot <- ggpubr::ggarrange(
+  plotlist = umi_panel_list, 
+  nrow = 1,
+  legend = "right",
+  common.legend = TRUE
+)
+
+
+## Panel - Sum gene -------------------------------------------------------------------------
+gene_panel_list <- prob_spe_names |> 
+  map(.f = function(.spe_name){
+    tmp_spe <- prob_spe[, prob_spe$sample_id == .spe_name]
+    # browser()
+    
+    tmp_spe |> 
+      # TODO: change the point_size
+      make_escheR() |> 
+      add_fill(var = "sum_gene", point_size = 0.8) +
+      scale_fill_continuous(
+        limits = c(min(prob_spe$sum_gene), 
+                   max(prob_spe$sum_gene)),
+        type = "viridis")
+  })
+
+gene_panel_plot <- ggpubr::ggarrange(
+  plotlist = gene_panel_list, 
+  nrow = 1,
+  legend = "right",
+  common.legend = TRUE
+)
+
+## Panel - mito_ratio -------------------------------------------------------------------------
+mito_ratio_panel_list <- prob_spe_names |> 
+  map(.f = function(.spe_name){
+    tmp_spe <- prob_spe[, prob_spe$sample_id == .spe_name]
+    tmp_spe |> 
+      # TODO: change the point_size
+      make_escheR() |> 
+      add_fill(var = "expr_chrM_ratio", point_size = 0.8) +
+      scale_fill_continuous(
+        limits = c(min(prob_spe$expr_chrM_ratio), 
+                   max(prob_spe$expr_chrM_ratio)),
+        type = "viridis")
+  })
+
+mito_ratio_panel_plot <- ggpubr::ggarrange(
+  plotlist = mito_ratio_panel_list, 
+  nrow = 1,
+  legend = "right",
+  common.legend = TRUE
+)
+
+
 
 
 # Session Info ----
