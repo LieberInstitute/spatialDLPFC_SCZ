@@ -208,7 +208,74 @@ mito_ratio_panel_plot <- ggpubr::ggarrange(
 )
 
 
+# Panel - Gene Expression Plots -------------------------------------------
+prob_spe <- logNormCounts(prob_spe)
+prob_spe <- logNormCounts(prob_spe, log = FALSE)
 
+idx_hi_exp_gene <- which.max(counts(prob_spe) |> rowMeans())
+rowData(prob_spe)[idx_hi_exp_gene, ]
+
+prob_spe$hi_exp_gene_norm_count <- assay(prob_spe, "normcounts")[idx_hi_exp_gene, ]
+prob_spe$hi_exp_gene_count <- counts(prob_spe)[idx_hi_exp_gene, ]
+
+
+gene_count_panel_list <- prob_spe_names |> 
+  map(.f = function(.spe_name){
+    tmp_spe <- prob_spe[, prob_spe$sample_id == .spe_name]
+    tmp_spe |> 
+      # TODO: change the point_size
+      make_escheR() |> 
+      add_fill(var = "hi_exp_gene_count", point_size = 0.8) +
+      scale_fill_continuous(
+        limits = c(min(prob_spe$hi_exp_gene_count), 
+                   max(prob_spe$hi_exp_gene_count)),
+        type = "viridis")
+  })
+
+gene_count_panel_plot <- ggpubr::ggarrange(
+  plotlist = gene_count_panel_list, 
+  nrow = 1,
+  legend = "right",
+  common.legend = TRUE
+)
+
+gene_norm_count_panel_list <- prob_spe_names |> 
+  map(.f = function(.spe_name){
+    tmp_spe <- prob_spe[, prob_spe$sample_id == .spe_name]
+    tmp_spe |> 
+      # TODO: change the point_size
+      make_escheR() |> 
+      add_fill(var = "hi_exp_gene_norm_count", point_size = 0.8) +
+      scale_fill_continuous(
+        limits = c(min(prob_spe$hi_exp_gene_norm_count), 
+                   max(prob_spe$hi_exp_gene_norm_count)),
+        type = "viridis")
+  })
+
+gene_norm_count_panel_plot <- ggpubr::ggarrange(
+  plotlist = gene_norm_count_panel_list, 
+  nrow = 1,
+  legend = "right",
+  common.legend = TRUE
+)
+
+
+## Make paneled figure ----------------------------------------------------------------
+ggarrange(
+  umi_panel_plot,
+  gene_panel_plot,
+  mito_ratio_panel_plot,
+  gene_count_panel_plot,
+  gene_norm_count_panel_plot,
+  ncol = 1,
+  labels = "AUTO"
+) |> 
+  ggsave(
+    filename = here(
+      "manuscript/figures/test_sfigr_qc_v1214_ok.pdf"
+    ),
+    plot = _
+  )
 
 # Session Info ----
 sessioninfo::session_info()
