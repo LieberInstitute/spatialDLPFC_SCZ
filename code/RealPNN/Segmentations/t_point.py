@@ -30,7 +30,7 @@ This test needs to be done to check if the image data follows the Rayleigh distr
 The KS statistic being close to 1 and the P-value being 0 indicates that we can reject the null hypothesis that the data comes from a Rayleigh distribution
 The shape of histogram suggests that the distribution of pixel intensities in the images is not well-modeled by a Rayleigh distribution.
 Calculating the statistic with the whole histogram where the first peak starts at 0, leads to the failure of the test and acceptance of the null hypothesis
-
+The data fails the test even after removing the first peak at 0
 '''
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12D07-334_A1.tif'
@@ -55,19 +55,15 @@ second_peak_index = np.argmax(hist) # Find the index of the second peak
 second_peak_value = bin_edges[second_peak_index] # Get the value of the second peak
 second_peak_y_value = hist[second_peak_index]
 bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-
 # Now create a modified histogram that starts from the second peak
 second_peak_bin = second_peak_index  # This should be the bin index, not the bin value
 mod_hist = hist[second_peak_bin:]
 mod_bins = bin_edges[second_peak_bin:]
-
 # Estimate the Rayleigh scale parameter sigma from the modified histogram
 # Assuming the mode (peak) of Rayleigh distribution is at the second peak
 sigma_est = mod_bins[np.argmax(mod_hist)] / np.sqrt(2 * np.log(2))
-
 # Generate the Rayleigh distribution curve for the modified histogram
 rayleigh_curve = rayleigh.pdf(mod_bins, scale=sigma_est)
-
 # Plot the modified histogram and the Rayleigh distribution curve for comparison
 plt.figure(figsize=(10, 6))
 plt.bar(mod_bins[:-1], mod_hist / np.sum(mod_hist), width=np.diff(mod_bins), color='blue', alpha=0.7, label='Modified Image Histogram')
