@@ -2,18 +2,18 @@
 library(here)
 library(SpatialExperiment)
 library(scater)
-# library(pryr)                 # Check spe size
 library(spatialLIBD)
 library(tidyverse)
-
-
+library(sessioninfo)
 
 # File Paths --------------------------------------------------------------
-path_raw_spe <- here("processed-data/rds/spe",
-                     "01_build_spe/", "test_spe_raw_36.rds")
+path_raw_spe <- here(
+  "processed-data/rds",
+  "01_build_spe",
+  "raw_spe_wo_SPG_N63.rds")
 
-path_clean_spe <- here("process-data/rds/spe",
-                       "test_spe_clean_36.rds")
+# path_clean_spe <- here("process-data/rds/02_visium_qc",
+#                        "test_spe_clean_36.rds")
 
 fldr_qc_plots <- here("plots", "02_visium_qc")
 
@@ -29,7 +29,7 @@ dir.create(fldr_outlier_plots, recursive = T)
 
 # Source Helper Functions -------------------------------------------------
 
-source(here("code/visium_qc/fun_plot_metrics.R"))
+source(here("code/analysis/visium_qc/fun_plot_metrics.R"))
 
 
 # QC Code -----------------------------------------------------------------
@@ -322,7 +322,7 @@ expand.grid(
                   # labels = c("scater", "OT", "joint"),
                   common.legend = TRUE,
                   legend = "none"
-                  )
+        )
       
       
       
@@ -386,7 +386,9 @@ stopifnot(all(ret_spe$joint_gene_outlier ==FALSE))
 
 saveRDS(
   ret_spe,
-  here::here("processed-data", "rds", "spe", "test_spe_after_spot_qc_36.rds")
+  here::here("processed-data", "rds",
+             # TODO: add task level folder
+             "test_spe_after_spot_qc_63.rds")
 )
 
 # TODO: is there a big difference between log2 and log10 outlier detection?
@@ -453,3 +455,7 @@ per_sample_n_spot |>
   ggplot(aes(x = dx, y = n_spot, color = dx)) +
   geom_boxplot(outlier.shape = NA)+
   geom_jitter()
+
+# Session Info ------------------------------------------------------------
+sessioninfo::session_info()
+
