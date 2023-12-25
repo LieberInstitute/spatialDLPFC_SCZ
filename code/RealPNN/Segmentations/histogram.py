@@ -7,6 +7,7 @@ import PIL
 import matplotlib
 import matplotlib.pyplot as plt
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance, ImageSequence
+import glob
 
 # Define the directories
 csv_cv_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Training_tiles_cv_segmentation_csv_files/'
@@ -48,15 +49,24 @@ for csv_cv_file in csv_cv_files:
 
 
 # function to find mean pixel intensity of pixels with abox
-def calculate_mean_intensity(row):
+# def calculate_mean_intensity(row):
+#     x1, y1, x4, y4 = int(row['x1']), int(row['y1']), int(row['x4']), int(row['y4'])
+#     roi = image[y1:y4, x1:x4]
+#     mean_intensity = cv2.mean(roi)[0]
+#     return mean_intensity
+
+## find mean, sum and max pixel intensities
+def calculate_intensity_metrics(row, image):
     x1, y1, x4, y4 = int(row['x1']), int(row['y1']), int(row['x4']), int(row['y4'])
-    roi = image[y1:y4, x1:x4]
+    roi = image[y1:y4, x1:x4]    
     mean_intensity = cv2.mean(roi)[0]
-    return mean_intensity
+    max_intensity = roi.max()
+    sum_intensity = roi.sum()
+    return  mean_intensity, max_intensity, sum_intensity #
 
 
 # List to store all mean intensity values from all files
-all_mean_intensity_values = []
+all_mean_intensity_values, all_sum_values, all_max_values = [],[], []
 # Now, matching_files dictionary contains matching filenames grouped by the numbers within square brackets
 # You can perform further operations on the matched files
 for numbers, files in matching_files.items():
@@ -69,27 +79,34 @@ for numbers, files in matching_files.items():
     image = cv2.normalize(np.array(image, dtype='float32'), np.zeros(np.array(image, dtype='float32').shape, np.double), 1.0, 0.0, cv2.NORM_MINMAX)
     wfa_c = cv2.cvtColor(np.array(image * 255, dtype=np.uint8), cv2.COLOR_BGR2RGB)
     # Create an array to store mean intensities
-    mean_intensity_values = []
-   # Create a list to store normalized mean intensities for the current file
-    normalized_mean_intensity_values = []
+    mean_intensity_values, sum_values, max_values = [], [], []
     # Iterate over bounding boxes and compute mean pixel intensities
-    # for index, row in file_ma_df.iterrows():
-    #     x1, y1, x4, y4 = int(row['x1']), int(row['y1']), int(row['x4']), int(row['y4'])
-    #     # Extract region of interest (ROI)
-    #     roi = image[y1:y4, x1:x4]
-    #     # Compute mean pixel intensities
-    #     mean_intensity = cv2.mean(roi)[0]
-    #     mean_intensity_values.append(mean_intensity)
+    for index, row in file_ma_df.iterrows():
+        x1, y1, x4, y4 = int(row['x1']), int(row['y1']), int(row['x4']), int(row['y4'])
+        # Extract region of interest (ROI)
+        roi = wfa_c[y1:y4, x1:x4]
+        # Compute mean pixel intensities
+        mean_intensity = cv2.mean(roi)[0]
+        max_intensity = roi.max()
+        sum_intensity = roi.sum()
+        mean_intensity_values.append(mean_intensity)
+        max_values.append(max_intensity)
+        sum_values.append(sum_intensity)
     # Extend the list with mean intensity values for the current file
     all_mean_intensity_values.extend(mean_intensity_values)
+    all_sum_values.extend(sum_values)
+    all_max_values.extend(max_values)
     # Filter rows with mean_pixel_intensity >= 0.25
     # Add a new column 'mean_pixel_intensity' to the DataFrame
-    file_ma_df['mean_pixel_intensity'] = file_ma_df.apply(calculate_mean_intensity, axis=1)
+    # file_ma_df['mean_pixel_intensity'], file_ma_df['max_pixel_intensity'], file_ma_df['sum_pixel_intensity'] = zip(*file_ma_df.apply(lambda row: calculate_intensity_metrics(row, image), axis=1)) #  
+    # output_csv_path_ = f'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/pixel_intensities_filtered_csvs/Max_Mean_sum_{numbers}.csv'
+    # file_ma_df.to_csv(output_csv_path_, index=False)
+
     filtered_df = file_ma_df[file_ma_df['mean_pixel_intensity'] >= 0.25]
     # Save the filtered DataFrame to a new CSV file
-    output_csv_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/pixel_intensities_filtered_csvs/filtered_data_{numbers}.csv'
+    output_csv_path = f'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/pixel_intensities_filtered_csvs/filtered_data_{numbers}.csv'
     filtered_df.to_csv(output_csv_path, index=False)
-    # Plot histogram
+    # Plot histogram for each tile
     # plt.hist(mean_intensity_values, bins=50, color='blue', alpha=0.7)
     # plt.title(f'Histogram of Mean Pixel Intensities - Files with numbers {numbers}')
     # plt.xlabel('Mean Pixel Intensity')
@@ -113,9 +130,141 @@ plt.title('Histogram of All Mean Pixel Intensities')
 plt.xlabel('Mean Pixel Intensity')
 plt.ylabel('Frequency')
 # Save histogram as an image file
-output_histogram_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_all_normalized__.png'
+output_histogram_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_all_mean_values.png'
 plt.savefig(output_histogram_path)
 
+
+## plotting mean, max and sum pixels
+# Set up subplots
+fig, axs = plt.subplots(3, 1, figsize=(20, 20))
+
+# Plot histogram for all_mean_intensity_values
+axs[0].hist(all_mean_intensity_values, bins=50, alpha=0.7, color='blue')
+axs[0].set_title('Histogram of Mean Intensity Values')
+axs[0].set_xlabel('Mean Intensity')
+axs[0].set_ylabel('Frequency')
+
+# Plot histogram for all_sum_values
+axs[1].hist(all_sum_values, bins=50, alpha=0.7, color='green')
+axs[1].set_title('Histogram of Sum Values')
+axs[1].set_xlabel('Sum Value')
+axs[1].set_ylabel('Frequency')
+
+# Plot histogram for all_max_values
+axs[2].hist(all_max_values, bins=50, alpha=0.7, color='red')
+axs[2].set_title('Histogram of Max Values')
+axs[2].set_xlabel('Max Value')
+axs[2].set_ylabel('Frequency')
+
+# Adjust layout to prevent overlap of titles and labels
+plt.tight_layout()
+
+# Save the combined histogram as an image file
+output_histogram_path = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_all_mean_sum_max_values.png'
+plt.savefig(output_histogram_path)
+
+
+## individual plots# Plot histogram for all_mean_intensity_values
+plt.figure(figsize=(20, 20))
+plt.hist(all_mean_intensity_values, bins=50, alpha=0.7, color='blue')
+plt.title('Histogram of Mean Intensity Values')
+plt.xlabel('Mean Intensity', fontsize=14)
+plt.ylabel('Frequency', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.savefig('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_all_mean_values.png')
+
+
+# Plot histogram for all_sum_values
+plt.figure(figsize=(20, 20))
+plt.hist(all_sum_values, bins=50, alpha=0.7, color='green')
+plt.title('Histogram of Sum Values')
+plt.xlabel('Sum Value', fontsize=14)
+plt.ylabel('Frequency', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.savefig('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_all_sum_values.png')
+
+
+# Plot histogram for all_max_values
+plt.figure(figsize=(20, 20))
+plt.hist(all_max_values, bins=50, alpha=0.7, color='red')
+plt.title('Histogram of Max Values')
+plt.xlabel('Max Value', fontsize=14)
+plt.ylabel('Frequency', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.savefig('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_all_max_values.png')
+
+
+
+
+#### plotting the mean, sum and max pixel intensities for all tiles
+# combining the dfs
+# Combine all dataframes into one
+# Specify the directory containing CSV files
+csv_directory = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/pixel_intensities_filtered_csvs/'
+
+# Use glob to find all CSV files in the directory
+csv_files = glob.glob(csv_directory + '*.csv')
+
+# Initialize an empty list to store dataframes
+all_dfs = []
+
+# Iterate through CSV files and read them into dataframes
+for csv_file in csv_files:
+    print(csv_file)
+    df = pd.read_csv(csv_file)
+    print(len(df))
+    all_dfs.append(df)
+
+# Combine all dataframes into one
+# combined_df = pd.concat(all_dfs, ignore_index=True)
+
+# Exclude empty or all-NA columns from each dataframe <-- do this to avoid warnings
+all_dfs = [df.dropna(axis=1, how='all') for df in all_dfs]
+# Drop the "Unnamed: 0" column
+combined_df = combined_df.drop("Unnamed: 0", axis=1, errors="ignore")
+
+
+# plot all histograms
+def plot_and_save_histogram(data, column, color, output_path):
+    plt.hist(data[column], bins=50, alpha=0.7, color=color) # , label=column
+    plt.title(f'Histogram of {column}')
+    plt.xlabel('Intensity')
+    plt.ylabel('Frequency')
+    plt.legend()
+    plt.savefig(output_path)
+
+# Plot histogram for mean_pixel_intensity
+plt.hist(combined_df['mean_pixel_intensity'], bins=50, alpha=0.7, color='blue') #, label='Mean Pixel Intensity'
+plt.title('Histogram of Mean Pixel Intensity')
+plt.xlabel('Intensity')
+plt.ylabel('Frequency')
+# plt.legend()
+output_histogram_path_mean = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_mean_.png'
+plt.savefig(output_histogram_path_mean)
+# plt.show()
+
+# Plot histogram for max_pixel_intensity
+plt.hist(combined_df['max_pixel_intensity'], bins=50, alpha=0.7, color='green') # , label='Max Pixel Intensity'
+plt.title('Histogram of Max Pixel Intensity')
+plt.xlabel('Intensity')
+plt.ylabel('Frequency')
+# plt.legend()
+output_histogram_path_max = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_max_.png'
+plt.savefig(output_histogram_path_max)
+# plt.show()
+
+# Plot histogram for sum_pixel_intensity
+plt.hist(combined_df['sum_pixel_intensity'], bins=50, alpha=0.7, color='red') # , label='Sum Pixel Intensity'
+plt.title('Histogram of Sum Pixel Intensity')
+plt.xlabel('Intensity')
+plt.ylabel('Frequency')
+# plt.legend()
+output_histogram_path_sum = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/raw-data/images/2_MockPNN/Test/histogram_sum_.png'
+plt.savefig(output_histogram_path_sum)
+# plt.show()
 
 
 

@@ -18,7 +18,7 @@ import os
 Image.MAX_IMAGE_PIXELS = None
 source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
 img_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/'
-dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/test/'
+dst_dir_wfa = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/different_thresh/'
 dst_dir_hist_all_values = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/histograms/'
 dst_dir_samui = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/samui_samples/'
 dst_dir_hist_cutoff_values = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/WFA/histograms_for_all_tissue_sections_only_cutoff_values/'
@@ -82,3 +82,57 @@ cumulative_data = np.cumsum(norm_mod_hist)
 ks_statistic, p_value = kstest(cumulative_data, 'rayleigh', args=(0, sigma_est))
 
 print(f'KS Statistic: {ks_statistic}, P-value: {p_value}')
+
+
+
+############ actual work using the second peak on V12D07-334 A1 image ######## THIs WORKs!!!!
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load the image
+# directory path
+Image.MAX_IMAGE_PIXELS = None
+source_dir = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V12D07-334_A1.tif'
+wfa_img = Image.open(source_dir)
+print("sample num: ", os.path.splitext(os.path.basename(source_dir))[0])
+wfa_img.seek(4)
+wfa = np.array(wfa_img, dtype = 'uint8')
+plt.clf()  # Clear the previous figure
+# Compute the histogram from the second peak onwards
+second_peak = 25.90  # Your identified second peak value
+hist = cv2.calcHist([wfa], [0], None, [256], [second_peak, 256])
+
+# Initialize variables for the T-point algorithm
+M = int(np.ceil(second_peak))
+L = len(hist) - 1
+best_error = np.inf
+best_k = None
+
+# Iterate over each possible breakpoint k
+for k in range(M+1, L):
+    # Perform linear regression on both sides of k
+    left_slope, left_intercept = np.polyfit(bins[M:k], hist[M:k], 1)
+    right_slope, right_intercept = np.polyfit(bins[k+1:L+1], hist[k+1:L+1], 1)   
+    # Calculate predicted values
+    left_predicted = left_slope * bins[M:k] + left_intercept
+    right_predicted = right_slope * bins[k+1:L+1] + right_intercept    
+    # Calculate errors
+    left_errors = (hist[M:k] - left_predicted) ** 2
+    right_errors = (hist[k+1:L+1] - right_predicted) ** 2    
+    # Sum the errors to get the total error for this breakpoint k
+    total_error = np.sum(left_errors) + np.sum(right_errors)    
+    # Check if this is the best breakpoint so far
+    if total_error < best_error:
+        best_error = total_error
+        best_k = k
+
+# The best breakpoint is our threshold T
+T = best_k
+
+# Apply the threshold to segment the image
+_, thresholded_image = cv2.threshold(wfa, T, 255, cv2.THRESH_BINARY)
+
+# Display the segmented image
+plt.imshow(thresholded_image, cmap='gray')
+plt.show()
