@@ -16,9 +16,9 @@ tic
 loc = cellfun(@(x) strsplit(x,'_'), {myfiles.name}',  'UniformOutput', false);
 temp = cellfun(@(x) strsplit(x{P},','), loc,  'UniformOutput', false);
 X = cellfun(@(x) str2double(x{1}(2:end)), temp);
-%Y = cellfun(@(x) str2double(x{2}(1:end-1)), temp);
+Y = cellfun(@(x) str2double(x{2}(1:end-1)), temp);
 X = sort(unique(X));
-%Y = sort(unique(Y));
+Y = sort(unique(Y));
 
 toc
 
