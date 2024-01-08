@@ -14,6 +14,16 @@ library(glue)
 # First try 20G
 
 
+# Path Config -------------------------------------------------------------
+
+fld_data_spatialcluster <- here("processed-data", "rds", "spatial_cluster")
+dir.create(
+  file.path(fld_data_spatialcluster, "PRECAST"),
+  recursive = T, showWarnings = FALSE
+)
+
+
+
 # Load QC-ed SPE object --------------------------------------------------
 raw_spe <- readRDS(here::here(
   "processed-data/rds/",
@@ -42,6 +52,8 @@ stopifnot(
     bad_sampe_name)
 )
 
+# Run with all samples
+# spe <- raw_spe
 
 
 # Create Seurat Object List for PRECAST ----------------------------------
@@ -113,19 +125,47 @@ PRECASTObj <- PRECAST(PRECASTObj, K = K)
 
 # Convert PRECAST to a spe object -----------------------------------------
 
+saveRDS(PRECASTObj,
+        file = file.path(
+          fld_data_spatialcluster, "PRECAST", 
+          paste0("test_PRECASTObj_semi_inform_K",K,"_00_model_fitted.rds")
+        ))
+
 # Necessary step to get cluster from resList
 PRECASTObj <- SelectModel(PRECASTObj)
+# saveRDS(PRECASTObj,
+#         file = file.path(
+#           fld_data_spatialcluster, "PRECAST", 
+#           paste0("test_PRECASTObj_semi_inform_K",K,"_after_SelectModel.rds")
+#         ))
 
+
+
+# TODO: what does IntegrateSpaData does
 seuInt <- IntegrateSpaData(PRECASTObj, species = "Human")
+saveRDS(seuInt,
+        file = file.path(
+          fld_data_spatialcluster, "PRECAST", 
+          paste0("test_seuInt_semi_inform_K",K,"_after_IntegrateSpaData.rds")
+        ))
+
+# seuInt <- readRDS(
+#   file = file.path(
+#     fld_data_spatialcluster, "PRECAST", 
+#     paste0("test_seuInt_semi_inform_K",K,"_after_IntegrateSpaData.rds")
+#   ))
+
 
 
 # Find Marker Genes -------------------------------------------------------
 
-library(Seurat)
-dat_deg <- FindAllMarkers(seuInt)
+# library(Seurat)
+# dat_deg <- FindAllMarkers(seuInt)
 
 
 # Merge with spe object
+stopifnot(ncol(spe) == nrow(seuInt@meta.data))
+
 col_data_df <- seuInt@meta.data |> 
   mutate(cluster = factor(cluster)) |> 
   rename_with(~ paste0("PRECAST_", .x)) |> 
@@ -134,35 +174,49 @@ col_data_df <- seuInt@meta.data |>
     colData(spe) |> data.frame(),
     by = c("key"),
     relationship = "one-to-one"
-  )
+  ) |> 
+  select(-sample_id)
 
 rownames(col_data_df) <- colnames(spe)
-
+# colData(spe) <- NULL
 colData(spe) <- DataFrame(col_data_df)
 
-fld_data_spatialcluster <- here("processed-data", "rds", "spatial_cluster")
-dir.create(
-  file.path(fld_data_spatialcluster, "PRECAST"),
-  recursive = T, showWarnings = FALSE
-)
 
 
 saveRDS(
   spe, 
   file = file.path(
     fld_data_spatialcluster, "PRECAST", 
-    paste0("triage_test_PRECASTObj_semi_inform_K",K,".rds")
+    paste0("test_PRECASTObj_semi_inform_K",K,".rds")
   )
 )
+
+
+# QC - checking weird clustering samples ----------------------------------
+library(ggpubr)
+library(escheR)
+vis_mito_clus_side_by_side <- function(sampleID, spe){
+  ggarrange(
+    make_escheR(spe[, spe$sample_id == sampleID]) |> 
+      add_fill("PRECAST_cluster"),
+    make_escheR(spe[, spe$sample_id == sampleID]) |> 
+      add_fill("expr_chrM_ratio"),
+    nrow = 1
+  )
+}
+
+vis_mito_clus_side_by_side(sampleID = "V13F27-293_A1", spe)
+
+
+# unique(spe$sample_id) |> length()
 
 saveRDS(
   seuInt, 
   file = file.path(
     fld_data_spatialcluster, "PRECAST", 
-    paste0("triage_test_seuIntObj_semi_inform_K",K,".rds")
+    paste0("test_seuIntObj_semi_inform_K",K,".rds")
   )
 )
-
 
 # # Visualize Clustering Result ---------------------------------------------
 # # TODO: output
@@ -170,10 +224,10 @@ library(spatialLIBD)
 tmp <- vis_grid_clus(
   spe,
   clustervar = "PRECAST_cluster",
-  point_size = 2,
+  point_size = 1,
   spatial = FALSE,
   alpha = 1,
-  pdf_file = here("plots/spatial_cluster/triage_PRECAST_semi_supervised_K8.pdf")
+  pdf_file = here("plots/spatial_cluster/test_PRECAST_semi_supervised_K8.pdf")
 )
 
 
