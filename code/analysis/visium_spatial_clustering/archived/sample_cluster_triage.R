@@ -6,8 +6,7 @@ library("here")
 library("sessioninfo")
 library("SpatialExperiment")
 library("PRECAST")
-# library("tictoc")
-library(glue)
+# library(glue)
 
 
 # Mem requested
@@ -116,7 +115,7 @@ PRECASTObj <- AddParSetting(PRECASTObj,
 K <- 8
 
 # tic()
-PRECASTObj <- PRECAST(PRECASTObj, K = K)
+PRECASTObj <- PRECAST(PRECASTObj, K = seq.int())
 # toc()
 
 
@@ -130,6 +129,12 @@ saveRDS(PRECASTObj,
           fld_data_spatialcluster, "PRECAST", 
           paste0("test_PRECASTObj_semi_inform_K",K,"_00_model_fitted.rds")
         ))
+
+
+tmp <- readRDS(file = file.path(
+  fld_data_spatialcluster, "PRECAST", 
+  paste0("test_PRECASTObj_semi_inform_K",K,"_00_model_fitted.rds")))
+
 
 # Necessary step to get cluster from resList
 PRECASTObj <- SelectModel(PRECASTObj)
