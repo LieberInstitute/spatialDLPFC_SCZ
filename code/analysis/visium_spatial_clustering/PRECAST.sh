@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=PRECAST_test
-#SBATCH --mem=40G
+#SBATCH --mem=100G
 #SBATCH --nodes=1
 #SBATCH --ntasks=4            # Number of cores requested
 #SBATCH --mail-type=ALL
