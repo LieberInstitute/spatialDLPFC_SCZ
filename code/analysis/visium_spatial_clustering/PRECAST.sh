@@ -1,7 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=PRECAST_test
-#SBATCH --mem=150G
-#SBATCH -n 8
+#SBATCH --mem=40G
+#SBATCH --nodes=1
+#SBATCH --ntasks=4            # Number of cores requested
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu
 #SBATCH --output=logs/%x.txt
@@ -19,7 +20,7 @@ echo "Hostname: ${SLURM_CLUSTER_NAME}"
 echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 
 ## Load Modules
-module load conda_R/4.3.x
+module load conda_R/devel
 
 ## List current modules for reproducibility
 module list
@@ -28,8 +29,8 @@ module list
 Rscript PRECAST.R
 
 
-## Estimate Memory
-sstat -a -o JobID,MaxVMSizeNode,MaxVMSize,AveVMSize,MaxRSS,AveRS S,MaxDiskRead,MaxDiskWrite,AveCPUFreq,TRESUsageInMax -j ${SLURM_JOB_ID}
+## Estimate JHPCE Memory
+sstat -o MaxVMSize,AveVMSize,MaxRSS,AveRSS -j ${SLURM_JOB_ID}
 
 
 echo "**** Job ends ****"
