@@ -121,7 +121,7 @@ saveRDS(
   PRECASTObj, 
   file = file.path(
     fld_data_spatialcluster, "PRECAST", 
-    paste0("test_PRECASTObj_semi_inform_K",K,".rds")
+    paste0("test_PRECASTObj_semi_inform",".rds")
   )
 )
 
