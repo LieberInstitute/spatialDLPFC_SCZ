@@ -31,7 +31,7 @@ file_DLPFC_enrich_csv <- here("code/spatial_clustering/PRECAST",
 n_marker_gene <- 100
 # K <- as.numeric(Sys.getenv("SGE_TASK_ID"))
 k_min <- 2
-k_max <- 3
+k_max <- 16
 
 
 
@@ -130,11 +130,14 @@ saveRDS(
 print("NOTE (boyiguo1): Finish PRECAST")
 
 
+
+
 ## (Deprecated) PRECASTObj integration -----------------------------------
 # Necessary step to get cluster from resList
 # PRECASTObj <- SelectModel(PRECASTObj)
 # seuInt <- IntegrateSpaData(PRECASTObj, species = "Human")
-s
+
+
 ## (Deprecated) Find marker genes ------------------------------------------
 
 # library(Seurat)
@@ -142,6 +145,19 @@ s
 
 
 # (Deprecated) Create final spe object -----------------------------------------
+# PRECASTObj <- readRDS(
+#   file.path(
+#     fld_data_spatialcluster, "PRECAST", 
+#     paste0("test_PRECASTObj_semi_inform",".rds")
+#   )
+# )
+# 
+# # Number of cluster
+# attr(PRECASTObj@resList, "para_settings")$K
+# 
+# # TODO: write a wrapper function to read in results
+# PRECASTObj@resList[[1]]$cluster
+
 # col_data_df <- seuInt@meta.data |> 
 #   mutate(cluster = factor(cluster)) |> 
 #   rename_with(~ paste0("PRECAST_", .x)) |> 
