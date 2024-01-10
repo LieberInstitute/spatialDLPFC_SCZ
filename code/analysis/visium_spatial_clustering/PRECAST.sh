@@ -17,7 +17,6 @@ echo "User: ${USER}"
 echo "Job id: ${SLURM_JOBID}"
 echo "Job name: ${SLURM_JOB_NAME}"
 echo "Hostname: ${SLURM_CLUSTER_NAME}"
-echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 
 ## Load Modules
 module load conda_R/devel
@@ -25,12 +24,15 @@ module load conda_R/devel
 ## List current modules for reproducibility
 module list
 
+## Avoid C_stack error for PRECAST due to its algorithm
+ulimit -s unlimited
+
 ## Run code
 Rscript PRECAST.R
 
 
 ## Estimate JHPCE Memory
-sstat -o MaxVMSize,AveVMSize,MaxRSS,AveRSS -j ${SLURM_JOB_ID}
+sstat -a -o MaxVMSize,AveVMSize,MaxRSS,AveRSS -j ${SLURM_JOB_ID}
 
 
 echo "**** Job ends ****"
