@@ -28,10 +28,10 @@ file_DLPFC_enrich_csv <- here("code/spatial_clustering/PRECAST",
 
 
 ## Cluster Configuration -------------------------------------------------
-n_marker_gene <- 200
+n_marker_gene <- 100
 # K <- as.numeric(Sys.getenv("SGE_TASK_ID"))
 k_min <- 2
-k_max <- 16
+k_max <- 3
 
 
 
@@ -102,7 +102,7 @@ PRECASTObj <- AddParSetting(
   Sigma_equal = FALSE,
   coreNum = ifelse(
     Sys.getenv("SLURM_NTASKS")=="", # on local machine
-    9,                              #Boyi's computer
+    8,                              #Boyi's computer. 
     as.numeric(Sys.getenv("SLURM_NTASKS")
     )),
   maxIter = 30,
@@ -116,6 +116,8 @@ print("NOTE (boyiguo1): Finish PRECAST set-up")
 # tic()
 PRECASTObj <- PRECAST(PRECASTObj,
                       K = seq.int(k_min, k_max))
+# PRECASTObj <- PRECAST(PRECASTObj,
+#                       K = 8)
 
 saveRDS(
   PRECASTObj, 
