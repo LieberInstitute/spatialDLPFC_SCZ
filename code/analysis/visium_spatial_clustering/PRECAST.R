@@ -90,6 +90,11 @@ PRECASTObj <- CreatePRECASTObject(
   customGenelist = gene_df$ensembl |> unique()
 )
 
+# Save mem
+rm(spe)
+rm(seuList)
+gc(verbose = FALSE)
+
 ## Add a model setting in advance for a PRECASTObj object.
 ## verbose =TRUE helps outputing the information in the algorithm.
 PRECASTObj <- AddAdjList(
