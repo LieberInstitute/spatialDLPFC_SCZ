@@ -1,11 +1,11 @@
 # Load Packages -----------------------------------------------------------
-# suppressPackageStartupMessages({
+suppressPackageStartupMessages({
   library(here)
   library(SpatialExperiment)
   library(spatialLIBD)
   library(tidyverse)
   library(sessioninfo)
-# })
+})
 
 
 # Path --------------------------------------------------------------------
