@@ -65,5 +65,21 @@ cor_layer <- layer_stat_cor(
   top_n = 100
 )
 
-layer_stat_cor_plot(cor_layer, max = max(cor_layer))
+
+
+
+
+library(tidyverse)
+DLPFC_layer_anno <- read_csv(
+  here("code/analysis/visium_spatial_clustering",
+       "bayesSpace_layer_annotations.csv")
+) |> filter(
+  grepl("^Sp09", cluster)
+)
+
+colnames(cor_layer) <- DLPFC_layer_anno$layer_combo2[match(colnames(cor_layer), DLPFC_layer_anno$cluster)] 
+layer_stat_cor_plot(cor_layer[, sort(colnames(cor_layer))], max = max(cor_layer))
+
+
+
 
