@@ -9,9 +9,10 @@ for i = 1:length(myfiles)
     % Read the image
     load(fullfile(dt,myfiles(i).name),'WFA');
 
-[lehisto, x]=imhist(WFA);
-level=triangle_th(lehisto(5:end),numel(x));
- BW=imbinarize(WFA,level);
+[counts, x]=imhist(WFA);
+level=triangle_th(counts(5:end),numel(x));
+BW=imbinarize(WFA,level);
+[x0,x1,x11,x22,y0,y1,y11,y22]=extract_coords(counts,x,level);
 
     figure('visible', 'off')
     ax1 = subplot(2,2,1);
@@ -19,13 +20,15 @@ level=triangle_th(lehisto(5:end),numel(x));
     ax2 = subplot(2,2,3);
     imshow(BW)
     ax3 = subplot(2,2,2);
-    plot(x,lehisto)
+    plot(x,counts)
     ax4 = subplot(2,2,4);
-    plot(x,lehisto)
+    plot(x,counts)
     xlim(ax4, [0.005 1])
-    ylim(ax4, [0 6000000]) 
+    ylim(ax4, [0 10000000]) 
     hold(ax4, 'on')
-    xline(ax4,level, 'Color', 'r')
+    plot(ax4,[x11,x22], [y11,y22], 'Color', 'r')
+    plot(ax4,[x0,x1], [y0,y1], 'Color', 'r')
+    plot(ax4,[x0,x0], [0,y0], 'Color', 'g')
     hold(ax4,'off')
     saveas(gcf,fullfile(ot,[myfiles(i).name(1:end-4), '.png']))
     close all
