@@ -10,5 +10,5 @@ for i = 1:length(myfiles)
 
 [lehisto, x]=imhist(WFA);
 level=triangle_th(lehisto,x);
-
+BW=imbinarize(WFA,level);
 end
