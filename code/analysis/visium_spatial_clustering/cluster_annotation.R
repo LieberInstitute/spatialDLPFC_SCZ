@@ -1,9 +1,12 @@
-# Load packages -----------------------------------------------------------
-library(here)
-library(SpatialExperiment)
-library(spatialLIBD)
-# library(tidyverse)
-
+# Load Libray -------------------------------------------------------------
+suppressPackageStartupMessages({
+  library(here)
+  library(SpatialExperiment)
+  library(spatialLIBD)
+  library(tidyverse)
+  library(escheR)
+  library(ggpubr)
+})
 
 # Path --------------------------------------------------------------------
 fld_data_spatialcluster <- here(
@@ -24,52 +27,9 @@ spe <- readRDS(
 col_df <- colData(spe) |> data.frame()
 
 
-# -------------------------------------------------------------------------
-vars <- grep("^PRECAST", names(col_df), value = TRUE)
-
-# TODO: write a loop
-.var <- vars[[4]]
-
-spe$spd <- paste0("SpD_", spe[[.var]])
-
-# TODO: consider to ajdust for age, sex.
-PNN_modeling_results <- registration_wrapper(
-  sce = spe,
-  var_registration = "spd",
-  var_sample_id = "sample_id",
-  gene_ensembl = "gene_id",
-  gene_name = "gene_name"
-)
-
-str(PNN_modeling_results)
-
-# Extract Enrichment t-statistics ------
-PNN_t_stats <- PNN_modeling_results$enrichment[, grep("^t_stat", colnames(PNN_modeling_results$enrichment))]
-colnames(PNN_t_stats) <- gsub("^t_stat_", "", colnames(PNN_t_stats))
-
-
-# Down load spatialDLPFC modeling result ----------------------------------
+## Down load spatialDLPFC modeling result ----------------------------------
 
 DLPFC_modeling_results <- fetch_data("spatialDLPFC_Visium_modeling_results")
-
-str(DLPFC_modeling_results)
-
-DLPFC_t_stats <- DLPFC_modeling_results$enrichment[, grep("^t_stat", colnames(DLPFC_modeling_results$enrichment))]
-colnames(DLPFC_t_stats) <- gsub("^t_stat_", "", colnames(DLPFC_t_stats))
-
-# cor_layer <- layer_stat_cor(
-cor_layer <- layer_stat_cor(
-  stats = PNN_t_stats,
-  modeling_results = DLPFC_modeling_results,
-  model_type = "enrichment",
-  top_n = 100
-)
-
-
-
-
-
-library(tidyverse)
 DLPFC_layer_anno <- read_csv(
   here("code/analysis/visium_spatial_clustering",
        "bayesSpace_layer_annotations.csv")
@@ -77,8 +37,99 @@ DLPFC_layer_anno <- read_csv(
   grepl("^Sp09", cluster)
 )
 
-colnames(cor_layer) <- DLPFC_layer_anno$layer_combo2[match(colnames(cor_layer), DLPFC_layer_anno$cluster)] 
-layer_stat_cor_plot(cor_layer[, sort(colnames(cor_layer))], max = max(cor_layer))
+
+# -------------------------------------------------------------------------
+vars <- grep("^PRECAST", names(col_df), value = TRUE)
+
+# <- vars[[3]]
+
+# TODO: write a loop
+for(.var in vars){
+  
+  spe$spd <- paste0("SpD_", spe[[.var]])
+  
+  if(spe[[.var]] |> unique() |> length() ==2)
+    next
+  browser()  
+  # TODO: consider to ajdust for age, sex.
+  PNN_modeling_results <- registration_wrapper(
+    sce = spe,
+    var_registration = "spd",
+    var_sample_id = "sample_id",
+    gene_ensembl = "gene_id",
+    gene_name = "gene_name"
+  )
+  
+  # str(PNN_modeling_results)
+  
+  # Extract Enrichment t-statistics ------
+  PNN_t_stats <- PNN_modeling_results$enrichment[,
+                                                 grep("^t_stat", 
+                                                      colnames(PNN_modeling_results$enrichment)
+                                                 )
+  ]
+  colnames(PNN_t_stats) <- gsub("^t_stat_", "", colnames(PNN_t_stats))
+  
+  
+  
+  
+  # str(DLPFC_modeling_results)
+  
+  DLPFC_t_stats <- DLPFC_modeling_results$enrichment[, grep("^t_stat", colnames(DLPFC_modeling_results$enrichment))]
+  colnames(DLPFC_t_stats) <- gsub("^t_stat_", "", colnames(DLPFC_t_stats))
+  
+  # cor_layer <- layer_stat_cor(
+  cor_layer <- layer_stat_cor(
+    stats = PNN_t_stats,
+    modeling_results = DLPFC_modeling_results,
+    model_type = "enrichment",
+    top_n = 100
+  )
+  
+  colnames(cor_layer) <- DLPFC_layer_anno$layer_combo2[
+    match(colnames(cor_layer), DLPFC_layer_anno$cluster)
+  ] 
+  
+  
+  pdf(
+    file = here(
+      paste0(
+        "plots/cluster_anno/test_",
+        "PRECAST_K-", spe[[.var]] |> unique() |> length(),
+        ".pdf"
+      )
+    )
+  )
+  # par(mfrow = c(2,1))
+  layer_stat_cor_plot(
+    cor_layer[, sort(colnames(cor_layer))],
+    max = max(cor_layer)
+  )
+  
+  (ggarrange(
+    spe[, spe$sample_id %in% c("V13M06-342_D1")] |> 
+      make_escheR() |> 
+      add_fill(var = "spd") + 
+      labs(title = "V13M06-342_D1 (NTC)"),
+    spe[, spe$sample_id %in% c("V13M06-343_D1")] |> 
+      make_escheR() |> 
+      add_fill(var = "spd") + 
+      labs(title = "V13M06-343_D1 (SCZ)"),
+    common.legend = TRUE,
+    legend = "bottom"
+  )) |>  print()
+  
+  dev.off()
+  
+  
+  
+  
+  
+  # ggarrange(reg_plot,
+  #           sample_plot,
+  #           nrow = 2)
+  # 
+}
 
 
 
