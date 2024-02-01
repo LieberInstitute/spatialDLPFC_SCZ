@@ -52,7 +52,7 @@ vars <- grep("^PRECAST", names(col_df), value = TRUE)
 #.var <- vars[[7]]
 
 # TODO: write a loop
-for(.var in vars[7:8]){
+for(.var in vars){
   
   spe$spd <- paste0("SpD_", spe[[.var]]) |> factor()
   
