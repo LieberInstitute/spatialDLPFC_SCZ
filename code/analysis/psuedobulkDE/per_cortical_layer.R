@@ -62,113 +62,113 @@ spe$sex <- metadata(spe)$dx_df$sex[
 
 
 # Sample Level Bulk DE ----------------------------------------------------
-spe_bulk <-
-  registration_pseudobulk(
-    spe,
-    var_registration = "dx",
-    var_sample_id = "sample_id",
-    min_ncells = 10
-  )
-
-covars <- c("age", "sex")
-
-registration_mod <-
-  registration_model(spe_bulk,
-                     covars = covars)
-
-
-block_cor <-
-  registration_block_cor(
-    spe_bulk,
-    registration_model = registration_mod
-  )
-
-results_enrichment <-
-  registration_stats_enrichment(
-    spe_bulk,
-    block_cor = block_cor,
-    covars = covars,
-    gene_ensembl = "gene_id",
-    gene_name = "gene_name"
-  )
-
-sum(results_enrichment$fdr_ntc <= 0.05)
-sum(results_enrichment$p_value_ntc<=0.05)
-
-hist(results_enrichment$p_value_ntc) # Histogram of p-value
-
-
-# Volcano plot
-# TODO: interpret and confirm the directionality
-
-out_gene_df <- results_enrichment |> 
-  arrange(fdr_scz) |> 
-  slice_head(n=1)
-
-impl_gene_df <- results_enrichment |> 
-  filter(gene %in% c(
-    "PVALB",
-    "NOS1",
-    "SST",
-    "CHODL"
-  )) |> 
-  select(ensembl, gene, ends_with("scz"))
-
-
-ggplot(results_enrichment, 
-       aes(x = logFC_scz, y = -log10(fdr_scz))
-) +
-  geom_point() +
-  geom_label_repel(
-    data = impl_gene_df, # Add labels last to appear as the top layer  
-    aes(label = gene),
-    force = 2,
-    nudge_y = 0.1) +
-  geom_label_repel(
-    data = out_gene_df,
-    aes(label = gene),
-    color = 'red',
-    force = 2,
-    nudge_y = -0.1
-  ) +
-  labs(
-    title = "Bulk analysis pooling all spots"
-  ) +
-  theme_minimal()
-
-results_enrichment[which.min(results_enrichment$fdr_scz),]
-
-results_enrichment |> 
-  filter(gene %in% c(
-    "PVALB",
-    "NOS1",
-    "SST",
-    "CHODL"
-  )) |> 
-  select(ensembl, gene, ends_with("scz"))
-
-
-results_enrichment |> arrange(p_value_ntc) |> slice_head(n = 10)
-
-results_enrichment |> 
-  arrange(desc(abs(logFC_scz))) |> 
-  slice_head(n=10)
-
-
-## Implication Gene Plotting ---------
-data.frame(
-  dx = spe_bulk$dx,
-  PVALB_log = logcounts(spe_bulk)["ENSG00000100362",],
-  NOS1_log = logcounts(spe_bulk)["ENSG00000089250",],
-  SST_log = logcounts(spe_bulk)["ENSG00000157005",],
-  CHODL_log = logcounts(spe_bulk)["ENSG00000154645",]
-) |> 
-  pivot_longer(
-    cols = ends_with("_log")
-  ) |> 
-  ggplot() +
-  geom_violin(aes(x = dx, y = value)) +
-  facet_wrap(vars(name), scales = "free")
+# spe_bulk <-
+#   registration_pseudobulk(
+#     spe,
+#     var_registration = "dx",
+#     var_sample_id = "sample_id",
+#     min_ncells = 10
+#   )
+# 
+# covars <- c("age", "sex")
+# 
+# registration_mod <-
+#   registration_model(spe_bulk,
+#                      covars = covars)
+# 
+# 
+# block_cor <-
+#   registration_block_cor(
+#     spe_bulk,
+#     registration_model = registration_mod
+#   )
+# 
+# results_enrichment <-
+#   registration_stats_enrichment(
+#     spe_bulk,
+#     block_cor = block_cor,
+#     covars = covars,
+#     gene_ensembl = "gene_id",
+#     gene_name = "gene_name"
+#   )
+# 
+# sum(results_enrichment$fdr_ntc <= 0.05)
+# sum(results_enrichment$p_value_ntc<=0.05)
+# 
+# hist(results_enrichment$p_value_ntc) # Histogram of p-value
+# 
+# 
+# # Volcano plot
+# # TODO: interpret and confirm the directionality
+# 
+# out_gene_df <- results_enrichment |> 
+#   arrange(fdr_scz) |> 
+#   slice_head(n=1)
+# 
+# impl_gene_df <- results_enrichment |> 
+#   filter(gene %in% c(
+#     "PVALB",
+#     "NOS1",
+#     "SST",
+#     "CHODL"
+#   )) |> 
+#   select(ensembl, gene, ends_with("scz"))
+# 
+# 
+# ggplot(results_enrichment, 
+#        aes(x = logFC_scz, y = -log10(fdr_scz))
+# ) +
+#   geom_point() +
+#   geom_label_repel(
+#     data = impl_gene_df, # Add labels last to appear as the top layer  
+#     aes(label = gene),
+#     force = 2,
+#     nudge_y = 0.1) +
+#   geom_label_repel(
+#     data = out_gene_df,
+#     aes(label = gene),
+#     color = 'red',
+#     force = 2,
+#     nudge_y = -0.1
+#   ) +
+#   labs(
+#     title = "Bulk analysis pooling all spots"
+#   ) +
+#   theme_minimal()
+# 
+# results_enrichment[which.min(results_enrichment$fdr_scz),]
+# 
+# results_enrichment |> 
+#   filter(gene %in% c(
+#     "PVALB",
+#     "NOS1",
+#     "SST",
+#     "CHODL"
+#   )) |> 
+#   select(ensembl, gene, ends_with("scz"))
+# 
+# 
+# results_enrichment |> arrange(p_value_ntc) |> slice_head(n = 10)
+# 
+# results_enrichment |> 
+#   arrange(desc(abs(logFC_scz))) |> 
+#   slice_head(n=10)
+# 
+# 
+# ## Implication Gene Plotting ---------
+# data.frame(
+#   dx = spe_bulk$dx,
+#   PVALB_log = logcounts(spe_bulk)["ENSG00000100362",],
+#   NOS1_log = logcounts(spe_bulk)["ENSG00000089250",],
+#   SST_log = logcounts(spe_bulk)["ENSG00000157005",],
+#   CHODL_log = logcounts(spe_bulk)["ENSG00000154645",]
+# ) |> 
+#   pivot_longer(
+#     cols = ends_with("_log")
+#   ) |> 
+#   ggplot() +
+#   geom_violin(aes(x = dx, y = value)) +
+#   facet_wrap(vars(name), scales = "free")
 
 # Pseudo-bulk DE ----------------------------------------------------------
 
