@@ -26,6 +26,14 @@ spe <- readRDS(
 
 col_df <- colData(spe) |> data.frame()
 
+# spe_backup <- spe # for debug
+# subset_id <- metadata(spe)$dx_df |> group_by(dx) |>
+#   slice_head(n=4) |> ungroup() |>
+#   pull(sample_id) |>
+#     c("V13M06-343_D1", "V13M06-342_D1")
+# 
+# spe <- spe_backup[ ,spe_backup$sample_id %in% subset_id]
+
 
 ## Down load spatialDLPFC modeling result ----------------------------------
 
@@ -41,16 +49,16 @@ DLPFC_layer_anno <- read_csv(
 # -------------------------------------------------------------------------
 vars <- grep("^PRECAST", names(col_df), value = TRUE)
 
-# <- vars[[3]]
+#.var <- vars[[7]]
 
 # TODO: write a loop
-for(.var in vars){
+for(.var in vars[7:8]){
   
-  spe$spd <- paste0("SpD_", spe[[.var]])
+  spe$spd <- paste0("SpD_", spe[[.var]]) |> factor()
   
   if(spe[[.var]] |> unique() |> length() ==2)
     next
-  browser()  
+  # browser()  
   # TODO: consider to ajdust for age, sex.
   PNN_modeling_results <- registration_wrapper(
     sce = spe,
