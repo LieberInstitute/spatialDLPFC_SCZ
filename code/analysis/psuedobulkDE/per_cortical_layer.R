@@ -204,7 +204,7 @@ for(.spd_var in spd_var){
   spd_list |> 
     walk(
       .f = function(spe_sub){
-        browser()
+        # browser()
         
         # spe_sub <- spd_list[[3]]
         # THis is taking the sum. The logcounts is CPM scale.
@@ -287,14 +287,7 @@ for(.spd_var in spd_var){
         ge_df <- remain_gene_ids |> 
           map_dfc(~logcounts(sce_pseudo)[.x,])
         
-        colnames(ge_df) <- paste0(
-          rowData(sce_pseudo)[remain_gene_ids, "gene_name"],
-          "_log"
-        ) 
-        ge_df <- cbind(
-          ge_df,
-          dx = sce_pseudo$dx
-        )
+        
         # 
         # (data.frame(
         #   dx = sce_pseudo$dx,
@@ -304,7 +297,7 @@ for(.spd_var in spd_var){
         #   # CHODL_log = logcounts(sce_pseudo)["ENSG00000154645",]
         # ) |> 
         
-        if(ncol(ge_df) <=1){
+        if(ncol(ge_df) < 1){
           (
             ggplot() + 
               labs(
@@ -316,6 +309,15 @@ for(.spd_var in spd_var){
               )
           )|> print()
         } else {
+          colnames(ge_df) <- paste0(
+            rowData(sce_pseudo)[remain_gene_ids, "gene_name"],
+            "_log"
+          ) 
+          ge_df <- cbind(
+            ge_df,
+            dx = sce_pseudo$dx
+          )
+          
           (
             ge_df |> 
               pivot_longer(
