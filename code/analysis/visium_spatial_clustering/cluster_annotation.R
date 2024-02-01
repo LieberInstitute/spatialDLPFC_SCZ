@@ -114,6 +114,8 @@ for(.var in vars[7:8]){
     max = max(cor_layer)
   )
   
+  
+
   (ggarrange(
     spe[, spe$sample_id %in% c("V13M06-342_D1")] |> 
       make_escheR() |> 
