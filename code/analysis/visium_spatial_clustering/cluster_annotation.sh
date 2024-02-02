@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=cluster_annotation
-#SBATCH --mem=30G
+#SBATCH --mem=35G
 #SBATCH --nodes=1
 #SBATCH --ntasks=1            # Number of cores requested
 #SBATCH --mail-type=ALL
