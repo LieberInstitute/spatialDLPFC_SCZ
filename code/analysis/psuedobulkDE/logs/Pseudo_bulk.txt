@@ -1,0 +1,1843 @@
+**** Job starts ****
+Thu Feb  1 04:15:20 PM EST 2024
+**** JHPCE info ****
+User: bguo
+Job id: 1875875
+Job name: Pseudo_bulk
+Hostname: jhpce3
+Loading conda_R/devel
+
+Currently Loaded Modules:
+  1) JHPCE_ROCKY9_DEFAULT_ENV   3) conda/3-23.3.1
+  2) JHPCE_tools/3.0            4) conda_R/devel
+
+ 
+
+2024-02-01 16:20:26.919971 make pseudobulk object
+2024-02-01 16:20:36.413855 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:20:36.458008 drop lowly expressed genes
+2024-02-01 16:20:36.66889 normalize expression
+2024-02-01 16:20:37.797851 create model matrix
+2024-02-01 16:20:37.879505 run duplicateCorrelation()
+2024-02-01 16:20:37.890891 The estimated correlation is: 0
+2024-02-01 16:20:37.893294 computing enrichment statistics
+2024-02-01 16:20:38.57584 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:20:39.919932 make pseudobulk object
+2024-02-01 16:20:45.627992 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:20:45.671131 drop lowly expressed genes
+2024-02-01 16:20:45.814898 normalize expression
+2024-02-01 16:20:46.59963 create model matrix
+2024-02-01 16:20:46.675419 run duplicateCorrelation()
+2024-02-01 16:20:46.684196 The estimated correlation is: 0
+2024-02-01 16:20:46.686111 computing enrichment statistics
+2024-02-01 16:20:47.13852 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:20:55.373622 make pseudobulk object
+2024-02-01 16:21:06.387609 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:21:06.430498 drop lowly expressed genes
+2024-02-01 16:21:06.57498 normalize expression
+2024-02-01 16:21:07.570317 create model matrix
+2024-02-01 16:21:07.65121 run duplicateCorrelation()
+2024-02-01 16:21:07.661419 The estimated correlation is: 0
+2024-02-01 16:21:07.663352 computing enrichment statistics
+2024-02-01 16:21:08.047199 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:21:08.95595 make pseudobulk object
+2024-02-01 16:21:11.865895 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:21:11.908269 drop lowly expressed genes
+2024-02-01 16:21:12.05144 normalize expression
+2024-02-01 16:21:12.884591 create model matrix
+2024-02-01 16:21:12.963977 run duplicateCorrelation()
+2024-02-01 16:21:12.97298 The estimated correlation is: 0
+2024-02-01 16:21:12.974851 computing enrichment statistics
+2024-02-01 16:21:13.439047 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:21:14.108985 make pseudobulk object
+2024-02-01 16:21:16.787605 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:21:16.830874 drop lowly expressed genes
+2024-02-01 16:21:16.975991 normalize expression
+2024-02-01 16:21:17.759916 create model matrix
+2024-02-01 16:21:17.835726 run duplicateCorrelation()
+2024-02-01 16:21:17.844408 The estimated correlation is: 0
+2024-02-01 16:21:17.846283 computing enrichment statistics
+2024-02-01 16:21:18.141971 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:21:29.259537 make pseudobulk object
+2024-02-01 16:21:36.525367 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:21:36.569 drop lowly expressed genes
+2024-02-01 16:21:36.714086 normalize expression
+2024-02-01 16:21:37.756515 create model matrix
+2024-02-01 16:21:37.843016 run duplicateCorrelation()
+2024-02-01 16:21:37.854323 The estimated correlation is: 0
+2024-02-01 16:21:37.856548 computing enrichment statistics
+2024-02-01 16:21:38.37642 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:21:39.19764 make pseudobulk object
+2024-02-01 16:21:45.372735 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:21:45.415821 drop lowly expressed genes
+2024-02-01 16:21:45.560278 normalize expression
+2024-02-01 16:21:46.195853 create model matrix
+2024-02-01 16:21:46.274138 run duplicateCorrelation()
+2024-02-01 16:21:46.282243 The estimated correlation is: 0
+2024-02-01 16:21:46.284214 computing enrichment statistics
+2024-02-01 16:21:46.568111 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:21:47.245796 make pseudobulk object
+2024-02-01 16:21:50.179832 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:21:50.222646 drop lowly expressed genes
+2024-02-01 16:21:50.368012 normalize expression
+2024-02-01 16:21:51.197232 create model matrix
+2024-02-01 16:21:51.277073 run duplicateCorrelation()
+2024-02-01 16:21:51.286413 The estimated correlation is: 0
+2024-02-01 16:21:51.288329 computing enrichment statistics
+2024-02-01 16:21:51.774025 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:21:52.469375 make pseudobulk object
+2024-02-01 16:21:54.643502 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:21:54.686192 drop lowly expressed genes
+2024-02-01 16:21:54.829194 normalize expression
+2024-02-01 16:21:55.514166 create model matrix
+2024-02-01 16:21:55.59118 run duplicateCorrelation()
+2024-02-01 16:21:55.599493 The estimated correlation is: 0
+2024-02-01 16:21:55.601372 computing enrichment statistics
+2024-02-01 16:21:55.885899 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:22:07.205208 make pseudobulk object
+2024-02-01 16:22:13.427135 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:22:13.475114 drop lowly expressed genes
+2024-02-01 16:22:13.627797 normalize expression
+2024-02-01 16:22:14.648278 create model matrix
+2024-02-01 16:22:14.723466 run duplicateCorrelation()
+2024-02-01 16:22:14.733067 The estimated correlation is: 0
+2024-02-01 16:22:14.734939 computing enrichment statistics
+2024-02-01 16:22:15.26442 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:22:16.09128 make pseudobulk object
+2024-02-01 16:22:23.118796 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:22:23.16772 drop lowly expressed genes
+2024-02-01 16:22:23.317665 normalize expression
+2024-02-01 16:22:24.155436 create model matrix
+2024-02-01 16:22:24.232633 run duplicateCorrelation()
+2024-02-01 16:22:24.241812 The estimated correlation is: 0
+2024-02-01 16:22:24.243708 computing enrichment statistics
+2024-02-01 16:22:24.564726 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:22:25.262417 make pseudobulk object
+2024-02-01 16:22:27.196196 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:22:27.240468 drop lowly expressed genes
+2024-02-01 16:22:27.387672 normalize expression
+2024-02-01 16:22:28.024247 create model matrix
+2024-02-01 16:22:28.10167 run duplicateCorrelation()
+2024-02-01 16:22:28.109682 The estimated correlation is: 0
+2024-02-01 16:22:28.111579 computing enrichment statistics
+2024-02-01 16:22:28.394231 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:22:29.235606 make pseudobulk object
+2024-02-01 16:22:31.725212 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:22:31.767764 drop lowly expressed genes
+2024-02-01 16:22:31.915108 normalize expression
+2024-02-01 16:22:32.682258 create model matrix
+2024-02-01 16:22:32.756274 run duplicateCorrelation()
+2024-02-01 16:22:32.764949 The estimated correlation is: 0
+2024-02-01 16:22:32.766799 computing enrichment statistics
+2024-02-01 16:22:33.066576 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:22:33.803347 make pseudobulk object
+2024-02-01 16:22:35.981419 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:22:36.026163 drop lowly expressed genes
+2024-02-01 16:22:36.174746 normalize expression
+2024-02-01 16:22:36.845184 create model matrix
+2024-02-01 16:22:36.922365 run duplicateCorrelation()
+2024-02-01 16:22:36.930878 The estimated correlation is: 0
+2024-02-01 16:22:36.932839 computing enrichment statistics
+2024-02-01 16:22:37.218779 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:22:51.648824 make pseudobulk object
+2024-02-01 16:22:57.040724 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:22:57.084822 drop lowly expressed genes
+2024-02-01 16:22:57.23706 normalize expression
+2024-02-01 16:22:58.182126 create model matrix
+2024-02-01 16:22:58.257292 run duplicateCorrelation()
+2024-02-01 16:22:58.266965 The estimated correlation is: 0
+2024-02-01 16:22:58.268889 computing enrichment statistics
+2024-02-01 16:22:58.621079 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:22:59.472104 make pseudobulk object
+2024-02-01 16:23:01.484092 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:23:01.535248 drop lowly expressed genes
+2024-02-01 16:23:01.702837 normalize expression
+2024-02-01 16:23:02.377794 create model matrix
+2024-02-01 16:23:02.463375 run duplicateCorrelation()
+2024-02-01 16:23:02.471727 The estimated correlation is: 0
+2024-02-01 16:23:02.473793 computing enrichment statistics
+2024-02-01 16:23:02.762932 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:23:08.275526 make pseudobulk object
+2024-02-01 16:23:10.971103 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:23:11.014163 drop lowly expressed genes
+2024-02-01 16:23:11.324788 normalize expression
+2024-02-01 16:23:12.168038 create model matrix
+2024-02-01 16:23:12.241967 run duplicateCorrelation()
+2024-02-01 16:23:12.250851 The estimated correlation is: 0
+2024-02-01 16:23:12.252697 computing enrichment statistics
+2024-02-01 16:23:12.573453 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:23:13.233639 make pseudobulk object
+2024-02-01 16:23:15.378397 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:23:15.420216 drop lowly expressed genes
+2024-02-01 16:23:15.566664 normalize expression
+2024-02-01 16:23:16.242055 create model matrix
+2024-02-01 16:23:16.32005 run duplicateCorrelation()
+2024-02-01 16:23:16.328278 The estimated correlation is: 0
+2024-02-01 16:23:16.330142 computing enrichment statistics
+2024-02-01 16:23:16.610902 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:23:17.152137 make pseudobulk object
+2024-02-01 16:23:19.691588 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:23:19.733452 drop lowly expressed genes
+2024-02-01 16:23:19.87438 normalize expression
+2024-02-01 16:23:20.647726 create model matrix
+2024-02-01 16:23:20.880573 run duplicateCorrelation()
+2024-02-01 16:23:20.889094 The estimated correlation is: 0
+2024-02-01 16:23:20.890907 computing enrichment statistics
+2024-02-01 16:23:21.188694 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:23:21.913664 make pseudobulk object
+2024-02-01 16:23:23.762028 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:23:23.80502 drop lowly expressed genes
+2024-02-01 16:23:23.954581 normalize expression
+2024-02-01 16:23:24.635966 create model matrix
+2024-02-01 16:23:24.710618 run duplicateCorrelation()
+2024-02-01 16:23:24.718772 The estimated correlation is: 0
+2024-02-01 16:23:24.720607 computing enrichment statistics
+2024-02-01 16:23:25.000394 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:23:41.689636 make pseudobulk object
+2024-02-01 16:23:43.981767 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:23:44.028825 drop lowly expressed genes
+2024-02-01 16:23:44.178706 normalize expression
+2024-02-01 16:23:44.992754 create model matrix
+2024-02-01 16:23:45.290813 run duplicateCorrelation()
+2024-02-01 16:23:45.299775 The estimated correlation is: 0
+2024-02-01 16:23:45.301659 computing enrichment statistics
+2024-02-01 16:23:45.605809 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:23:46.360701 make pseudobulk object
+2024-02-01 16:23:56.777618 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:23:56.828983 drop lowly expressed genes
+2024-02-01 16:23:56.982683 normalize expression
+2024-02-01 16:23:57.951722 create model matrix
+2024-02-01 16:23:58.036206 run duplicateCorrelation()
+2024-02-01 16:23:58.046164 The estimated correlation is: 0
+2024-02-01 16:23:58.048221 computing enrichment statistics
+2024-02-01 16:23:58.399558 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:23:59.271316 make pseudobulk object
+2024-02-01 16:24:02.540329 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:02.594701 drop lowly expressed genes
+2024-02-01 16:24:02.753345 normalize expression
+2024-02-01 16:24:03.628595 create model matrix
+2024-02-01 16:24:03.705958 run duplicateCorrelation()
+2024-02-01 16:24:03.715078 The estimated correlation is: 0
+2024-02-01 16:24:03.71702 computing enrichment statistics
+2024-02-01 16:24:04.197917 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:24:04.872379 make pseudobulk object
+2024-02-01 16:24:06.568005 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:06.610975 drop lowly expressed genes
+2024-02-01 16:24:06.755459 normalize expression
+2024-02-01 16:24:07.311298 create model matrix
+2024-02-01 16:24:07.387417 run duplicateCorrelation()
+2024-02-01 16:24:07.394963 The estimated correlation is: 0
+2024-02-01 16:24:07.396809 computing enrichment statistics
+2024-02-01 16:24:07.664398 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:24:08.139325 make pseudobulk object
+2024-02-01 16:24:10.597809 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:10.641435 drop lowly expressed genes
+2024-02-01 16:24:10.789585 normalize expression
+2024-02-01 16:24:11.558904 create model matrix
+2024-02-01 16:24:11.635957 run duplicateCorrelation()
+2024-02-01 16:24:11.644818 The estimated correlation is: 0
+2024-02-01 16:24:11.646778 computing enrichment statistics
+2024-02-01 16:24:11.952828 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:24:12.851763 make pseudobulk object
+2024-02-01 16:24:14.847351 dropping 3 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:14.891325 drop lowly expressed genes
+2024-02-01 16:24:15.196512 normalize expression
+2024-02-01 16:24:15.843465 create model matrix
+2024-02-01 16:24:15.920041 run duplicateCorrelation()
+2024-02-01 16:24:15.928141 The estimated correlation is: 0
+2024-02-01 16:24:15.930028 computing enrichment statistics
+2024-02-01 16:24:16.209425 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:24:16.822027 make pseudobulk object
+2024-02-01 16:24:18.114292 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:18.159333 drop lowly expressed genes
+2024-02-01 16:24:18.303583 normalize expression
+2024-02-01 16:24:18.640359 create model matrix
+2024-02-01 16:24:18.717439 run duplicateCorrelation()
+2024-02-01 16:24:18.723905 The estimated correlation is: 0
+2024-02-01 16:24:18.725791 computing enrichment statistics
+2024-02-01 16:24:18.945953 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:24:35.736562 make pseudobulk object
+2024-02-01 16:24:38.223643 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:38.268225 drop lowly expressed genes
+2024-02-01 16:24:38.58286 normalize expression
+2024-02-01 16:24:39.408681 create model matrix
+2024-02-01 16:24:39.484695 run duplicateCorrelation()
+2024-02-01 16:24:39.493728 The estimated correlation is: 0
+2024-02-01 16:24:39.495656 computing enrichment statistics
+2024-02-01 16:24:39.810737 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:24:40.564497 make pseudobulk object
+2024-02-01 16:24:48.792248 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:48.862645 drop lowly expressed genes
+2024-02-01 16:24:49.096213 normalize expression
+2024-02-01 16:24:50.164557 create model matrix
+2024-02-01 16:24:50.244083 run duplicateCorrelation()
+2024-02-01 16:24:50.253695 The estimated correlation is: 0
+2024-02-01 16:24:50.255737 computing enrichment statistics
+2024-02-01 16:24:50.583116 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:24:51.529408 make pseudobulk object
+2024-02-01 16:24:52.834114 dropping 7 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:52.876051 drop lowly expressed genes
+2024-02-01 16:24:53.012931 normalize expression
+2024-02-01 16:24:53.395883 create model matrix
+2024-02-01 16:24:53.631377 run duplicateCorrelation()
+2024-02-01 16:24:53.638089 The estimated correlation is: 0
+2024-02-01 16:24:53.639966 computing enrichment statistics
+2024-02-01 16:24:53.87389 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:24:54.362629 make pseudobulk object
+2024-02-01 16:24:57.523414 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:24:57.56756 drop lowly expressed genes
+2024-02-01 16:24:57.715278 normalize expression
+2024-02-01 16:24:58.551934 create model matrix
+2024-02-01 16:24:58.6292 run duplicateCorrelation()
+2024-02-01 16:24:58.638224 The estimated correlation is: 0
+2024-02-01 16:24:58.64012 computing enrichment statistics
+2024-02-01 16:24:58.957718 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:24:59.666551 make pseudobulk object
+2024-02-01 16:25:01.406923 dropping 3 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:01.451978 drop lowly expressed genes
+2024-02-01 16:25:01.596173 normalize expression
+2024-02-01 16:25:02.06733 create model matrix
+2024-02-01 16:25:02.145801 run duplicateCorrelation()
+2024-02-01 16:25:02.153783 The estimated correlation is: 0
+2024-02-01 16:25:02.155803 computing enrichment statistics
+2024-02-01 16:25:02.415583 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:25:03.143 make pseudobulk object
+2024-02-01 16:25:05.466591 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:05.720644 drop lowly expressed genes
+2024-02-01 16:25:05.885053 normalize expression
+2024-02-01 16:25:06.724818 create model matrix
+2024-02-01 16:25:06.812805 run duplicateCorrelation()
+2024-02-01 16:25:06.822259 The estimated correlation is: 0
+2024-02-01 16:25:06.824471 computing enrichment statistics
+2024-02-01 16:25:07.144496 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:25:07.922204 make pseudobulk object
+2024-02-01 16:25:10.032094 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:10.077903 drop lowly expressed genes
+2024-02-01 16:25:10.234049 normalize expression
+2024-02-01 16:25:10.998821 create model matrix
+2024-02-01 16:25:11.079293 run duplicateCorrelation()
+2024-02-01 16:25:11.088061 The estimated correlation is: 0
+2024-02-01 16:25:11.090012 computing enrichment statistics
+2024-02-01 16:25:11.417044 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:25:12.347652 make pseudobulk object
+2024-02-01 16:25:14.049788 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:14.093333 drop lowly expressed genes
+2024-02-01 16:25:14.397746 normalize expression
+2024-02-01 16:25:15.013904 create model matrix
+2024-02-01 16:25:15.090919 run duplicateCorrelation()
+2024-02-01 16:25:15.098828 The estimated correlation is: 0
+2024-02-01 16:25:15.100722 computing enrichment statistics
+2024-02-01 16:25:15.373656 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:25:34.621816 make pseudobulk object
+2024-02-01 16:25:38.363395 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:38.40819 drop lowly expressed genes
+2024-02-01 16:25:38.566113 normalize expression
+2024-02-01 16:25:39.457351 create model matrix
+2024-02-01 16:25:39.535361 run duplicateCorrelation()
+2024-02-01 16:25:39.544896 The estimated correlation is: 0
+2024-02-01 16:25:39.546824 computing enrichment statistics
+2024-02-01 16:25:40.115982 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:25:40.905033 make pseudobulk object
+2024-02-01 16:25:46.81708 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:46.866059 drop lowly expressed genes
+2024-02-01 16:25:47.012277 normalize expression
+2024-02-01 16:25:47.358024 create model matrix
+2024-02-01 16:25:47.435905 run duplicateCorrelation()
+2024-02-01 16:25:47.442443 The estimated correlation is: 0
+2024-02-01 16:25:47.444322 computing enrichment statistics
+2024-02-01 16:25:47.665793 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:25:48.025985 make pseudobulk object
+2024-02-01 16:25:49.466828 dropping 6 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:49.508666 drop lowly expressed genes
+2024-02-01 16:25:49.644225 normalize expression
+2024-02-01 16:25:50.028213 create model matrix
+2024-02-01 16:25:50.104288 run duplicateCorrelation()
+2024-02-01 16:25:50.110915 The estimated correlation is: 0
+2024-02-01 16:25:50.112764 computing enrichment statistics
+2024-02-01 16:25:50.345822 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:25:50.821455 make pseudobulk object
+2024-02-01 16:25:53.870615 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:53.914333 drop lowly expressed genes
+2024-02-01 16:25:54.059694 normalize expression
+2024-02-01 16:25:54.886103 create model matrix
+2024-02-01 16:25:54.962636 run duplicateCorrelation()
+2024-02-01 16:25:54.971549 The estimated correlation is: 0
+2024-02-01 16:25:54.973426 computing enrichment statistics
+2024-02-01 16:25:55.453839 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:25:56.134002 make pseudobulk object
+2024-02-01 16:25:58.746963 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:25:58.792144 drop lowly expressed genes
+2024-02-01 16:25:58.942225 normalize expression
+2024-02-01 16:25:59.764024 create model matrix
+2024-02-01 16:25:59.842857 run duplicateCorrelation()
+2024-02-01 16:25:59.852056 The estimated correlation is: 0
+2024-02-01 16:25:59.85414 computing enrichment statistics
+2024-02-01 16:26:00.179784 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:26:00.940919 make pseudobulk object
+2024-02-01 16:26:02.632865 dropping 4 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:26:02.676483 drop lowly expressed genes
+2024-02-01 16:26:02.818805 normalize expression
+2024-02-01 16:26:03.289237 create model matrix
+2024-02-01 16:26:03.370507 run duplicateCorrelation()
+2024-02-01 16:26:03.377684 The estimated correlation is: 0
+2024-02-01 16:26:03.379574 computing enrichment statistics
+2024-02-01 16:26:03.630859 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:26:04.338505 make pseudobulk object
+2024-02-01 16:26:06.754462 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:26:06.798753 drop lowly expressed genes
+2024-02-01 16:26:06.950617 normalize expression
+2024-02-01 16:26:07.753468 create model matrix
+2024-02-01 16:26:07.829905 run duplicateCorrelation()
+2024-02-01 16:26:07.838973 The estimated correlation is: 0
+2024-02-01 16:26:07.840934 computing enrichment statistics
+2024-02-01 16:26:08.143069 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:26:08.88382 make pseudobulk object
+2024-02-01 16:26:10.705284 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:26:10.748349 drop lowly expressed genes
+2024-02-01 16:26:10.894619 normalize expression
+2024-02-01 16:26:11.607232 create model matrix
+2024-02-01 16:26:11.684391 run duplicateCorrelation()
+2024-02-01 16:26:11.692874 The estimated correlation is: 0
+2024-02-01 16:26:11.694762 computing enrichment statistics
+2024-02-01 16:26:11.981177 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:26:12.91092 make pseudobulk object
+2024-02-01 16:26:14.492162 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:26:14.537001 drop lowly expressed genes
+2024-02-01 16:26:14.992907 normalize expression
+2024-02-01 16:26:15.869356 create model matrix
+2024-02-01 16:26:15.994319 run duplicateCorrelation()
+2024-02-01 16:26:16.006232 The estimated correlation is: 0
+2024-02-01 16:26:16.009296 computing enrichment statistics
+2024-02-01 16:26:16.329263 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:26:37.015585 make pseudobulk object
+2024-02-01 16:26:39.628002 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:26:39.670641 drop lowly expressed genes
+2024-02-01 16:26:39.821062 normalize expression
+2024-02-01 16:26:40.654984 create model matrix
+2024-02-01 16:26:40.729341 run duplicateCorrelation()
+2024-02-01 16:26:40.738294 The estimated correlation is: 0
+2024-02-01 16:26:40.740165 computing enrichment statistics
+2024-02-01 16:26:41.050508 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:26:42.039611 make pseudobulk object
+2024-02-01 16:26:47.914586 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:26:47.964789 drop lowly expressed genes
+2024-02-01 16:26:48.114734 normalize expression
+2024-02-01 16:26:48.444907 create model matrix
+2024-02-01 16:26:48.520287 run duplicateCorrelation()
+2024-02-01 16:26:48.526695 The estimated correlation is: 0
+2024-02-01 16:26:48.528582 computing enrichment statistics
+2024-02-01 16:26:48.752068 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:26:49.107003 make pseudobulk object
+2024-02-01 16:26:53.074561 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:26:53.120972 drop lowly expressed genes
+2024-02-01 16:26:53.272812 normalize expression
+2024-02-01 16:26:54.16526 create model matrix
+2024-02-01 16:26:54.24655 run duplicateCorrelation()
+2024-02-01 16:26:54.255923 The estimated correlation is: 0
+2024-02-01 16:26:54.257911 computing enrichment statistics
+2024-02-01 16:26:54.585289 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:26:55.545119 make pseudobulk object
+2024-02-01 16:26:58.667813 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:26:58.711163 drop lowly expressed genes
+2024-02-01 16:26:58.857285 normalize expression
+2024-02-01 16:26:59.711304 create model matrix
+2024-02-01 16:26:59.95373 run duplicateCorrelation()
+2024-02-01 16:26:59.962877 The estimated correlation is: 0
+2024-02-01 16:26:59.964783 computing enrichment statistics
+2024-02-01 16:27:00.27673 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:27:00.967315 make pseudobulk object
+2024-02-01 16:27:02.442584 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:02.486838 drop lowly expressed genes
+2024-02-01 16:27:02.629958 normalize expression
+2024-02-01 16:27:03.008897 create model matrix
+2024-02-01 16:27:03.087123 run duplicateCorrelation()
+2024-02-01 16:27:03.093755 The estimated correlation is: 0
+2024-02-01 16:27:03.095604 computing enrichment statistics
+2024-02-01 16:27:03.323308 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:27:03.721942 make pseudobulk object
+2024-02-01 16:27:05.19374 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:05.238206 drop lowly expressed genes
+2024-02-01 16:27:05.383306 normalize expression
+2024-02-01 16:27:05.84889 create model matrix
+2024-02-01 16:27:05.925365 run duplicateCorrelation()
+2024-02-01 16:27:05.93246 The estimated correlation is: 0
+2024-02-01 16:27:05.934332 computing enrichment statistics
+2024-02-01 16:27:06.179818 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:27:06.764715 make pseudobulk object
+2024-02-01 16:27:08.303135 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:08.347099 drop lowly expressed genes
+2024-02-01 16:27:08.49819 normalize expression
+2024-02-01 16:27:09.334509 create model matrix
+2024-02-01 16:27:09.414208 run duplicateCorrelation()
+2024-02-01 16:27:09.422301 The estimated correlation is: 0
+2024-02-01 16:27:09.424176 computing enrichment statistics
+2024-02-01 16:27:09.70426 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:27:10.300558 make pseudobulk object
+2024-02-01 16:27:13.330871 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:13.382933 drop lowly expressed genes
+2024-02-01 16:27:13.531736 normalize expression
+2024-02-01 16:27:14.31393 create model matrix
+2024-02-01 16:27:14.392552 run duplicateCorrelation()
+2024-02-01 16:27:14.401377 The estimated correlation is: 0
+2024-02-01 16:27:14.403322 computing enrichment statistics
+2024-02-01 16:27:14.712314 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:27:15.459371 make pseudobulk object
+2024-02-01 16:27:17.14943 dropping 6 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:17.193029 drop lowly expressed genes
+2024-02-01 16:27:17.333867 normalize expression
+2024-02-01 16:27:17.795892 create model matrix
+2024-02-01 16:27:17.873724 run duplicateCorrelation()
+2024-02-01 16:27:17.881047 The estimated correlation is: 0
+2024-02-01 16:27:17.882985 computing enrichment statistics
+2024-02-01 16:27:18.293145 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:27:18.822697 make pseudobulk object
+2024-02-01 16:27:20.301162 dropping 7 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:20.342831 drop lowly expressed genes
+2024-02-01 16:27:20.481193 normalize expression
+2024-02-01 16:27:20.881627 create model matrix
+2024-02-01 16:27:20.956056 run duplicateCorrelation()
+2024-02-01 16:27:20.962748 The estimated correlation is: 0
+2024-02-01 16:27:20.964612 computing enrichment statistics
+2024-02-01 16:27:21.197265 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:27:43.205996 make pseudobulk object
+2024-02-01 16:27:46.75599 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:46.8119 drop lowly expressed genes
+2024-02-01 16:27:46.975171 normalize expression
+2024-02-01 16:27:47.900905 create model matrix
+2024-02-01 16:27:48.179394 run duplicateCorrelation()
+2024-02-01 16:27:48.190093 The estimated correlation is: 0
+2024-02-01 16:27:48.192057 computing enrichment statistics
+2024-02-01 16:27:48.514271 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:27:49.288012 make pseudobulk object
+2024-02-01 16:27:55.428727 dropping 3 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:55.476328 drop lowly expressed genes
+2024-02-01 16:27:55.622316 normalize expression
+2024-02-01 16:27:56.059042 create model matrix
+2024-02-01 16:27:56.138904 run duplicateCorrelation()
+2024-02-01 16:27:56.146339 The estimated correlation is: 0
+2024-02-01 16:27:56.148373 computing enrichment statistics
+2024-02-01 16:27:56.395992 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:27:56.813236 make pseudobulk object
+2024-02-01 16:27:58.114585 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:27:58.158988 drop lowly expressed genes
+2024-02-01 16:27:58.307409 normalize expression
+2024-02-01 16:27:58.631977 create model matrix
+2024-02-01 16:27:58.709307 run duplicateCorrelation()
+2024-02-01 16:27:58.715806 The estimated correlation is: 0
+2024-02-01 16:27:58.717722 computing enrichment statistics
+2024-02-01 16:27:58.934928 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:27:59.441191 make pseudobulk object
+2024-02-01 16:28:00.807606 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:28:00.852394 drop lowly expressed genes
+2024-02-01 16:28:01.004143 normalize expression
+2024-02-01 16:28:01.576721 create model matrix
+2024-02-01 16:28:01.653871 run duplicateCorrelation()
+2024-02-01 16:28:01.660742 The estimated correlation is: 0
+2024-02-01 16:28:01.662632 computing enrichment statistics
+2024-02-01 16:28:01.898346 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:28:02.31115 make pseudobulk object
+2024-02-01 16:28:04.458405 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:28:04.502518 drop lowly expressed genes
+2024-02-01 16:28:04.648749 normalize expression
+2024-02-01 16:28:05.3562 create model matrix
+2024-02-01 16:28:05.433394 run duplicateCorrelation()
+2024-02-01 16:28:05.441652 The estimated correlation is: 0
+2024-02-01 16:28:05.443554 computing enrichment statistics
+2024-02-01 16:28:05.736988 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:28:06.410356 make pseudobulk object
+2024-02-01 16:28:07.948422 dropping 6 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:28:07.992489 drop lowly expressed genes
+2024-02-01 16:28:08.133478 normalize expression
+2024-02-01 16:28:08.553674 create model matrix
+2024-02-01 16:28:08.62968 run duplicateCorrelation()
+2024-02-01 16:28:08.636617 The estimated correlation is: 0
+2024-02-01 16:28:08.638493 computing enrichment statistics
+2024-02-01 16:28:08.877099 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:28:09.561204 make pseudobulk object
+2024-02-01 16:28:12.300356 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:28:12.508048 drop lowly expressed genes
+2024-02-01 16:28:12.655027 normalize expression
+2024-02-01 16:28:13.471613 create model matrix
+2024-02-01 16:28:13.546463 run duplicateCorrelation()
+2024-02-01 16:28:13.555345 The estimated correlation is: 0
+2024-02-01 16:28:13.557346 computing enrichment statistics
+2024-02-01 16:28:13.867515 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:28:14.532812 make pseudobulk object
+2024-02-01 16:28:17.085871 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:28:17.149921 drop lowly expressed genes
+2024-02-01 16:28:17.34092 normalize expression
+2024-02-01 16:28:18.390664 create model matrix
+2024-02-01 16:28:18.497367 run duplicateCorrelation()
+2024-02-01 16:28:18.508209 The estimated correlation is: 0
+2024-02-01 16:28:18.510328 computing enrichment statistics
+2024-02-01 16:28:18.847321 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:28:19.756394 make pseudobulk object
+2024-02-01 16:28:21.406393 dropping 4 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:28:21.449157 drop lowly expressed genes
+2024-02-01 16:28:21.590966 normalize expression
+2024-02-01 16:28:25.81459 create model matrix
+2024-02-01 16:28:25.890848 run duplicateCorrelation()
+2024-02-01 16:28:25.898216 The estimated correlation is: 0
+2024-02-01 16:28:25.900138 computing enrichment statistics
+2024-02-01 16:28:26.149543 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:28:26.678334 make pseudobulk object
+2024-02-01 16:28:29.033909 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:28:29.081721 drop lowly expressed genes
+2024-02-01 16:28:29.244178 normalize expression
+2024-02-01 16:28:30.020615 create model matrix
+2024-02-01 16:28:30.096464 run duplicateCorrelation()
+2024-02-01 16:28:30.105226 The estimated correlation is: 0
+2024-02-01 16:28:30.107189 computing enrichment statistics
+2024-02-01 16:28:30.411592 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:28:31.155427 make pseudobulk object
+2024-02-01 16:28:32.974248 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:28:33.018188 drop lowly expressed genes
+2024-02-01 16:28:33.165681 normalize expression
+2024-02-01 16:28:33.853739 create model matrix
+2024-02-01 16:28:33.934274 run duplicateCorrelation()
+2024-02-01 16:28:33.94318 The estimated correlation is: 0
+2024-02-01 16:28:33.945179 computing enrichment statistics
+2024-02-01 16:28:34.418208 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:28:58.606647 make pseudobulk object
+2024-02-01 16:29:00.787487 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:00.836142 drop lowly expressed genes
+2024-02-01 16:29:01.000125 normalize expression
+2024-02-01 16:29:01.84725 create model matrix
+2024-02-01 16:29:01.925935 run duplicateCorrelation()
+2024-02-01 16:29:01.93538 The estimated correlation is: 0
+2024-02-01 16:29:01.937643 computing enrichment statistics
+2024-02-01 16:29:02.264298 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:29:03.291707 make pseudobulk object
+2024-02-01 16:29:04.540139 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:04.595723 drop lowly expressed genes
+2024-02-01 16:29:04.784148 normalize expression
+2024-02-01 16:29:09.606107 create model matrix
+2024-02-01 16:29:09.681204 run duplicateCorrelation()
+2024-02-01 16:29:09.687834 The estimated correlation is: 0
+2024-02-01 16:29:09.6897 computing enrichment statistics
+2024-02-01 16:29:09.916167 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:29:10.308448 make pseudobulk object
+2024-02-01 16:29:11.757619 dropping 8 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:11.799729 drop lowly expressed genes
+2024-02-01 16:29:11.93986 normalize expression
+2024-02-01 16:29:12.340836 create model matrix
+2024-02-01 16:29:12.417053 run duplicateCorrelation()
+2024-02-01 16:29:12.423922 The estimated correlation is: 0
+2024-02-01 16:29:12.425798 computing enrichment statistics
+2024-02-01 16:29:12.661474 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:29:13.166921 make pseudobulk object
+2024-02-01 16:29:14.438461 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:14.483315 drop lowly expressed genes
+2024-02-01 16:29:14.629956 normalize expression
+2024-02-01 16:29:14.933419 create model matrix
+2024-02-01 16:29:15.013466 run duplicateCorrelation()
+2024-02-01 16:29:15.019785 The estimated correlation is: 0
+2024-02-01 16:29:15.021672 computing enrichment statistics
+2024-02-01 16:29:15.237022 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:29:15.755617 make pseudobulk object
+2024-02-01 16:29:18.978495 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:19.022568 drop lowly expressed genes
+2024-02-01 16:29:19.173091 normalize expression
+2024-02-01 16:29:20.181911 create model matrix
+2024-02-01 16:29:20.259282 run duplicateCorrelation()
+2024-02-01 16:29:20.268396 The estimated correlation is: 0
+2024-02-01 16:29:20.270296 computing enrichment statistics
+2024-02-01 16:29:20.600018 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:29:21.373803 make pseudobulk object
+2024-02-01 16:29:24.558893 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:24.602999 drop lowly expressed genes
+2024-02-01 16:29:24.750829 normalize expression
+2024-02-01 16:29:25.606928 create model matrix
+2024-02-01 16:29:25.68464 run duplicateCorrelation()
+2024-02-01 16:29:25.694053 The estimated correlation is: 0
+2024-02-01 16:29:25.696128 computing enrichment statistics
+2024-02-01 16:29:26.025361 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:29:26.755991 make pseudobulk object
+2024-02-01 16:29:28.0253 dropping 2 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:28.07209 drop lowly expressed genes
+2024-02-01 16:29:28.221652 normalize expression
+2024-02-01 16:29:28.39615 create model matrix
+2024-02-01 16:29:28.475992 run duplicateCorrelation()
+2024-02-01 16:29:28.482355 The estimated correlation is: 0
+2024-02-01 16:29:28.650883 computing enrichment statistics
+2024-02-01 16:29:28.845392 extract and reformat enrichment results
+2024-02-01 16:29:29.031051 make pseudobulk object
+2024-02-01 16:29:30.401068 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:30.619388 drop lowly expressed genes
+2024-02-01 16:29:30.772951 normalize expression
+2024-02-01 16:29:31.219307 create model matrix
+2024-02-01 16:29:31.297259 run duplicateCorrelation()
+2024-02-01 16:29:31.304891 The estimated correlation is: 0
+2024-02-01 16:29:31.306947 computing enrichment statistics
+2024-02-01 16:29:31.554252 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:29:31.964097 make pseudobulk object
+2024-02-01 16:29:34.545275 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:34.596233 drop lowly expressed genes
+2024-02-01 16:29:34.74888 normalize expression
+2024-02-01 16:29:35.55452 create model matrix
+2024-02-01 16:29:35.632614 run duplicateCorrelation()
+2024-02-01 16:29:35.642041 The estimated correlation is: 0
+2024-02-01 16:29:35.644306 computing enrichment statistics
+2024-02-01 16:29:35.957855 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:29:36.727647 make pseudobulk object
+2024-02-01 16:29:39.019344 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:39.082675 drop lowly expressed genes
+2024-02-01 16:29:39.281464 normalize expression
+2024-02-01 16:29:40.02862 create model matrix
+2024-02-01 16:29:40.106723 run duplicateCorrelation()
+2024-02-01 16:29:40.115371 The estimated correlation is: 0
+2024-02-01 16:29:40.117355 computing enrichment statistics
+2024-02-01 16:29:40.573649 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:29:41.274192 make pseudobulk object
+2024-02-01 16:29:43.440757 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:43.485975 drop lowly expressed genes
+2024-02-01 16:29:43.634631 normalize expression
+2024-02-01 16:29:44.39565 create model matrix
+2024-02-01 16:29:44.471854 run duplicateCorrelation()
+2024-02-01 16:29:44.480509 The estimated correlation is: 0
+2024-02-01 16:29:44.482416 computing enrichment statistics
+2024-02-01 16:29:44.781567 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:29:45.516864 make pseudobulk object
+2024-02-01 16:29:47.184225 dropping 5 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:29:47.229803 drop lowly expressed genes
+2024-02-01 16:29:47.379741 normalize expression
+2024-02-01 16:29:47.835201 create model matrix
+2024-02-01 16:29:47.91207 run duplicateCorrelation()
+2024-02-01 16:29:47.919412 The estimated correlation is: 0
+2024-02-01 16:29:47.921369 computing enrichment statistics
+2024-02-01 16:29:48.34182 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:30:14.343496 make pseudobulk object
+2024-02-01 16:30:16.844792 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:16.892658 drop lowly expressed genes
+2024-02-01 16:30:17.056219 normalize expression
+2024-02-01 16:30:17.869183 create model matrix
+2024-02-01 16:30:17.954404 run duplicateCorrelation()
+2024-02-01 16:30:17.963978 The estimated correlation is: 0
+2024-02-01 16:30:17.966034 computing enrichment statistics
+2024-02-01 16:30:18.29131 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:30:19.281756 make pseudobulk object
+2024-02-01 16:30:20.68646 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:20.737688 drop lowly expressed genes
+2024-02-01 16:30:20.903092 normalize expression
+2024-02-01 16:30:26.594059 create model matrix
+2024-02-01 16:30:26.676268 run duplicateCorrelation()
+2024-02-01 16:30:26.68477 The estimated correlation is: 0
+2024-02-01 16:30:26.686919 computing enrichment statistics
+2024-02-01 16:30:26.981298 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:30:27.576797 make pseudobulk object
+2024-02-01 16:30:29.145677 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:29.195879 drop lowly expressed genes
+2024-02-01 16:30:29.352377 normalize expression
+2024-02-01 16:30:29.870555 create model matrix
+2024-02-01 16:30:29.95152 run duplicateCorrelation()
+2024-02-01 16:30:29.959456 The estimated correlation is: 0
+2024-02-01 16:30:29.961486 computing enrichment statistics
+2024-02-01 16:30:30.235002 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:30:30.713722 make pseudobulk object
+2024-02-01 16:30:32.749439 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:32.79774 drop lowly expressed genes
+2024-02-01 16:30:32.953835 normalize expression
+2024-02-01 16:30:33.706006 create model matrix
+2024-02-01 16:30:33.786991 run duplicateCorrelation()
+2024-02-01 16:30:33.796078 The estimated correlation is: 0
+2024-02-01 16:30:33.798165 computing enrichment statistics
+2024-02-01 16:30:34.109777 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:30:35.022191 make pseudobulk object
+2024-02-01 16:30:36.161692 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:36.379318 drop lowly expressed genes
+2024-02-01 16:30:36.536021 normalize expression
+2024-02-01 16:30:36.858601 create model matrix
+2024-02-01 16:30:36.937141 run duplicateCorrelation()
+2024-02-01 16:30:36.944254 The estimated correlation is: 0
+2024-02-01 16:30:36.946442 computing enrichment statistics
+2024-02-01 16:30:37.171423 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:30:37.543659 make pseudobulk object
+2024-02-01 16:30:38.797599 dropping 2 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:38.848073 drop lowly expressed genes
+2024-02-01 16:30:39.004719 normalize expression
+2024-02-01 16:30:39.159144 create model matrix
+2024-02-01 16:30:39.238839 run duplicateCorrelation()
+2024-02-01 16:30:39.245114 The estimated correlation is: 0
+2024-02-01 16:30:39.247403 computing enrichment statistics
+2024-02-01 16:30:39.433373 extract and reformat enrichment results
+2024-02-01 16:30:39.605948 make pseudobulk object
+2024-02-01 16:30:43.219866 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:43.264402 drop lowly expressed genes
+2024-02-01 16:30:43.414627 normalize expression
+2024-02-01 16:30:44.293076 create model matrix
+2024-02-01 16:30:44.372009 run duplicateCorrelation()
+2024-02-01 16:30:44.381264 The estimated correlation is: 0
+2024-02-01 16:30:44.383212 computing enrichment statistics
+2024-02-01 16:30:44.713018 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:30:45.677341 make pseudobulk object
+2024-02-01 16:30:47.264508 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:47.477693 drop lowly expressed genes
+2024-02-01 16:30:47.630324 normalize expression
+2024-02-01 16:30:48.231042 create model matrix
+2024-02-01 16:30:48.309326 run duplicateCorrelation()
+2024-02-01 16:30:48.317233 The estimated correlation is: 0
+2024-02-01 16:30:48.319181 computing enrichment statistics
+2024-02-01 16:30:48.592435 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:30:49.182401 make pseudobulk object
+2024-02-01 16:30:50.587925 dropping 3 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:50.63428 drop lowly expressed genes
+2024-02-01 16:30:50.780358 normalize expression
+2024-02-01 16:30:51.127286 create model matrix
+2024-02-01 16:30:51.205563 run duplicateCorrelation()
+2024-02-01 16:30:51.21222 The estimated correlation is: 0
+2024-02-01 16:30:51.214153 computing enrichment statistics
+2024-02-01 16:30:51.441182 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:30:51.925367 make pseudobulk object
+2024-02-01 16:30:54.110773 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:54.156605 drop lowly expressed genes
+2024-02-01 16:30:54.307619 normalize expression
+2024-02-01 16:30:55.087414 create model matrix
+2024-02-01 16:30:55.166907 run duplicateCorrelation()
+2024-02-01 16:30:55.176137 The estimated correlation is: 0
+2024-02-01 16:30:55.178233 computing enrichment statistics
+2024-02-01 16:30:55.662839 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:30:56.387999 make pseudobulk object
+2024-02-01 16:30:58.910792 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:30:58.954245 drop lowly expressed genes
+2024-02-01 16:30:59.103865 normalize expression
+2024-02-01 16:30:59.928528 create model matrix
+2024-02-01 16:31:00.009544 run duplicateCorrelation()
+2024-02-01 16:31:00.019144 The estimated correlation is: 0
+2024-02-01 16:31:00.02124 computing enrichment statistics
+2024-02-01 16:31:00.340887 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:31:01.152008 make pseudobulk object
+2024-02-01 16:31:02.827311 dropping 9 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:31:02.87406 drop lowly expressed genes
+2024-02-01 16:31:03.025826 normalize expression
+2024-02-01 16:31:03.474832 create model matrix
+2024-02-01 16:31:03.556944 run duplicateCorrelation()
+2024-02-01 16:31:03.564901 The estimated correlation is: 0
+2024-02-01 16:31:03.567134 computing enrichment statistics
+2024-02-01 16:31:03.830236 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:31:04.626184 make pseudobulk object
+2024-02-01 16:31:06.211577 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:31:06.26283 drop lowly expressed genes
+2024-02-01 16:31:06.430802 normalize expression
+2024-02-01 16:31:07.354465 create model matrix
+2024-02-01 16:31:07.445432 run duplicateCorrelation()
+2024-02-01 16:31:07.456865 The estimated correlation is: 0
+2024-02-01 16:31:07.459501 computing enrichment statistics
+2024-02-01 16:31:07.781353 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:31:34.777063 make pseudobulk object
+2024-02-01 16:31:36.449809 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:31:36.499039 drop lowly expressed genes
+2024-02-01 16:31:36.669003 normalize expression
+2024-02-01 16:31:37.388781 create model matrix
+2024-02-01 16:31:37.468062 run duplicateCorrelation()
+2024-02-01 16:31:37.477204 The estimated correlation is: 0
+2024-02-01 16:31:37.479501 computing enrichment statistics
+2024-02-01 16:31:37.992108 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:31:38.625239 make pseudobulk object
+2024-02-01 16:31:45.877999 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:31:45.922943 drop lowly expressed genes
+2024-02-01 16:31:46.08209 normalize expression
+2024-02-01 16:31:46.911671 create model matrix
+2024-02-01 16:31:46.990481 run duplicateCorrelation()
+2024-02-01 16:31:46.999503 The estimated correlation is: 0
+2024-02-01 16:31:47.001481 computing enrichment statistics
+2024-02-01 16:31:47.327435 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:31:48.112188 make pseudobulk object
+2024-02-01 16:31:50.160455 dropping 6 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:31:50.217879 drop lowly expressed genes
+2024-02-01 16:31:50.398207 normalize expression
+2024-02-01 16:31:50.892886 create model matrix
+2024-02-01 16:31:50.976107 run duplicateCorrelation()
+2024-02-01 16:31:50.983737 The estimated correlation is: 0
+2024-02-01 16:31:50.985771 computing enrichment statistics
+2024-02-01 16:31:51.239077 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:31:51.934903 make pseudobulk object
+2024-02-01 16:31:53.113214 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:31:53.157618 drop lowly expressed genes
+2024-02-01 16:31:53.308708 normalize expression
+2024-02-01 16:31:53.792149 create model matrix
+2024-02-01 16:31:53.870067 run duplicateCorrelation()
+2024-02-01 16:31:53.876622 The estimated correlation is: 0
+2024-02-01 16:31:53.878561 computing enrichment statistics
+2024-02-01 16:31:54.097487 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:31:54.465715 make pseudobulk object
+2024-02-01 16:31:55.931794 dropping 8 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:31:55.974101 drop lowly expressed genes
+2024-02-01 16:31:56.113806 normalize expression
+2024-02-01 16:31:56.509252 create model matrix
+2024-02-01 16:31:56.58927 run duplicateCorrelation()
+2024-02-01 16:31:56.596134 The estimated correlation is: 0
+2024-02-01 16:31:56.598043 computing enrichment statistics
+2024-02-01 16:31:56.836951 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:31:57.338794 make pseudobulk object
+2024-02-01 16:31:58.563832 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:31:58.607556 drop lowly expressed genes
+2024-02-01 16:31:58.753551 normalize expression
+2024-02-01 16:31:59.062392 create model matrix
+2024-02-01 16:31:59.139721 run duplicateCorrelation()
+2024-02-01 16:31:59.146383 The estimated correlation is: 0
+2024-02-01 16:31:59.148333 computing enrichment statistics
+2024-02-01 16:31:59.365796 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:31:59.87859 make pseudobulk object
+2024-02-01 16:32:02.221822 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:32:02.271269 drop lowly expressed genes
+2024-02-01 16:32:02.435032 normalize expression
+2024-02-01 16:32:03.433225 create model matrix
+2024-02-01 16:32:03.51232 run duplicateCorrelation()
+2024-02-01 16:32:03.521872 The estimated correlation is: 0
+2024-02-01 16:32:03.524078 computing enrichment statistics
+2024-02-01 16:32:03.840209 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:32:04.623121 make pseudobulk object
+2024-02-01 16:32:07.80212 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:32:07.850791 drop lowly expressed genes
+2024-02-01 16:32:08.006426 normalize expression
+2024-02-01 16:32:08.890741 create model matrix
+2024-02-01 16:32:08.969632 run duplicateCorrelation()
+2024-02-01 16:32:08.979635 The estimated correlation is: 0
+2024-02-01 16:32:08.981977 computing enrichment statistics
+2024-02-01 16:32:09.314182 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:32:10.240886 make pseudobulk object
+2024-02-01 16:32:11.314372 dropping 3 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:32:11.359941 drop lowly expressed genes
+2024-02-01 16:32:11.509266 normalize expression
+2024-02-01 16:32:11.666763 create model matrix
+2024-02-01 16:32:11.74674 run duplicateCorrelation()
+2024-02-01 16:32:11.924103 The estimated correlation is: 0
+2024-02-01 16:32:11.926897 computing enrichment statistics
+2024-02-01 16:32:12.116039 extract and reformat enrichment results
+2024-02-01 16:32:12.279495 make pseudobulk object
+2024-02-01 16:32:13.514597 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:32:13.561001 drop lowly expressed genes
+2024-02-01 16:32:13.706936 normalize expression
+2024-02-01 16:32:13.958958 create model matrix
+2024-02-01 16:32:14.03939 run duplicateCorrelation()
+2024-02-01 16:32:14.045507 The estimated correlation is: 0
+2024-02-01 16:32:14.04744 computing enrichment statistics
+2024-02-01 16:32:14.254548 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:32:14.67413 make pseudobulk object
+2024-02-01 16:32:16.149736 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:32:16.1946 drop lowly expressed genes
+2024-02-01 16:32:16.342086 normalize expression
+2024-02-01 16:32:16.786515 create model matrix
+2024-02-01 16:32:16.864254 run duplicateCorrelation()
+2024-02-01 16:32:16.87128 The estimated correlation is: 0
+2024-02-01 16:32:16.873211 computing enrichment statistics
+2024-02-01 16:32:17.114359 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:32:17.533976 make pseudobulk object
+2024-02-01 16:32:19.876423 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:32:19.921479 drop lowly expressed genes
+2024-02-01 16:32:20.069637 normalize expression
+2024-02-01 16:32:20.860342 create model matrix
+2024-02-01 16:32:20.938494 run duplicateCorrelation()
+2024-02-01 16:32:20.947492 The estimated correlation is: 0
+2024-02-01 16:32:20.949563 computing enrichment statistics
+2024-02-01 16:32:21.429451 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:32:22.183236 make pseudobulk object
+2024-02-01 16:32:23.965594 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:32:24.009666 drop lowly expressed genes
+2024-02-01 16:32:24.158084 normalize expression
+2024-02-01 16:32:24.850426 create model matrix
+2024-02-01 16:32:24.932509 run duplicateCorrelation()
+2024-02-01 16:32:24.940948 The estimated correlation is: 0
+2024-02-01 16:32:24.942939 computing enrichment statistics
+2024-02-01 16:32:25.23054 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:32:25.860218 make pseudobulk object
+2024-02-01 16:32:27.755016 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:32:27.802528 drop lowly expressed genes
+2024-02-01 16:32:27.96116 normalize expression
+2024-02-01 16:32:28.698549 create model matrix
+2024-02-01 16:32:28.781741 run duplicateCorrelation()
+2024-02-01 16:32:28.790563 The estimated correlation is: 0
+2024-02-01 16:32:28.792642 computing enrichment statistics
+2024-02-01 16:32:29.09475 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:32:58.930131 make pseudobulk object
+2024-02-01 16:33:00.361645 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:00.410854 drop lowly expressed genes
+2024-02-01 16:33:00.562689 normalize expression
+2024-02-01 16:33:00.733429 create model matrix
+2024-02-01 16:33:00.815113 run duplicateCorrelation()
+2024-02-01 16:33:00.821021 The estimated correlation is: 0
+2024-02-01 16:33:00.823004 computing enrichment statistics
+2024-02-01 16:33:01.014445 extract and reformat enrichment results
+2024-02-01 16:33:01.185251 make pseudobulk object
+2024-02-01 16:33:08.026238 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:08.079474 drop lowly expressed genes
+2024-02-01 16:33:08.243164 normalize expression
+2024-02-01 16:33:08.987559 create model matrix
+2024-02-01 16:33:09.069207 run duplicateCorrelation()
+2024-02-01 16:33:09.078389 The estimated correlation is: 0
+2024-02-01 16:33:09.08061 computing enrichment statistics
+2024-02-01 16:33:09.400373 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:33:10.316254 make pseudobulk object
+2024-02-01 16:33:11.81466 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:11.871742 drop lowly expressed genes
+2024-02-01 16:33:12.024893 normalize expression
+2024-02-01 16:33:12.661763 create model matrix
+2024-02-01 16:33:12.738856 run duplicateCorrelation()
+2024-02-01 16:33:12.747354 The estimated correlation is: 0
+2024-02-01 16:33:12.749522 computing enrichment statistics
+2024-02-01 16:33:13.031194 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:33:13.649494 make pseudobulk object
+2024-02-01 16:33:14.858766 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:14.903728 drop lowly expressed genes
+2024-02-01 16:33:15.056406 normalize expression
+2024-02-01 16:33:15.271696 create model matrix
+2024-02-01 16:33:15.347544 run duplicateCorrelation()
+2024-02-01 16:33:15.353698 The estimated correlation is: 0
+2024-02-01 16:33:15.355623 computing enrichment statistics
+2024-02-01 16:33:15.550311 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:33:15.868995 make pseudobulk object
+2024-02-01 16:33:17.83867 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:17.882257 drop lowly expressed genes
+2024-02-01 16:33:18.028185 normalize expression
+2024-02-01 16:33:18.760891 create model matrix
+2024-02-01 16:33:18.836974 run duplicateCorrelation()
+2024-02-01 16:33:18.845501 The estimated correlation is: 0
+2024-02-01 16:33:18.847461 computing enrichment statistics
+2024-02-01 16:33:19.315386 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:33:20.044983 make pseudobulk object
+2024-02-01 16:33:21.526132 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:21.570349 drop lowly expressed genes
+2024-02-01 16:33:21.718266 normalize expression
+2024-02-01 16:33:22.173505 create model matrix
+2024-02-01 16:33:22.255246 run duplicateCorrelation()
+2024-02-01 16:33:22.262528 The estimated correlation is: 0
+2024-02-01 16:33:22.264485 computing enrichment statistics
+2024-02-01 16:33:22.509788 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:33:22.927769 make pseudobulk object
+2024-02-01 16:33:24.187241 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:24.234073 drop lowly expressed genes
+2024-02-01 16:33:24.382703 normalize expression
+2024-02-01 16:33:24.709709 create model matrix
+2024-02-01 16:33:24.786194 run duplicateCorrelation()
+2024-02-01 16:33:24.792689 The estimated correlation is: 0
+2024-02-01 16:33:24.794589 computing enrichment statistics
+2024-02-01 16:33:25.014001 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:33:25.36289 make pseudobulk object
+2024-02-01 16:33:26.551692 dropping 2 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:26.596543 drop lowly expressed genes
+2024-02-01 16:33:26.740195 normalize expression
+2024-02-01 16:33:26.891162 create model matrix
+2024-02-01 16:33:26.96847 run duplicateCorrelation()
+2024-02-01 16:33:26.974041 The estimated correlation is: 0
+2024-02-01 16:33:26.975951 computing enrichment statistics
+2024-02-01 16:33:27.322954 extract and reformat enrichment results
+2024-02-01 16:33:27.485373 make pseudobulk object
+2024-02-01 16:33:30.570858 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:30.615556 drop lowly expressed genes
+2024-02-01 16:33:30.761582 normalize expression
+2024-02-01 16:33:31.569888 create model matrix
+2024-02-01 16:33:31.645527 run duplicateCorrelation()
+2024-02-01 16:33:31.654526 The estimated correlation is: 0
+2024-02-01 16:33:31.656443 computing enrichment statistics
+2024-02-01 16:33:31.989545 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:33:32.748399 make pseudobulk object
+2024-02-01 16:33:34.597763 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:34.654444 drop lowly expressed genes
+2024-02-01 16:33:34.813032 normalize expression
+2024-02-01 16:33:35.48142 create model matrix
+2024-02-01 16:33:35.567754 run duplicateCorrelation()
+2024-02-01 16:33:35.577004 The estimated correlation is: 0
+2024-02-01 16:33:35.579496 computing enrichment statistics
+2024-02-01 16:33:35.887807 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:33:36.699418 make pseudobulk object
+2024-02-01 16:33:37.765109 dropping 5 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:37.815545 drop lowly expressed genes
+2024-02-01 16:33:37.975244 normalize expression
+2024-02-01 16:33:38.276378 create model matrix
+2024-02-01 16:33:38.526974 run duplicateCorrelation()
+2024-02-01 16:33:38.533792 The estimated correlation is: 0
+2024-02-01 16:33:38.536038 computing enrichment statistics
+2024-02-01 16:33:38.752754 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:33:39.220545 make pseudobulk object
+2024-02-01 16:33:40.760786 dropping 7 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:40.807074 drop lowly expressed genes
+2024-02-01 16:33:40.954789 normalize expression
+2024-02-01 16:33:41.374079 create model matrix
+2024-02-01 16:33:41.45294 run duplicateCorrelation()
+2024-02-01 16:33:41.460542 The estimated correlation is: 0
+2024-02-01 16:33:41.462806 computing enrichment statistics
+2024-02-01 16:33:41.714416 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:33:42.248552 make pseudobulk object
+2024-02-01 16:33:45.274874 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:45.321004 drop lowly expressed genes
+2024-02-01 16:33:45.472889 normalize expression
+2024-02-01 16:33:46.331144 create model matrix
+2024-02-01 16:33:46.406824 run duplicateCorrelation()
+2024-02-01 16:33:46.416001 The estimated correlation is: 0
+2024-02-01 16:33:46.417941 computing enrichment statistics
+2024-02-01 16:33:46.744418 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:33:47.594104 make pseudobulk object
+2024-02-01 16:33:50.135557 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:50.181082 drop lowly expressed genes
+2024-02-01 16:33:50.329439 normalize expression
+2024-02-01 16:33:51.1311 create model matrix
+2024-02-01 16:33:51.206596 run duplicateCorrelation()
+2024-02-01 16:33:51.215383 The estimated correlation is: 0
+2024-02-01 16:33:51.217274 computing enrichment statistics
+2024-02-01 16:33:51.525034 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:33:52.279576 make pseudobulk object
+2024-02-01 16:33:54.065651 dropping 5 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:33:54.116253 drop lowly expressed genes
+2024-02-01 16:33:54.261771 normalize expression
+2024-02-01 16:33:54.721352 create model matrix
+2024-02-01 16:33:54.800056 run duplicateCorrelation()
+2024-02-01 16:33:54.807506 The estimated correlation is: 0
+2024-02-01 16:33:54.809509 computing enrichment statistics
+2024-02-01 16:33:55.063388 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:34:25.894396 make pseudobulk object
+2024-02-01 16:34:28.428738 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:34:28.477823 drop lowly expressed genes
+2024-02-01 16:34:28.64108 normalize expression
+2024-02-01 16:34:29.484108 create model matrix
+2024-02-01 16:34:29.56252 run duplicateCorrelation()
+2024-02-01 16:34:29.571824 The estimated correlation is: 0
+2024-02-01 16:34:29.573792 computing enrichment statistics
+2024-02-01 16:34:29.897508 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:34:30.710478 make pseudobulk object
+2024-02-01 16:34:32.786905 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:34:32.833738 drop lowly expressed genes
+2024-02-01 16:34:32.989383 normalize expression
+2024-02-01 16:34:33.749442 create model matrix
+2024-02-01 16:34:33.830514 run duplicateCorrelation()
+2024-02-01 16:34:39.095278 The estimated correlation is: 0
+2024-02-01 16:34:39.097308 computing enrichment statistics
+2024-02-01 16:34:39.401391 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:34:40.180656 make pseudobulk object
+2024-02-01 16:34:43.328181 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:34:43.382507 drop lowly expressed genes
+2024-02-01 16:34:43.566265 normalize expression
+2024-02-01 16:34:44.781207 create model matrix
+2024-02-01 16:34:44.885312 run duplicateCorrelation()
+2024-02-01 16:34:44.898651 The estimated correlation is: 0
+2024-02-01 16:34:44.901503 computing enrichment statistics
+2024-02-01 16:34:45.36147 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:34:46.342336 make pseudobulk object
+2024-02-01 16:34:47.653659 dropping 7 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:34:47.697106 drop lowly expressed genes
+2024-02-01 16:34:47.835746 normalize expression
+2024-02-01 16:34:48.226639 create model matrix
+2024-02-01 16:34:48.303802 run duplicateCorrelation()
+2024-02-01 16:34:48.310822 The estimated correlation is: 0
+2024-02-01 16:34:48.312789 computing enrichment statistics
+2024-02-01 16:34:48.551446 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:34:49.258044 make pseudobulk object
+2024-02-01 16:34:50.647963 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:34:50.69625 drop lowly expressed genes
+2024-02-01 16:34:50.858371 normalize expression
+2024-02-01 16:34:51.466404 create model matrix
+2024-02-01 16:34:51.714654 run duplicateCorrelation()
+2024-02-01 16:34:51.722767 The estimated correlation is: 0
+2024-02-01 16:34:51.724786 computing enrichment statistics
+2024-02-01 16:34:52.003225 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:34:52.695987 make pseudobulk object
+2024-02-01 16:34:54.325627 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:34:54.371682 drop lowly expressed genes
+2024-02-01 16:34:54.525035 normalize expression
+2024-02-01 16:34:55.040965 create model matrix
+2024-02-01 16:34:55.118588 run duplicateCorrelation()
+2024-02-01 16:34:55.126228 The estimated correlation is: 0
+2024-02-01 16:34:55.128198 computing enrichment statistics
+2024-02-01 16:34:55.392886 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:34:55.944374 make pseudobulk object
+2024-02-01 16:34:57.41221 dropping 6 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:34:57.456688 drop lowly expressed genes
+2024-02-01 16:34:57.601508 normalize expression
+2024-02-01 16:34:57.954101 create model matrix
+2024-02-01 16:34:58.03149 run duplicateCorrelation()
+2024-02-01 16:34:58.038378 The estimated correlation is: 0
+2024-02-01 16:34:58.040352 computing enrichment statistics
+2024-02-01 16:34:58.274395 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:34:58.937312 make pseudobulk object
+2024-02-01 16:35:00.242503 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:00.289599 drop lowly expressed genes
+2024-02-01 16:35:00.446819 normalize expression
+2024-02-01 16:35:00.763835 create model matrix
+2024-02-01 16:35:00.841671 run duplicateCorrelation()
+2024-02-01 16:35:00.848449 The estimated correlation is: 0
+2024-02-01 16:35:00.850489 computing enrichment statistics
+2024-02-01 16:35:01.070132 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:35:01.433328 make pseudobulk object
+2024-02-01 16:35:03.53516 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:03.579195 drop lowly expressed genes
+2024-02-01 16:35:03.725844 normalize expression
+2024-02-01 16:35:04.448219 create model matrix
+2024-02-01 16:35:04.526424 run duplicateCorrelation()
+2024-02-01 16:35:04.535 The estimated correlation is: 0
+2024-02-01 16:35:04.536956 computing enrichment statistics
+2024-02-01 16:35:04.836976 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:35:05.697254 make pseudobulk object
+2024-02-01 16:35:07.853265 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:07.897156 drop lowly expressed genes
+2024-02-01 16:35:08.047507 normalize expression
+2024-02-01 16:35:08.8212 create model matrix
+2024-02-01 16:35:09.134362 run duplicateCorrelation()
+2024-02-01 16:35:09.143643 The estimated correlation is: 0
+2024-02-01 16:35:09.145648 computing enrichment statistics
+2024-02-01 16:35:09.455836 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+2024-02-01 16:35:10.188822 make pseudobulk object
+2024-02-01 16:35:11.413437 dropping 4 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:11.458437 drop lowly expressed genes
+2024-02-01 16:35:11.603129 normalize expression
+2024-02-01 16:35:11.759636 create model matrix
+2024-02-01 16:35:11.8367 run duplicateCorrelation()
+2024-02-01 16:35:11.842432 The estimated correlation is: 0
+2024-02-01 16:35:11.844377 computing enrichment statistics
+2024-02-01 16:35:12.027282 extract and reformat enrichment results
+2024-02-01 16:35:12.198281 make pseudobulk object
+2024-02-01 16:35:13.395069 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:13.442589 drop lowly expressed genes
+2024-02-01 16:35:13.591835 normalize expression
+2024-02-01 16:35:13.782912 create model matrix
+2024-02-01 16:35:13.86263 run duplicateCorrelation()
+2024-02-01 16:35:13.868805 The estimated correlation is: 0
+2024-02-01 16:35:13.870852 computing enrichment statistics
+2024-02-01 16:35:14.065107 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:35:14.55331 make pseudobulk object
+2024-02-01 16:35:15.911746 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:15.958471 drop lowly expressed genes
+2024-02-01 16:35:16.113403 normalize expression
+2024-02-01 16:35:16.581454 create model matrix
+2024-02-01 16:35:16.832874 run duplicateCorrelation()
+2024-02-01 16:35:16.840813 The estimated correlation is: 0
+2024-02-01 16:35:16.843013 computing enrichment statistics
+2024-02-01 16:35:17.103153 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+2024-02-01 16:35:17.540608 make pseudobulk object
+2024-02-01 16:35:18.769898 dropping 3 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:18.816437 drop lowly expressed genes
+2024-02-01 16:35:18.964802 normalize expression
+2024-02-01 16:35:19.255174 create model matrix
+2024-02-01 16:35:19.333666 run duplicateCorrelation()
+2024-02-01 16:35:19.34059 The estimated correlation is: 0
+2024-02-01 16:35:19.342702 computing enrichment statistics
+2024-02-01 16:35:19.56269 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:35:20.001318 make pseudobulk object
+2024-02-01 16:35:21.541774 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:21.588852 drop lowly expressed genes
+2024-02-01 16:35:21.744855 normalize expression
+2024-02-01 16:35:22.370625 create model matrix
+2024-02-01 16:35:22.449864 run duplicateCorrelation()
+2024-02-01 16:35:22.458336 The estimated correlation is: 0
+2024-02-01 16:35:22.460433 computing enrichment statistics
+2024-02-01 16:35:22.743289 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+2024-02-01 16:35:23.515126 make pseudobulk object
+2024-02-01 16:35:25.156142 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-02-01 16:35:25.203191 drop lowly expressed genes
+2024-02-01 16:35:25.357857 normalize expression
+2024-02-01 16:35:26.053118 create model matrix
+2024-02-01 16:35:26.132142 run duplicateCorrelation()
+2024-02-01 16:35:26.14097 The estimated correlation is: 0
+2024-02-01 16:35:26.310907 computing enrichment statistics
+2024-02-01 16:35:26.61689 extract and reformat enrichment results
+New names:
+• `` -> `...1`
+• `` -> `...2`
+• `` -> `...3`
+There were 50 or more warnings (use warnings() to see the first 50)
+─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R Under development (unstable) (2023-11-13 r85520)
+ os       Rocky Linux 9.2 (Blue Onyx)
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       US/Eastern
+ date     2024-02-01
+ pandoc   3.1.3 @ /jhpce/shared/community/core/conda_R/devel/bin/pandoc
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package                * version   date (UTC) lib source
+ abind                    1.4-5     2016-07-21 [2] CRAN (R 4.4.0)
+ AnnotationDbi            1.65.2    2023-11-03 [2] Bioconductor
+ AnnotationHub            3.11.0    2023-10-25 [2] Bioconductor
+ attempt                  0.3.1     2020-05-03 [2] CRAN (R 4.4.0)
+ beachmat                 2.19.0    2023-10-24 [2] Bioconductor
+ beeswarm                 0.4.0     2021-06-01 [2] CRAN (R 4.4.0)
+ benchmarkme              1.0.8     2022-06-12 [2] CRAN (R 4.4.0)
+ benchmarkmeData          1.0.4     2020-04-23 [2] CRAN (R 4.4.0)
+ Biobase                * 2.63.0    2023-10-24 [2] Bioconductor
+ BiocFileCache            2.11.1    2023-10-26 [2] Bioconductor
+ BiocGenerics           * 0.49.1    2023-11-01 [2] Bioconductor
+ BiocIO                   1.13.0    2023-10-24 [2] Bioconductor
+ BiocManager              1.30.22   2023-08-08 [2] CRAN (R 4.4.0)
+ BiocNeighbors            1.21.1    2023-11-30 [2] Bioconductor 3.19 (R 4.4.0)
+ BiocParallel             1.37.0    2023-10-24 [2] Bioconductor
+ BiocSingular             1.19.0    2023-10-24 [2] Bioconductor
+ BiocVersion              3.19.1    2023-10-26 [2] Bioconductor
+ Biostrings               2.71.1    2023-10-25 [2] Bioconductor
+ bit                      4.0.5     2022-11-15 [2] CRAN (R 4.4.0)
+ bit64                    4.0.5     2020-08-30 [2] CRAN (R 4.4.0)
+ bitops                   1.0-7     2021-04-24 [2] CRAN (R 4.4.0)
+ blob                     1.2.4     2023-03-17 [2] CRAN (R 4.4.0)
+ bslib                    0.6.1     2023-11-28 [2] CRAN (R 4.4.0)
+ cachem                   1.0.8     2023-05-01 [2] CRAN (R 4.4.0)
+ cli                      3.6.1     2023-03-23 [2] CRAN (R 4.4.0)
+ codetools                0.2-19    2023-02-01 [3] CRAN (R 4.4.0)
+ colorspace               2.1-0     2023-01-23 [2] CRAN (R 4.4.0)
+ config                   0.3.2     2023-08-30 [2] CRAN (R 4.4.0)
+ cowplot                  1.1.1     2020-12-30 [2] CRAN (R 4.4.0)
+ crayon                   1.5.2     2022-09-29 [2] CRAN (R 4.4.0)
+ curl                     5.1.0     2023-10-02 [2] CRAN (R 4.4.0)
+ data.table               1.14.8    2023-02-17 [2] CRAN (R 4.4.0)
+ DBI                      1.1.3     2022-06-18 [2] CRAN (R 4.4.0)
+ dbplyr                   2.4.0     2023-10-26 [2] CRAN (R 4.4.0)
+ DelayedArray             0.29.0    2023-10-24 [2] Bioconductor
+ DelayedMatrixStats       1.25.1    2023-11-09 [2] Bioconductor
+ digest                   0.6.33    2023-07-07 [2] CRAN (R 4.4.0)
+ doParallel               1.0.17    2022-02-07 [2] CRAN (R 4.4.0)
+ dotCall64                1.1-1     2023-11-28 [2] CRAN (R 4.4.0)
+ dplyr                  * 1.1.4     2023-11-17 [2] CRAN (R 4.4.0)
+ DT                       0.30      2023-10-05 [2] CRAN (R 4.4.0)
+ edgeR                    4.1.2     2023-11-19 [2] Bioconductor 3.19 (R 4.4.0)
+ ellipsis                 0.3.2     2021-04-29 [2] CRAN (R 4.4.0)
+ ExperimentHub            2.11.0    2023-10-25 [2] Bioconductor
+ fansi                    1.0.5     2023-10-08 [2] CRAN (R 4.4.0)
+ farver                   2.1.1     2022-07-06 [2] CRAN (R 4.4.0)
+ fastmap                  1.1.1     2023-02-24 [2] CRAN (R 4.4.0)
+ fields                   15.2      2023-08-17 [2] CRAN (R 4.4.0)
+ filelock                 1.0.2     2018-10-05 [2] CRAN (R 4.4.0)
+ forcats                * 1.0.0     2023-01-29 [2] CRAN (R 4.4.0)
+ foreach                  1.5.2     2022-02-02 [2] CRAN (R 4.4.0)
+ generics                 0.1.3     2022-07-05 [2] CRAN (R 4.4.0)
+ GenomeInfoDb           * 1.39.1    2023-11-08 [2] Bioconductor
+ GenomeInfoDbData         1.2.11    2023-11-14 [2] Bioconductor
+ GenomicAlignments        1.39.0    2023-10-24 [2] Bioconductor
+ GenomicRanges          * 1.55.1    2023-10-29 [2] Bioconductor
+ ggbeeswarm               0.7.2     2023-04-29 [2] CRAN (R 4.4.0)
+ ggplot2                * 3.4.4     2023-10-12 [2] CRAN (R 4.4.0)
+ ggrepel                * 0.9.4     2023-10-13 [2] CRAN (R 4.4.0)
+ glue                     1.6.2     2022-02-24 [2] CRAN (R 4.4.0)
+ golem                    0.4.1     2023-06-05 [2] CRAN (R 4.4.0)
+ gridExtra                2.3       2017-09-09 [2] CRAN (R 4.4.0)
+ gtable                   0.3.4     2023-08-21 [2] CRAN (R 4.4.0)
+ here                   * 1.0.1     2020-12-13 [2] CRAN (R 4.4.0)
+ hms                      1.1.3     2023-03-21 [2] CRAN (R 4.4.0)
+ htmltools                0.5.7     2023-11-03 [2] CRAN (R 4.4.0)
+ htmlwidgets              1.6.3     2023-11-22 [2] CRAN (R 4.4.0)
+ httpuv                   1.6.12    2023-10-23 [2] CRAN (R 4.4.0)
+ httr                     1.4.7     2023-08-15 [2] CRAN (R 4.4.0)
+ interactiveDisplayBase   1.41.0    2023-10-24 [2] Bioconductor
+ IRanges                * 2.37.0    2023-10-24 [2] Bioconductor
+ irlba                    2.3.5.1   2022-10-03 [2] CRAN (R 4.4.0)
+ iterators                1.0.14    2022-02-05 [2] CRAN (R 4.4.0)
+ jquerylib                0.1.4     2021-04-26 [2] CRAN (R 4.4.0)
+ jsonlite                 1.8.7     2023-06-29 [2] CRAN (R 4.4.0)
+ KEGGREST                 1.43.0    2023-10-24 [2] Bioconductor
+ labeling                 0.4.3     2023-08-29 [2] CRAN (R 4.4.0)
+ later                    1.3.1     2023-05-02 [2] CRAN (R 4.4.0)
+ lattice                  0.22-5    2023-10-24 [3] CRAN (R 4.4.0)
+ lazyeval                 0.2.2     2019-03-15 [2] CRAN (R 4.4.0)
+ lifecycle                1.0.4     2023-11-07 [2] CRAN (R 4.4.0)
+ limma                    3.59.1    2023-10-30 [2] Bioconductor
+ locfit                   1.5-9.8   2023-06-11 [2] CRAN (R 4.4.0)
+ lubridate              * 1.9.3     2023-09-27 [2] CRAN (R 4.4.0)
+ magick                   2.8.1     2023-10-22 [2] CRAN (R 4.4.0)
+ magrittr                 2.0.3     2022-03-30 [2] CRAN (R 4.4.0)
+ maps                     3.4.1.1   2023-11-03 [2] CRAN (R 4.4.0)
+ Matrix                   1.6-4     2023-11-30 [3] CRAN (R 4.4.0)
+ MatrixGenerics         * 1.15.0    2023-10-24 [2] Bioconductor
+ matrixStats            * 1.1.0     2023-11-07 [2] CRAN (R 4.4.0)
+ memoise                  2.0.1     2021-11-26 [2] CRAN (R 4.4.0)
+ mime                     0.12      2021-09-28 [2] CRAN (R 4.4.0)
+ munsell                  0.5.0     2018-06-12 [2] CRAN (R 4.4.0)
+ paletteer                1.5.0     2022-10-19 [2] CRAN (R 4.4.0)
+ pillar                   1.9.0     2023-03-22 [2] CRAN (R 4.4.0)
+ pkgconfig                2.0.3     2019-09-22 [2] CRAN (R 4.4.0)
+ plotly                   4.10.3    2023-10-21 [2] CRAN (R 4.4.0)
+ png                      0.1-8     2022-11-29 [2] CRAN (R 4.4.0)
+ promises                 1.2.1     2023-08-10 [2] CRAN (R 4.4.0)
+ purrr                  * 1.0.2     2023-08-10 [2] CRAN (R 4.4.0)
+ R6                       2.5.1     2021-08-19 [2] CRAN (R 4.4.0)
+ rappdirs                 0.3.3     2021-01-31 [2] CRAN (R 4.4.0)
+ RColorBrewer             1.1-3     2022-04-03 [2] CRAN (R 4.4.0)
+ Rcpp                     1.0.11    2023-07-06 [2] CRAN (R 4.4.0)
+ RCurl                    1.98-1.13 2023-11-02 [2] CRAN (R 4.4.0)
+ readr                  * 2.1.4     2023-02-10 [2] CRAN (R 4.4.0)
+ rematch2                 2.1.2     2020-05-01 [2] CRAN (R 4.4.0)
+ restfulr                 0.0.15    2022-06-16 [2] CRAN (R 4.4.0)
+ rjson                    0.2.21    2022-01-09 [2] CRAN (R 4.4.0)
+ rlang                    1.1.2     2023-11-04 [2] CRAN (R 4.4.0)
+ rprojroot                2.0.4     2023-11-05 [2] CRAN (R 4.4.0)
+ Rsamtools                2.19.2    2023-11-05 [2] Bioconductor
+ RSQLite                  2.3.3     2023-11-04 [2] CRAN (R 4.4.0)
+ rsvd                     1.0.5     2021-04-16 [2] CRAN (R 4.4.0)
+ rtracklayer              1.63.0    2023-10-24 [2] Bioconductor
+ S4Arrays                 1.3.1     2023-11-27 [2] Bioconductor 3.19 (R 4.4.0)
+ S4Vectors              * 0.41.2    2023-11-23 [2] Bioconductor 3.19 (R 4.4.0)
+ sass                     0.4.7     2023-07-15 [2] CRAN (R 4.4.0)
+ ScaledMatrix             1.11.0    2023-10-24 [2] Bioconductor
+ scales                   1.3.0     2023-11-28 [2] CRAN (R 4.4.0)
+ scater                   1.31.1    2023-11-16 [2] Bioconductor 3.19 (R 4.4.0)
+ scuttle                  1.13.0    2023-10-24 [2] Bioconductor
+ sessioninfo            * 1.2.2     2021-12-06 [2] CRAN (R 4.4.0)
+ shiny                    1.8.0     2023-11-17 [2] CRAN (R 4.4.0)
+ shinyWidgets             0.8.0     2023-08-30 [2] CRAN (R 4.4.0)
+ SingleCellExperiment   * 1.25.0    2023-10-24 [2] Bioconductor
+ spam                     2.10-0    2023-10-23 [2] CRAN (R 4.4.0)
+ SparseArray              1.3.1     2023-11-07 [2] Bioconductor
+ sparseMatrixStats        1.15.0    2023-10-24 [2] Bioconductor
+ SpatialExperiment      * 1.13.0    2023-10-24 [2] Bioconductor
+ spatialLIBD            * 1.15.1    2023-11-30 [2] Bioconductor 3.19 (R 4.4.0)
+ statmod                  1.5.0     2023-01-06 [2] CRAN (R 4.4.0)
+ stringi                  1.8.2     2023-11-23 [2] CRAN (R 4.4.0)
+ stringr                * 1.5.1     2023-11-14 [2] CRAN (R 4.4.0)
+ SummarizedExperiment   * 1.33.1    2023-11-28 [2] Bioconductor 3.19 (R 4.4.0)
+ tibble                 * 3.2.1     2023-03-20 [2] CRAN (R 4.4.0)
+ tidyr                  * 1.3.0     2023-01-24 [2] CRAN (R 4.4.0)
+ tidyselect               1.2.0     2022-10-10 [2] CRAN (R 4.4.0)
+ tidyverse              * 2.0.0     2023-02-22 [2] CRAN (R 4.4.0)
+ timechange               0.2.0     2023-01-11 [2] CRAN (R 4.4.0)
+ tzdb                     0.4.0     2023-05-12 [2] CRAN (R 4.4.0)
+ utf8                     1.2.4     2023-10-22 [2] CRAN (R 4.4.0)
+ vctrs                    0.6.4     2023-10-12 [2] CRAN (R 4.4.0)
+ vipor                    0.4.5     2017-03-22 [2] CRAN (R 4.4.0)
+ viridis                  0.6.4     2023-07-22 [2] CRAN (R 4.4.0)
+ viridisLite              0.4.2     2023-05-02 [2] CRAN (R 4.4.0)
+ withr                    2.5.2     2023-10-30 [2] CRAN (R 4.4.0)
+ XML                      3.99-0.16 2023-11-29 [2] CRAN (R 4.4.0)
+ xtable                   1.8-4     2019-04-21 [2] CRAN (R 4.4.0)
+ XVector                  0.43.0    2023-10-24 [2] Bioconductor
+ yaml                     2.3.7     2023-01-23 [2] CRAN (R 4.4.0)
+ zlibbioc                 1.49.0    2023-10-24 [2] Bioconductor
+
+ [1] /users/bguo/R/devel
+ [2] /jhpce/shared/community/core/conda_R/devel/R/lib64/R/site-library
+ [3] /jhpce/shared/community/core/conda_R/devel/R/lib64/R/library
+
+──────────────────────────────────────────────────────────────────────────────
+ MaxVMSize  AveVMSize     MaxRSS     AveRSS 
+---------- ---------- ---------- ---------- 
+         0          0          0          0 
+ 35079068K   2371124K  32721396K      1472K 
+**** Job ends ****
+Thu Feb  1 04:35:30 PM EST 2024
