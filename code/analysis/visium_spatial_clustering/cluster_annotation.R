@@ -6,6 +6,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(escheR)
   library(ggpubr)
+  library(sessioninfo)
 })
 
 # Path --------------------------------------------------------------------
@@ -53,6 +54,8 @@ vars <- grep("^PRECAST", names(col_df), value = TRUE)
 
 # TODO: write a loop
 for(.var in vars){
+  
+  print("Start registering ", .var)
   
   spe$spd <- paste0("SpD_", spe[[.var]]) |> factor()
   
@@ -141,6 +144,10 @@ for(.var in vars){
   # 
 }
 
+
+cat("Job Finished")
+
+sessioninfo::session_info()
 
 
 
