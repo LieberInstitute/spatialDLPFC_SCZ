@@ -10,11 +10,6 @@ suppressPackageStartupMessages({
 
 
 
-# Mem requested
-# TODO: adjust
-# First try 20G
-
-
 # Config -----------------------------------------------------------
 ## Path Config -------------------------------------------------------------
 # TODO: decide if this needs to be revised 
