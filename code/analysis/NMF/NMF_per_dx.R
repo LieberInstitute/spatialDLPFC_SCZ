@@ -66,7 +66,7 @@ spe$sex <- metadata(spe)$dx_df$sex[
 # Subsetting one dx group -------------------------------------------------
 spe <- spe[, spe$dx == unique(spe$dx)[1]]
 
-print("Total number of spots is ", ncol(spe), "for ", unique(spe$dx)[1])
+cat("Total number of spots is ", ncol(spe), "for ", unique(spe$dx)[1], ".\n")
 # NMF ---------------------------------------------------------------------
 library(RcppML)
 library(Matrix)
