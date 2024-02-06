@@ -80,7 +80,7 @@ library(scuttle)
 
 
 ## Config ------------------------------------------------------------------
-k <- 2
+k <- 50
 
 spe <- logNormCounts(spe)
 A <- logcounts(spe) # using logcounts because there are multiple datasets
@@ -93,7 +93,7 @@ saveRDS(
   model, 
   file = here(
     "processed-data/rds/NMF",
-    paste0("test_NMF_all.rds")
+    paste0("test_NMF_all_k",k,".rds")
   )
 )
 
