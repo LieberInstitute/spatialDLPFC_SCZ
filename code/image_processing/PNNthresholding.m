@@ -10,7 +10,7 @@ for i = 1:length(myfiles)
     load(fullfile(dt,myfiles(i).name),'WFA');
 
 [counts, x]=imhist(WFA);
-level=triangle_th(counts(5:end),numel(x));
+level=triangle_th(counts(10:end),numel(x)-10);
 BW=imbinarize(WFA,level);
 [x0,x1,x11,x22,y0,y1,y11,y22]=extract_coords(counts,x,level);
 
