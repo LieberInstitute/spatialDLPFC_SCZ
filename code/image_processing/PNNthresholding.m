@@ -31,5 +31,6 @@ BW=imbinarize(WFA,level);
     plot(ax4,[x0,x0], [0,y0], 'Color', 'g')
     hold(ax4,'off')
     saveas(gcf,fullfile(ot,[myfiles(i).name(1:end-4), '.png']))
+    save('BW',fullfile(ot,[myfiles(i).name(1:end-4), '_WFAseg.mat']))
     close all
 end
