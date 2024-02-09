@@ -88,6 +88,13 @@ A <- logcounts(spe) # using logcounts because there are multiple datasets
 model <- RcppML::nmf(A, k = k, seed=1237)
 
 
+spe$dx <- metadata(spe)$dx_df$dx[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )]
+
+
 ## Save results
 saveRDS(
   model, 
@@ -97,6 +104,7 @@ saveRDS(
   )
 )
 
+print("Finish NMF")
 
 
 # Session Info ------------------------------------------------------------

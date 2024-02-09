@@ -99,6 +99,9 @@ saveRDS(
 
 
 
+print("Finish NMF")
+
+
 # Session Info ------------------------------------------------------------
 
 sessioninfo::session_info()
