@@ -1,6 +1,6 @@
-function [x0,x1,x11,x22,y0,y1,y11,y22]=extract_coords(counts,x,level)
-counts1 = counts(5:end);
-x0 = x(5:end);
+function [x0,x1,x11,x22,y0,y1,y11,y22]=extract_coords(counts,x,level,lim)
+counts1 = counts(lim:end);
+x0 = x(lim:end);
 
 t = find(counts1 == max(counts1));
 
