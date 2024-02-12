@@ -1,8 +1,9 @@
 #!/bin/bash
-#SBATCH --mem=80G
-#SBATCH -o logs/countNuclei.txt 
-#SBATCH -e logs/countNuclei.txt
-#SBATCH --array=1
+#SBATCH --mem=30G
+#SBATCH --job-name=countNuclei
+#SBATCH -o logs/countNuclei_%a.txt 
+#SBATCH -e logs/countNuclei_%a.txt
+#SBATCH --array=2-48%5
 
 echo "**** Job starts ****"
 date
@@ -22,10 +23,16 @@ module load matlab/R2023a
 toolbox='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/'
 
 filePath=$(ls -1 /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/plots/image_processing/image_histograms/*_WFAseg.mat | sed -n "${SLURM_ARRAY_TASK_ID}p")
+
+## Check if file path exists
+if [ ! -f "$filePath" ]; then
+    echo "File not found: $filePath"
+    exit 1
+fi
+
 fileName=$(basename "$filePath" _WFAseg.mat)
 echo "Processing sample ${fileName}"
 
-fname="${SAMPLE}_WFAseg.mat"
 
 ## Read inputs
 jsonname1=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/${fileName}/outs/spatial/scalefactors_json.json
