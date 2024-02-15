@@ -27,6 +27,12 @@ spe <- readRDS(
   path_PRECAST_int_spe
 )
 
+spe$dx <- metadata(spe)$dx_df$dx[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )]
+
 pdf(here("plots/spatial_cluster/assessment/test_clustree.pdf"))
 # Overall -----------------------------------------------------------------
 (
@@ -35,6 +41,20 @@ pdf(here("plots/spatial_cluster/assessment/test_clustree.pdf"))
   theme(legend.position = "bottom") +
   labs(title = "All Sample")
 ) |> print()
+
+
+# Per Dx Group ----
+for(.dx in unique(spe$dx)){
+  spe_sub <- spe[, spe$dx == .dx]
+  (
+    clustree(colData(spe_sub) |> data.frame(), prefix = "PRECAST_") +
+      guides(edge_colour = FALSE, edge_alpha = FALSE) +
+      theme(legend.position = "bottom") +
+      labs(title = paste0("spe$dx = ",.dx))
+  ) |> print()
+}
+
+
 
 
 # Sample Specific ---------------------------------------------------------
