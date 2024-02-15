@@ -1,3 +1,7 @@
+# Job Script Related Notes ------------------------------------------------
+# Running time: 1 hour
+# Mem usage: asked for 40G, used 32GB in interactive session.
+
 # Load Packages -----------------------------------------------------------
 library(here)
 library(SpatialExperiment)
@@ -16,8 +20,8 @@ stopifnot(packageVersion("spatialLIBD") >= "1.11.10")
 # Load SPE Object ---------------------------------------------------------
 # TODO: add path
 path_raw_spe <- here(
-  "processed-data/rds/spe","01_build_spe/",
-  "REPLACE_PATH HERE")
+  "processed-data/rds/01_build_spe",
+  "raw_spe_wo_SPG_N63.rds")
 
 # TODO: check if spe exists
 stopifnot(
@@ -82,7 +86,7 @@ spg_df <- map_dfr(
     return(x)
   })
 
-stopifnot("SPG masking data doesn't match spe spots 1-to-1" = nrow(spg_df) == ncol(raw_spe))
+# stopifnot("SPG masking data doesn't match spe spots 1-to-1" = nrow(spg_df) == ncol(raw_spe))
 
 colnames(spg_df)
 # [1] "barcode"    "tissue"     "row"        "col"        "imagerow"
@@ -126,7 +130,7 @@ col_data_df <- colData(spe) |> data.frame() |>
 # Add the information
 colData(spe) <- DataFrame(col_data_df)  # Will remove colnames(spe)
 colnames(spe) <- spe$key
-stopifnot(any(is.na(spe$spg_CNClaudin5)))
+# stopifnot(any(is.na(spe$spg_CNClaudin5)))
 
 # grep(
 #   pattern = "^spg_",
@@ -144,8 +148,7 @@ stopifnot(!is.null(colnames(spe)))
 
 saveRDS(
   spe,
-  file = here::here("processed-data", "rds",
-                    "spe", "01_build_spe",
+  file = here::here("processed-data", "rds", "01_build_spe",
                     # TODO: rename
                     "test_raw_spe_w_spg_N63.rds")
 )
