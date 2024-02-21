@@ -1,27 +1,19 @@
-slide = 'V12F14-053';
-%slide = 'V12F14-057';
-
 dt = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/';
 ot = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/plots/image_processing/image_histograms';
-myfiles = dir([dt,slide,'*1.mat']);
+myfiles = dir([dt,'*1.mat']);
 
-for i = 1:4
+for i = 1:64
 
 load(fullfile(dt,myfiles(i).name), 'WFA');
-[counts, x]=imhist(WFA);
+[counts, x]=hist(WFA(:),256);
 
-% Assuming 'counts' and 'x' contain the histogram data
-windowSize = 3; % Choose a suitable window size for smoothing
-
-% Apply moving average filter to counts
-smoothed_counts = movmean(counts, windowSize);
-
+lim = 13;
 % Plot the smoothed histogram
-level=triangle_th(smoothed_counts(35:end),numel(smoothed_counts(35:end))) + x(34);
+[thresh, lnP] = triangle_threshold_right_tail(counts(lim:end));
+level = x(lim)+x(thresh);
 BW=imbinarize(WFA,level);
 %imshow(BW)
 
-[x0,x1,x11,x22,y0,y1,y11,y22]=extract_coords(smoothed_counts(30:end),x(30:end),level);
 figure('visible', 'off')
     ax1 = subplot(2,2,1);
     imshow(WFA,[])
@@ -30,13 +22,12 @@ figure('visible', 'off')
     ax3 = subplot(2,2,2);
     plot(x,counts)
     ax4 = subplot(2,2,4);
-    plot(x(35:end),smoothed_counts(35:end))
+    plot(x(lim:end),counts(lim:end))
     hold(ax4, 'on')
-    plot(ax4,[x11,x22], [y11,y22], 'Color', 'r')
-    plot(ax4,[x0,x1], [y0,y1], 'Color', 'r')
-    plot(ax4,[x0,x0], [0,y0], 'Color', 'g')
+    plot(ax4,x(lnP(1:2)), lnP(3:4), 'Color', 'r')
+    xline(level,'g')
     hold(ax4,'off')
-    saveas(gcf,fullfile(ot,[myfiles(i).name(1:end-4), '.png']))
+    saveas(gcf,fullfile(ot,[myfiles(i).name(1:end-4), 'update.png']))
+    save(fullfile(dt,[myfiles(i).name(1:end-4), '_WFAseg.mat']),'BW')
     close all
 end
-
