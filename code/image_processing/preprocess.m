@@ -1,4 +1,6 @@
 dt = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/';
+dt1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/WFAseg/';
+
 ot = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/plots/image_processing/image_histograms';
 myfiles = dir([dt,'*1.mat']);
 
@@ -28,6 +30,6 @@ figure('visible', 'off')
     xline(level,'g')
     hold(ax4,'off')
     saveas(gcf,fullfile(ot,[myfiles(i).name(1:end-4), 'update.png']))
-    save(fullfile(dt,[myfiles(i).name(1:end-4), '_WFAseg.mat']),'BW')
+    save(fullfile(dt1,[myfiles(i).name(1:end-4), '_WFAseg.mat']),'BW')
     close all
 end
