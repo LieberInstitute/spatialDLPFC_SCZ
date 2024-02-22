@@ -3,7 +3,7 @@ dt1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_pr
 
 ot = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/plots/image_processing/image_histograms';
 myfiles = dir([dt,'*1.mat']);
-
+addpath(genpath('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/image_processing'))
 for i = 1:64
 
 load(fullfile(dt,myfiles(i).name), 'WFA');
@@ -12,7 +12,7 @@ load(fullfile(dt,myfiles(i).name), 'WFA');
 lim = 13;
 % Plot the smoothed histogram
 [thresh, lnP] = triangle_threshold_right_tail(counts(lim:end));
-level = x(lim)+x(thresh);
+level = x(lim)+x(thresh)+0.1;
 BW=imbinarize(WFA,level);
 %imshow(BW)
 
@@ -27,9 +27,10 @@ figure('visible', 'off')
     plot(x(lim:end),counts(lim:end))
     hold(ax4, 'on')
     plot(ax4,x(lnP(1:2)), lnP(3:4), 'Color', 'r')
-    xline(level,'g')
+    xline(level+0.1,'g')
     hold(ax4,'off')
-    saveas(gcf,fullfile(ot,[myfiles(i).name(1:end-4), 'update.png']))
-    save(fullfile(dt1,[myfiles(i).name(1:end-4), '_WFAseg.mat']),'BW')
+    saveas(gcf,fullfile(ot,[myfiles(i).name(1:end-4),'.png']))
+    save(fullfile(dt1,[myfiles(i).name(1:end-4), '_WFAseg1.mat']),'BW')
     close all
+    disp(myfiles(i).name)
 end
