@@ -117,9 +117,13 @@ colnames(spg_df)
 # ends with P and N
 colnames(spg_df) <- paste0("spg_", colnames(spg_df))
 
-print("Finish loading spg objects")
+cat("Finish loading spg objects\n")
 
 spe <- raw_spe
+
+# TODO: remove the prefix spg_ of barcode etc repetative variables.
+
+
 
 col_data_df <- colData(spe) |> data.frame() |>
   left_join(
