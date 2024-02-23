@@ -1,0 +1,191 @@
+2024-01-31 14:59:54.197224 loading file /Users/bguo6/Library/Caches/org.R-project.R/R/BiocFileCache/1763a584e3a09_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+Rows: 60 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (7): layer_annotation, layer_combo, layer_combo2, bayesSpace, cluster, l...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Called from: top level 
+2024-01-31 14:59:55.991134 make pseudobulk object
+2024-01-31 15:00:10.972711 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:00:11.021439 drop lowly expressed genes
+2024-01-31 15:00:11.146042 normalize expression
+2024-01-31 15:00:12.581735 create model matrix
+2024-01-31 15:00:12.616434 run duplicateCorrelation()
+2024-01-31 15:01:06.085956 The estimated correlation is: 0.409315153982027
+2024-01-31 15:01:06.089594 computing enrichment statistics
+2024-01-31 15:01:06.940081 extract and reformat enrichment results
+2024-01-31 15:01:06.950812 running the baseline pairwise model
+2024-01-31 15:01:07.216208 computing pairwise statistics
+2024-01-31 15:01:07.460416 computing F-statistics
+Called from: top level 
+2024-01-31 15:01:11.166808 make pseudobulk object
+2024-01-31 15:01:22.28633 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:01:22.339791 drop lowly expressed genes
+2024-01-31 15:01:22.494988 normalize expression
+2024-01-31 15:01:24.249261 create model matrix
+2024-01-31 15:01:24.282734 run duplicateCorrelation()
+2024-01-31 15:02:46.60183 The estimated correlation is: 0.179058711292587
+2024-01-31 15:02:46.604351 computing enrichment statistics
+2024-01-31 15:02:48.512928 extract and reformat enrichment results
+2024-01-31 15:02:48.522384 running the baseline pairwise model
+2024-01-31 15:02:48.974804 computing pairwise statistics
+2024-01-31 15:02:49.107391 computing F-statistics
+Called from: top level 
+2024-01-31 15:02:53.449325 make pseudobulk object
+2024-01-31 15:03:03.89791 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:03:03.944493 drop lowly expressed genes
+2024-01-31 15:03:04.121485 normalize expression
+2024-01-31 15:03:06.308614 create model matrix
+2024-01-31 15:03:06.344302 run duplicateCorrelation()
+2024-01-31 15:05:15.65569 The estimated correlation is: 0.210588831532255
+2024-01-31 15:05:15.657949 computing enrichment statistics
+2024-01-31 15:05:19.296621 extract and reformat enrichment results
+2024-01-31 15:05:19.309332 running the baseline pairwise model
+2024-01-31 15:05:20.005744 computing pairwise statistics
+2024-01-31 15:05:20.15879 computing F-statistics
+Called from: top level 
+2024-01-31 15:05:24.535819 make pseudobulk object
+2024-01-31 15:05:35.573953 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:05:35.631195 drop lowly expressed genes
+2024-01-31 15:05:35.851308 normalize expression
+2024-01-31 15:05:38.435324 create model matrix
+2024-01-31 15:05:38.468832 run duplicateCorrelation()
+2024-01-31 15:08:44.221333 The estimated correlation is: 0.191271722335918
+2024-01-31 15:08:44.223763 computing enrichment statistics
+2024-01-31 15:08:50.537761 extract and reformat enrichment results
+2024-01-31 15:08:50.553909 running the baseline pairwise model
+2024-01-31 15:08:51.624106 computing pairwise statistics
+2024-01-31 15:08:51.803451 computing F-statistics
+Called from: top level 
+2024-01-31 15:08:56.611761 make pseudobulk object
+2024-01-31 15:09:08.518529 dropping 3 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:09:08.577575 drop lowly expressed genes
+2024-01-31 15:09:08.884131 normalize expression
+2024-01-31 15:09:12.019146 create model matrix
+2024-01-31 15:09:12.052025 run duplicateCorrelation()
+2024-01-31 15:13:41.954455 The estimated correlation is: 0.16036423757327
+2024-01-31 15:13:41.957664 computing enrichment statistics
+2024-01-31 15:13:52.200968 extract and reformat enrichment results
+2024-01-31 15:13:52.221997 running the baseline pairwise model
+2024-01-31 15:13:53.747353 computing pairwise statistics
+2024-01-31 15:13:54.062632 computing F-statistics
+Called from: top level 
+Error: unexpected '}' in "}"
+2024-01-31 15:14:02.264294 make pseudobulk object
+2024-01-31 15:14:15.605199 dropping 10 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:14:15.670773 drop lowly expressed genes
+2024-01-31 15:14:15.90789 normalize expression
+2024-01-31 15:14:19.540037 create model matrix
+2024-01-31 15:14:19.580076 run duplicateCorrelation()
+2024-01-31 15:19:58.105278 The estimated correlation is: 0.155164180998256
+2024-01-31 15:19:58.109142 computing enrichment statistics
+2024-01-31 15:20:13.536905 extract and reformat enrichment results
+2024-01-31 15:20:13.558305 running the baseline pairwise model
+2024-01-31 15:20:15.488724 computing pairwise statistics
+2024-01-31 15:20:15.762372 computing F-statistics
+Called from: top level 
+2024-01-31 15:20:21.508998 make pseudobulk object
+2024-01-31 15:20:34.504844 dropping 10 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:20:34.579522 drop lowly expressed genes
+2024-01-31 15:20:34.87759 normalize expression
+2024-01-31 15:20:38.887426 create model matrix
+2024-01-31 15:20:38.921424 run duplicateCorrelation()
+2024-01-31 15:27:36.068481 The estimated correlation is: 0.13488085972171
+2024-01-31 15:27:36.072642 computing enrichment statistics
+2024-01-31 15:27:57.223372 extract and reformat enrichment results
+2024-01-31 15:27:57.247835 running the baseline pairwise model
+2024-01-31 15:27:59.797028 computing pairwise statistics
+2024-01-31 15:28:00.183594 computing F-statistics
+Called from: top level 
+2024-01-31 15:28:07.161554 make pseudobulk object
+2024-01-31 15:28:20.000936 dropping 14 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:28:20.088779 drop lowly expressed genes
+2024-01-31 15:28:20.377296 normalize expression
+2024-01-31 15:28:24.604058 create model matrix
+2024-01-31 15:28:24.641668 run duplicateCorrelation()
+2024-01-31 15:36:40.507893 The estimated correlation is: 0.115672901162459
+2024-01-31 15:36:40.512361 computing enrichment statistics
+2024-01-31 15:37:07.488556 extract and reformat enrichment results
+2024-01-31 15:37:07.515621 running the baseline pairwise model
+2024-01-31 15:37:10.403146 computing pairwise statistics
+2024-01-31 15:37:10.841229 computing F-statistics
+Called from: top level 
+2024-01-31 15:37:18.26018 make pseudobulk object
+2024-01-31 15:37:31.009638 dropping 13 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:37:31.091681 drop lowly expressed genes
+2024-01-31 15:37:31.417104 normalize expression
+2024-01-31 15:37:36.04256 create model matrix
+2024-01-31 15:37:36.075865 run duplicateCorrelation()
+2024-01-31 15:47:46.5931 The estimated correlation is: 0.126833126431247
+2024-01-31 15:47:46.597039 computing enrichment statistics
+2024-01-31 15:48:24.850771 extract and reformat enrichment results
+2024-01-31 15:48:24.87802 running the baseline pairwise model
+2024-01-31 15:48:28.506545 computing pairwise statistics
+2024-01-31 15:48:28.961153 computing F-statistics
+Called from: top level 
+2024-01-31 15:48:36.442834 make pseudobulk object
+2024-01-31 15:48:49.955368 dropping 15 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 15:48:50.05274 drop lowly expressed genes
+2024-01-31 15:48:50.533466 normalize expression
+2024-01-31 15:48:55.561359 create model matrix
+2024-01-31 15:48:55.593473 run duplicateCorrelation()
+2024-01-31 16:01:21.270432 The estimated correlation is: 0.0921715686691836
+2024-01-31 16:01:21.273982 computing enrichment statistics
+2024-01-31 16:02:11.80426 extract and reformat enrichment results
+2024-01-31 16:02:11.855494 running the baseline pairwise model
+2024-01-31 16:02:16.285208 computing pairwise statistics
+2024-01-31 16:02:17.089081 computing F-statistics
+Called from: top level 
+2024-01-31 16:02:25.803277 make pseudobulk object
+2024-01-31 16:02:39.994783 dropping 17 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 16:02:40.12984 drop lowly expressed genes
+2024-01-31 16:02:40.597574 normalize expression
+2024-01-31 16:02:46.252626 create model matrix
+2024-01-31 16:02:46.304003 run duplicateCorrelation()
+2024-01-31 16:17:04.607038 The estimated correlation is: 0.0881085864863067
+2024-01-31 16:17:04.610672 computing enrichment statistics
+2024-01-31 16:18:05.479727 extract and reformat enrichment results
+2024-01-31 16:18:05.514024 running the baseline pairwise model
+2024-01-31 16:18:10.492513 computing pairwise statistics
+2024-01-31 16:18:11.187232 computing F-statistics
+Called from: top level 
+2024-01-31 16:18:20.935463 make pseudobulk object
+2024-01-31 16:18:57.342551 dropping 19 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 16:18:57.489805 drop lowly expressed genes
+2024-01-31 16:18:57.922494 normalize expression
+2024-01-31 16:19:03.742596 create model matrix
+2024-01-31 16:19:03.775951 run duplicateCorrelation()
+2024-01-31 16:35:31.878635 The estimated correlation is: 0.088433805038619
+2024-01-31 16:35:31.882792 computing enrichment statistics
+2024-01-31 16:36:48.331475 extract and reformat enrichment results
+2024-01-31 16:36:48.361777 running the baseline pairwise model
+2024-01-31 16:36:54.167477 computing pairwise statistics
+2024-01-31 16:36:54.902062 computing F-statistics
+Called from: top level 
+2024-01-31 16:37:04.567233 make pseudobulk object
+2024-01-31 16:37:19.207169 dropping 21 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 16:37:19.318396 drop lowly expressed genes
+2024-01-31 16:37:19.670998 normalize expression
+2024-01-31 16:37:25.05231 create model matrix
+2024-01-31 16:37:25.086189 run duplicateCorrelation()
+2024-01-31 16:54:30.701443 The estimated correlation is: 0.0824142886473457
+2024-01-31 16:54:30.704237 computing enrichment statistics
+2024-01-31 16:55:57.800311 extract and reformat enrichment results
+2024-01-31 16:55:57.830329 running the baseline pairwise model
+2024-01-31 16:56:03.96941 computing pairwise statistics
+2024-01-31 16:56:04.740251 computing F-statistics
+Called from: top level 
+2024-01-31 16:56:14.645653 make pseudobulk object
+2024-01-31 16:56:29.123159 dropping 23 pseudo-bulked samples that are below 'min_ncells'.
+2024-01-31 16:56:29.234091 drop lowly expressed genes
+2024-01-31 16:56:29.651983 normalize expression
+2024-01-31 16:56:35.809565 create model matrix
+2024-01-31 16:56:35.841087 run duplicateCorrelation()
+2024-01-31 17:16:55.531142 The estimated correlation is: 0.084450376316884
+2024-01-31 17:16:55.534884 computing enrichment statistics
+2024-01-31 17:18:45.969897 extract and reformat enrichment results
+2024-01-31 17:18:46.001815 running the baseline pairwise model
+2024-01-31 17:18:53.270637 computing pairwise statistics
+2024-01-31 17:18:54.273967 computing F-statistics
