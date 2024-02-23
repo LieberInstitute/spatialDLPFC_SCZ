@@ -76,6 +76,7 @@ PRECAST_df <- map2(
       
     # browser()
 
+  # TODO: store the cluster results as a string with SpD_xx instead of a number
   ret_vec <- map2(
     .x = res$cluster,
     .y = spot_keys,
