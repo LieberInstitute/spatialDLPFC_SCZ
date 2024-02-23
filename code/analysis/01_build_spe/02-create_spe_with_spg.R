@@ -3,10 +3,13 @@
 # Mem usage: asked for 40G, used 32GB in interactive session.
 
 # Load Packages -----------------------------------------------------------
-library(here)
-library(SpatialExperiment)
-library(tidyverse)
-library(sessioninfo)
+suppressPackageStartupMessages({
+  library(here)
+  library(SpatialExperiment)
+  library(tidyverse)
+  library(sessioninfo)
+})
+
 
 ## Related to 
 ## https://github.com/drighelli/SpatialExperiment/issues/135
@@ -39,6 +42,8 @@ stopifnot(
       raw_spe$sample_id |> unique()
     ) == 63
 )
+
+print("Finish loading spe")
 
 # Load SPG file path ---------------------------------------------
 raw_expr_meta <- read.csv(
@@ -111,6 +116,8 @@ colnames(spg_df)
 # name starts with SPG_
 # ends with P and N
 colnames(spg_df) <- paste0("spg_", colnames(spg_df))
+
+print("Finish loading spg objects")
 
 spe <- raw_spe
 
