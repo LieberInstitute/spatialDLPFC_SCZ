@@ -87,7 +87,7 @@ spe_clean_artifacts <- spe_clean_artifacts[, spe_clean_artifacts$in_tissue == TR
 
 
 pdf(
-  here("plots/02_visium_qc/spotSweeper", "outliers.pdf"),
+  here("plots/02_visium_qc/spotSweeper", "outliers_n_ngb36.pdf"),
   width = 5.9, height = 3.9
 )
 for(.sample in unique(spe_clean_artifacts$sample_id)){
@@ -100,7 +100,8 @@ for(.sample in unique(spe_clean_artifacts$sample_id)){
   sub_spe<- localOutliers(
     sub_spe,
     features=features,
-    n_neighbors=18,
+    # n_neighbors=18,
+    n_neighbors=36,
     data_output=TRUE,
     method="multivariate"
   )
