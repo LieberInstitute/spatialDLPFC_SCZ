@@ -5,11 +5,13 @@
 
 
 # Load Packages -----------------------------------------------------------
-library(here)
-library(SpatialExperiment)
-library(tidyverse)
-library(sessioninfo)
-library(spatialLIBD)
+suppressPackageStartupMessages({
+  library(here)
+  library(SpatialExperiment)
+  library(tidyverse)
+  library(spatialLIBD)
+  library(sessioninfo)
+})
 
 
 # TODO: load in spe object
@@ -24,6 +26,11 @@ spe <- raw_spe[, raw_spe$in_tissue == 1 ]
 
 
 # Visualize the distribution per sample -----------------------------------
+
+spg_col_names <- colData(spe) |> colnames() |>
+  grep("^spg_", x = _, value = TRUE)
+
+spg_col_names
 
 
 c("spg_NBW", "spg_PBW", "spg_CNBW" ) |> 
@@ -42,7 +49,7 @@ c("spg_NBW", "spg_PBW", "spg_CNBW" ) |>
   )
 
 
-
+print("Finish plotting")
 
 # Session Info ------------------------------------------------------------
 session_info()
