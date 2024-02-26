@@ -1,15 +1,15 @@
 dt = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/';
 dt1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/WFAseg/';
-ot = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/samui/';
+ot = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/samui1/';
 
 
 %copyfile('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/*1.mat', ot)
 myfiles1 = dir([dt,'*.mat']);
-myfiles = dir([dt1,'*WFAseg.mat']);
+myfiles = dir([dt1,'*WFAseg1.mat']);
 
 for i = 1:numel(myfiles)
     fname=fullfile(myfiles(i).folder, myfiles(i).name);
-    currentName = [myfiles(i).name(1:end-11),'.mat'];
+    currentName = [myfiles(i).name(1:end-12),'.mat'];
     idx = find(strcmp({myfiles1.name}', currentName));
     fname1=fullfile(myfiles1(idx).folder, myfiles1(idx).name);
     load(fname)
