@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH -p gpu
 #SBATCH --mem=40G
-#SBATCH --job-name=WFAseg
-#SBATCH -o logs/WFAseg1.txt 
-#SBATCH -e logs/WFAseg1.txt 
+#SBATCH --job-name=appendWFAseg
+#SBATCH -o logs/appendWFAseg1.txt 
+#SBATCH -e logs/appendWFAseg1.txt 
 
 echo "**** Job starts ****"
 date
