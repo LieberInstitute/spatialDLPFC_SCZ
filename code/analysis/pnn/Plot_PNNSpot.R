@@ -32,6 +32,7 @@ spg_col_names <- colData(spe) |> colnames() |>
 
 spg_col_names
 
+spe$spg_PBW0_5 <- as.character(spe$spg_PBW > 0.5)
 
 c("spg_NBW", "spg_PBW", "spg_CNBW" ) |> 
   lapply(
@@ -48,8 +49,84 @@ c("spg_NBW", "spg_PBW", "spg_CNBW" ) |>
     )
   )
 
+vis_grid_clus(
+  spe, clustervar  = "spg_PBW0_5",
+  spatial = FALSE,
+  point_size = 0.8,
+  pdf_file = here(
+    "plots/pnn",
+    paste0("test_PBW0_5.pdf")
+  )
+)
 
-print("Finish plotting")
+
+print("Finish plotting spot plots")
+
+
+# Plot distributions ------------------------------------------------------
+## Not that helpful so far due to the excess 0s.
+
+c("spg_NBW", "spg_PBW", "spg_CNBW" ) |> 
+  lapply(
+    FUN = function(.x)
+      vis_grid_gene(
+        spe,
+        geneid = .x,
+        spatial = FALSE,
+        point_size = 0.8,
+        pdf_file = here(
+          "plots/pnn",
+          paste0("test_", .x, ".pdf")
+        )
+      )
+  )
+
+.x <- [3]
+# TODO: create the new measure that AD project used.....
+
+ggplot() +
+  geom_violin(aes(x = spe$sample_id, y= spe[[.x]])) +
+  # scale_y_log10() + # O counts are removed
+  labs(
+    y = .x
+  )
+
+
+
+
+
+
+
+
+seg_met_mat <- colData(spe) |> data.frame() |>
+  select(c("spg_NBW", "spg_PBW", "spg_CNBW" )) |> 
+  drop_na()
+
+# Pairwise bi-variate plot ---
+pairs(seg_met_mat)
+
+# PCA analysis ----
+pca_mdl <- prcomp(seg_met_mat, center = TRUE, scale. = TRUE)
+
+summary(pca_mdl)
+
+# Plotting variance explained, First two PC's good enough
+plot(pca_mdl) 
+# biplot(pca_mdl) # Failed because including labels
+
+
+ggplot(data.frame(pca_mdl$x)) +
+  geom_point(aes(x = PC1, y = PC2))
+
+
+# Thresholding Result---
+
+## Way 1 -----------------------------------------------------------------
+
+
+## Way 2 ----------------------------------------------------------------
+
+
 
 # Session Info ------------------------------------------------------------
 session_info()
