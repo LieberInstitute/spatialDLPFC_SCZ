@@ -33,6 +33,12 @@ spg_col_names <- colData(spe) |> colnames() |>
 spg_col_names
 
 spe$spg_PBW0_5 <- as.character(spe$spg_PBW > 0.5)
+spe$spg_PBW0_25 <- as.character(spe$spg_PBW > 0.25)
+
+saveRDS(
+  colData(spe) |> data.frame() |> select(key, spg_PBW0_25),
+  here("processed-data/rds/pnn/df_spot_calling.rds")
+)
 
 c("spg_NBW", "spg_PBW", "spg_CNBW" ) |> 
   lapply(
@@ -56,6 +62,16 @@ vis_grid_clus(
   pdf_file = here(
     "plots/pnn",
     paste0("test_PBW0_5.pdf")
+  )
+)
+
+vis_grid_clus(
+  spe, clustervar  = "spg_PBW0_25",
+  spatial = FALSE,
+  point_size = 0.8,
+  pdf_file = here(
+    "plots/pnn",
+    paste0("test_PBW25.pdf")
   )
 )
 
@@ -97,13 +113,14 @@ ggplot() +
 
 
 
-
+png(here("plots/pnn/pairwise_plot.png"))
 seg_met_mat <- colData(spe) |> data.frame() |>
   select(c("spg_NBW", "spg_PBW", "spg_CNBW" )) |> 
   drop_na()
 
 # Pairwise bi-variate plot ---
 pairs(seg_met_mat)
+dev.off()
 
 # PCA analysis ----
 pca_mdl <- prcomp(seg_met_mat, center = TRUE, scale. = TRUE)
@@ -115,9 +132,10 @@ plot(pca_mdl)
 # biplot(pca_mdl) # Failed because including labels
 
 
+png(here("plots/pnn/test_pca_plot.png"))
 ggplot(data.frame(pca_mdl$x)) +
   geom_point(aes(x = PC1, y = PC2))
-
+dev.off()
 
 # Thresholding Result---
 
