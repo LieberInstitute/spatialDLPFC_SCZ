@@ -35,8 +35,14 @@ spg_col_names
 spe$spg_PBW0_5 <- as.character(spe$spg_PBW > 0.5)
 spe$spg_PBW0_25 <- as.character(spe$spg_PBW > 0.25)
 
+raw_spe$spg_PBW0_25 <- as.character(raw_spe$spg_PBW > 0.25)
+
+
 saveRDS(
-  colData(spe) |> data.frame() |> select(key, spg_PBW0_25),
+  data.frame(
+    key = raw_spe$key,
+    spg_PBW0_25 = raw_spe$spg_PBW0_25
+  ),
   here("processed-data/rds/pnn/df_spot_calling.rds")
 )
 
