@@ -1,16 +1,22 @@
 
 # Load Library ------------------------------------------------------------
-library(here)
-library(SpatialExperiment)
-library(sessioninfo)
-library(tidyverse)
+suppressPackageStartupMessages({
+  library(here)
+  library(SpatialExperiment)
+  library(sessioninfo)
+  library(tidyverse)
+  library(spatialLIBD)
+  library(tidyverse)
+})
+
 
 # Load Data -----
 ## Load NMF Res --------
 model <- readRDS(
   here(
     "processed-data/rds/NMF/",
-    "test_NMF_all_k50.rds")
+    "test_NMF_all_k50.rds"
+  )
 )
 
 ## Load Spe ---------------
@@ -23,10 +29,11 @@ path_PRECAST_int_spe <- file.path(
   paste0("test_spe_semi_inform",".rds")
 )
 
-# Load data ---------------------------------------------------------------
 spe <- readRDS(
   path_PRECAST_int_spe
 )
+
+
 
 # For test only
 # spe_backup <- spe
@@ -43,6 +50,40 @@ k <- 50
 patterns <- t(model$h) # these are the factors
 colnames(patterns) <- paste0("NMF", 1:k)
 colData(spe) <- cbind(colData(spe), patterns)
+
+
+# Spot Plot of NMF Patterns ----
+.sample_ordered <- metadata(spe)$dx_df |> arrange(dx, sample_id) |> pull(sample_id)
+
+
+for(.fac in paste0("NMF", 1:k)){
+  # .fac <- "NMF1"
+  vis_grid_gene(
+    spe,
+    geneid = .fac,
+    pdf_file = here(paste0("plots/NMF/test_spot_plot_", .fac, ".pdf")),
+    sample_order = .sample_ordered,
+    point_size = 0.8,
+    spatial = FALSE
+  )
+}
+
+
+# Correlation of Factors ----
+
+mat_NMF_cor <- cor(patterns)
+pdf(here("plots/NMF/NMF_corr_mat.pdf"), width = 10, height = 10)
+heatmap(mat_NMF_cor, symm = TRUE, scale = "none")
+dev.off()
+
+pdf(here("plots/NMF/abs_NMF_corr_mat.pdf"), width = 15, height = 15)
+heatmap(abs(mat_NMF_cor), symm = TRUE, scale = "none")
+dev.off()
+
+
+
+
+
 
 # library(tidyverse)
 # subset_id <- metadata(spe)$dx_df |> group_by(dx) |>
