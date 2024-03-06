@@ -12,11 +12,12 @@ suppressPackageStartupMessages({
 # Path --------------------------------------------------------------------
 fld_data_spatialcluster <- here(
   "processed-data",
-  "rds", "spatial_cluster")
+  "rds", "spatial_cluster"
+)
 
 path_PRECAST_int_spe <- file.path(
   fld_data_spatialcluster, "PRECAST",
-  paste0("test_spe_semi_inform",".rds")
+  paste0("test_spe_semi_inform", ".rds")
 )
 
 # Load data ---------------------------------------------------------------
@@ -32,7 +33,7 @@ col_df <- colData(spe) |> data.frame()
 #   slice_head(n=4) |> ungroup() |>
 #   pull(sample_id) |>
 #     c("V13M06-343_D1", "V13M06-342_D1")
-# 
+#
 # spe <- spe_backup[ ,spe_backup$sample_id %in% subset_id]
 
 
@@ -40,8 +41,10 @@ col_df <- colData(spe) |> data.frame()
 
 DLPFC_modeling_results <- fetch_data("spatialDLPFC_Visium_modeling_results")
 DLPFC_layer_anno <- read_csv(
-  here("code/analysis/visium_spatial_clustering",
-       "bayesSpace_layer_annotations.csv")
+  here(
+    "code/analysis/visium_spatial_clustering",
+    "bayesSpace_layer_annotations.csv"
+  )
 ) |> filter(
   grepl("^Sp09", cluster)
 )
@@ -50,18 +53,18 @@ DLPFC_layer_anno <- read_csv(
 # -------------------------------------------------------------------------
 vars <- grep("^PRECAST", names(col_df), value = TRUE)
 
-#.var <- vars[[7]]
+# .var <- vars[[7]]
 
 # TODO: write a loop
-for(.var in vars){
-  
+for (.var in vars) {
   print("Start registering ", .var)
-  
+
   spe$spd <- paste0("SpD_", spe[[.var]]) |> factor()
-  
-  if(spe[[.var]] |> unique() |> length() ==2)
+
+  if (spe[[.var]] |> unique() |> length() == 2) {
     next
-  # browser()  
+  }
+  # browser()
   # TODO: consider to ajdust for age, sex.
   PNN_modeling_results <- registration_wrapper(
     sce = spe,
@@ -70,25 +73,27 @@ for(.var in vars){
     gene_ensembl = "gene_id",
     gene_name = "gene_name"
   )
-  
+
   # str(PNN_modeling_results)
-  
+
   # Extract Enrichment t-statistics ------
-  PNN_t_stats <- PNN_modeling_results$enrichment[,
-                                                 grep("^t_stat", 
-                                                      colnames(PNN_modeling_results$enrichment)
-                                                 )
+  PNN_t_stats <- PNN_modeling_results$enrichment[
+    ,
+    grep(
+      "^t_stat",
+      colnames(PNN_modeling_results$enrichment)
+    )
   ]
   colnames(PNN_t_stats) <- gsub("^t_stat_", "", colnames(PNN_t_stats))
-  
-  
-  
-  
+
+
+
+
   # str(DLPFC_modeling_results)
-  
+
   DLPFC_t_stats <- DLPFC_modeling_results$enrichment[, grep("^t_stat", colnames(DLPFC_modeling_results$enrichment))]
   colnames(DLPFC_t_stats) <- gsub("^t_stat_", "", colnames(DLPFC_t_stats))
-  
+
   # cor_layer <- layer_stat_cor(
   cor_layer <- layer_stat_cor(
     stats = PNN_t_stats,
@@ -96,12 +101,12 @@ for(.var in vars){
     model_type = "enrichment",
     top_n = 100
   )
-  
+
   colnames(cor_layer) <- DLPFC_layer_anno$layer_combo2[
     match(colnames(cor_layer), DLPFC_layer_anno$cluster)
-  ] 
-  
-  
+  ]
+
+
   pdf(
     file = here(
       paste0(
@@ -116,38 +121,35 @@ for(.var in vars){
     cor_layer[, sort(colnames(cor_layer))],
     max = max(cor_layer)
   )
-  
-  
+
+
 
   (ggarrange(
-    spe[, spe$sample_id %in% c("V13M06-342_D1")] |> 
-      make_escheR() |> 
-      add_fill(var = "spd") + 
+    spe[, spe$sample_id %in% c("V13M06-342_D1")] |>
+      make_escheR() |>
+      add_fill(var = "spd") +
       labs(title = "V13M06-342_D1 (NTC)"),
-    spe[, spe$sample_id %in% c("V13M06-343_D1")] |> 
-      make_escheR() |> 
-      add_fill(var = "spd") + 
+    spe[, spe$sample_id %in% c("V13M06-343_D1")] |>
+      make_escheR() |>
+      add_fill(var = "spd") +
       labs(title = "V13M06-343_D1 (SCZ)"),
     common.legend = TRUE,
     legend = "bottom"
-  )) |>  print()
-  
+  )) |> print()
+
   dev.off()
-  
-  
-  
-  
-  
+
+
+
+
+
   # ggarrange(reg_plot,
   #           sample_plot,
   #           nrow = 2)
-  # 
+  #
 }
 
 
 cat("Job Finished")
 
 sessioninfo::session_info()
-
-
-
