@@ -1,17 +1,19 @@
-
 # Load Library ------------------------------------------------------------
 suppressPackageStartupMessages({
   library(here)
+  library(SingleCellExperiment)
   library(SpatialExperiment)
   library(sessioninfo)
   library(tidyverse)
   library(spatialLIBD)
   library(tidyverse)
+  library(scater)
+  library(scuttle)
 })
 
 
 # Load Data -----
-## Load NMF Res --------
+## Load NMF Result --------
 model <- readRDS(
   here(
     "processed-data/rds/NMF/",
@@ -19,14 +21,21 @@ model <- readRDS(
   )
 )
 
+patterns <- t(model$h) # these are the factors
+k <- ncol(patterns)
+colnames(patterns) <- paste0("NMF", 1:k)
+rownames(patterns) <- spe$key
+colData(spe) <- cbind(colData(spe), patterns)
+
 ## Load Spe ---------------
 fld_data_spatialcluster <- here(
   "processed-data",
-  "rds", "spatial_cluster")
+  "rds", "spatial_cluster"
+)
 
 path_PRECAST_int_spe <- file.path(
   fld_data_spatialcluster, "PRECAST",
-  paste0("test_spe_semi_inform",".rds")
+  paste0("test_spe_semi_inform", ".rds")
 )
 
 spe <- readRDS(
@@ -34,29 +43,94 @@ spe <- readRDS(
 )
 
 
-
-# For test only
-# spe_backup <- spe
-# spe <- spe_backup
-
 spe$dx <- metadata(spe)$dx_df$dx[
   match(
     spe$sample_id,
     metadata(spe)$dx_df$sample_id
-  )]
+  )
+]
 
-# k <- 2
-k <- 50
-patterns <- t(model$h) # these are the factors
-colnames(patterns) <- paste0("NMF", 1:k)
-colData(spe) <- cbind(colData(spe), patterns)
+spe$sex <- metadata(spe)$dx_df$sex[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )
+]
+
+spe$age <- metadata(spe)$dx_df$age[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )
+]
+
+
+
+colData(spe) |> colnames()
+
+## Create nmf sce -----
+
+for (.spd in paste0("PRECAST_", 2:9)) {
+  spe[[.spd]] <- paste0("SpD", spe[[.spd]])
+}
+
+colnames_kept <- c(
+  "key", "sample_id",
+  paste0("PRECAST_", 2:9),
+  "dx", "sex", "age"
+)
+
+nmf_sce <- SingleCellExperiment(
+  assays = list(nmf = t(patterns)),
+  colData = colData(spe)[, colnames_kept]
+)
+
+vars <- getVarianceExplained(
+  nmf_sce,
+  variables = c("sample_id", "PRECAST_8", "dx", "sex", "age"),
+  assay.type = "nmf"
+)
+
+plotExplanatoryVariables(vars)
+
+
+## Pseudo-bulk NMF ----
+pb_nmf_sce <- aggregateAcrossCells(
+  nmf_sce,
+  ids = nmf_sce$sample_id,
+  use.assay.type = "nmf",
+  statistics = "mean"
+)
+
+
+plotExplanatoryVariables(
+  pb_nmf_sce,
+  variables = c("dx", "sex", "age", "ncells"),
+  assay.type = "nmf"
+) |> print()
+
+p_vec <- apply(assay(pb_nmf_sce, "nmf"),
+  MARGIN = 1,
+  FUN = function(.nmf) {
+    mdl <- lm(.nmf ~ dx + sex + age,
+     data = makePerCellDF(pb_nmf_sce)
+    )
+    summary(mdl)$coef["dxscz", "Pr(>|t|)"]
+  }
+)
+
+qqplot(
+  qunif(ppoints(p_vec)),
+  p_vec)
+
 
 
 # Spot Plot of NMF Patterns ----
-.sample_ordered <- metadata(spe)$dx_df |> arrange(dx, sample_id) |> pull(sample_id)
+.sample_ordered <- metadata(spe)$dx_df |>
+  arrange(dx, sample_id) |>
+  pull(sample_id)
 
-
-for(.fac in paste0("NMF", 1:k)){
+for (.fac in paste0("NMF", 1:k)) {
   # .fac <- "NMF1"
   vis_grid_gene(
     spe,
@@ -70,7 +144,6 @@ for(.fac in paste0("NMF", 1:k)){
 
 
 # Correlation of Factors ----
-
 mat_NMF_cor <- cor(patterns)
 pdf(here("plots/NMF/NMF_corr_mat.pdf"), width = 10, height = 10)
 heatmap(mat_NMF_cor, symm = TRUE, scale = "none")
@@ -84,127 +157,109 @@ dev.off()
 
 
 
-
-# library(tidyverse)
-# subset_id <- metadata(spe)$dx_df |> group_by(dx) |>
-#   slice_head(n=2) |> ungroup() |>
-#   pull(sample_id)
-# 
-# spe <- spe[ ,spe$sample_id %in% subset_id]
-
-# ggplot() +
-#   geom_violin(aes(y = spe$NMF1))
-
-# spe$NMF1 |> density() |> plot()
-
-
-# library(spatialLIBD)
-# vis_grid_gene(
-#   spe, geneid = "NMF1", spatial = FALSE,
-#   pdf_file = here(
-#     "plots/NMF",
-#     paste0("test_NMF_k",k,"_F1", ".pdf")
-#   )
-# )
-# 
-# 
-# 
-# vis_grid_gene(
-#   spe, geneid = "NMF2", spatial = FALSE,
-#   pdf_file = here(
-#     "plots/NMF",
-#     paste0("test_NMF_k",k,"_F2", ".pdf")
-#   )
-# )
-# It feel like the NMF are very zero inflated.
-density(spe$NMF3) |> plot()
-
-
-# TODO: visualize what the two factors are 
-## Scatter plot....
+## Scatter plot -----
 
 # t.test(spe$NMF1~spe$dx)
 # t.test(spe$NMF2~spe$dx)
 pdf(here("plots/NMF/test_nmf_k50_all_spots_density_comp.pdf"))
-paste0("NMF", 1:k) |> 
-  walk(.f = function(nmf_name){
+paste0("NMF", 1:k) |>
+  walk(.f = function(nmf_name) {
     (ggplot() +
       geom_density(aes(x = spe[[nmf_name]], group = spe$dx)) +
-       labs(title = nmf_name)) |> 
+      labs(title = nmf_name)) |>
       print()
-    
   })
 dev.off()
 
 col_df <- colData(spe) |> data.frame()
-all_spots_test <- paste0("NMF", 1:k) |> 
+all_spots_test <- paste0("NMF", 1:k) |>
   map(
-    ~t.test(col_df[[.x]] ~ col_df$dx)
+    ~ t.test(col_df[[.x]] ~ col_df$dx)
   )
 
-lapply(all_spots_test, 
-      FUN = function(.res){
-        # browser()
-        .res$p.value
-      }
-) |> unlist() |> 
+NMF_p <- lapply(all_spots_test,
+  FUN = function(.res) {
+    # browser()
+    .res$p.value
+  }
+) |>
+  unlist() |>
   set_names(paste0("NMF", 1:k))
 
-pdf(here("plots/NMF/test_nmf_k50_all_spots_registration.pdf"))
 
-for(spd_var in paste0("PRECAST_", 2:9)){
-  # browser()
+which(NMF_p == 0)
+
+qqplot(
+  -log10(qunif(ppoints(NMF_p))),
+  -log10(NMF_p + .Machine$double.xmin)
+)
+
+qqplot(tmp, qunif(ppoints(tmp)))
+
+qqnorm(trees$Height)
+plot(
+  y = sort(trees$Height),
+  x = qnorm(ppoints(trees$Height))
+)
+
+
+tmp <- c(
+  4.297406246, 0.954763715, 0.763137061, 0.474244034, 0.474244034,
+  0.416214305, 0.402158823, 0.371188284, 0.056773325, 0.011020541
+)
+
+q_tmp <- qqnorm(tmp)
+
+q_tmp$x^10
+
+q_tmp <- qqplot(tmp, qunif(ppoints(tmp)))
+
+q_tmp$y
+
+-log10(q_tmp$y)
+
+pdf(
+  here("plots/NMF/test_nmf_k50_all_spots_registration.pdf"),
+  width = 15, height = 15
+)
+
+for (spd_var in paste0("PRECAST_", 2:9)) {
   # spd_var <- "PRECAST_9"
   # stopifnot(!all(is.numeric(spe[[spd_var]])))
-  dn_mat_spd <- model.matrix(~factor(spe[[spd_var]])-1) 
+
+  dn_mat_spd <- model.matrix(~ factor(spe[[spd_var]]) - 1)
+
   # kronecker(dn_mat_spd)
-  
   # dn_mat_spd |> str()
-  
-  
-  
   # ggplot() +
   #   geom_density(aes(x = spe$NMF2, group = spe$dx))
-  
+
   reg_mat <- cor(col_df |> select(starts_with("NMF")), dn_mat_spd)
-  
-  # reg_mat_long <- reg_mat |>   reshape2::melt()
-  
-  # ggplot(data = reg_mat_long) +
-  #   geom_tile(aes(Var1, Var2, fill = value)) +
-  #   scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-  #   theme_minimal() +
-  #   labs(title = "NMF Registering to PRECAST SpD9",
-  #        x = "NMF",
-  #        y = "SpD")
-  # 
-  
-  
-  
-  heatmap(reg_mat,#Rowv = NA, Colv = NA,
-          scale = "none",
-          # col = colorRampPalette(c("blue", "white", "red"))(100),
-          # symm = TRUE,  # Show the matrix symmetrically
-          main = paste0("NMF Registering to ", spd_var),
-          xlab = "SpD",
-          ylab = "NMF"
+
+  heatmap(reg_mat, # Rowv = NA, Colv = NA,
+    scale = "none",
+    # col = colorRampPalette(c("blue", "white", "red"))(100),
+    # symm = TRUE,  # Show the matrix symmetrically
+    main = paste0("NMF Registering to ", spd_var),
+    xlab = "SpD",
+    ylab = "NMF"
   ) |> print()
-  
 }
 
 
 
 
 # NMF registration to sample ----------------------------------------------
-dn_mat_smp <- model.matrix(~spe$sample_id-1)
+dn_mat_smp <- model.matrix(~ spe$sample_id - 1)
 reg_mat <- cor(col_df |> select(starts_with("NMF")), dn_mat_smp)
-heatmap(reg_mat,Colv = NA, #Rowv = NA, 
-        scale = "none",
-        # col = colorRampPalette(c("blue", "white", "red"))(100),
-        # symm = TRUE,  # Show the matrix symmetrically
-        main = "NMF Registration to sample",
-        xlab = "Sample",
-        ylab = "NMF"
+heatmap(reg_mat,
+  Colv = NA, # Rowv = NA,
+  scale = "none",
+  # col = colorRampPalette(c("blue", "white", "red"))(100),
+  # symm = TRUE,  # Show the matrix symmetrically
+  main = "NMF Registration to sample",
+  xlab = "Sample",
+  ylab = "NMF"
 ) |> print()
 
 dev.off()
@@ -214,11 +269,10 @@ dev.off()
 
 
 
-# TODO: Test if the factor is associated with 
+# TODO: Test if the factor is associated with
 
 print(
   "Finish the analysis"
 )
 # Session Info ------------------------------------------------------------
 sessioninfo::session_info()
-
