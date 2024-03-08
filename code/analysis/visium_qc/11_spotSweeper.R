@@ -192,10 +192,16 @@ raw_spe <- scater::runUMAP(raw_spe, dimred = "PCA")
 #     * UMAP is merely as visual check.
 
 ## Plots
-# plotReducedDim(
-#   spe_dimRed,
-#   dimred = "UMAP",
-#   color_by = "sample_id")
+plotReducedDim(
+  raw_spe,
+  dimred = "UMAP",
+  color_by = "scratch")
+
+
+plotReducedDim(
+  raw_spe,
+  dimred = "UMAP",
+  color_by = "local_outliers")
 
 ## Mito_ratio vs sum_gene (miQC) validation ----
 max_mito_ratio <- max(raw_spe$expr_chrM_ratio)
