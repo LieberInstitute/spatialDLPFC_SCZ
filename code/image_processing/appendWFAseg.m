@@ -1,28 +1,46 @@
 dt = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/';
 dt1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/WFAseg/';
-ot = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/samui1/';
+ot = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/samui/';
 
 
 %copyfile('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/*1.mat', ot)
-myfiles1 = dir([dt,'*.mat']);
-myfiles = dir([dt1,'*WFAseg1.mat']);
+WFAfiles = dir([dt,'*.mat']);
 
-for i = 1:numel(myfiles)
-    fname=fullfile(myfiles(i).folder, myfiles(i).name);
-    currentName = [myfiles(i).name(1:end-12),'.mat'];
-    idx = find(strcmp({myfiles1.name}', currentName));
-    fname1=fullfile(myfiles1(idx).folder, myfiles1(idx).name);
-    load(fname)
-    BW = uint8(BW);
-    BW(BW==1) = 255;
-    
+for i = 1:numel(WFAfiles)
+    fname1=fullfile(WFAfiles(i).folder, WFAfiles(i).name);
     load(fname1)
-    imwrite(mat2gray(DAPI),fullfile(ot,[currentName(1:end-4),'.tif']))
-    imwrite(mat2gray(NeuN),fullfile(ot,[currentName(1:end-4),'.tif']),'writemode', 'append')
-    imwrite(mat2gray(Claudin5),fullfile(ot,[currentName(1:end-4),'.tif']),'writemode', 'append')
-    imwrite(mat2gray(WFA),fullfile(ot,[currentName(1:end-4),'.tif']),'writemode', 'append')
-    imwrite(mat2gray(AF),fullfile(ot,[currentName(1:end-4),'.tif']),'writemode', 'append')
-    imwrite(BW,fullfile(ot,[currentName(1:end-4),'.tif']),'writemode', 'append')
+    
+    currentName = WFAfiles(i).name(1:end-4);
+
+    fname=fullfile(dt1, [currentName, '_WFAseg.mat']);
+    load(fname)
+    seg = uint8(BW);
+    seg(seg==1) = 255;
+    
+    fname=fullfile(dt1, [currentName, '_WFAseg1.mat']);
+    load(fname)
+    seg1 = uint8(BW);
+    seg1(seg1==1) = 255;
+
+    fname=fullfile(dt1, [currentName, '_WFAseg2.mat']);
+    load(fname)
+    seg2 = uint8(pnn);
+    seg2(seg2==1) = 255;
+
+    fname=fullfile(dt1, [currentName, '_WFAseg3.mat']);
+    load(fname)
+    seg3 = uint8(pnn);
+    seg3(seg3==1) = 255;
+
+    imwrite(mat2gray(DAPI),fullfile(ot,[currentName,'.tif']))
+    imwrite(mat2gray(NeuN),fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(mat2gray(Claudin5),fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(mat2gray(WFA),fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(mat2gray(AF),fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(seg,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(seg1,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(seg2,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(seg3,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
 disp(currentName)
 end
 
