@@ -16,9 +16,9 @@ for i = 1:numel(WFAfiles)
     load(fname)
 
 WFA1 = WFA.*(BW);
-noise_idx = imbinarize(nonzeros(WFA1));
-noise_idx = imbinarize(nonzeros(WFA1), 'adaptive');
-%noise_idx = imbinarize(nonzeros(WFA1), 'adaptive', 'sensitivity', 0.5);
+%noise_idx = imbinarize(nonzeros(WFA1));
+%noise_idx = imbinarize(nonzeros(WFA1), 'adaptive');
+noise_idx = imbinarize(nonzeros(WFA1), 'adaptive', 'sensitivity', 0.5);
 pnn_idx = find(BW);
 pnn = BW;
 pnn(pnn_idx(~noise_idx)) =0; 
