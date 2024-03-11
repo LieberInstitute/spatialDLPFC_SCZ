@@ -1,0 +1,31 @@
+**** Job starts ****
+Mon Mar 11 03:24:54 PM EDT 2024
+**** JHPCE info ****
+User: mtippani
+Job id: 3099353s
+Job name: appendAFseg
+Hostname: 
+Task id: 
+MATLAB is selecting SOFTWARE OPENGL rendering.
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+             R2023a Update 3 (9.14.0.2286388) 64-bit (glnxa64)
+                                May 25, 2023
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+{Error using load
+Unable to find file or directory
+'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/AFseg/V12D07-334_A1_AFseg.mat.mat'.
+
+Error in appendWFAseg (line 36)
+    load(fname)
+
+Error in run (line 91)
+evalin('caller', strcat(script, ';'));
+} 
+**** Job ends ****
+Mon Mar 11 03:26:24 PM EDT 2024
