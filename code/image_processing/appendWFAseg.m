@@ -32,7 +32,7 @@ for i = 1:numel(WFAfiles)
     seg3 = uint8(pnn);
     seg3(seg3==1) = 255;
     
-    fname=fullfile(at, [currentName, '_AFseg.mat.mat']);
+    fname=fullfile(at, [currentName, '_AFseg.mat']);
     load(fname)
     AFseg = uint8(BW);
     AFseg(AFseg==1) = 255;
