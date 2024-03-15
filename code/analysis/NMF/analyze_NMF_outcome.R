@@ -1,4 +1,4 @@
-# Load Library ------------------------------------------------------------
+# Load Library --------------------
 suppressPackageStartupMessages({
   library(here)
   library(SingleCellExperiment)
@@ -20,12 +20,6 @@ model <- readRDS(
     "test_NMF_all_k50.rds"
   )
 )
-
-patterns <- t(model$h) # these are the factors
-k <- ncol(patterns)
-colnames(patterns) <- paste0("NMF", 1:k)
-rownames(patterns) <- spe$key
-colData(spe) <- cbind(colData(spe), patterns)
 
 ## Load Spe ---------------
 fld_data_spatialcluster <- here(
@@ -67,6 +61,11 @@ spe$age <- metadata(spe)$dx_df$age[
 
 
 colData(spe) |> colnames()
+patterns <- t(model$h) # these are the factors
+k <- ncol(patterns)
+colnames(patterns) <- paste0("NMF", 1:k)
+rownames(patterns) <- spe$key
+colData(spe) <- cbind(colData(spe), patterns)
 
 ## Create nmf sce -----
 
@@ -85,16 +84,63 @@ nmf_sce <- SingleCellExperiment(
   colData = colData(spe)[, colnames_kept]
 )
 
+
 vars <- getVarianceExplained(
   nmf_sce,
   variables = c("sample_id", "PRECAST_8", "dx", "sex", "age"),
   assay.type = "nmf"
 )
 
+png(here("plots/NMF/var_explained_all_cell.png"))
 plotExplanatoryVariables(vars)
+dev.off()
+
+vars_dx_only <- getVarianceExplained(
+  nmf_sce,
+  variables = c("dx"),
+  assay.type = "nmf"
+)
+png(here("plots/NMF/var_explained_all_cell_dx_only.png"))
+plotExplanatoryVariables(vars_dx_only)
+dev.off()
 
 
-## Pseudo-bulk NMF ----
+## Pseudo-bulk NMF - sample & spd ----
+pb_nmf_sce_spd <- aggregateAcrossCells(
+  nmf_sce,
+  ids = DataFrame(
+    sample_id = nmf_sce$sample_id,
+    spd = nmf_sce$PRECAST_8
+  ),
+  use.assay.type = "nmf",
+  statistics = "mean"
+)
+
+png(here("plots/NMF/var_explained_spd-PB.png"))
+plotExplanatoryVariables(
+  pb_nmf_sce_spd,
+  variables = c("dx", "sex", "age", "ncells"),
+  assay.type = "nmf"
+) |> print()
+dev.off()
+
+
+## Pseudo-bulk NMF - sample ----
+
+pb_nmf_sce_raw <- aggregateAcrossCells(
+  nmf_sce,
+  ids = nmf_sce$sample_id,
+  use.assay.type = "nmf"
+)
+png(here("plots/NMF/var_explained_sample-PB_raw.png"))
+plotExplanatoryVariables(
+  pb_nmf_sce_raw,
+  variables = c("dx", "sex", "age", "ncells"),
+  assay.type = "nmf"
+) |> print()
+dev.off()
+
+
 pb_nmf_sce <- aggregateAcrossCells(
   nmf_sce,
   ids = nmf_sce$sample_id,
@@ -102,26 +148,30 @@ pb_nmf_sce <- aggregateAcrossCells(
   statistics = "mean"
 )
 
-
+png(here("plots/NMF/var_explained_sample-PB.png"))
 plotExplanatoryVariables(
   pb_nmf_sce,
   variables = c("dx", "sex", "age", "ncells"),
   assay.type = "nmf"
 ) |> print()
+dev.off()
 
 p_vec <- apply(assay(pb_nmf_sce, "nmf"),
   MARGIN = 1,
   FUN = function(.nmf) {
     mdl <- lm(.nmf ~ dx + sex + age,
-     data = makePerCellDF(pb_nmf_sce)
+      data = makePerCellDF(pb_nmf_sce)
     )
     summary(mdl)$coef["dxscz", "Pr(>|t|)"]
   }
 )
 
+png(here("plots/NMF/sample-PB_qqplot.png"))
 qqplot(
   qunif(ppoints(p_vec)),
-  p_vec)
+  p_vec
+)
+dev.off()
 
 
 
