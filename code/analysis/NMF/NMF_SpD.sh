@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=NMF_all_test
+#SBATCH --job-name=NMF_SpD
 #SBATCH --mem=100G
 #SBATCH --nodes=1
 #SBATCH --ntasks=1            # Number of cores requested
@@ -28,7 +28,7 @@ module list
 ulimit -s unlimited
 
 ## Run code
-Rscript NMF_SpD.R
+Rscript NMF_SpD.r
 
 
 ## Estimate JHPCE Memory
