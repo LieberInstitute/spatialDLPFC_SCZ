@@ -20,16 +20,17 @@ model <- readRDS(
 
 ## Load Spe ---------------
 fld_data_spatialcluster <- here(
-  "processed-data",
-  "rds", "spatial_cluster")
+    "processed-data",
+    "rds", "spatial_cluster"
+)
 
 path_PRECAST_int_spe <- file.path(
-  fld_data_spatialcluster, "PRECAST",
-  paste0("test_spe_semi_inform",".rds")
+    fld_data_spatialcluster, "PRECAST",
+    paste0("test_spe_semi_inform", ".rds")
 )
 
 spe <- readRDS(
-  path_PRECAST_int_spe
+    path_PRECAST_int_spe
 )
 
 spot_key <- spe$key
@@ -84,7 +85,7 @@ for (.sample in unique(spe_complete$sample_id)) {
             data.frame() |> select(starts_with("NMF")),
         spe_complete[, spe_complete$sample_id == .sample]$spg_PBW
     )
-    sample_nmf_mat[[.sample]] <- ret 
+    sample_nmf_mat[[.sample]] <- ret
 }
 
 sample_nmf_mat <- do.call(cbind, sample_nmf_mat)
@@ -99,13 +100,32 @@ heatmap(abs(sample_nmf_mat), scale = "none")
 
 # Interpret NMF 5
 str(model$w)
-NMF5_loadings <- model$w[,5]
+NMF5_loadings <- model$w[, 5]
 names(NMF5_loadings) <- rowData(spe)$gene_name
 
 
-NMF5_loadings |> sort( decreasing = TRUE ) |> head(100) |> names()
+NMF5_loadings |>
+    sort(decreasing = TRUE) |>
+    head(100) |>
+    names()
 
-which((NMF5_loadings |> sort( decreasing = TRUE ) |> names() )== "PVALB")
+which((NMF5_loadings |> sort(decreasing = TRUE) |> names()) == "PVALB")
+
+
+# Interpret NMF 6
+
+NMF6_loadings <- model$w[, 6]
+names(NMF6_loadings) <- rowData(spe)$gene_name
+
+
+NMF6_loadings |>
+    sort(decreasing = TRUE) |>
+    head(100) |>
+    names()
+
+which((NMF6_loadings |> sort(decreasing = TRUE) |> names()) == "PVALB")
+which((NMF6_loadings |> sort(decreasing = TRUE) |> names()) == "RORB")
+
 
 # Session Info ----
 sessioninfo::session_info()
