@@ -52,6 +52,10 @@ spe$age <- metadata(spe)$dx_df$age[
   )
 ]
 
+spe$lot_num <- sapply(strsplit(spe$sample_id, "_"), function(x) x[1])
+spe$slide_id <- sapply(strsplit(spe$lot_num, "-"), function(x) x[2])
+
+
 ## Log transformation -----
 # Create logcounts
 spe <- logNormCounts(spe)
@@ -144,6 +148,76 @@ set.seed(1)
 spe <- runPCA(spe, ntop = 2000, name = "PCA_2000")
 spe <- runUMAP(spe, dimred = "PCA_2000", name = "UMAP_2000")
 
+##### Plot Against lot numer ----
+
+plotUMAPbyVar <- function(
+    var_spd,
+    .dimred,
+    fld_path) {
+  # var_spd <- "lot_num"
+  # .dimred <- "UMAP_2000"
+  # fld_path <- "plots/02_visium_qc/UMAP_2000/"
+  # browser()
+  stopifnot(.dimred %in% reducedDimNames(spe))
+  stopifnot(file.exists(fld_path))
+
+  # Overall plot
+  png(here(
+    fld_path,
+    paste0(.dimred, "_", var_spd, ".png")
+  ))
+  plotReducedDim(spe,
+    dimred = .dimred,
+    point_size = 0.1,
+    colour_by = var_spd
+  ) +
+    theme(legend.position = "none") #+
+  # scale_colour_manual(values = colors)
+  dev.off()
+
+  ## Sample Specific UMAP
+  for (i in seq.int(unique(spe[[var_spd]]))) {
+    .smp <- unique(spe[[var_spd]])[i]
+    spe$sub_sample <- FALSE
+    spe$sub_sample[spe[[var_spd]] == .smp] <- TRUE
+
+    # order(spe$sub_sample)
+
+    png(
+      here(
+        fld_path,
+        paste0(.dimred, "_", var_spd, "_", .smp, ".png")
+      )
+    )
+    print(
+      plotReducedDim(
+        spe[, order(spe$sub_sample)],
+        dimred = .dimred,
+        point_size = 0.1,
+        colour_by = "sub_sample"
+      ) +
+        theme(legend.position = "none") +
+        scale_colour_manual(
+          values = c("FALSE" = "lightgrey", "TRUE" = "red")
+        ) +
+        labs(title = .smp)
+    )
+    dev.off()
+  }
+}
+
+plotUMAPbyVar(
+  var_spd = "lot_num",
+  .dimred = "UMAP_2000",
+  fld_path = "plots/02_visium_qc/UMAP_2000/"
+)
+
+plotUMAPbyVar(
+  var_spd = "slide_id",
+  .dimred = "UMAP_2000",
+  fld_path = "plots/02_visium_qc/UMAP_2000/"
+)
+
 
 ## spatialDLPFC Marker Gene ----
 ### Find Marker Genes ----
@@ -156,21 +230,23 @@ gene_df_raw <- read.csv(
   file_DLPFC_enrich_csv
 )
 
-gene_df <- gene_df_raw |> 
-  filter(spatial_domain_resolution == "Sp09") |> 
-  group_by(test) |> 
-  arrange(fdr, .by_group = TRUE) |> 
-  slice_head(n=n_marker_gene)
+gene_df <- gene_df_raw |>
+  filter(spatial_domain_resolution == "Sp09") |>
+  group_by(test) |>
+  arrange(fdr, .by_group = TRUE) |>
+  slice_head(n = n_marker_gene)
 
 
 stopifnot(all(gene_df$model_type == "enrichment"))
-stopifnot(nrow(gene_df) == 9*n_marker_gene)
+stopifnot(nrow(gene_df) == 9 * n_marker_gene)
 
-cat("NOTE (boyiguo1): ",
-    gene_df$ensembl |> unique() |> length(),
-    " unique gene markers are selected for spatial clustering. \n")
+cat(
+  "NOTE (boyiguo1): ",
+  gene_df$ensembl |> unique() |> length(),
+  " unique gene markers are selected for spatial clustering. \n"
+)
 
-# gene_df$ensembl 
+# gene_df$ensembl
 # rowData(spe) |> names()
 # rowData(spe)$gene_id |> head()
 # sum(rowData(spe)$gene_id %in% gene_df$ensembl)
@@ -195,8 +271,15 @@ saveRDS(
   here(
     "processed-data/rds/01_build_spe",
     "test_raw_spe_UMAP_N63.rds"
-    )
   )
+)
+
+# spe <- readRDS(
+#   here(
+#     "processed-data/rds/01_build_spe",
+#     "test_raw_spe_UMAP_N63.rds"
+#   )
+# )
 
 library(RColorBrewer)
 set.seed(1)
@@ -206,15 +289,15 @@ color_palette <- colorRampPalette(brewer.pal(12, "Set3"))
 colors <- color_palette(length(unique(spe$sample_id)))[sample.int(length(unique(spe$sample_id)))]
 
 # Combined Plot
-# png(here("plots/02_visium_qc/UMAP_2000/UMAP_2000_all_spots.png"))
-# plotReducedDim(spe,
-#   dimred = "UMAP_2000",
-#   point_size = 0.1,
-#   colour_by = "sample_id"
-# ) +
-#   theme(legend.position = "none") +
-#   scale_colour_manual(values = colors)
-# dev.off()
+png(here("plots/02_visium_qc/UMAP_marker/UMAP_all_spots.png"))
+plotReducedDim(spe,
+  dimred = "UMAP_spatialDLPFC",
+  point_size = 0.1,
+  colour_by = "sample_id"
+) +
+  theme(legend.position = "none") +
+  scale_colour_manual(values = colors)
+dev.off()
 
 # Sample Specific UMAP
 # for (i in 1:3){
@@ -227,14 +310,14 @@ for (i in seq.int(unique(spe$sample_id))) {
 
   png(
     here(
-      "plots/02_visium_qc/UMAP_2000/",
-      paste0("UMAP_2000_", .smp, ".png")
+      "plots/02_visium_qc/UMAP_marker/",
+      paste0("UMAP_", .smp, ".png")
     )
   )
   print(
     plotReducedDim(
       spe[, order(spe$sub_sample)],
-      dimred = "UMAP_2000",
+      dimred = "UMAP_spatialDLPFC",
       point_size = 0.1,
       colour_by = "sub_sample"
     ) +
@@ -248,7 +331,7 @@ for (i in seq.int(unique(spe$sample_id))) {
 }
 
 
-
+# Archived Code for plotting all UMAPs in one figure -----
 # UMAP_2000_mat <- reducedDim(spe)
 # # UMAP_2000_mat <- reducedDim(spe, "UMAP_2000")
 # UMAP1_range <- c(min(UMAP_2000_mat[,1]), max(UMAP_2000_mat[,1]))
@@ -283,8 +366,6 @@ for (i in seq.int(unique(spe$sample_id))) {
 #   # })
 # }
 # dev.off()
-
-
 # # for (i in 1:4){
 # # for(i in seq.int(unique(spe$sample_id))){
 # UMAP_plot_list <- seq.int(unique(spe$sample_id)) |>
@@ -310,8 +391,6 @@ for (i in seq.int(unique(spe$sample_id))) {
 #     # UMAP_plot_list <- c(UMAP_plot_list, ret_p)
 #   })
 # # }
-
-
 # ggpubr::ggarrange(
 #   plotlist = UMAP_plot_list,
 #   ncol = 8
@@ -326,11 +405,6 @@ for (i in seq.int(unique(spe$sample_id))) {
 #   spe,
 #   variables = c("dx", "sex", "age", "sample_id")
 # )
-
-
-
-
-
 # plotUMAP(spe,
 #   point_size = 0.1,
 #   colour_by = "dx"
@@ -354,17 +428,12 @@ for (i in seq.int(unique(spe$sample_id))) {
 #   here("processed-data/visium_qc/scratch_key.rds"),
 # )
 # spe$scratch <- "No"
-# spe$scratch[spe$key %in% artf_spots_key] <- "Yes"
-
-
+# spe$scratch[spe$key %in% artf_spots_key] <- "Yes
 # plotUMAP(spe,
 #   point_size = 0.1,
 #   colour_by = "scratch"
 # ) +
 #   theme(legend.position = "none")
-
-
-
 
 
 
