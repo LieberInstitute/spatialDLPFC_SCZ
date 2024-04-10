@@ -11,25 +11,26 @@ suppressPackageStartupMessages({
 # Load QC-ed SPE object ----
 spe <- readRDS(here::here(
   "processed-data/rds/",
-  #TODO: replace this path
-  "test_spe_after_spot_qc_63.rds")
-)
+  # TODO: replace this path
+  "test_spe_after_spot_qc_63.rds"
+))
 
 spe$dx <- metadata(spe)$dx_df$dx[
   match(
     spe$sample_id,
     metadata(spe)$dx_df$sample_id
   )
+]
 
 spe <- spe[, spe$dx == "scz"]
 
-stopifnot(ncol(spe)>0)
+stopifnot(ncol(spe) > 0)
 
 
 
-# PRECAST Workflow -------------------------------------------------------
+# PRECAST Workflow -----
 
-## Cluster Configuration -------------------------------------------------
+## Cluster Configuration -----
 n_marker_gene <- 100
 # K <- as.numeric(Sys.getenv("SGE_TASK_ID"))
 k_min <- 2
@@ -37,6 +38,10 @@ k_max <- 16
 
 
 ## Select spatialDLPFC marker genes  ----------------------------------
+file_DLPFC_enrich_csv <- here(
+  "code/spatial_clustering/PRECAST",
+  "TableS8_sig_genes_FDR5perc_enrichment.csv"
+)
 gene_df_raw <- read.csv(
   file_DLPFC_enrich_csv
 )
