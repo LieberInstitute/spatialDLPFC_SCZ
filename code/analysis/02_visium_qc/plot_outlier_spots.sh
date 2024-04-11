@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=plot_outlier_spots
 #SBATCH --mem=40G
+#SBATCH --time=2:00:00
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu
