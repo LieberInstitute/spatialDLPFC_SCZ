@@ -38,7 +38,7 @@ outlier_keys <- outlier_df |>
   filter(outlier == TRUE) |>
   pull(key)
 
-spe$outlier <- spe$key %in% outlier_keys
+spe$outlier <- factor(spe$key %in% outlier_keys)
 
 ## Remove out-tissue spots
 spe <- spe[, spe$in_tissue == TRUE]
