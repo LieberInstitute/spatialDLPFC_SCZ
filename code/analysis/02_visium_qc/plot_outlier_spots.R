@@ -18,19 +18,30 @@ spe <- readRDS(
 )
 
 ## Load outlier keys ----
-outlier_spots_key <- readRDS(here("processed-data/visium_qc/outlier_key_ngb_36.rds"))
+outlier_df <- readRDS(
+  here(
+    "processed-data/02_visium_qc",
+    "outlier_df.rds"
+  )
+)
 
 ## Merge data together ----
-# TODO: edit this section to make it more compatible with
-spe$outlier <- FALSE
-spe$outlier[spe$key %in% outlier_spots_key] <- TRUE
-spe$outlier <- factor(spe$outlier)
+outlier_keys <- outlier_df |>
+  rowwise() |>
+  mutate(
+    outlier =
+      any(
+        c(umi_lt_100, gene_lt_200, artifact)
+      )
+  ) |>
+  ungroup() |>
+  filter(outlier == TRUE) |>
+  pull(key)
+
+spe$outlier <- spe$key %in% outlier_keys
 
 ## Remove out-tissue spots
 spe <- spe[, spe$in_tissue == TRUE]
-
-
-sum(is.na(spe$outlier))
 
 # Spot plot of outlier ----
 vis_grid_clus(

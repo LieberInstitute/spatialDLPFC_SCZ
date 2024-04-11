@@ -3,13 +3,14 @@ suppressPackageStartupMessages({
   library(SpatialExperiment)
   library(scater)
   library(tidyverse)
-  library(spotSweeper)
+  library(SpotSweeper)
   library(sessioninfo)
+  library(here)
 })
 
 stopifnot(
   "To replicate the result, please use spotsweeper 0.99.2" =
-  package.version("SpotSweeper") == "0.99.2"
+    package.version("SpotSweeper") >= "0.99.2"
 )
 
 # Load Data ----
@@ -24,7 +25,7 @@ spe <- readRDS(
 ## Remove out tissue spots ----
 ret_spe <- spe[, spe$in_tissue == TRUE]
 
-## Spatially-aware QC (SpotSweeper)----
+## Spatially-aware QC (SpotSweeper) ----
 # TODO: to edit this after finalizing spot sweeper 0.99.2
 
 
@@ -46,7 +47,7 @@ artf_samples <- sample_info |>
 artf_spots_key <- c()
 
 for (.sample in artf_samples) {
-  sub_spe <- raw_spe[, raw_spe$sample_id == .sample]
+  sub_spe <- ret_spe[, ret_spe$sample_id == .sample]
   sub_spe <- sub_spe[, sub_spe$in_tissue == 1]
 
   sub_spe <- findArtifacts(
@@ -66,10 +67,16 @@ outlier_df <- data.frame(
   key = spe$key,
   out_tissue_spots = !spe$in_tissue,
   umi_lt_100 = spe$sum_umi <= 100,
-  gene_lt_200 = spe$sum_gene <=200,
+  gene_lt_200 = spe$sum_gene <= 200,
+  artifact = (spe$key %in% artf_spots_key)
 )
 
-saveRDS(outlier_df)
+saveRDS(
+  outlier_df,
+  file = here::here(
+    "processed-data/02_visium_qc", "outlier_df.rds"
+  )
+)
 
 # Session info ----
 session_info()
