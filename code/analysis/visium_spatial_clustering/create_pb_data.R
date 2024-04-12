@@ -3,9 +3,9 @@ suppressPackageStartupMessages({
   library(here)
   library(SpatialExperiment)
   library(spatialLIBD)
-  library(tidyverse)
-  library(escheR)
-  library(ggpubr)
+  # library(tidyverse)
+  # library(escheR)
+  # library(ggpubr)
   library(sessioninfo)
 })
 
