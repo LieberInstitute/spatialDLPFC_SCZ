@@ -21,14 +21,10 @@ spe <- readRDS(
   )
 )
 
-# Spot Annotation ----
 ## Remove out tissue spots ----
 ret_spe <- spe[, spe$in_tissue == TRUE]
 
-## Spatially-aware QC (SpotSweeper) ----
-# TODO: to edit this after finalizing spot sweeper 0.99.2
-
-
+# Spot Annotation ----
 ## Annotate compromised regions (SpotSweeper)----
 sample_info <- readxl::read_xlsx(
   here(
@@ -43,12 +39,15 @@ artf_samples <- sample_info |>
   transmute(sample_id = paste0(SlideSerial, "_", CaptureArea)) |>
   pull(sample_id)
 
-# TODO: to edit this
+
 artf_spots_key <- c()
 
 for (.sample in artf_samples) {
   sub_spe <- ret_spe[, ret_spe$sample_id == .sample]
-  sub_spe <- sub_spe[, sub_spe$in_tissue == 1]
+  sub_spe <- sub_spe[, sub_spe$in_tissue == TRUE]
+
+  # Prevent subset mis-behaving
+  stopifnot(ncol(sub_spe) != 0)
 
   sub_spe <- findArtifacts(
     sub_spe,
@@ -74,7 +73,8 @@ outlier_df <- data.frame(
 saveRDS(
   outlier_df,
   file = here::here(
-    "processed-data/02_visium_qc", "outlier_df.rds"
+    "processed-data/02_visium_qc",
+    "outlier_df.rds"
   )
 )
 
