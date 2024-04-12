@@ -63,7 +63,8 @@ spe$sex <- metadata(spe)$dx_df$sex[
   )
 ]
 
-
+spe$lot_num <- sapply(strsplit(spe$sample_id, "_"), function(x) x[1])
+spe$slide_id <- sapply(strsplit(spe$lot_num, "-"), function(x) x[2])
 
 # Sample Level Bulk DE ----------------------------------------------------
 spe_bulk <-
@@ -74,7 +75,44 @@ spe_bulk <-
     min_ncells = 10
   )
 
-covars <- c("age", "sex")
+covars <- c("age", "sex", "lot_num")
+
+set.seed(20240411)
+spe_bulk <- runPCA(sce_pseudo)
+
+tmp <- registration_stats_enrichment(
+  spe_bulk,
+  block_cor = NaN,
+  covars =  c("age", "sex"),
+  # var_registration = "dx",
+  gene_ensembl = "gene_id",
+  gene_name = "gene_name"
+)
+
+tmp |> filter(fdr_scz <= 0.05) |> nrow()
+
+tmp <- registration_stats_enrichment(
+  spe_bulk,
+  block_cor = NaN,
+  covars =  c("age", "sex", "lot_num"),
+  # var_registration = "dx",
+  gene_ensembl = "gene_id",
+  gene_name = "gene_name"
+)
+
+
+
+plotPCA(
+  spe_bulk,
+  colour_by = "spd",
+  ncomponents = 6,
+  point_size = 0.5,
+  label_format = c("%s %02i", " (%i%%)"),
+)
+
+
+
+
 
 registration_mod <-
   registration_model(spe_bulk,
