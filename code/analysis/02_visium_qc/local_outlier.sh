@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=local_outlier.R
-#SBATCH --mem=40G
-#SBATCH --time=2:00:00
+#SBATCH --mem=20G
+#SBATCH --time=1:00:00
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu
