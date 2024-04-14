@@ -1,4 +1,4 @@
-# Load Pacakges -------------------------------------------------------
+# Load Pacakges ----
 suppressPackageStartupMessages({
   library(SpatialExperiment)
   library(tidyverse)
