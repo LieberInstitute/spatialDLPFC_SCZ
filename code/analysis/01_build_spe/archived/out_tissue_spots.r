@@ -1,3 +1,5 @@
+# Objective: visaulize mito_ratio vs sum_gene relationship following miQC logic.
+
 # Load Pacakges ----
 suppressPackageStartupMessages({
   library(SpatialExperiment)
