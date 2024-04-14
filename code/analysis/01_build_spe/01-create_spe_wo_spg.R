@@ -1,10 +1,12 @@
-# Load Packages -----------------------------------------------------------
-library(here)
-library(SpatialExperiment)
-library(spatialLIBD)
-library(tidyverse)
-library(glue)
-library(sessioninfo)
+# Load Packages -----
+suppressPackageStartupMessages({
+  library(here)
+  library(SpatialExperiment)
+  library(spatialLIBD)
+  library(tidyverse)
+  library(glue)
+  library(sessioninfo)
+})
 
 
 ## Related to
@@ -15,7 +17,7 @@ stopifnot(packageVersion("SpatialExperiment") >= "1.9.5")
 stopifnot(packageVersion("spatialLIBD") >= "1.11.10")
 
 
-# Confirm Space Ranger Output ---------------------------------------------
+# Confirm Space Ranger Output -----
 raw_expr_meta <- read.csv(
   here(
     "code", "visium_data_process",
@@ -41,7 +43,7 @@ stopifnot(
 )
 
 
-# Remove V12F14-053_B1 (Not DLPFC) ----------------------------------------
+# Remove V12F14-053_B1 (Not DLPFC) -----
 expr_meta <- raw_expr_meta |>
   filter(sample_name != "V12F14-053_B1")
 
@@ -53,7 +55,7 @@ stopifnot(
 )
 
 
-# Build SPE Object --------------------------------------------------------
+# Build SPE Object ----
 ## NOTE:
 ## Memory space --mem=60G for 36 samples
 ## Required --mem=120G for 64 sample
@@ -88,7 +90,7 @@ if ((nrow(expr_meta) * 4992 - ncol(spe)) != 0) {
 ##  Sample V13M06-281_B1 has 1 missing spots.
 
 
-# Organize colData(spe) Names ---------------------------------------------
+# Organize colData(spe) Names -----
 # Remove useless columns in colData(spe)
 spe$ManualAnnotation <- NULL
 colnames(spe) <- spe$key
@@ -108,7 +110,12 @@ colnames(spe) <- spe$key
 
 # Add Donor Demo Info as metadata(spe) ---------
 ### read in meta information
-source(here("code", "analysis/01_build_spe", "fun_import_dx.R"))
+source(
+  here(
+    "code/analysis/01_build_spe",
+    "fun_import_dx.R"
+  )
+)
 
 # Save the dx data as the meta data
 metadata(spe)$dx_df <- clean_df |>
@@ -128,7 +135,7 @@ metadata(spe)$dx_df <- clean_df |>
   )
 
 
-# Save SPE Object --------------------------------------------------------------spe
+# Save SPE Object ----
 path_spe_folder <- here::here(
   "processed-data", "rds",
   "01_build_spe"
@@ -148,5 +155,5 @@ saveRDS(spe,
   )
 )
 
-# Session Info ------------------------------------------------------------
+# Session Info -----
 session_info()
