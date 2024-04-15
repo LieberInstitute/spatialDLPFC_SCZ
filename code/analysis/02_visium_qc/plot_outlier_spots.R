@@ -25,8 +25,26 @@ outlier_df <- readRDS(
   )
 )
 
+## Load local outlier keys ----
+local_outlier_df <- readRDS(
+  here(
+    "processed-data/02_visium_qc",
+    "local_outlier_df.rds"
+  )
+)
+
+
+
+
 ## Merge data together ----
-outlier_keys <- outlier_df |>
+
+tot_outlier_d <- full_join(
+  outlier_df,
+  local_outlier_df,
+  by = "key"
+)
+
+tot_outlier_d <- tot_outlier_d |>
   rowwise() |>
   mutate(
     outlier =
@@ -34,19 +52,44 @@ outlier_keys <- outlier_df |>
         c(umi_lt_100, gene_lt_200, artifact)
       )
   ) |>
-  ungroup() |>
-  filter(outlier == TRUE) |>
-  pull(key)
+  ungroup() 
+  
+tot_outlier_d <- tot_outlier_d |>
+  mutate(
+    all_outlier = case_when(
+      outlier & local_outliers ~ "Both",
+      outlier & !local_outliers ~ "outlier",
+      !outlier & local_outliers ~ "local",
+      !outlier & !local_outliers ~ "neither"
+    ) |> factor()
+  ) |> column_to_rownames("key")
 
-spe$outlier <- factor(spe$key %in% outlier_keys)
+# Quick test
+tot_outlier_d |> filter(local_outliers == TRUE) |> 
+select(outlier, local_outliers, all_outlier)
+
+spe$all_outlier <- tot_outlier_d[spe$key, "all_outlier"]
 
 ## Remove out-tissue spots
 spe <- spe[, spe$in_tissue == TRUE]
 
+
 # Spot plot of outlier ----
+# For test
+# spe <- spe[, spe$sample_id %in% unique(spe$sample_id)[1:2]]
+# vis_grid_clus(
+#   spe,
+#   clustervar = "all_outlier",
+#   spatial = FALSE,
+#   pdf_file = here(
+#     "plots/02_visium_qc/spot_plot_outliers.pdf"
+#   ),
+#   sample_order = unique(spe$sample_id) |> sort(),
+# )
+
 vis_grid_clus(
   spe,
-  clustervar = "outlier",
+  clustervar = "all_outlier",
   spatial = FALSE,
   pdf_file = here(
     "plots/02_visium_qc/spot_plot_outliers.pdf"
