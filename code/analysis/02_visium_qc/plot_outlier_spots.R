@@ -70,22 +70,9 @@ select(outlier, local_outliers, all_outlier)
 
 spe$all_outlier <- tot_outlier_d[spe$key, "all_outlier"]
 
-## Remove out-tissue spots
+# Make spot plot ----
+## Remove out-tissue spots ----
 spe <- spe[, spe$in_tissue == TRUE]
-
-
-# Spot plot of outlier ----
-# For test
-# spe <- spe[, spe$sample_id %in% unique(spe$sample_id)[1:2]]
-# vis_grid_clus(
-#   spe,
-#   clustervar = "all_outlier",
-#   spatial = FALSE,
-#   pdf_file = here(
-#     "plots/02_visium_qc/spot_plot_outliers.pdf"
-#   ),
-#   sample_order = unique(spe$sample_id) |> sort(),
-# )
 
 vis_grid_clus(
   spe,
