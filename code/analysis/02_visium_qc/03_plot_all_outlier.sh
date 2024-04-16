@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=03_plot_all_outlier
-#SBATCH --mem=30G
+#SBATCH --mem=35G
 #SBATCH --time=0:40:00
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
