@@ -61,7 +61,8 @@ tot_outlier_df <- tot_outlier_df |>
       outlier & !local_outliers ~ "outlier",
       !outlier & local_outliers ~ "local",
       !outlier & !local_outliers ~ "neither"
-    ) |> factor()
+    ) |> factor(),
+    remove = (out_tissue_spots) | (all_outlier != "neither")
   ) |>
   column_to_rownames("key")
 
@@ -76,7 +77,8 @@ saveRDS(
 # Quick test
 tot_outlier_df |>
   filter(local_outliers == TRUE) |>
-  select(outlier, local_outliers, all_outlier)
+  select(outlier, local_outliers, all_outlier) |> 
+  head()
 
 spe$all_outlier <- tot_outlier_df[spe$key, "all_outlier"]
 
