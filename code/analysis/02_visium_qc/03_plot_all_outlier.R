@@ -13,14 +13,14 @@ suppressPackageStartupMessages({
 spe <- readRDS(
   here::here(
     "processed-data", "rds", "01_build_spe",
-    "test_raw_spe_w_spg_N63.rds"
+    "raw_spe_wo_SPG_N63.rds"
   )
 )
 
 ## Load outlier keys ----
 outlier_df <- readRDS(
   here(
-    "processed-data/02_visium_qc",
+    "processed-data/rds/02_visium_qc",
     "outlier_df.rds"
   )
 )
@@ -28,7 +28,7 @@ outlier_df <- readRDS(
 ## Load local outlier keys ----
 local_outlier_df <- readRDS(
   here(
-    "processed-data/02_visium_qc",
+    "processed-data/rds/02_visium_qc",
     "local_outlier_df.rds"
   )
 )
@@ -38,13 +38,13 @@ local_outlier_df <- readRDS(
 
 ## Merge data together ----
 
-tot_outlier_d <- full_join(
+tot_outlier_df <- full_join(
   outlier_df,
   local_outlier_df,
   by = "key"
 )
 
-tot_outlier_d <- tot_outlier_d |>
+tot_outlier_df <- tot_outlier_df |>
   rowwise() |>
   mutate(
     outlier =
@@ -52,9 +52,9 @@ tot_outlier_d <- tot_outlier_d |>
         c(umi_lt_100, gene_lt_200, artifact)
       )
   ) |>
-  ungroup() 
-  
-tot_outlier_d <- tot_outlier_d |>
+  ungroup()
+
+tot_outlier_df <- tot_outlier_df |>
   mutate(
     all_outlier = case_when(
       outlier & local_outliers ~ "Both",
@@ -62,13 +62,23 @@ tot_outlier_d <- tot_outlier_d |>
       !outlier & local_outliers ~ "local",
       !outlier & !local_outliers ~ "neither"
     ) |> factor()
-  ) |> column_to_rownames("key")
+  ) |>
+  column_to_rownames("key")
+
+saveRDS(
+  tot_outlier_df,
+  here(
+    "processed-data/rds/02_visium_qc",
+    "combined_outlier_df.rds"
+  )
+)
 
 # Quick test
-tot_outlier_d |> filter(local_outliers == TRUE) |> 
-select(outlier, local_outliers, all_outlier)
+tot_outlier_df |>
+  filter(local_outliers == TRUE) |>
+  select(outlier, local_outliers, all_outlier)
 
-spe$all_outlier <- tot_outlier_d[spe$key, "all_outlier"]
+spe$all_outlier <- tot_outlier_df[spe$key, "all_outlier"]
 
 # Make spot plot ----
 ## Remove out-tissue spots ----

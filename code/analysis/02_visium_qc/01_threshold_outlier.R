@@ -73,7 +73,7 @@ outlier_df <- data.frame(
 saveRDS(
   outlier_df,
   file = here::here(
-    "processed-data/02_visium_qc",
+    "processed-data/rds/02_visium_qc",
     "outlier_df.rds"
   )
 )
