@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=local_outlier.R
-#SBATCH --mem=20G
-#SBATCH --time=1:00:00
+#SBATCH --job-name=03_plot_all_outlier
+#SBATCH --mem=30G
+#SBATCH --time=0:40:00
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu
@@ -26,7 +26,7 @@ module load conda_R/devel
 module list
 
 ## Run code
-Rscript local_outlier.R
+Rscript 03_plot_all_outlier.R
 
 
 ## Memeory stat
@@ -34,3 +34,4 @@ sstat -a -o JobID,MaxVMSizeNode,MaxVMSize,AveVMSize,MaxRSS,AveRS S,MaxDiskRead,M
 
 echo "**** Job ends ****"
 date
+
