@@ -58,9 +58,11 @@ PRECAST_df <- map(
 )
 
 ## Organize list to df (n*k) ----
-PRECAST_df_final <- do.call(cbind, PRECAST_df)
+PRECAST_df_final <- do.call(cbind, PRECAST_df)s
 k_clus <- attr(PRECASTObj@resList, "para_settings")$K # Order of K
 colnames(PRECAST_df_final) <- sprintf("PRECAST_%02d", k_clus)
+PRECAST_df_final <- PRECAST_df_final |> data.frame() |> 
+  rownames_to_column(var = "key")
 
 
 # Save rds ----
