@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=assemble_qc_spe.r
-#SBATCH --mem=40G
+#SBATCH --job-name=assemble_qc_spe
+#SBATCH --mem=50G
 #SBATCH --time=0:40:00
 #SBATCH -n 1
 #SBATCH --mail-type=ALL

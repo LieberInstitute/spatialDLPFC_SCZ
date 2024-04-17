@@ -57,7 +57,7 @@ spe$slide_id <- sapply(strsplit(spe$lot_num, "-"), function(x) x[2])
 # Enrichment test for each SpD ----
 vars <- grep("^PRECAST", names(colData(spe)), value = TRUE)
 
-.var <- vars[7]
+# .var <- vars[7]
 
 for (.var in vars) {
   cat(
