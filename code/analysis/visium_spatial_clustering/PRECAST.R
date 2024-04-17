@@ -124,7 +124,7 @@ saveRDS(
     here(
       "processed-data/rds/spatial_cluster",
       "PRECAST",
-      paste0("test_PRECASTObj_semi_inform_k_2-16", ".rds")
+      "test_PRECASTObj_semi_inform_k_2-16.rds"
     )
 )
 
