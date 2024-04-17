@@ -20,7 +20,7 @@ echo "Hostname: ${SLURM_CLUSTER_NAME}"
 echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 
 ## Load Modules
-module load conda_R/4.3.x
+module load conda_R/devel
 
 ## List current modules for reproducibility
 module list
@@ -29,8 +29,8 @@ module list
 Rscript 02-create_spe_with_spg.R
 
 
-## Memeory stat
-sstat -a -o JobID,MaxVMSizeNode,MaxVMSize,AveVMSize,MaxRSS,AveRS S,MaxDiskRead,MaxDiskWrite,AveCPUFreq,TRESUsageInMax -j ${SLURM_JOB_ID}
+# ## Memeory stat
+# sstat -a -o JobID,MaxVMSizeNode,MaxVMSize,AveVMSize,MaxRSS,AveRS S,MaxDiskRead,MaxDiskWrite,AveCPUFreq,TRESUsageInMax -j echo ${SLURM_JOBID} 
 
 echo "**** Job ends ****"
 date
