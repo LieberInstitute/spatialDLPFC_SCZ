@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=01-create_spe_wo_spg
-#SBATCH --mem=75G
+#SBATCH --mem=55G
+#SBATCH --time=00:30:00
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu
@@ -19,7 +20,7 @@ echo "Hostname: ${SLURM_CLUSTER_NAME}"
 echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 
 ## Load Modules
-module load conda_R/4.3.x
+module load conda_R/devel
 
 ## List current modules for reproducibility
 module list
