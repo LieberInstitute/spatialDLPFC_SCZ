@@ -66,7 +66,7 @@ precast_vars |>
         clustervar = .x,
         spatial = FALSE,
         pdf_file = here(
-          "plots/spatial_cluster",
+          "plots/spatial_cluster/PRECAST",
           paste0("test_semi_supervised_", .x, ".pdf")
         ),
         sample_order = unique(raw_spe$sample_id) |> sort(),
