@@ -4,6 +4,7 @@ suppressPackageStartupMessages({
   library(SpatialExperiment)
   library(spatialLIBD)
   library(tidyverse)
+  library(Polychrome)
   library(sessioninfo)
 })
 
@@ -43,33 +44,40 @@ precast_vars <- grep(
   "^PRECAST_", colnames(PRECAST_df),
   value = TRUE
 )
-raw_spe <- raw_spe[, raw_spe$key %in% PRECAST_df$key]
+spe <- raw_spe[, raw_spe$key %in% PRECAST_df$key]
 # raw_spe[, precast_vars] <- PRECAST_df[raw_spe$key, precast_vars]
 col_data_df <- PRECAST_df |>
   right_join(
-    colData(raw_spe) |> data.frame(),
+    colData(spe) |> data.frame(),
     by = c("key"),
     relationship = "one-to-one"
   )
-rownames(col_data_df) <- colnames(raw_spe)
-colData(raw_spe) <- DataFrame(col_data_df)
+rownames(col_data_df) <- colnames(spe)
+colData(spe) <- DataFrame(col_data_df)
 
-
+max_k <- 16
 
 # Plot Clustering Results ----
 precast_vars |>
   walk(
     .f = function(.x) {
       cat("Start plotting for ", .x, "\n")
+      k <- unique(spe[[.x]]) |> length()
+
       vis_grid_clus(
-        raw_spe,
+        spe,
         clustervar = .x,
+        sort_clust = FALSE,
         spatial = FALSE,
         pdf_file = here(
           "plots/spatial_cluster/PRECAST",
           paste0("test_semi_supervised_", .x, ".pdf")
         ),
-        sample_order = unique(raw_spe$sample_id) |> sort(),
+        colors = set_names(
+          Polychrome::palette36.colors(max_k)[seq.int(k)],
+          unique(spe[[.x]]) |> sort()
+        ),
+        sample_order = unique(spe$sample_id) |> sort(),
         height = 1056,
         width = 816,
         point_size = 0.8,
