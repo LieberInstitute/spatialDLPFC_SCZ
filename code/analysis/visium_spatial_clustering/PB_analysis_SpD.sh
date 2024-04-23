@@ -26,7 +26,7 @@ module load conda_R/devel
 module list
 
 ## Run code
-Rscript PB_analysis_SpD.R
+Rscript PB_analysis_SpD.r
 
 
 ## Estimate JHPCE Memory
