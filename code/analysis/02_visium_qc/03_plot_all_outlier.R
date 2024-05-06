@@ -37,7 +37,6 @@ local_outlier_df <- readRDS(
 
 
 ## Merge data together ----
-
 tot_outlier_df <- full_join(
   outlier_df,
   local_outlier_df,
@@ -75,12 +74,14 @@ saveRDS(
 )
 
 # Quick test
-tot_outlier_df |>
-  filter(local_outliers == TRUE) |>
-  select(outlier, local_outliers, all_outlier) |> 
-  head()
+# tot_outlier_df |>
+#   filter(local_outliers == TRUE) |>
+#   select(outlier, local_outliers, all_outlier) |>
+#   head()
+
 
 spe$all_outlier <- tot_outlier_df[spe$key, "all_outlier"]
+spe$remove <- tot_outlier_df[spe$key, "remove"]
 
 # Make spot plot ----
 ## Remove out-tissue spots ----
@@ -98,6 +99,70 @@ vis_grid_clus(
   width = 816,
   point_size = 0.8
 )
+
+# Fianlized supplementary plot ----
+plot_list <- vis_grid_clus(
+  spe,
+  clustervar = "remove",
+  colors = c("FALSE" = "grey90", "TRUE" = "deeppink"),
+  sort_clust = FALSE,
+  sample_order = unique(spe$sample_id) |> sort(),
+  spatial = FALSE,
+  point_size = 2,
+  return_plots = TRUE
+)
+## Plot legends ----
+pdf(
+  file = here::here(
+    "plots", "02_visium_qc",
+    paste0("vis_clus_sample_aware_low_lib_size_sfigur_legend.pdf")
+  ), height = 8, width = 8
+)
+print(cowplot::plot_grid(plotlist = plot_list[1]))
+dev.off()
+
+## Spot Plot ----
+plot_list <- lapply(plot_list, function(p) {
+  p + ggplot2::theme(legend.position = "none", plot.title = ggplot2::element_text(size = 40))
+})
+
+pdf(
+  file = here::here(
+    "plots", "02_visium_qc",
+    paste0("vis_clus_sample_aware_low_lib_size_sfigur.pdf")
+  ),
+  height = 8 * 8, width = 8 * 8
+)
+print(cowplot::plot_grid(plotlist = plot_list))
+dev.off()
+
+
+
+# Calculate per-sample statistics ----
+col_dat <- colData(spe) |> data.frame()
+
+remove_df <- col_dat |>
+  group_by(sample_id) |>
+  summarize(
+    n_remove = sum(remove)
+  )
+
+
+# Total number of spots discarded
+sum(remove_df$n_remove)
+# [1] 3001
+# Prop of spots discarded
+sum(remove_df$n_remove) / nrow(col_dat)
+# [1] 0.01061148
+
+# Range of number of spots discarded in sample
+remove_df$n_remove |> range()
+# [1]    4 1077
+
+# Median number of spots discarded
+remove_df$n_remove |> median()
+# [1] 14
+
 
 # Session Info ----
 session_info()
