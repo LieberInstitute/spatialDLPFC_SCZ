@@ -58,14 +58,16 @@ PRECAST_df <- map(
 )
 
 ## Organize list to df (n*k) ----
-PRECAST_df_final <- do.call(cbind, PRECAST_df)s
+PRECAST_df_final <- do.call(cbind, PRECAST_df)
 k_clus <- attr(PRECASTObj@resList, "para_settings")$K # Order of K
 colnames(PRECAST_df_final) <- sprintf("PRECAST_%02d", k_clus)
-PRECAST_df_final <- PRECAST_df_final |> data.frame() |> 
+PRECAST_df_final <- PRECAST_df_final |>
+  data.frame() |>
   rownames_to_column(var = "key")
 
 
-# Save rds ----
+# Save Data ----
+## PRECAST labels as data.frame ----
 saveRDS(
   PRECAST_df_final,
   here(
@@ -75,16 +77,44 @@ saveRDS(
   )
 )
 
+# PRECAST_df_final <- readRDS(
+#   here(
+#     "processed-data/rds/spatial_cluster",
+#     "PRECAST",
+#     "test_clus_label_df_semi_inform_k_2-16.rds"
+#   )
+# )
+
+
+## spe object ----
+spe <- readRDS(
+  here(
+    "processed-data/rds/02_visium_qc",
+    "qc_spe_wo_spg_N63.rds"
+  )
+)
+
+col_data_df <- PRECAST_df_final |>
+  right_join(
+    colData(spe) |> data.frame(),
+    by = c("key"),
+    relationship = "one-to-one"
+  )
+
+rownames(col_data_df) <- colnames(spe)
+colData(spe) <- DataFrame(col_data_df)
+
+saveRDS(
+  spe,
+  here(
+    "processed-data/rds/spatial_cluster",
+    "PRECAST",
+    "spe_wo_spg_N63_PRECAST.rds"
+  )
+)
+
+
 # Session info -----
 sessioninfo::session_info()
 
 # (Deprecated) Merge with spe object ----
-# col_data_df <- PRECAST_df_final2 |>
-#   rownames_to_column(var = "key") |>
-#   right_join(
-#     colData(spe) |> data.frame(),
-#     by = c("key"),
-#     relationship = "one-to-one"
-#   )
-# rownames(col_data_df) <- colnames(spe)
-# colData(spe) <- DataFrame(col_data_df)
