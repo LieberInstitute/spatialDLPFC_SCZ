@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 spe <- readRDS(
   here::here(
     "processed-data", "rds", "01_build_spe",
-    "test_raw_spe_w_spg_N63_no_img.rds"
+    "raw_spe_wo_SPG_N63.rds"
   )
 )
 
@@ -54,7 +54,7 @@ for (.var in discard_var) {
   spe[[.var]] <- NULL
 }
 
-# Remove 10x sample-wise reducedDim ----
+## Remove 10x sample-wise reducedDim ----
 reducedDim(spe, type = "10x_pca") <- NULL
 reducedDim(spe, type = "10x_tsne") <- NULL
 reducedDim(spe, type = "10x_umap") <- NULL
@@ -80,12 +80,42 @@ spe <- scater::logNormCounts(
 
 assayNames(spe)
 
+## Add demo info to spe ----
+spe$dx <- metadata(spe)$dx_df$dx[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )
+]
+
+spe$sex <- metadata(spe)$dx_df$sex[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )
+]
+
+spe$age <- metadata(spe)$dx_df$age[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )
+]
+
+spe$brnum <- metadata(spe)$dx_df$subject[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )
+]
+
+
 # Save spe ----
 saveRDS(
   spe,
   here(
     "processed-data/rds/02_visium_qc",
-    "test_qc_spe_w_spg_N63_no_img.rds"
+    "qc_spe_wo_spg_N63.rds"
   )
 )
 
