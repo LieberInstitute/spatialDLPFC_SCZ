@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=assemble_qc_spe
 #SBATCH --mem=50G
-#SBATCH --time=0:40:00
+#SBATCH --time=1:00:00
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=bguo6@jhu.edu
