@@ -38,14 +38,19 @@ spe <- spe[, spe$remove == FALSE]
 
 ## Remove useless colData ----
 discard_var <- c(
+  # 10x output
   "X10x_graphclust", "X10x_kmeans_10_clusters",
   "X10x_kmeans_2_clusters", "X10x_kmeans_3_clusters",
   "X10x_kmeans_4_clusters", "X10x_kmeans_5_clusters",
   "X10x_kmeans_6_clusters", "X10x_kmeans_7_clusters",
   "X10x_kmeans_8_clusters", "X10x_kmeans_9_clusters",
+  "10x_graphclust", "10x_kmeans_10_clusters",
+  "10x_kmeans_2_clusters", "10x_kmeans_3_clusters",
+  "10x_kmeans_4_clusters", "10x_kmeans_5_clusters",
+  "10x_kmeans_6_clusters", "10x_kmeans_7_clusters",
+  "10x_kmeans_8_clusters", "10x_kmeans_9_clusters",
   # QC metrics
-  "all_outlier", "sum_umi", "sum_gene", "expr_chrM",
-  "expr_chrM_ratio" # ,
+  "all_outlier", "sum_umi", "sum_gene", "expr_chrM", "expr_chrM_ratio", "remove" # ,
   # redundent SPG columns
   # "spg_tissue", "spg_row", "spg_col"
 )
