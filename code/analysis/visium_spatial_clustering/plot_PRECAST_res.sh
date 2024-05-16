@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=plot_PRECAST_res
-#SBATCH --mem=30G
-#SBATCH --time=1:30:00
+#SBATCH --mem=50G
+#SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1            # Number of cores requested
 #SBATCH --mail-type=ALL
