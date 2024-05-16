@@ -17,6 +17,25 @@ spe <- readRDS(
   )
 )
 
+## Fetch demo info
+spe$dx <- metadata(spe)$dx_df$dx[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )
+]
+
+spe$brnum <- metadata(spe)$dx_df$subject[
+  match(
+    spe$sample_id,
+    metadata(spe)$dx_df$sample_id
+  )
+]
+
+spe$sample_id <- paste0(
+  spe$brnum, "_", spe$dx
+)
+
 ## Load outlier keys ----
 outlier_df <- readRDS(
   here(
@@ -65,6 +84,7 @@ tot_outlier_df <- tot_outlier_df |>
   ) |>
   column_to_rownames("key")
 
+
 saveRDS(
   tot_outlier_df,
   here(
@@ -79,31 +99,16 @@ saveRDS(
 #   select(outlier, local_outliers, all_outlier) |>
 #   head()
 
-
 spe$all_outlier <- tot_outlier_df[spe$key, "all_outlier"]
-spe$remove <- tot_outlier_df[spe$key, "remove"]
+spe$discard <- tot_outlier_df[spe$key, "remove"]
 
 # Make spot plot ----
-## Remove out-tissue spots ----
 spe <- spe[, spe$in_tissue == TRUE]
-
-vis_grid_clus(
-  spe,
-  clustervar = "all_outlier",
-  spatial = FALSE,
-  pdf_file = here(
-    "plots/02_visium_qc/spot_plot_outliers.pdf"
-  ),
-  sample_order = unique(spe$sample_id) |> sort(),
-  height = 1056,
-  width = 816,
-  point_size = 0.8
-)
 
 # Fianlized supplementary plot ----
 plot_list <- vis_grid_clus(
   spe,
-  clustervar = "remove",
+  clustervar = "discard",
   colors = c("FALSE" = "grey90", "TRUE" = "deeppink"),
   sort_clust = FALSE,
   sample_order = unique(spe$sample_id) |> sort(),
@@ -111,30 +116,73 @@ plot_list <- vis_grid_clus(
   point_size = 2,
   return_plots = TRUE
 )
+
 ## Plot legends ----
-pdf(
-  file = here::here(
-    "plots", "02_visium_qc",
-    paste0("vis_clus_sample_aware_low_lib_size_sfigur_legend.pdf")
-  ), height = 8, width = 8
-)
-print(cowplot::plot_grid(plotlist = plot_list[1]))
-dev.off()
+# pdf(
+#   file = here::here(
+#     "plots", "02_visium_qc",
+#     paste0("vis_clus_sample_aware_low_lib_size_sfigur_legend.pdf")
+#   ), height = 8, width = 8
+# )
+# print(cowplot::plot_grid(plotlist = plot_list[1]))
+# dev.off()
 
 ## Spot Plot ----
-plot_list <- lapply(plot_list, function(p) {
-  p + ggplot2::theme(legend.position = "none", plot.title = ggplot2::element_text(size = 40))
-})
+# plot_list <- lapply(plot_list, function(p) {
+#   p +
+#     ggplot2::theme(
+#       legend.position = "none",
+#       plot.title = ggplot2::element_text(size = 40)
+#     )
+# })
 
 pdf(
   file = here::here(
     "plots", "02_visium_qc",
     paste0("vis_clus_sample_aware_low_lib_size_sfigur.pdf")
   ),
-  height = 8 * 8, width = 8 * 8
+  height = 6 * 8, width = 6 * 8 - 1
 )
-print(cowplot::plot_grid(plotlist = plot_list))
+# Plot png for place holder in google drive.
+# png(
+#   file = here::here(
+#     "plots", "02_visium_qc",
+#     paste0("vis_clus_sample_aware_low_lib_size_sfigur.png")
+#   ),
+#   height = 5 * 8, width = 8 * 8
+# )
+
+# Plot ntc and scz in separate groups
+idx_list <- spe$dx |>
+  unique() |>
+  set_names() |>
+  imap(~ str_detect(names(plot_list), .x))
+
+for (.idx in idx_list) {
+  print(
+    ggpubr::ggarrange(
+      plotlist = plot_list[.idx],
+      ncol = 6, nrow = 6,
+      common.legend = TRUE
+    )
+  )
+}
 dev.off()
+
+## Remove out-tissue spots ----
+### Categorized outlier  (Deprecated) ----
+# vis_grid_clus(
+#   spe,
+#   clustervar = "all_outlier",
+#   spatial = FALSE,
+#   pdf_file = here(
+#     "plots/02_visium_qc/spot_plot_outliers.pdf"
+#   ),
+#   sample_order = unique(spe$sample_id) |> sort(),
+#   height = 1056,
+#   width = 816,
+#   point_size = 0.8
+# )
 
 
 
