@@ -13,7 +13,7 @@ suppressPackageStartupMessages({
 spe <- readRDS(
   here::here(
     "processed-data/rds/02_visium_qc",
-    "test_qc_spe_w_spg_N63_no_img.rds"
+    "qc_spe_wo_spg_N63.rds"
   )
 )
 
