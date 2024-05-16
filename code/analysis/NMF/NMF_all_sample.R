@@ -25,7 +25,7 @@ spe <- readRDS(
 ## Config ----
 stopifnot("logcounts" %in% assayNames(spe))
 
-k <- 200
+k <- 100
 A <- logcounts(spe)
 
 stopifnot(sum(A<0) <= 0)
