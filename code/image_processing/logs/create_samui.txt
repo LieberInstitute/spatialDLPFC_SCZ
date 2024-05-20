@@ -1,0 +1,2254 @@
+**** Job starts ****
+Thu Apr  4 07:36:24 PM EDT 2024
+**** JHPCE info ****
+User: mtippani
+Job id: 3916180s
+Job name: create_samui
+Hostname: 
+Task id: 
+Loading LIBD SLURM module for samui/1.0.0-next.24
+/jhpce/shared/libd/core/samui/1.0.0-next.24/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:269: UserWarning: Valid config keys have changed in V2:
+* 'allow_mutation' has been removed
+  warnings.warn(message, UserWarning)
+[19:37:14] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_C1/V13F27-336_C1.tif to COG.                           
+           INFO     'V13F27-336_C1' Executing queued functions      logger.py:27
+           INFO     V13F27-336_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_C1/V13F27-336_C1_1.tif                                 
+[19:37:23] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_C1/V13F27-336_C1_2.tif                                 
+[19:37:30] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_C1/V13F27-336_C1_3.tif                                 
+[19:37:33] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_C1/V13F27-336_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_C1/V13F27-336_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_C1/V13F27-336_C1_3.tif                                 
+[19:37:52] INFO     'V13F27-336_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_C1                                                     
+V13F27-336_C1
+[19:38:06] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_B1/V13F27-295_B1.tif to COG.                           
+           INFO     'V13F27-295_B1' Executing queued functions      logger.py:27
+           INFO     V13F27-295_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_B1/V13F27-295_B1_1.tif                                 
+[19:38:14] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_B1/V13F27-295_B1_2.tif                                 
+[19:38:22] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_B1/V13F27-295_B1_3.tif                                 
+[19:38:24] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_B1/V13F27-295_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_B1/V13F27-295_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_B1/V13F27-295_B1_3.tif                                 
+[19:38:42] INFO     'V13F27-295_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_B1                                                     
+V13F27-295_B1
+[19:39:04] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_A1/V13M06-279_A1.tif to COG.                           
+           INFO     'V13M06-279_A1' Executing queued functions      logger.py:27
+           INFO     V13M06-279_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_A1/V13M06-279_A1_1.tif                                 
+[19:39:12] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_A1/V13M06-279_A1_2.tif                                 
+[19:39:22] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_A1/V13M06-279_A1_3.tif                                 
+[19:39:25] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_A1/V13M06-279_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_A1/V13M06-279_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_A1/V13M06-279_A1_3.tif                                 
+[19:39:44] INFO     'V13M06-279_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_A1                                                     
+V13M06-279_A1
+[19:40:06] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_C1/V13F27-293_C1.tif to COG.                           
+           INFO     'V13F27-293_C1' Executing queued functions      logger.py:27
+           INFO     V13F27-293_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_C1/V13F27-293_C1_1.tif                                 
+[19:40:13] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_C1/V13F27-293_C1_2.tif                                 
+[19:40:22] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_C1/V13F27-293_C1_3.tif                                 
+[19:40:25] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_C1/V13F27-293_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_C1/V13F27-293_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_C1/V13F27-293_C1_3.tif                                 
+[19:40:44] INFO     'V13F27-293_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_C1                                                     
+V13F27-293_C1
+[19:41:02] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_C1/V12F14-053_C1.tif to COG.                           
+           INFO     'V12F14-053_C1' Executing queued functions      logger.py:27
+           INFO     V12F14-053_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_C1/V12F14-053_C1_1.tif                                 
+[19:41:10] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_C1/V12F14-053_C1_2.tif                                 
+[19:41:18] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_C1/V12F14-053_C1_3.tif                                 
+[19:41:21] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_C1/V12F14-053_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_C1/V12F14-053_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_C1/V12F14-053_C1_3.tif                                 
+[19:41:38] INFO     'V12F14-053_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_C1                                                     
+V12F14-053_C1
+[19:41:57] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_C1/V13M06-282_C1.tif to COG.                           
+           INFO     'V13M06-282_C1' Executing queued functions      logger.py:27
+           INFO     V13M06-282_C1 Adding coords 'coords'            logger.py:27
+[19:41:58] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_C1/V13M06-282_C1_1.tif                                 
+[19:42:05] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_C1/V13M06-282_C1_2.tif                                 
+[19:42:14] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_C1/V13M06-282_C1_3.tif                                 
+[19:42:17] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_C1/V13M06-282_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_C1/V13M06-282_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_C1/V13M06-282_C1_3.tif                                 
+[19:42:35] INFO     'V13M06-282_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_C1                                                     
+V13M06-282_C1
+[19:42:56] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_D1/V13F27-294_D1.tif to COG.                           
+           INFO     'V13F27-294_D1' Executing queued functions      logger.py:27
+           INFO     V13F27-294_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_D1/V13F27-294_D1_1.tif                                 
+[19:43:05] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_D1/V13F27-294_D1_2.tif                                 
+[19:43:12] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_D1/V13F27-294_D1_3.tif                                 
+[19:43:15] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_D1/V13F27-294_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_D1/V13F27-294_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_D1/V13F27-294_D1_3.tif                                 
+[19:43:34] INFO     'V13F27-294_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_D1                                                     
+V13F27-294_D1
+[19:43:54] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_B1/V13M06-340_B1.tif to COG.                           
+           INFO     'V13M06-340_B1' Executing queued functions      logger.py:27
+           INFO     V13M06-340_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_B1/V13M06-340_B1_1.tif                                 
+[19:44:03] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_B1/V13M06-340_B1_2.tif                                 
+[19:44:12] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_B1/V13M06-340_B1_3.tif                                 
+[19:44:15] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_B1/V13M06-340_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_B1/V13M06-340_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_B1/V13M06-340_B1_3.tif                                 
+[19:44:35] INFO     'V13M06-340_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_B1                                                     
+V13M06-340_B1
+[19:44:56] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_B1/V12F14-057_B1.tif to COG.                           
+           INFO     'V12F14-057_B1' Executing queued functions      logger.py:27
+           INFO     V12F14-057_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_B1/V12F14-057_B1_1.tif                                 
+[19:45:04] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_B1/V12F14-057_B1_2.tif                                 
+[19:45:12] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_B1/V12F14-057_B1_3.tif                                 
+[19:45:14] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_B1/V12F14-057_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_B1/V12F14-057_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_B1/V12F14-057_B1_3.tif                                 
+[19:45:32] INFO     'V12F14-057_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_B1                                                     
+V12F14-057_B1
+[19:45:55] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_A1/V12D07-334_A1.tif to COG.                           
+           INFO     'V12D07-334_A1' Executing queued functions      logger.py:27
+           INFO     V12D07-334_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_A1/V12D07-334_A1_1.tif                                 
+[19:46:06] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_A1/V12D07-334_A1_2.tif                                 
+[19:46:15] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_A1/V12D07-334_A1_3.tif                                 
+[19:46:18] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_A1/V12D07-334_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_A1/V12D07-334_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_A1/V12D07-334_A1_3.tif                                 
+[19:46:40] INFO     'V12D07-334_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_A1                                                     
+V12D07-334_A1
+[19:46:58] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_D1/V13F27-296_D1.tif to COG.                           
+           INFO     'V13F27-296_D1' Executing queued functions      logger.py:27
+           INFO     V13F27-296_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_D1/V13F27-296_D1_1.tif                                 
+[19:47:06] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_D1/V13F27-296_D1_2.tif                                 
+[19:47:13] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_D1/V13F27-296_D1_3.tif                                 
+[19:47:16] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_D1/V13F27-296_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_D1/V13F27-296_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_D1/V13F27-296_D1_3.tif                                 
+[19:47:34] INFO     'V13F27-296_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_D1                                                     
+V13F27-296_D1
+[19:47:49] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_C1/V13M06-280_C1.tif to COG.                           
+           INFO     'V13M06-280_C1' Executing queued functions      logger.py:27
+           INFO     V13M06-280_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_C1/V13M06-280_C1_1.tif                                 
+[19:47:57] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_C1/V13M06-280_C1_2.tif                                 
+[19:48:05] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_C1/V13M06-280_C1_3.tif                                 
+[19:48:07] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_C1/V13M06-280_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_C1/V13M06-280_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_C1/V13M06-280_C1_3.tif                                 
+[19:48:22] INFO     'V13M06-280_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_C1                                                     
+V13M06-280_C1
+[19:48:42] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_D1/V13M06-343_D1.tif to COG.                           
+           INFO     'V13M06-343_D1' Executing queued functions      logger.py:27
+           INFO     V13M06-343_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_D1/V13M06-343_D1_1.tif                                 
+[19:48:50] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_D1/V13M06-343_D1_2.tif                                 
+[19:49:00] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_D1/V13M06-343_D1_3.tif                                 
+[19:49:03] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_D1/V13M06-343_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_D1/V13M06-343_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_D1/V13M06-343_D1_3.tif                                 
+[19:49:23] INFO     'V13M06-343_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_D1                                                     
+V13M06-343_D1
+[19:49:36] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_C1/V13M06-344_C1.tif to COG.                           
+           INFO     'V13M06-344_C1' Executing queued functions      logger.py:27
+           INFO     V13M06-344_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_C1/V13M06-344_C1_1.tif                                 
+[19:49:44] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_C1/V13M06-344_C1_2.tif                                 
+[19:49:54] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_C1/V13M06-344_C1_3.tif                                 
+[19:49:56] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_C1/V13M06-344_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_C1/V13M06-344_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_C1/V13M06-344_C1_3.tif                                 
+[19:50:15] INFO     'V13M06-344_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_C1                                                     
+V13M06-344_C1
+[19:50:35] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_A1/V13M06-281_A1.tif to COG.                           
+           INFO     'V13M06-281_A1' Executing queued functions      logger.py:27
+           INFO     V13M06-281_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_A1/V13M06-281_A1_1.tif                                 
+[19:50:43] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_A1/V13M06-281_A1_2.tif                                 
+[19:50:50] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_A1/V13M06-281_A1_3.tif                                 
+[19:50:54] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_A1/V13M06-281_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_A1/V13M06-281_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_A1/V13M06-281_A1_3.tif                                 
+[19:51:14] INFO     'V13M06-281_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_A1                                                     
+V13M06-281_A1
+[19:51:31] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_B1/V13M06-342_B1.tif to COG.                           
+           INFO     'V13M06-342_B1' Executing queued functions      logger.py:27
+           INFO     V13M06-342_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_B1/V13M06-342_B1_1.tif                                 
+[19:51:39] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_B1/V13M06-342_B1_2.tif                                 
+[19:51:48] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_B1/V13M06-342_B1_3.tif                                 
+[19:51:51] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_B1/V13M06-342_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_B1/V13M06-342_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_B1/V13M06-342_B1_3.tif                                 
+[19:52:10] INFO     'V13M06-342_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_B1                                                     
+V13M06-342_B1
+[19:52:27] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_D1/V13M06-281_D1.tif to COG.                           
+           INFO     'V13M06-281_D1' Executing queued functions      logger.py:27
+           INFO     V13M06-281_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_D1/V13M06-281_D1_1.tif                                 
+[19:52:34] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_D1/V13M06-281_D1_2.tif                                 
+[19:52:43] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_D1/V13M06-281_D1_3.tif                                 
+[19:52:46] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_D1/V13M06-281_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_D1/V13M06-281_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_D1/V13M06-281_D1_3.tif                                 
+[19:53:06] INFO     'V13M06-281_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_D1                                                     
+V13M06-281_D1
+[19:53:26] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_A1/V13M06-343_A1.tif to COG.                           
+           INFO     'V13M06-343_A1' Executing queued functions      logger.py:27
+           INFO     V13M06-343_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_A1/V13M06-343_A1_1.tif                                 
+[19:53:33] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_A1/V13M06-343_A1_2.tif                                 
+[19:53:40] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_A1/V13M06-343_A1_3.tif                                 
+[19:53:43] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_A1/V13M06-343_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_A1/V13M06-343_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_A1/V13M06-343_A1_3.tif                                 
+[19:54:01] INFO     'V13M06-343_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_A1                                                     
+V13M06-343_A1
+[19:54:23] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_C1/V12F14-057_C1.tif to COG.                           
+           INFO     'V12F14-057_C1' Executing queued functions      logger.py:27
+           INFO     V12F14-057_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_C1/V12F14-057_C1_1.tif                                 
+[19:54:31] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_C1/V12F14-057_C1_2.tif                                 
+[19:54:40] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_C1/V12F14-057_C1_3.tif                                 
+[19:54:43] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_C1/V12F14-057_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_C1/V12F14-057_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_C1/V12F14-057_C1_3.tif                                 
+[19:55:00] INFO     'V12F14-057_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_C1                                                     
+V12F14-057_C1
+[19:55:20] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_B1/V13M06-280_B1.tif to COG.                           
+           INFO     'V13M06-280_B1' Executing queued functions      logger.py:27
+           INFO     V13M06-280_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_B1/V13M06-280_B1_1.tif                                 
+[19:55:27] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_B1/V13M06-280_B1_2.tif                                 
+[19:55:36] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_B1/V13M06-280_B1_3.tif                                 
+[19:55:40] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_B1/V13M06-280_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_B1/V13M06-280_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_B1/V13M06-280_B1_3.tif                                 
+[19:55:58] INFO     'V13M06-280_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_B1                                                     
+V13M06-280_B1
+[19:56:14] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_D1/V12D07-334_D1.tif to COG.                           
+           INFO     'V12D07-334_D1' Executing queued functions      logger.py:27
+           INFO     V12D07-334_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_D1/V12D07-334_D1_1.tif                                 
+[19:56:21] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_D1/V12D07-334_D1_2.tif                                 
+[19:56:29] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_D1/V12D07-334_D1_3.tif                                 
+[19:56:31] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_D1/V12D07-334_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_D1/V12D07-334_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_D1/V12D07-334_D1_3.tif                                 
+[19:56:49] INFO     'V12D07-334_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_D1                                                     
+V12D07-334_D1
+[19:57:08] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_B1/V13M06-344_B1.tif to COG.                           
+           INFO     'V13M06-344_B1' Executing queued functions      logger.py:27
+           INFO     V13M06-344_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_B1/V13M06-344_B1_1.tif                                 
+[19:57:17] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_B1/V13M06-344_B1_2.tif                                 
+[19:57:26] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_B1/V13M06-344_B1_3.tif                                 
+[19:57:29] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_B1/V13M06-344_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_B1/V13M06-344_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_B1/V13M06-344_B1_3.tif                                 
+[19:57:48] INFO     'V13M06-344_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_B1                                                     
+V13M06-344_B1
+[19:58:08] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_C1/V13M06-342_C1.tif to COG.                           
+           INFO     'V13M06-342_C1' Executing queued functions      logger.py:27
+           INFO     V13M06-342_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_C1/V13M06-342_C1_1.tif                                 
+[19:58:16] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_C1/V13M06-342_C1_2.tif                                 
+[19:58:25] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_C1/V13M06-342_C1_3.tif                                 
+[19:58:28] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_C1/V13M06-342_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_C1/V13M06-342_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_C1/V13M06-342_C1_3.tif                                 
+[19:58:47] INFO     'V13M06-342_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_C1                                                     
+V13M06-342_C1
+[19:59:04] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_A1/V13F27-296_A1.tif to COG.                           
+           INFO     'V13F27-296_A1' Executing queued functions      logger.py:27
+           INFO     V13F27-296_A1 Adding coords 'coords'            logger.py:27
+[19:59:05] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_A1/V13F27-296_A1_1.tif                                 
+[19:59:14] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_A1/V13F27-296_A1_2.tif                                 
+[19:59:22] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_A1/V13F27-296_A1_3.tif                                 
+[19:59:24] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_A1/V13F27-296_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_A1/V13F27-296_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_A1/V13F27-296_A1_3.tif                                 
+[19:59:43] INFO     'V13F27-296_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_A1                                                     
+V13F27-296_A1
+[20:00:04] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_C1/V13F27-295_C1.tif to COG.                           
+           INFO     'V13F27-295_C1' Executing queued functions      logger.py:27
+           INFO     V13F27-295_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_C1/V13F27-295_C1_1.tif                                 
+[20:00:12] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_C1/V13F27-295_C1_2.tif                                 
+[20:00:22] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_C1/V13F27-295_C1_3.tif                                 
+[20:00:33] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_C1/V13F27-295_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_C1/V13F27-295_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_C1/V13F27-295_C1_3.tif                                 
+[20:00:49] INFO     'V13F27-295_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_C1                                                     
+V13F27-295_C1
+[20:00:59] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_B1/V13F27-336_B1.tif to COG.                           
+           INFO     'V13F27-336_B1' Executing queued functions      logger.py:27
+           INFO     V13F27-336_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_B1/V13F27-336_B1_1.tif                                 
+[20:01:07] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_B1/V13F27-336_B1_2.tif                                 
+[20:01:16] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_B1/V13F27-336_B1_3.tif                                 
+[20:01:18] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_B1/V13F27-336_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_B1/V13F27-336_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_B1/V13F27-336_B1_3.tif                                 
+[20:01:36] INFO     'V13F27-336_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_B1                                                     
+V13F27-336_B1
+[20:01:39] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_B1/V12F14-053_B1.tif to COG.                           
+           INFO     'V12F14-053_B1' Executing queued functions      logger.py:27
+           INFO     V12F14-053_B1 Adding coords 'coords'            logger.py:27
+[20:01:40] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_B1/V12F14-053_B1_1.tif                                 
+[20:01:48] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_B1/V12F14-053_B1_2.tif                                 
+[20:01:56] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_B1/V12F14-053_B1_3.tif                                 
+[20:01:59] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_B1/V12F14-053_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_B1/V12F14-053_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_B1/V12F14-053_B1_3.tif                                 
+[20:02:17] INFO     'V12F14-053_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_B1                                                     
+V12F14-053_B1
+[20:02:20] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_B1/V13F27-293_B1.tif to COG.                           
+           INFO     'V13F27-293_B1' Executing queued functions      logger.py:27
+           INFO     V13F27-293_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_B1/V13F27-293_B1_1.tif                                 
+[20:02:28] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_B1/V13F27-293_B1_2.tif                                 
+[20:02:37] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_B1/V13F27-293_B1_3.tif                                 
+[20:02:40] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_B1/V13F27-293_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_B1/V13F27-293_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_B1/V13F27-293_B1_3.tif                                 
+[20:02:58] INFO     'V13F27-293_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_B1                                                     
+V13F27-293_B1
+[20:03:01] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_B1/V13M06-282_B1.tif to COG.                           
+           INFO     'V13M06-282_B1' Executing queued functions      logger.py:27
+           INFO     V13M06-282_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_B1/V13M06-282_B1_1.tif                                 
+[20:03:09] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_B1/V13M06-282_B1_2.tif                                 
+[20:03:17] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_B1/V13M06-282_B1_3.tif                                 
+[20:03:20] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_B1/V13M06-282_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_B1/V13M06-282_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_B1/V13M06-282_B1_3.tif                                 
+[20:03:38] INFO     'V13M06-282_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_B1                                                     
+V13M06-282_B1
+[20:03:41] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_D1/V13M06-279_D1.tif to COG.                           
+           INFO     'V13M06-279_D1' Executing queued functions      logger.py:27
+           INFO     V13M06-279_D1 Adding coords 'coords'            logger.py:27
+[20:03:42] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_D1/V13M06-279_D1_1.tif                                 
+[20:03:49] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_D1/V13M06-279_D1_2.tif                                 
+[20:03:57] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_D1/V13M06-279_D1_3.tif                                 
+[20:04:01] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_D1/V13M06-279_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_D1/V13M06-279_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_D1/V13M06-279_D1_3.tif                                 
+[20:04:19] INFO     'V13M06-279_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_D1                                                     
+V13M06-279_D1
+[20:04:22] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_A1/V13F27-294_A1.tif to COG.                           
+           INFO     'V13F27-294_A1' Executing queued functions      logger.py:27
+           INFO     V13F27-294_A1 Adding coords 'coords'            logger.py:27
+[20:04:23] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_A1/V13F27-294_A1_1.tif                                 
+[20:04:30] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_A1/V13F27-294_A1_2.tif                                 
+[20:04:39] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_A1/V13F27-294_A1_3.tif                                 
+[20:04:41] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_A1/V13F27-294_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_A1/V13F27-294_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_A1/V13F27-294_A1_3.tif                                 
+[20:04:59] INFO     'V13F27-294_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_A1                                                     
+V13F27-294_A1
+[20:05:02] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_C1/V13M06-340_C1.tif to COG.                           
+           INFO     'V13M06-340_C1' Executing queued functions      logger.py:27
+           INFO     V13M06-340_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_C1/V13M06-340_C1_1.tif                                 
+[20:05:11] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_C1/V13M06-340_C1_2.tif                                 
+[20:05:31] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_C1/V13M06-340_C1_3.tif                                 
+[20:05:34] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_C1/V13M06-340_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_C1/V13M06-340_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_C1/V13M06-340_C1_3.tif                                 
+[20:05:52] INFO     'V13M06-340_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_C1                                                     
+V13M06-340_C1
+[20:05:55] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_D1/V13M06-344_D1.tif to COG.                           
+           INFO     'V13M06-344_D1' Executing queued functions      logger.py:27
+           INFO     V13M06-344_D1 Adding coords 'coords'            logger.py:27
+[20:05:56] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_D1/V13M06-344_D1_1.tif                                 
+[20:06:04] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_D1/V13M06-344_D1_2.tif                                 
+[20:06:11] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_D1/V13M06-344_D1_3.tif                                 
+[20:06:14] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_D1/V13M06-344_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_D1/V13M06-344_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_D1/V13M06-344_D1_3.tif                                 
+[20:06:32] INFO     'V13M06-344_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_D1                                                     
+V13M06-344_D1
+[20:06:36] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_B1/V12D07-334_B1.tif to COG.                           
+           INFO     'V12D07-334_B1' Executing queued functions      logger.py:27
+           INFO     V12D07-334_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_B1/V12D07-334_B1_1.tif                                 
+[20:06:44] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_B1/V12D07-334_B1_2.tif                                 
+[20:06:52] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_B1/V12D07-334_B1_3.tif                                 
+[20:06:54] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_B1/V12D07-334_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_B1/V12D07-334_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_B1/V12D07-334_B1_3.tif                                 
+[20:07:15] INFO     'V12D07-334_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_B1                                                     
+V12D07-334_B1
+[20:07:18] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_A1/V12F14-057_A1.tif to COG.                           
+           INFO     'V12F14-057_A1' Executing queued functions      logger.py:27
+           INFO     V12F14-057_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_A1/V12F14-057_A1_1.tif                                 
+[20:07:26] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_A1/V12F14-057_A1_2.tif                                 
+[20:07:34] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_A1/V12F14-057_A1_3.tif                                 
+[20:07:36] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_A1/V12F14-057_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_A1/V12F14-057_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_A1/V12F14-057_A1_3.tif                                 
+[20:07:52] INFO     'V12F14-057_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_A1                                                     
+V12F14-057_A1
+[20:07:56] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_C1/V13M06-343_C1.tif to COG.                           
+           INFO     'V13M06-343_C1' Executing queued functions      logger.py:27
+           INFO     V13M06-343_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_C1/V13M06-343_C1_1.tif                                 
+[20:08:04] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_C1/V13M06-343_C1_2.tif                                 
+[20:08:12] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_C1/V13M06-343_C1_3.tif                                 
+[20:08:15] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_C1/V13M06-343_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_C1/V13M06-343_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_C1/V13M06-343_C1_3.tif                                 
+[20:08:34] INFO     'V13M06-343_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_C1                                                     
+V13M06-343_C1
+[20:08:48] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_B1/V13M06-281_B1.tif to COG.                           
+           INFO     'V13M06-281_B1' Executing queued functions      logger.py:27
+           INFO     V13M06-281_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_B1/V13M06-281_B1_1.tif                                 
+[20:08:56] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_B1/V13M06-281_B1_2.tif                                 
+[20:09:03] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_B1/V13M06-281_B1_3.tif                                 
+[20:09:06] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_B1/V13M06-281_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_B1/V13M06-281_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_B1/V13M06-281_B1_3.tif                                 
+[20:09:24] INFO     'V13M06-281_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_B1                                                     
+V13M06-281_B1
+[20:09:44] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_D1/V13M06-280_D1.tif to COG.                           
+           INFO     'V13M06-280_D1' Executing queued functions      logger.py:27
+           INFO     V13M06-280_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_D1/V13M06-280_D1_1.tif                                 
+[20:09:53] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_D1/V13M06-280_D1_2.tif                                 
+[20:10:01] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_D1/V13M06-280_D1_3.tif                                 
+[20:10:04] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_D1/V13M06-280_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_D1/V13M06-280_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_D1/V13M06-280_D1_3.tif                                 
+[20:10:24] INFO     'V13M06-280_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_D1                                                     
+V13M06-280_D1
+[20:10:45] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_C1/V13F27-296_C1.tif to COG.                           
+           INFO     'V13F27-296_C1' Executing queued functions      logger.py:27
+           INFO     V13F27-296_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_C1/V13F27-296_C1_1.tif                                 
+[20:10:52] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_C1/V13F27-296_C1_2.tif                                 
+[20:11:00] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_C1/V13F27-296_C1_3.tif                                 
+[20:11:02] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_C1/V13F27-296_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_C1/V13F27-296_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_C1/V13F27-296_C1_3.tif                                 
+[20:11:22] INFO     'V13F27-296_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_C1                                                     
+V13F27-296_C1
+[20:11:46] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_A1/V13M06-342_A1.tif to COG.                           
+           INFO     'V13M06-342_A1' Executing queued functions      logger.py:27
+           INFO     V13M06-342_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_A1/V13M06-342_A1_1.tif                                 
+[20:11:55] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_A1/V13M06-342_A1_2.tif                                 
+[20:12:03] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_A1/V13M06-342_A1_3.tif                                 
+[20:12:06] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_A1/V13M06-342_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_A1/V13M06-342_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_A1/V13M06-342_A1_3.tif                                 
+[20:12:25] INFO     'V13M06-342_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_A1                                                     
+V13M06-342_A1
+[20:12:45] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_B1/V13M06-279_B1.tif to COG.                           
+           INFO     'V13M06-279_B1' Executing queued functions      logger.py:27
+           INFO     V13M06-279_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_B1/V13M06-279_B1_1.tif                                 
+[20:12:53] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_B1/V13M06-279_B1_2.tif                                 
+[20:13:02] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_B1/V13M06-279_B1_3.tif                                 
+[20:13:06] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_B1/V13M06-279_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_B1/V13M06-279_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_B1/V13M06-279_B1_3.tif                                 
+[20:13:26] INFO     'V13M06-279_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_B1                                                     
+V13M06-279_B1
+[20:13:50] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_A1/V13F27-295_A1.tif to COG.                           
+           INFO     'V13F27-295_A1' Executing queued functions      logger.py:27
+           INFO     V13F27-295_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_A1/V13F27-295_A1_1.tif                                 
+[20:14:00] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_A1/V13F27-295_A1_2.tif                                 
+[20:14:09] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_A1/V13F27-295_A1_3.tif                                 
+[20:14:11] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_A1/V13F27-295_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_A1/V13F27-295_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_A1/V13F27-295_A1_3.tif                                 
+[20:14:30] INFO     'V13F27-295_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_A1                                                     
+V13F27-295_A1
+[20:14:54] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_D1/V13F27-336_D1.tif to COG.                           
+           INFO     'V13F27-336_D1' Executing queued functions      logger.py:27
+           INFO     V13F27-336_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_D1/V13F27-336_D1_1.tif                                 
+[20:15:03] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_D1/V13F27-336_D1_2.tif                                 
+[20:15:11] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_D1/V13F27-336_D1_3.tif                                 
+[20:15:15] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_D1/V13F27-336_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_D1/V13F27-336_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_D1/V13F27-336_D1_3.tif                                 
+[20:15:34] INFO     'V13F27-336_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_D1                                                     
+V13F27-336_D1
+[20:15:57] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_A1/V13M06-340_A1.tif to COG.                           
+           INFO     'V13M06-340_A1' Executing queued functions      logger.py:27
+           INFO     V13M06-340_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_A1/V13M06-340_A1_1.tif                                 
+[20:16:04] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_A1/V13M06-340_A1_2.tif                                 
+[20:16:11] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_A1/V13M06-340_A1_3.tif                                 
+[20:16:15] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_A1/V13M06-340_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_A1/V13M06-340_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_A1/V13M06-340_A1_3.tif                                 
+[20:16:34] INFO     'V13M06-340_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_A1                                                     
+V13M06-340_A1
+[20:16:49] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_C1/V13F27-294_C1.tif to COG.                           
+           INFO     'V13F27-294_C1' Executing queued functions      logger.py:27
+           INFO     V13F27-294_C1 Adding coords 'coords'            logger.py:27
+[20:16:50] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_C1/V13F27-294_C1_1.tif                                 
+[20:16:58] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_C1/V13F27-294_C1_2.tif                                 
+[20:17:06] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_C1/V13F27-294_C1_3.tif                                 
+[20:17:09] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_C1/V13F27-294_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_C1/V13F27-294_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_C1/V13F27-294_C1_3.tif                                 
+[20:17:27] INFO     'V13F27-294_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_C1                                                     
+V13F27-294_C1
+[20:17:45] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_D1/V13M06-282_D1.tif to COG.                           
+           INFO     'V13M06-282_D1' Executing queued functions      logger.py:27
+           INFO     V13M06-282_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_D1/V13M06-282_D1_1.tif                                 
+[20:17:53] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_D1/V13M06-282_D1_2.tif                                 
+[20:18:01] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_D1/V13M06-282_D1_3.tif                                 
+[20:18:04] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_D1/V13M06-282_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_D1/V13M06-282_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_D1/V13M06-282_D1_3.tif                                 
+[20:18:22] INFO     'V13M06-282_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_D1                                                     
+V13M06-282_D1
+[20:18:43] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_D1/V13F27-293_D1.tif to COG.                           
+           INFO     'V13F27-293_D1' Executing queued functions      logger.py:27
+           INFO     V13F27-293_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_D1/V13F27-293_D1_1.tif                                 
+[20:18:50] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_D1/V13F27-293_D1_2.tif                                 
+[20:18:57] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_D1/V13F27-293_D1_3.tif                                 
+[20:19:00] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_D1/V13F27-293_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_D1/V13F27-293_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_D1/V13F27-293_D1_3.tif                                 
+[20:19:19] INFO     'V13F27-293_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_D1                                                     
+V13F27-293_D1
+[20:19:40] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_D1/V12F14-053_D1.tif to COG.                           
+           INFO     'V12F14-053_D1' Executing queued functions      logger.py:27
+           INFO     V12F14-053_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_D1/V12F14-053_D1_1.tif                                 
+[20:19:49] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_D1/V12F14-053_D1_2.tif                                 
+[20:19:57] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_D1/V12F14-053_D1_3.tif                                 
+[20:19:59] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_D1/V12F14-053_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_D1/V12F14-053_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_D1/V12F14-053_D1_3.tif                                 
+[20:20:16] INFO     'V12F14-053_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_D1                                                     
+V12F14-053_D1
+[20:20:39] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_C1/V13M06-279_C1.tif to COG.                           
+           INFO     'V13M06-279_C1' Executing queued functions      logger.py:27
+           INFO     V13M06-279_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_C1/V13M06-279_C1_1.tif                                 
+[20:20:46] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_C1/V13M06-279_C1_2.tif                                 
+[20:20:55] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_C1/V13M06-279_C1_3.tif                                 
+[20:20:58] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_C1/V13M06-279_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_C1/V13M06-279_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_C1/V13M06-279_C1_3.tif                                 
+[20:21:17] INFO     'V13M06-279_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -279_C1                                                     
+V13M06-279_C1
+[20:21:37] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_A1/V13F27-336_A1.tif to COG.                           
+           INFO     'V13F27-336_A1' Executing queued functions      logger.py:27
+           INFO     V13F27-336_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_A1/V13F27-336_A1_1.tif                                 
+[20:21:45] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_A1/V13F27-336_A1_2.tif                                 
+[20:21:53] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_A1/V13F27-336_A1_3.tif                                 
+[20:21:57] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_A1/V13F27-336_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_A1/V13F27-336_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_A1/V13F27-336_A1_3.tif                                 
+[20:22:16] INFO     'V13F27-336_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -336_A1                                                     
+V13F27-336_A1
+[20:22:36] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_A1/V13M06-282_A1.tif to COG.                           
+           INFO     'V13M06-282_A1' Executing queued functions      logger.py:27
+           INFO     V13M06-282_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_A1/V13M06-282_A1_1.tif                                 
+[20:22:46] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_A1/V13M06-282_A1_2.tif                                 
+[20:22:56] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_A1/V13M06-282_A1_3.tif                                 
+[20:22:59] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_A1/V13M06-282_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_A1/V13M06-282_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_A1/V13M06-282_A1_3.tif                                 
+[20:23:18] INFO     'V13M06-282_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -282_A1                                                     
+V13M06-282_A1
+[20:23:38] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_A1/V13F27-293_A1.tif to COG.                           
+           INFO     'V13F27-293_A1' Executing queued functions      logger.py:27
+           INFO     V13F27-293_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_A1/V13F27-293_A1_1.tif                                 
+[20:23:49] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_A1/V13F27-293_A1_2.tif                                 
+[20:23:56] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_A1/V13F27-293_A1_3.tif                                 
+[20:23:59] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_A1/V13F27-293_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_A1/V13F27-293_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_A1/V13F27-293_A1_3.tif                                 
+[20:24:21] INFO     'V13F27-293_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -293_A1                                                     
+V13F27-293_A1
+[20:24:47] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_A1/V12F14-053_A1.tif to COG.                           
+           INFO     'V12F14-053_A1' Executing queued functions      logger.py:27
+           INFO     V12F14-053_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_A1/V12F14-053_A1_1.tif                                 
+[20:24:58] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_A1/V12F14-053_A1_2.tif                                 
+[20:25:08] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_A1/V12F14-053_A1_3.tif                                 
+[20:25:12] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_A1/V12F14-053_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_A1/V12F14-053_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_A1/V12F14-053_A1_3.tif                                 
+[20:25:31] INFO     'V12F14-053_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -053_A1                                                     
+V12F14-053_A1
+[20:25:57] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_D1/V13M06-340_D1.tif to COG.                           
+           INFO     'V13M06-340_D1' Executing queued functions      logger.py:27
+           INFO     V13M06-340_D1 Adding coords 'coords'            logger.py:27
+[20:25:58] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_D1/V13M06-340_D1_1.tif                                 
+[20:26:07] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_D1/V13M06-340_D1_2.tif                                 
+[20:26:17] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_D1/V13M06-340_D1_3.tif                                 
+[20:26:20] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_D1/V13M06-340_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_D1/V13M06-340_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_D1/V13M06-340_D1_3.tif                                 
+[20:26:40] INFO     'V13M06-340_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -340_D1                                                     
+V13M06-340_D1
+[20:26:56] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_D1/V13F27-295_D1.tif to COG.                           
+           INFO     'V13F27-295_D1' Executing queued functions      logger.py:27
+           INFO     V13F27-295_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_D1/V13F27-295_D1_1.tif                                 
+[20:27:06] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_D1/V13F27-295_D1_2.tif                                 
+[20:27:18] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_D1/V13F27-295_D1_3.tif                                 
+[20:27:20] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_D1/V13F27-295_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_D1/V13F27-295_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_D1/V13F27-295_D1_3.tif                                 
+[20:27:38] INFO     'V13F27-295_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -295_D1                                                     
+V13F27-295_D1
+[20:27:58] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_B1/V13F27-294_B1.tif to COG.                           
+           INFO     'V13F27-294_B1' Executing queued functions      logger.py:27
+           INFO     V13F27-294_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_B1/V13F27-294_B1_1.tif                                 
+[20:28:09] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_B1/V13F27-294_B1_2.tif                                 
+[20:28:18] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_B1/V13F27-294_B1_3.tif                                 
+[20:28:20] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_B1/V13F27-294_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_B1/V13F27-294_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_B1/V13F27-294_B1_3.tif                                 
+[20:28:39] INFO     'V13F27-294_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -294_B1                                                     
+V13F27-294_B1
+[20:28:57] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_C1/V12D07-334_C1.tif to COG.                           
+           INFO     'V12D07-334_C1' Executing queued functions      logger.py:27
+           INFO     V12D07-334_C1 Adding coords 'coords'            logger.py:27
+[20:28:58] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_C1/V12D07-334_C1_1.tif                                 
+[20:29:09] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_C1/V12D07-334_C1_2.tif                                 
+[20:29:24] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_C1/V12D07-334_C1_3.tif                                 
+[20:29:26] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_C1/V12D07-334_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_C1/V12D07-334_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_C1/V12D07-334_C1_3.tif                                 
+[20:29:46] INFO     'V12D07-334_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12D07             
+                    -334_C1                                                     
+V12D07-334_C1
+[20:30:01] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_B1/V13M06-343_B1.tif to COG.                           
+           INFO     'V13M06-343_B1' Executing queued functions      logger.py:27
+           INFO     V13M06-343_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_B1/V13M06-343_B1_1.tif                                 
+[20:30:11] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_B1/V13M06-343_B1_2.tif                                 
+[20:30:21] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_B1/V13M06-343_B1_3.tif                                 
+[20:30:23] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_B1/V13M06-343_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_B1/V13M06-343_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_B1/V13M06-343_B1_3.tif                                 
+[20:30:41] INFO     'V13M06-343_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -343_B1                                                     
+V13M06-343_B1
+[20:31:02] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_D1/V13M06-342_D1.tif to COG.                           
+           INFO     'V13M06-342_D1' Executing queued functions      logger.py:27
+           INFO     V13M06-342_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_D1/V13M06-342_D1_1.tif                                 
+[20:31:14] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_D1/V13M06-342_D1_2.tif                                 
+[20:31:22] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_D1/V13M06-342_D1_3.tif                                 
+[20:31:27] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_D1/V13M06-342_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_D1/V13M06-342_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_D1/V13M06-342_D1_3.tif                                 
+[20:31:48] INFO     'V13M06-342_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -342_D1                                                     
+V13M06-342_D1
+[20:32:06] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_A1/V13M06-280_A1.tif to COG.                           
+           INFO     'V13M06-280_A1' Executing queued functions      logger.py:27
+           INFO     V13M06-280_A1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_A1/V13M06-280_A1_1.tif                                 
+[20:32:15] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_A1/V13M06-280_A1_2.tif                                 
+[20:32:24] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_A1/V13M06-280_A1_3.tif                                 
+[20:32:27] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_A1/V13M06-280_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_A1/V13M06-280_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_A1/V13M06-280_A1_3.tif                                 
+[20:32:46] INFO     'V13M06-280_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -280_A1                                                     
+V13M06-280_A1
+[20:33:06] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_D1/V12F14-057_D1.tif to COG.                           
+           INFO     'V12F14-057_D1' Executing queued functions      logger.py:27
+           INFO     V12F14-057_D1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_D1/V12F14-057_D1_1.tif                                 
+[20:33:14] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_D1/V12F14-057_D1_2.tif                                 
+[20:33:23] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_D1/V12F14-057_D1_3.tif                                 
+[20:33:27] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_D1/V12F14-057_D1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_D1/V12F14-057_D1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_D1/V12F14-057_D1_3.tif                                 
+[20:33:46] INFO     'V12F14-057_D1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V12F14             
+                    -057_D1                                                     
+V12F14-057_D1
+[20:34:00] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_A1/V13M06-344_A1.tif to COG.                           
+           INFO     'V13M06-344_A1' Executing queued functions      logger.py:27
+           INFO     V13M06-344_A1 Adding coords 'coords'            logger.py:27
+[20:34:05] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_A1/V13M06-344_A1_1.tif                                 
+[20:34:15] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_A1/V13M06-344_A1_2.tif                                 
+[20:34:28] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_A1/V13M06-344_A1_3.tif                                 
+[20:34:31] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_A1/V13M06-344_A1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_A1/V13M06-344_A1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_A1/V13M06-344_A1_3.tif                                 
+[20:34:48] INFO     'V13M06-344_A1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -344_A1                                                     
+V13M06-344_A1
+[20:35:11] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_C1/V13M06-281_C1.tif to COG.                           
+           INFO     'V13M06-281_C1' Executing queued functions      logger.py:27
+           INFO     V13M06-281_C1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_C1/V13M06-281_C1_1.tif                                 
+[20:35:20] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_C1/V13M06-281_C1_2.tif                                 
+[20:35:32] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_C1/V13M06-281_C1_3.tif                                 
+[20:35:35] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_C1/V13M06-281_C1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_C1/V13M06-281_C1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_C1/V13M06-281_C1_3.tif                                 
+[20:35:56] INFO     'V13M06-281_C1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13M06             
+                    -281_C1                                                     
+V13M06-281_C1
+[20:36:17] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_B1/V13F27-296_B1.tif to COG.                           
+           INFO     'V13F27-296_B1' Executing queued functions      logger.py:27
+           INFO     V13F27-296_B1 Adding coords 'coords'            logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_B1/V13F27-296_B1_1.tif                                 
+[20:36:27] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_B1/V13F27-296_B1_2.tif                                 
+[20:36:35] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_B1/V13F27-296_B1_3.tif                                 
+[20:36:37] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_B1/V13F27-296_B1_1.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_B1/V13F27-296_B1_2.tif                                 
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_B1/V13F27-296_B1_3.tif                                 
+[20:36:55] INFO     'V13F27-296_B1' written to                      logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/image_processing/samui/V13F27             
+                    -296_B1                                                     
+V13F27-296_B1
+**** Job ends ****
+Thu Apr  4 08:36:55 PM EDT 2024
