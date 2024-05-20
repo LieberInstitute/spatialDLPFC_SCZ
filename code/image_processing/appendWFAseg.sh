@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p gpu
-#SBATCH --mem=20G
+#SBATCH --mem=40G
 #SBATCH --job-name=appendAFseg
 #SBATCH -o logs/appendAFseg.txt 
 #SBATCH -e logs/appendAFseg.txt 
