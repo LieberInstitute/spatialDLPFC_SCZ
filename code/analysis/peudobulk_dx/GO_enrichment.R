@@ -68,7 +68,6 @@ up_gene <- gene_df |>
   pull(ensembl)
 
 length(up_gene)
-# 47 up reg genes
 
 
 ego_up <- enrichGO(
@@ -102,7 +101,6 @@ down_gene <- gene_df |>
   pull(ensembl)
 
 length(down_gene)
-# 47 up reg genes
 
 
 ego_down <- enrichGO(
