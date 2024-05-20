@@ -12,15 +12,15 @@ for i = 1:numel(WFAfiles)
     
     currentName = WFAfiles(i).name(1:end-4);
 
-    % fname=fullfile(dt1, [currentName, '_WFAseg.mat']);
-    % load(fname)
-    % seg = uint8(BW);
-    % seg(seg==1) = 255;
+     fname=fullfile(dt1, [currentName, '_WFAseg.mat']);
+     load(fname)
+     tpoint = uint8(BW);
+     tpoint(tpoint==1) = 255;
     
-    % fname=fullfile(dt1, [currentName, '_WFAseg1.mat']);
-    % load(fname)
-    % seg1 = uint8(BW);
-    % seg1(seg1==1) = 255;
+     fname=fullfile(dt1, [currentName, '_WFAseg1.mat']);
+     load(fname)
+     ostus = uint8(BW);
+     ostus(ostus==1) = 255;
 
     % fname=fullfile(dt1, [currentName, '_WFAseg2.mat']);
     % load(fname)
@@ -29,24 +29,32 @@ for i = 1:numel(WFAfiles)
 
     fname=fullfile(dt1, [currentName, '_WFAseg3.mat']);
     load(fname)
-    seg3 = uint8(pnn);
-    seg3(seg3==1) = 255;
+    adapT = uint8(pnn);
+    adapT(adapT==1) = 255;
     
     fname=fullfile(at, [currentName, '_AFseg.mat']);
     load(fname)
-    AFseg = uint8(BW);
-    AFseg(AFseg==1) = 255;
+    AFmask = pnn;
+    AFmask(BW) = 0;
+    AFmask = uint8(AFmask);
+    AFmask(AFmask==1) = 255;
+    
+    fname=fullfile(dt1, [currentName, '_AFseg_mask.mat']);
+    load(fname)
+    filt = uint8(filteredPnnM);
+    filt(filt==1) = 255;
 
     imwrite(mat2gray(DAPI),fullfile(ot,[currentName,'.tif']))
     imwrite(mat2gray(NeuN),fullfile(ot,[currentName,'.tif']),'writemode', 'append')
     imwrite(mat2gray(Claudin5),fullfile(ot,[currentName,'.tif']),'writemode', 'append')
     imwrite(mat2gray(WFA),fullfile(ot,[currentName,'.tif']),'writemode', 'append')
     imwrite(mat2gray(AF),fullfile(ot,[currentName,'.tif']),'writemode', 'append')
-    %imwrite(seg,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
-    %imwrite(seg1,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(tpoint,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(ostus,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
     %imwrite(seg2,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
-    imwrite(seg3,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
-    imwrite(AFseg,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(adapT,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(AFmask,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
+    imwrite(filt,fullfile(ot,[currentName,'.tif']),'writemode', 'append')
 disp(currentName)
 end
 
