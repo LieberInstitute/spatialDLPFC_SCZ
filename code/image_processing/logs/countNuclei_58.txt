@@ -1,0 +1,85 @@
+**** Job starts ****
+Fri Apr 26 05:13:49 PM EDT 2024
+**** JHPCE info ****
+User: mtippani
+Job id: 5034404s
+Job name: countNuclei
+Hostname: 
+Task id: 58
+Processing sample V13M06-343_B1
+MATLAB is selecting SOFTWARE OPENGL rendering.
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+             R2023a Update 3 (9.14.0.2286388) 64-bit (glnxa64)
+                                May 25, 2023
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+loading data
+4992 Visium spots detected
+Building spot grid
+43894 WFA ROIS detected
+counting dots per Visium spot
+100 spots finished in time 352.2038s
+200 spots finished in time 700.4107s
+300 spots finished in time 1049.064s
+400 spots finished in time 1397.1955s
+500 spots finished in time 1745.423s
+600 spots finished in time 2093.084s
+700 spots finished in time 2440.21s
+800 spots finished in time 2787.5279s
+900 spots finished in time 3134.8323s
+1000 spots finished in time 3483.121s
+1100 spots finished in time 3749.912s
+1200 spots finished in time 4008.9128s
+1300 spots finished in time 4270.3657s
+1400 spots finished in time 4529.4176s
+1500 spots finished in time 4788.199s
+1600 spots finished in time 5046.8144s
+1700 spots finished in time 5305.5753s
+1800 spots finished in time 5564.3126s
+1900 spots finished in time 5823.0274s
+2000 spots finished in time 6081.674s
+2100 spots finished in time 6340.4198s
+2200 spots finished in time 6599.0652s
+2300 spots finished in time 6857.8888s
+2400 spots finished in time 7116.7596s
+2500 spots finished in time 7375.633s
+2600 spots finished in time 7634.5304s
+2700 spots finished in time 7893.005s
+2800 spots finished in time 8153.1297s
+2900 spots finished in time 8411.8403s
+3000 spots finished in time 8670.2427s
+3100 spots finished in time 8928.9366s
+3200 spots finished in time 9187.5164s
+3300 spots finished in time 9446.2246s
+3400 spots finished in time 9704.9495s
+3500 spots finished in time 9963.6165s
+3600 spots finished in time 10222.2662s
+3700 spots finished in time 10480.8298s
+3800 spots finished in time 10739.3869s
+3900 spots finished in time 10997.8184s
+4000 spots finished in time 11256.4734s
+4100 spots finished in time 11515.2087s
+4200 spots finished in time 11773.9092s
+4300 spots finished in time 12032.379s
+4400 spots finished in time 12290.6871s
+4500 spots finished in time 12549.068s
+4600 spots finished in time 12807.6257s
+4700 spots finished in time 13066.1439s
+4800 spots finished in time 13324.8032s
+4900 spots finished in time 13583.4268s
+1Channel done13821.372s
+writing table
+
+ans = 
+
+  struct with fields:
+
+    WFA: [4992x1 double]
+
+>> **** Job ends ****
+Fri Apr 26 09:05:14 PM EDT 2024
