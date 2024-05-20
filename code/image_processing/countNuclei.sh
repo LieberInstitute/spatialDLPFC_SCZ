@@ -3,7 +3,7 @@
 #SBATCH --job-name=countNuclei
 #SBATCH -o logs/countNuclei_%a.txt 
 #SBATCH -e logs/countNuclei_%a.txt
-#SBATCH --array=2-48%5
+#SBATCH --array=1-64%8
 
 echo "**** Job starts ****"
 date
@@ -20,9 +20,9 @@ echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 module load matlab/R2023a
 
 ## Load toolbox for VistoSeg
-toolbox='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/vistoseg/lib_updated/'
+toolbox='/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/image_processing/code/'
 
-filePath=$(ls -1 /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/plots/image_processing/image_histograms/*_WFAseg.mat | sed -n "${SLURM_ARRAY_TASK_ID}p")
+filePath=$(ls -1 /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/DAPI_NeuN_WFA_Segs/*_segs.mat | sed -n "${SLURM_ARRAY_TASK_ID}p")
 
 ## Check if file path exists
 if [ ! -f "$filePath" ]; then
@@ -30,17 +30,17 @@ if [ ! -f "$filePath" ]; then
     exit 1
 fi
 
-fileName=$(basename "$filePath" _WFAseg.mat)
+fileName=$(basename "$filePath" _segs.mat)
 echo "Processing sample ${fileName}"
 
 
 ## Read inputs
 jsonname1=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/${fileName}/outs/spatial/scalefactors_json.json
 posname1=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/${fileName}/outs/spatial/tissue_positions.csv
-
+imgname=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/${fileName}.mat
 
 ## Run refineVNS function
-matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), countNuclei('$filePath','$jsonname1','$posname1')" 
+matlab -nodesktop -nosplash -nojvm -r "addpath(genpath('$toolbox')), countNuclei('$filePath','$imgname','$jsonname1','$posname1')" 
 
 echo "**** Job ends ****"
 date
