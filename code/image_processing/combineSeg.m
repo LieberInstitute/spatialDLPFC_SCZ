@@ -11,13 +11,13 @@ D = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/se
 WFAseg = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/WFAseg';
 myfiles = dir(fullfile(strrep(D,'slide3','*'),'*thresholded.mat'));
 segs = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/DAPI_NeuN_WFA_Segs';
-for i = 1:64
+for i = 45:64
     currentSample = myfiles(i).name(1:end-16);
     fileP = fullfile(myfiles(i).folder, myfiles(i).name);
     load(fileP)
     load(fullfile(WFAseg, [currentSample, '_WFAseg3.mat']))
     WFA = pnn;
-    tb = [tb; size(WFA,1), size(DAPI,1), size(NeuN, 1), size(WFA, 2), size(DAPI,2), size(NeuN, 2)];
-    disp(tb)
-    %save(fullfile(segs,[currentSample, '_segs.mat']))
+    %tb = [tb; size(WFA,1), size(DAPI,1), size(NeuN, 1), size(WFA, 2), size(DAPI,2), size(NeuN, 2)];
+    %disp(tb)
+    save(fullfile(segs,[currentSample, '_segs.mat']))
 end
