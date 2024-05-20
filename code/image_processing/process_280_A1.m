@@ -1,4 +1,4 @@
-fpath = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/segmented_channels_stitched/slide5/V13M06-280_A1_stitched.tif';
+fpath = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/V13M06-280_A1.tif';
 fname = 'V13M06-280_A1';
 
 ot = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/plots/image_processing/image_histograms';
@@ -11,7 +11,7 @@ WFA = im2double(imread(fpath, 4));
 [counts, x]=hist(WFA(:),256);
 lim = 13;
 % Plot the smoothed histogram
-[thresh, lnP] = triangle_threshold_right_tail(counts(lim:end));git add 
+[thresh, lnP] = triangle_threshold_right_tail(counts(lim:end));
 level = x(lim)+x(thresh)+0.1;
 BW=imbinarize(WFA,level);
 
