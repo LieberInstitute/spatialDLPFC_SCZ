@@ -6,7 +6,7 @@ dt1 = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_pr
 
 addpath(genpath('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/image_processing/'))
 %% preprocess
-WFA = im2double(imread(fpath, 4));
+WFA = im2double(imread(fpath, 5));
 
 [counts, x]=hist(WFA(:),256);
 lim = 13;
@@ -42,7 +42,7 @@ pnn(pnn_idx(~noise_idx)) =0;
 save(fullfile(dt1,'WFAseg',[fname, '_WFAseg3.mat']),'pnn')
 
 %% processAF
-load(fpath, 'AF');
+AF = im2double(imread(fpath,1));
 [counts, x]=hist(AF(:),256);
 BW = imbinarize(AF);
 
