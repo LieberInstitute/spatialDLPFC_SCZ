@@ -50,6 +50,7 @@ dir.create(
 
 # KEGG & ClusterProfiler prep ----
 search_kegg_organism("hsa", by = "kegg_code")
+# NOTE: there's a homo sapiens database names "hsa"
 
 # Up-reg genes ----
 up_gene <- gene_df |>
@@ -68,8 +69,8 @@ KEGG_up_ora <- enrichKEGG(
 )
 
 # TODO: make the results readable
-# setReadable(KEGG_ora, 'org.Hs.eg.db')@result |>
-KEGG_up_ora@result |>
+setReadable(KEGG_up_ora, OrgDb = 'org.Hs.eg.db', keyType="ENTREZID")@result |>
+# KEGG_up_ora@result |>
 write_csv(
     file = here(
       "processed-data/PB_dx_genes/enrichment",
@@ -96,7 +97,10 @@ KEGG_down_ora <- enrichKEGG(
   pvalueCutoff = 0.05
 )
 
-KEGG_down_ora@result |>
+setReadable(
+  KEGG_down_ora, 
+  OrgDb = 'org.Hs.eg.db',
+  keyType="ENTREZID")@result |> 
 write_csv(
     file = here(
       "processed-data/PB_dx_genes/enrichment",
@@ -120,7 +124,10 @@ KEGG_all_ora <- enrichKEGG(
   pvalueCutoff = 0.05
 )
 
-KEGG_all_ora@result |>
+setReadable(
+  KEGG_all_ora, 
+  OrgDb = 'org.Hs.eg.db',
+  keyType="ENTREZID")@result |>
 write_csv(
     file = here(
       "processed-data/PB_dx_genes/enrichment",
