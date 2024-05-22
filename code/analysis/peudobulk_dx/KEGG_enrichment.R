@@ -24,11 +24,11 @@ gene_df <- read_csv(
 
 entrezid_df <- bitr(gene_df$ensembl, fromType = "ENSEMBL", toType = "ENTREZID", OrgDb = "org.Hs.eg.db")
 
-gene_df <- gene_df |> 
-left_join(
-  entrezid_df,
-  by = c("ensembl" = "ENSEMBL")
-)
+gene_df <- gene_df |>
+  left_join(
+    entrezid_df,
+    by = c("ensembl" = "ENSEMBL")
+  )
 
 
 sig_gene_df <- gene_df |>
@@ -36,6 +36,8 @@ sig_gene_df <- gene_df |>
 
 sig_gene <- sig_gene_df |>
   pull(ensembl)
+
+
 
 
 # Export the genes for website
@@ -68,16 +70,16 @@ KEGG_up_ora <- enrichKEGG(
   pvalueCutoff = 0.05
 )
 
-# TODO: make the results readable
-setReadable(KEGG_up_ora, OrgDb = 'org.Hs.eg.db', keyType="ENTREZID")@result |>
-# KEGG_up_ora@result |>
-write_csv(
+setReadable(KEGG_up_ora, OrgDb = "org.Hs.eg.db", keyType = "ENTREZID")@result |>
+  # KEGG_up_ora@result |>
+  write_csv(
     file = here(
       "processed-data/PB_dx_genes/enrichment",
       "KEGG_ORA_up_gene_PRECAST_07.csv"
     )
   )
 
+dotplot(KEGG_down_ora)
 
 # Down-reg genes ----
 down_gene <- gene_df |>
@@ -98,10 +100,11 @@ KEGG_down_ora <- enrichKEGG(
 )
 
 setReadable(
-  KEGG_down_ora, 
-  OrgDb = 'org.Hs.eg.db',
-  keyType="ENTREZID")@result |> 
-write_csv(
+  KEGG_down_ora,
+  OrgDb = "org.Hs.eg.db",
+  keyType = "ENTREZID"
+)@result |>
+  write_csv(
     file = here(
       "processed-data/PB_dx_genes/enrichment",
       "KEGG_ORA_down_gene_PRECAST_07.csv"
@@ -125,15 +128,51 @@ KEGG_all_ora <- enrichKEGG(
 )
 
 setReadable(
-  KEGG_all_ora, 
-  OrgDb = 'org.Hs.eg.db',
-  keyType="ENTREZID")@result |>
-write_csv(
+  KEGG_all_ora,
+  OrgDb = "org.Hs.eg.db",
+  keyType = "ENTREZID"
+)@result |>
+  write_csv(
     file = here(
       "processed-data/PB_dx_genes/enrichment",
       "KEGG_ORA_all_gene_PRECAST_07.csv"
     )
   )
+
+
+# Cluster implementation
+gc_list <- list(
+  "Up" = up_gene,
+  "Down" = down_gene,
+  "All" = sig_gene
+)
+
+
+# TODO: need finalize the pvalue cutoff etc. 
+KEGG_ora <- compareCluster(
+  geneCluster = gc_list, fun = enrichKEGG,
+  universe = gene_df$ENTREZID,
+  organism = "hsa",
+  # pvalueCutoff = 0.05
+  # qvalueC
+)
+
+# pdf(here("plots/PB_dx_genes/enrichment/test_KEGG_era.pdf"))
+png(here("plots/PB_dx_genes/enrichment/test_KEGG_era.png"))
+setReadable(
+  KEGG_ora,
+  OrgDb = "org.Hs.eg.db",
+  keyType = "ENTREZID"
+) |>
+dotplot(showCategory = 10)
+dev.off()
+
+
+# setReadable(
+#   KEGG_ora,
+#   OrgDb = "org.Hs.eg.db",
+#   keyType = "ENTREZID"
+# )@compareClusterResult |> View()
 
 # Session Info ----
 session_info()
