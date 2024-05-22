@@ -51,9 +51,10 @@ dir.create(
 
 # GO enrichment (Overrepresentative analysis) ----
 gc_list <- list(
+  "All" = sig_gene,
   "Up" = up_gene,
-  "Down" = down_gene,
-  "All_gene" = sig_gene
+  "Down" = down_gene
+
 )
 
 GO_ora <- compareCluster(
