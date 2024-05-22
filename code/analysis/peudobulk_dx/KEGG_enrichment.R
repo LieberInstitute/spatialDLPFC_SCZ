@@ -142,9 +142,9 @@ setReadable(
 
 # Cluster implementation
 gc_list <- list(
+  "All" = sig_gene,
   "Up" = up_gene,
-  "Down" = down_gene,
-  "All" = sig_gene
+  "Down" = down_gene
 )
 
 
