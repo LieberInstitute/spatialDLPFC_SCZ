@@ -5,8 +5,8 @@
 function [count,prop,countC,inten] = countNuclei(mask,img,jsonname,posname,~) 
 
 disp('loading data')
- img = load(img, 'WFA');
- BW = load(mask, 'WFA');
+ img = load(img, 'DAPI', 'NeuN', 'WFA');
+ BW = load(mask, 'DAPI', 'NeuN', 'WFA');
  O = fieldnames(BW);
    
 [posPath,~] = fileparts(posname);
