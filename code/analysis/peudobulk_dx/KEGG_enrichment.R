@@ -19,23 +19,80 @@ gene_df <- read_csv(
   "~/Downloads/test_PRECAST_07.csv"
 )
 
-
-
-
-entrezid_df <- bitr(gene_df$ensembl, fromType = "ENSEMBL", toType = "ENTREZID", OrgDb = "org.Hs.eg.db")
+entrezid_df <- bitr(
+  gene_df$ensembl,
+  fromType = "ENSEMBL",
+  toType = "ENTREZID",
+  OrgDb = "org.Hs.eg.db"
+)
 
 gene_df <- gene_df |>
-  left_join(
+  right_join(
     entrezid_df,
     by = c("ensembl" = "ENSEMBL")
   )
 
 
+adj_p_cutoff <- 0.10
+
 sig_gene_df <- gene_df |>
-  filter(fdr_ntc <= 0.05)
+  filter(fdr_ntc <= adj_p_cutoff)
 
 sig_gene <- sig_gene_df |>
-  pull(ensembl)
+  pull(ENTREZID)
+
+up_gene <- sig_gene_df |>
+  filter(
+    logFC_scz > 0
+  ) |>
+  pull(ENTREZID)
+
+down_gene <- sig_gene_df |>
+  filter(
+    logFC_scz < 0
+  ) |>
+  pull(ENTREZID)
+
+# Cluster implementation
+gc_list <- list(
+  "All" = sig_gene,
+  "Up" = up_gene,
+  "Down" = down_gene
+)
+
+
+# TODO: need finalize the pvalue cutoff etc.
+KEGG_ora <- compareCluster(
+  geneCluster = gc_list, fun = enrichKEGG,
+  universe = gene_df$ENTREZID,
+  organism = "hsa",
+  # pvalueCutoff = 0.05
+  # qvalueC
+)
+
+# Save analysis result
+
+
+setReadable(
+  KEGG_ora,
+  OrgDb = "org.Hs.eg.db",
+  keyType = "ENTREZID"
+)@compareClusterResult |> 
+write.csv(
+  here("processed-data/PB_dx_genes/enrichment",
+  paste0("test_KEGG_ora_", adj_p_cutoff, ".csv"))
+)
+
+# pdf(here("plots/PB_dx_genes/enrichment/test_KEGG_era.pdf"))
+png(here("plots/PB_dx_genes/enrichment",
+    paste0("test_KEGG_ora_", adj_p_cutoff, ".png")))
+setReadable(
+  KEGG_ora,
+  OrgDb = "org.Hs.eg.db",
+  keyType = "ENTREZID"
+) |>
+  dotplot(showCategory = 10)
+dev.off()
 
 
 
@@ -57,7 +114,7 @@ search_kegg_organism("hsa", by = "kegg_code")
 # Up-reg genes ----
 up_gene <- gene_df |>
   filter(
-    fdr_ntc <= 0.05,
+    fdr_ntc <= adj_p_cutoff,
     logFC_scz > 0
   ) |>
   pull(ENTREZID)
@@ -84,7 +141,7 @@ dotplot(KEGG_down_ora)
 # Down-reg genes ----
 down_gene <- gene_df |>
   filter(
-    fdr_ntc <= 0.05,
+    fdr_ntc <= adj_p_cutoff,
     logFC_scz < 0
   ) |>
   pull(ENTREZID)
@@ -114,7 +171,7 @@ setReadable(
 
 # All genes ----
 sig_gene_df <- gene_df |>
-  filter(fdr_ntc <= 0.05)
+  filter(fdr_ntc <= adj_p_cutoff)
 
 sig_gene <- sig_gene_df |>
   pull(ENTREZID)
@@ -148,14 +205,21 @@ gc_list <- list(
 )
 
 
-# TODO: need finalize the pvalue cutoff etc. 
+# TODO: need finalize the pvalue cutoff etc.
 KEGG_ora <- compareCluster(
   geneCluster = gc_list, fun = enrichKEGG,
   universe = gene_df$ENTREZID,
   organism = "hsa",
-  # pvalueCutoff = 0.05
+  pvalueCutoff = 0.10
   # qvalueC
 )
+
+
+setReadable(
+  KEGG_ora,
+  OrgDb = "org.Hs.eg.db",
+  keyType = "ENTREZID"
+)@compareClusterResult |> View()
 
 # pdf(here("plots/PB_dx_genes/enrichment/test_KEGG_era.pdf"))
 png(here("plots/PB_dx_genes/enrichment/test_KEGG_era.png"))
@@ -164,7 +228,7 @@ setReadable(
   OrgDb = "org.Hs.eg.db",
   keyType = "ENTREZID"
 ) |>
-dotplot(showCategory = 10)
+  dotplot(showCategory = 10)
 dev.off()
 
 
