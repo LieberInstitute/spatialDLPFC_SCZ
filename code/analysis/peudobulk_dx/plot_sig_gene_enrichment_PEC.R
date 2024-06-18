@@ -120,7 +120,7 @@ heatmap_pec_spd_df[, c(
   data.matrix() |>
   pheatmap(
     mat = _,
-    scale = "row",
+    # scale = "row",
     cluster_rows = TRUE,
     cluster_cols = FALSE,
     cellwidth = 10,
@@ -175,7 +175,7 @@ pec_snRNA_df |>
   data.matrix() |>
   pheatmap(
     mat = _,
-    scale = "row",
+    # scale = "row",
     cluster_rows = TRUE,
     cluster_cols = FALSE,
     cellwidth = 10,
