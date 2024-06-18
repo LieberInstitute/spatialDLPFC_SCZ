@@ -19,23 +19,22 @@ gene_df <- read_csv(
   "~/Downloads/test_PRECAST_07.csv"
 )
 
+adj_p_cutoff <- 0.10
+
 sig_gene_df <- gene_df |>
-  filter(fdr_ntc <= 0.05)
+  filter(fdr_ntc <= adj_p_cutoff)
 
 sig_gene <- sig_gene_df |>
   pull(ensembl)
 
-
-up_gene <- gene_df |>
+up_gene <- sig_gene_df |>
   filter(
-    fdr_ntc <= 0.05,
     logFC_scz > 0
   ) |>
   pull(ensembl)
 
-down_gene <- gene_df |>
+down_gene <- sig_gene_df |>
   filter(
-    fdr_ntc <= 0.05,
     logFC_scz < 0
   ) |>
   pull(ensembl)
@@ -44,21 +43,17 @@ down_gene <- gene_df |>
 # query_string <- paste0(sig_gene, collapse = "::")
 
 
-dir.create(
-  here("processed-data/PB_dx_genes/enrichment"),
-  showWarnings = FALSE
-)
 
 # GO enrichment (Overrepresentative analysis) ----
 gc_list <- list(
   "All" = sig_gene,
   "Up" = up_gene,
   "Down" = down_gene
-
 )
 
 GO_ora <- compareCluster(
-  geneCluster = gc_list, fun = enrichGO,
+  geneCluster = gc_list,
+  fun = enrichGO,
   universe = gene_df$ensembl,
   OrgDb = org.Hs.eg.db,
   ont = "ALL",
@@ -69,15 +64,75 @@ GO_ora <- compareCluster(
   readable = TRUE
 )
 
+dir.create(
+  here("processed-data/PB_dx_genes/enrichment"),
+  showWarnings = FALSE
+)
+
+GO_ora@compareClusterResult |>
+  write.csv(
+    here(
+      "processed-data/PB_dx_genes/enrichment",
+      paste0("test_GO_ora_", adj_p_cutoff, ".csv")
+    )
+  )
+
+
+# Make dot plot ----
+
+go_ora_list <- c("BP", "MF", "CC") |>
+  set_names() |>
+  imap(
+    ~ compareCluster(
+      geneCluster = gc_list,
+      fun = enrichGO,
+      universe = gene_df$ensembl,
+      OrgDb = org.Hs.eg.db,
+      ont = .x,
+      keyType = "ENSEMBL",
+      pAdjustMethod = "BH",
+      # pvalueCutoff = 0.01,
+      # qvalueCutoff = 0.05,
+      readable = TRUE
+    )
+  )
+
+pdf(here("plots/PB_dx_genes/enrichment",
+    paste0("test_GO_ora_", adj_p_cutoff, ".pdf")),
+    height = 10, width = 10)
+go_ora_list |> iwalk(
+  ~ dotplot(
+    .x,
+    showCategory = 10, # Show top 10 genes of each category
+    split = "NULL",
+    includeAll = FALSE,
+    group = FALSE,
+    title = .y
+  )
+) + scale_x_discrete(limits = c("Down\n(92)", "Up\n((66)", "All\n((158)"))
+dev.off()
+
 
 # Visualization ----
-dotplot(GO_ora, showCategory = 10, split = "ONTOLOGY", includeAll = FALSE, group = TRUE)+
-scale_x_discrete(limits = c("Up", "Down", "All"))
+tmp <- dotplot(
+  GO_ora,
+  showCategory = 10, # Show top 10 genes of each category
+  split = "NULL",
+  includeAll = FALSE,
+  group = TRUE
+) +
+  scale_x_discrete(limits = c("Up", "Down", "All"))
+
+## Debug why there's a category that is NA
+tmp$data |> View()
 
 # Results ----
 GO_ora@compareClusterResult |> View()
 
-
+GO_ora@compareClusterResult |>
+  group_by(Cluster) |>
+  slice_head(n = 10) |>
+  View()
 
 
 
@@ -94,9 +149,7 @@ GO_ora@compareClusterResult |> View()
 # qvalueCutoff = 0.05,
 # readable = TRUE
 # )
-
 # # dotplot(ego)
-
 # write.csv(
 #   ego@result,
 #   here(
@@ -104,8 +157,7 @@ GO_ora@compareClusterResult |> View()
 #     "GO_ERA_PRECAST_07.csv"
 #   )
 # )
-
-# ## Up reg genes ----
+## Up reg genes ----
 # up_gene <- gene_df |>
 #   filter(
 #     fdr_ntc <= 0.05,
@@ -131,7 +183,7 @@ GO_ora@compareClusterResult |> View()
 #     "GO_ERA_up_gene_PRECAST_07.csv"
 #   )
 # )
-# ## Down reg genes ----
+## Down reg genes ----
 # down_gene <- gene_df |>
 #   filter(
 #     fdr_ntc <= 0.05,
