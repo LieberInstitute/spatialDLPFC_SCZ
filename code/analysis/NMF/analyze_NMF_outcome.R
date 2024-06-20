@@ -9,6 +9,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(scater)
   library(scuttle)
+  library(pheatmap)
 })
 
 
@@ -17,50 +18,73 @@ suppressPackageStartupMessages({
 model <- readRDS(
   here(
     "processed-data/rds/NMF/",
-    "test_NMF_all_k50.rds"
+    "test_NMF_all_k100.rds"
   )
 )
 
 ## Load Spe ---------------
-fld_data_spatialcluster <- here(
-  "processed-data",
-  "rds", "spatial_cluster"
-)
-
-path_PRECAST_int_spe <- file.path(
-  fld_data_spatialcluster, "PRECAST",
-  paste0("test_spe_semi_inform", ".rds")
-)
-
 spe <- readRDS(
-  path_PRECAST_int_spe
+  here(
+    "processed-data/rds/spatial_cluster/PRECAST/",
+    # "qc_spe_wo_spg_N63.rds",
+    "spe_wo_spg_N63_PRECAST.rds"
+  )
 )
 
 
-spe$dx <- metadata(spe)$dx_df$dx[
-  match(
-    spe$sample_id,
-    metadata(spe)$dx_df$sample_id
-  )
-]
+# spe$dx <- metadata(spe)$dx_df$dx[
+#   match(
+#     spe$sample_id,
+#     metadata(spe)$dx_df$sample_id
+#   )
+# ]
 
-spe$sex <- metadata(spe)$dx_df$sex[
-  match(
-    spe$sample_id,
-    metadata(spe)$dx_df$sample_id
-  )
-]
+# spe$sex <- metadata(spe)$dx_df$sex[
+#   match(
+#     spe$sample_id,
+#     metadata(spe)$dx_df$sample_id
+#   )
+# ]
 
-spe$age <- metadata(spe)$dx_df$age[
-  match(
-    spe$sample_id,
-    metadata(spe)$dx_df$sample_id
-  )
-]
+# spe$age <- metadata(spe)$dx_df$age[
+#   match(
+#     spe$sample_id,
+#     metadata(spe)$dx_df$sample_id
+#   )
+# ]
 
 
 
-colData(spe) |> colnames()
+# colData(spe) |> colnames()
+
+## Attatch PRECAST to SPE ----
+# PRECAST_df <- readRDS(
+#   here(
+#     "processed-data/rds/spatial_cluster",
+#     "PRECAST",
+#     "test_clus_label_df_semi_inform_k_2-16.rds"
+#   )
+# )
+
+# stopifnot(nrow(PRECAST_df) == ncol(spe))
+
+# precast_vars <- grep(
+#   "^PRECAST_", colnames(PRECAST_df),
+#   value = TRUE
+# )
+# spe <- spe[, spe$key %in% PRECAST_df$key]
+# # raw_spe[, precast_vars] <- PRECAST_df[raw_spe$key, precast_vars]
+# col_data_df <- PRECAST_df |>
+#   right_join(
+#     colData(spe) |> data.frame(),
+#     by = c("key"),
+#     relationship = "one-to-one"
+#   )
+
+# rownames(col_data_df) <- colnames(spe)
+# colData(spe) <- DataFrame(col_data_df)
+
+## Attatch NMF result to SPE ----
 patterns <- t(model$h) # these are the factors
 k <- ncol(patterns)
 colnames(patterns) <- paste0("NMF", 1:k)
@@ -69,14 +93,10 @@ colData(spe) <- cbind(colData(spe), patterns)
 
 ## Create nmf sce -----
 
-for (.spd in paste0("PRECAST_", 2:9)) {
-  spe[[.spd]] <- paste0("SpD", spe[[.spd]])
-}
-
 colnames_kept <- c(
   "key", "sample_id",
-  paste0("PRECAST_", 2:9),
-  "dx", "sex", "age"
+  "PRECAST_07",
+  "dx", "sex", "age", "brnum"
 )
 
 nmf_sce <- SingleCellExperiment(
@@ -87,7 +107,7 @@ nmf_sce <- SingleCellExperiment(
 
 vars <- getVarianceExplained(
   nmf_sce,
-  variables = c("sample_id", "PRECAST_8", "dx", "sex", "age"),
+  variables = c("PRECAST_07", "dx", "sex", "age"),
   assay.type = "nmf"
 )
 
@@ -95,14 +115,15 @@ png(here("plots/NMF/var_explained_all_cell.png"))
 plotExplanatoryVariables(vars)
 dev.off()
 
-vars_dx_only <- getVarianceExplained(
-  nmf_sce,
-  variables = c("dx"),
-  assay.type = "nmf"
-)
-png(here("plots/NMF/var_explained_all_cell_dx_only.png"))
-plotExplanatoryVariables(vars_dx_only)
-dev.off()
+# Deprecated code
+# vars_dx_only <- getVarianceExplained(
+#   nmf_sce,
+#   variables = c("dx"),
+#   assay.type = "nmf"
+# )
+# png(here("plots/NMF/var_explained_all_cell_dx_only.png"))
+# plotExplanatoryVariables(vars_dx_only)
+# dev.off()
 
 
 ## Pseudo-bulk NMF - sample & spd ----
@@ -110,7 +131,7 @@ pb_nmf_sce_spd <- aggregateAcrossCells(
   nmf_sce,
   ids = DataFrame(
     sample_id = nmf_sce$sample_id,
-    spd = nmf_sce$PRECAST_8
+    spd = nmf_sce$PRECAST_07
   ),
   use.assay.type = "nmf",
   statistics = "mean"
@@ -119,42 +140,101 @@ pb_nmf_sce_spd <- aggregateAcrossCells(
 png(here("plots/NMF/var_explained_spd-PB.png"))
 plotExplanatoryVariables(
   pb_nmf_sce_spd,
-  variables = c("dx", "sex", "age", "ncells"),
+  variables = c("dx", "sex", "age", "ncells", "spd"),
   assay.type = "nmf"
 ) |> print()
 dev.off()
+
+
+# Heatmap ----
+pb_nmf_mat <- assays(pb_nmf_sce_spd)$nmf |> data.matrix()
+tmp_key <- paste(
+  pb_nmf_sce_spd$sample_id, 
+  pb_nmf_sce_spd$PRECAST_07,
+  sep = "_" )
+
+
+
+colnames(pb_nmf_mat) <- tmp_key
+
+anna_col_df <- data.frame(
+  key = tmp_key,
+  brnum = pb_nmf_sce_spd$brnum,
+  spd  = pb_nmf_sce_spd$PRECAST_07,
+  dx = pb_nmf_sce_spd$dx) |> 
+  column_to_rownames("key")
+
+order_index <- order(
+  # anna_col_df$spd, 
+  anna_col_df$dx,
+  anna_col_df$brnum 
+)
+### Ordered only by dx ----
+pb_nmf_mat[, order_index] |>
+pheatmap(
+  scale = "row",
+  cluster_cols = FALSE,
+  annotation_col = anna_col_df |> select(dx)
+)
+
+
+### ordered by SPD ----
+spd_order_index <- order(
+  anna_col_df$spd, 
+  anna_col_df$dx,
+  anna_col_df$brnum 
+)
+pb_nmf_mat[, spd_order_index] |>
+pheatmap(
+  # scale = "row",
+  cluster_cols = FALSE,
+  annotation_col = anna_col_df |> select(spd, dx)
+)
+
+
+pb_nmf_mat[, spd_order_index] |>
+pheatmap(
+  # scale = "row",
+  cluster_cols = FALSE,
+  annotation_col = anna_col_df |> select(spd, dx)
+)
+
+
+
+
+
 
 
 ## Pseudo-bulk NMF - sample ----
+# Deprecated.
+# pb_nmf_sce_raw <- aggregateAcrossCells(
+#   nmf_sce,
+#   ids = nmf_sce$sample_id,
+#   use.assay.type = "nmf"
+# )
+# png(here("plots/NMF/var_explained_sample-PB_raw.png"))
+# plotExplanatoryVariables(
+#   pb_nmf_sce_raw,
+#   variables = c("dx", "sex", "age", "ncells"),
+#   assay.type = "nmf"
+# ) |> print()
+# dev.off()
 
-pb_nmf_sce_raw <- aggregateAcrossCells(
-  nmf_sce,
-  ids = nmf_sce$sample_id,
-  use.assay.type = "nmf"
-)
-png(here("plots/NMF/var_explained_sample-PB_raw.png"))
-plotExplanatoryVariables(
-  pb_nmf_sce_raw,
-  variables = c("dx", "sex", "age", "ncells"),
-  assay.type = "nmf"
-) |> print()
-dev.off()
 
+# pb_nmf_sce <- aggregateAcrossCells(
+#   nmf_sce,
+#   ids = nmf_sce$sample_id,
+#   use.assay.type = "nmf",
+#   statistics = "mean"
+# )
 
-pb_nmf_sce <- aggregateAcrossCells(
-  nmf_sce,
-  ids = nmf_sce$sample_id,
-  use.assay.type = "nmf",
-  statistics = "mean"
-)
-
-png(here("plots/NMF/var_explained_sample-PB.png"))
-plotExplanatoryVariables(
-  pb_nmf_sce,
-  variables = c("dx", "sex", "age", "ncells"),
-  assay.type = "nmf"
-) |> print()
-dev.off()
+# png(here("plots/NMF/var_explained_sample-PB.png"))
+# plotExplanatoryVariables(
+#   pb_nmf_sce,
+#   variables = c("dx", "sex", "age", "ncells"),
+#   assay.type = "nmf"
+# ) |> print()
+# dev.off()
 
 p_vec <- apply(assay(pb_nmf_sce, "nmf"),
   MARGIN = 1,
