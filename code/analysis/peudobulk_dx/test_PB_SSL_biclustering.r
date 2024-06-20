@@ -32,6 +32,9 @@ crude_mdl <- SSLB(
 toc()
 
 
+saveRDS(crude_mdl, "~/SSL_Bicluster.rds")
+crude_mdl <- readRDS("~/SSL_Bicluster.rds")
+
 X_SSLB <- crude_mdl$X
 K_SSLB <- crude_mdl$K
 B_SSLB <- crude_mdl$B
@@ -54,7 +57,7 @@ pheatmap(X_SSLB,
   cellheight = 1, cellwidth = 3,
   scale = "column",
   color = bic_pal,
-  show_rownames = FALSE,
+  show_rownames = TRUE,
   # RowSideColors = dx_cc
 )
 
