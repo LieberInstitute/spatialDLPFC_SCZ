@@ -18,18 +18,6 @@ spe <- readRDS(
   )
 )
 
-# Pre-QC filtering ----
-## Remove out tissue spots ----
-spe <- spe[, spe$in_tissue == TRUE]
-ncol(spe)
-## Remove sum_umi=0 spots ----
-# Remove these spots to do lognormalization
-spe <- spe[, spe$sum_umi != 0]
-ncol(spe)
-
-# imgData(spe) <- NULL
-
-# Preprocessing ----
 ## Fetch demo info
 spe$dx <- metadata(spe)$dx_df$dx[
   match(
@@ -56,43 +44,23 @@ spe$lot_num <- sapply(strsplit(spe$sample_id, "_"), function(x) x[1])
 spe$slide_id <- sapply(strsplit(spe$lot_num, "-"), function(x) x[2])
 
 
+
+# Crude preprocess ----
+## Remove out tissue spots ----
+spe <- spe[, spe$in_tissue == TRUE]
+ncol(spe)
+
+## Remove sum_umi=0 spots ----
+# Remove these spots to do lognormalization
+spe <- spe[, spe$sum_umi != 0]
+ncol(spe)
+
 ## Log transformation -----
 # Create logcounts
 spe <- logNormCounts(spe)
 
 
-# Sample-wise Statistics ----
-## Not sure if this section is actually useful
-# pdf(here("plots/02_visium_qc/pre_qc_stat.pdf"))
-
-# plotColData(spe, "sum_umi", x = "sample_id") +
-#   scale_y_log10()
-
-
-
-# # Same plot as above as only scaling differently
-# # plotColData(spe, "sum_umi", x = "sample_id") +
-# #   scale_y_continuous(trans = "log2")
-
-# plotColData(spe, "sum_gene", x = "sample_id")
-
-# plotColData(spe, "expr_chrM_ratio", x = "sample_id") +
-#   scale_y_continuous(trans = "logit")
-# dev.off()
-
-# Gene Variance Explained ----
-## Note: not run well
-# var_mat <- getVarianceExplained(
-#   spe[,1:10000],
-#   variables = c("dx", "sex", "age", "sample_id")
-# )
-
-# saveRDS(var_mat,
-#         here("varExplained.rds"))
-
-
-
-# Latent Embedding ----
+# PCA & UMAPs ----
 ## 500 HVG ----
 ### PCA (500 HVG) ----
 spe <- runPCA(spe)
@@ -206,6 +174,7 @@ plotUMAPbyVar <- function(
   }
 }
 
+# TODO: this is bug. 
 plotUMAPbyVar(
   var_spd = "lot_num",
   .dimred = "UMAP_2000",
@@ -330,7 +299,8 @@ for (i in seq.int(unique(spe$sample_id))) {
   dev.off()
 }
 
-
+# Session ----
+session_info()
 # Archived Code for plotting all UMAPs in one figure -----
 # UMAP_2000_mat <- reducedDim(spe)
 # # UMAP_2000_mat <- reducedDim(spe, "UMAP_2000")
@@ -434,8 +404,3 @@ for (i in seq.int(unique(spe$sample_id))) {
 #   colour_by = "scratch"
 # ) +
 #   theme(legend.position = "none")
-
-
-
-# Session ----
-session_info()
