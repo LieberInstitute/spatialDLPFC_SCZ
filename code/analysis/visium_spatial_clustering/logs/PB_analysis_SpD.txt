@@ -1,0 +1,294 @@
+**** Job starts ****
+Mon Apr 22 10:11:34 PM EDT 2024
+**** JHPCE info ****
+User: bguo
+Job id: 4767725
+Job name: PB_analysis_SpD
+Hostname: jhpce3
+Unloading conda_R/devel
+Loading conda_R/devel
+
+Currently Loaded Modules:
+  1) JHPCE_ROCKY9_DEFAULT_ENV   3) conda/3-23.3.1
+  2) JHPCE_tools/3.0            4) conda_R/devel
+
+ 
+
+2024-04-22 22:13:14.17844 create model matrix
+2024-04-22 22:13:14.544405 run duplicateCorrelation()
+2024-04-22 22:16:28.083502 The estimated correlation is: 0.333449066485322
+2024-04-22 22:16:28.094556 computing enrichment statistics
+2024-04-22 22:16:33.634403 extract and reformat enrichment results
+2024-04-22 22:16:39.947134 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-22 22:16:45.315507 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-22 22:16:47.302314 create model matrix
+2024-04-22 22:16:47.534261 run duplicateCorrelation()
+2024-04-22 22:21:59.800355 The estimated correlation is: 0.362488641385834
+2024-04-22 22:21:59.822091 computing enrichment statistics
+2024-04-22 22:22:11.093478 extract and reformat enrichment results
+2024-04-22 22:22:17.812277 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-22 22:22:27.010919 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-22 22:22:28.5671 create model matrix
+2024-04-22 22:22:28.823401 run duplicateCorrelation()
+2024-04-22 22:29:23.021423 The estimated correlation is: 0.180431709570633
+2024-04-22 22:29:23.041746 computing enrichment statistics
+2024-04-22 22:29:37.36622 extract and reformat enrichment results
+2024-04-22 22:29:42.248124 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-22 22:29:46.379449 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-22 22:29:48.41695 create model matrix
+2024-04-22 22:29:48.679916 run duplicateCorrelation()
+2024-04-22 22:39:10.937114 The estimated correlation is: 0.180028270481877
+2024-04-22 22:39:10.959136 computing enrichment statistics
+2024-04-22 22:39:35.558144 extract and reformat enrichment results
+2024-04-22 22:39:41.025031 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-22 22:39:45.408566 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-22 22:39:47.902871 create model matrix
+2024-04-22 22:39:48.157105 run duplicateCorrelation()
+2024-04-22 22:53:15.279574 The estimated correlation is: 0.173419012249047
+2024-04-22 22:53:15.309953 computing enrichment statistics
+2024-04-22 22:53:55.416933 extract and reformat enrichment results
+2024-04-22 22:54:02.118247 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-22 22:54:06.981896 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-22 22:54:09.176731 create model matrix
+2024-04-22 22:54:09.407814 run duplicateCorrelation()
+2024-04-22 23:10:57.864264 The estimated correlation is: 0.191125217541415
+2024-04-22 23:10:57.895258 computing enrichment statistics
+2024-04-22 23:11:48.621262 extract and reformat enrichment results
+2024-04-22 23:11:53.609949 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-22 23:11:58.444503 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-22 23:12:01.259856 create model matrix
+2024-04-22 23:12:01.513948 run duplicateCorrelation()
+2024-04-22 23:32:39.332162 The estimated correlation is: 0.154281430539904
+2024-04-22 23:32:39.350601 computing enrichment statistics
+2024-04-22 23:33:25.283102 extract and reformat enrichment results
+2024-04-22 23:33:30.832563 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-22 23:33:33.346269 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-22 23:33:34.826308 create model matrix
+2024-04-22 23:33:34.956076 run duplicateCorrelation()
+2024-04-22 23:54:35.586663 The estimated correlation is: 0.122696331998773
+2024-04-22 23:54:35.615551 computing enrichment statistics
+2024-04-22 23:56:03.430191 extract and reformat enrichment results
+2024-04-22 23:56:09.840547 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-22 23:56:16.621276 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-22 23:56:19.018822 create model matrix
+2024-04-22 23:56:19.226718 run duplicateCorrelation()
+2024-04-23 00:28:16.769172 The estimated correlation is: 0.131502693244406
+2024-04-23 00:28:16.805862 computing enrichment statistics
+2024-04-23 00:29:57.458566 extract and reformat enrichment results
+2024-04-23 00:30:03.572299 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-23 00:30:07.420199 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-23 00:30:10.107454 create model matrix
+2024-04-23 00:30:10.345695 run duplicateCorrelation()
+2024-04-23 01:08:59.173555 The estimated correlation is: 0.107986152317407
+2024-04-23 01:08:59.21586 computing enrichment statistics
+2024-04-23 01:11:40.567589 extract and reformat enrichment results
+2024-04-23 01:11:49.82193 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-23 01:11:57.465428 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-23 01:11:59.819012 create model matrix
+2024-04-23 01:12:00.039554 run duplicateCorrelation()
+2024-04-23 01:51:37.997338 The estimated correlation is: 0.0905191211572863
+2024-04-23 01:51:38.034849 computing enrichment statistics
+2024-04-23 01:54:37.959522 extract and reformat enrichment results
+2024-04-23 01:54:44.106577 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-23 01:54:49.283863 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-23 01:54:52.602784 create model matrix
+2024-04-23 01:54:52.929919 run duplicateCorrelation()
+2024-04-23 02:57:15.056345 The estimated correlation is: 0.0690383750496113
+2024-04-23 02:57:15.083617 computing enrichment statistics
+2024-04-23 03:01:21.510265 extract and reformat enrichment results
+2024-04-23 03:01:27.934466 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-23 03:01:32.343364 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-23 03:01:35.796952 create model matrix
+2024-04-23 03:01:36.065339 run duplicateCorrelation()
+2024-04-23 04:06:43.241104 The estimated correlation is: 0.0704681572332123
+2024-04-23 04:06:43.270837 computing enrichment statistics
+2024-04-23 04:11:30.74805 extract and reformat enrichment results
+2024-04-23 04:11:36.198441 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-23 04:11:40.886576 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-23 04:11:44.201629 create model matrix
+2024-04-23 04:11:44.454162 run duplicateCorrelation()
+2024-04-23 05:22:16.655956 The estimated correlation is: 0.0660790644798522
+2024-04-23 05:22:16.686729 computing enrichment statistics
+2024-04-23 05:27:46.87449 extract and reformat enrichment results
+2024-04-23 05:27:53.193758 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-23 05:27:57.590729 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+2024-04-23 05:28:01.135435 create model matrix
+2024-04-23 05:28:01.390357 run duplicateCorrelation()
+2024-04-23 06:43:40.451256 The estimated correlation is: 0.0607378923543308
+2024-04-23 06:43:40.481941 computing enrichment statistics
+2024-04-23 06:50:21.870188 extract and reformat enrichment results
+2024-04-23 06:50:28.827021 loading file /users/bguo/.cache/R/BiocFileCache/17f9ba2d1ac929_Human_DLPFC_Visium_modeling_results.Rdata%3Fdl%3D1
+2024-04-23 06:50:32.877157 loading file /users/bguo/.cache/R/BiocFileCache/17af224f065d02_modeling_results_BayesSpace_k09.Rdata%3Fdl%3D1
+─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R Under development (unstable) (2024-04-20 r86457)
+ os       Rocky Linux 9.2 (Blue Onyx)
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       US/Eastern
+ date     2024-04-23
+ pandoc   3.1.3 @ /jhpce/shared/community/core/conda_R/devel/bin/pandoc
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package              * version     date (UTC) lib source
+ abind                  1.4-5       2016-07-21 [2] CRAN (R 4.4.0)
+ AnnotationDbi          1.65.2      2023-11-03 [2] Bioconductor
+ AnnotationHub          3.11.1      2023-12-11 [2] Bioconductor 3.19 (R 4.4.0)
+ attempt                0.3.1       2020-05-03 [2] CRAN (R 4.4.0)
+ beachmat               2.19.1      2024-01-22 [2] Bioconductor 3.19 (R 4.4.0)
+ beeswarm               0.4.0       2021-06-01 [2] CRAN (R 4.4.0)
+ benchmarkme            1.0.8       2022-06-12 [2] CRAN (R 4.4.0)
+ benchmarkmeData        1.0.4       2020-04-23 [2] CRAN (R 4.4.0)
+ Biobase              * 2.63.1      2024-03-29 [1] Bioconductor 3.19 (R 4.4.0)
+ BiocFileCache          2.11.2      2024-03-27 [1] Bioconductor 3.19 (R 4.4.0)
+ BiocGenerics         * 0.49.1      2023-11-01 [2] Bioconductor
+ BiocIO                 1.13.0      2023-10-24 [2] Bioconductor
+ BiocManager            1.30.22     2023-08-08 [2] CRAN (R 4.4.0)
+ BiocNeighbors          1.21.2      2023-12-19 [2] Bioconductor 3.19 (R 4.4.0)
+ BiocParallel           1.37.1      2024-03-04 [1] Bioconductor 3.19 (R 4.4.0)
+ BiocSingular           1.19.0      2023-10-24 [2] Bioconductor
+ BiocVersion            3.19.1      2023-10-26 [2] Bioconductor
+ Biostrings             2.71.2      2024-01-28 [2] Bioconductor 3.19 (R 4.4.0)
+ bit                    4.0.5       2022-11-15 [2] CRAN (R 4.4.0)
+ bit64                  4.0.5       2020-08-30 [2] CRAN (R 4.4.0)
+ bitops                 1.0-7       2021-04-24 [2] CRAN (R 4.4.0)
+ blob                   1.2.4       2023-03-17 [2] CRAN (R 4.4.0)
+ bslib                  0.6.1       2023-11-28 [2] CRAN (R 4.4.0)
+ cachem                 1.0.8       2023-05-01 [2] CRAN (R 4.4.0)
+ cli                    3.6.2       2023-12-11 [2] CRAN (R 4.4.0)
+ codetools              0.2-20      2024-03-31 [3] CRAN (R 4.5.0)
+ colorspace             2.1-0       2023-01-23 [2] CRAN (R 4.4.0)
+ config                 0.3.2       2023-08-30 [2] CRAN (R 4.4.0)
+ cowplot                1.1.3       2024-01-22 [2] CRAN (R 4.4.0)
+ crayon                 1.5.2       2022-09-29 [2] CRAN (R 4.4.0)
+ curl                   5.2.1       2024-03-01 [1] CRAN (R 4.4.0)
+ data.table             1.15.0      2024-01-30 [2] CRAN (R 4.4.0)
+ DBI                    1.2.2       2024-02-16 [1] CRAN (R 4.4.0)
+ dbplyr                 2.5.0       2024-03-19 [1] CRAN (R 4.4.0)
+ DelayedArray           0.29.9      2024-03-01 [1] Bioconductor 3.19 (R 4.4.0)
+ DelayedMatrixStats     1.25.1      2023-11-09 [2] Bioconductor
+ digest                 0.6.34      2024-01-11 [2] CRAN (R 4.4.0)
+ doParallel             1.0.17      2022-02-07 [2] CRAN (R 4.4.0)
+ dotCall64              1.1-1       2023-11-28 [2] CRAN (R 4.4.0)
+ dplyr                * 1.1.4       2023-11-17 [2] CRAN (R 4.4.0)
+ DT                     0.31        2023-12-09 [2] CRAN (R 4.4.0)
+ edgeR                  4.1.15      2024-01-29 [2] Bioconductor 3.19 (R 4.4.0)
+ ellipsis               0.3.2       2021-04-29 [2] CRAN (R 4.4.0)
+ ExperimentHub          2.11.1      2023-12-11 [2] Bioconductor 3.19 (R 4.4.0)
+ fansi                  1.0.6       2023-12-08 [2] CRAN (R 4.4.0)
+ fastmap                1.1.1       2023-02-24 [2] CRAN (R 4.4.0)
+ fields                 15.2        2023-08-17 [2] CRAN (R 4.4.0)
+ filelock               1.0.3       2023-12-11 [2] CRAN (R 4.4.0)
+ forcats              * 1.0.0       2023-01-29 [2] CRAN (R 4.4.0)
+ foreach                1.5.2       2022-02-02 [2] CRAN (R 4.4.0)
+ generics               0.1.3       2022-07-05 [2] CRAN (R 4.4.0)
+ GenomeInfoDb         * 1.39.13     2024-04-07 [1] Bioconductor 3.19 (R 4.4.0)
+ GenomeInfoDbData       1.2.12      2024-04-11 [1] Bioconductor
+ GenomicAlignments      1.39.2      2024-01-16 [2] Bioconductor 3.19 (R 4.4.0)
+ GenomicRanges        * 1.55.4      2024-03-18 [1] Bioconductor 3.19 (R 4.4.0)
+ ggbeeswarm             0.7.2       2023-04-29 [2] CRAN (R 4.4.0)
+ ggplot2              * 3.5.0       2024-02-23 [1] CRAN (R 4.4.0)
+ ggrepel              * 0.9.5       2024-01-10 [2] CRAN (R 4.4.0)
+ glue                   1.7.0       2024-01-09 [2] CRAN (R 4.4.0)
+ golem                  0.4.1       2023-06-05 [2] CRAN (R 4.4.0)
+ gridExtra              2.3         2017-09-09 [2] CRAN (R 4.4.0)
+ gtable                 0.3.4       2023-08-21 [2] CRAN (R 4.4.0)
+ here                 * 1.0.1       2020-12-13 [2] CRAN (R 4.4.0)
+ hms                    1.1.3       2023-03-21 [2] CRAN (R 4.4.0)
+ htmltools              0.5.7       2023-11-03 [2] CRAN (R 4.4.0)
+ htmlwidgets            1.6.4       2023-12-06 [2] CRAN (R 4.4.0)
+ httpuv                 1.6.14      2024-01-26 [2] CRAN (R 4.4.0)
+ httr                   1.4.7       2023-08-15 [2] CRAN (R 4.4.0)
+ IRanges              * 2.37.1      2024-01-19 [2] Bioconductor 3.19 (R 4.4.0)
+ irlba                  2.3.5.1     2022-10-03 [2] CRAN (R 4.4.0)
+ iterators              1.0.14      2022-02-05 [2] CRAN (R 4.4.0)
+ jquerylib              0.1.4       2021-04-26 [2] CRAN (R 4.4.0)
+ jsonlite               1.8.8       2023-12-04 [2] CRAN (R 4.4.0)
+ KEGGREST               1.43.0      2023-10-24 [2] Bioconductor
+ later                  1.3.2       2023-12-06 [2] CRAN (R 4.4.0)
+ lattice                0.22-6      2024-03-20 [3] CRAN (R 4.5.0)
+ lazyeval               0.2.2       2019-03-15 [2] CRAN (R 4.4.0)
+ lifecycle              1.0.4       2023-11-07 [2] CRAN (R 4.4.0)
+ limma                  3.59.2      2024-02-04 [2] Bioconductor 3.19 (R 4.4.0)
+ locfit                 1.5-9.8     2023-06-11 [2] CRAN (R 4.4.0)
+ lubridate            * 1.9.3       2023-09-27 [2] CRAN (R 4.4.0)
+ magick                 2.8.3       2024-02-18 [1] CRAN (R 4.4.0)
+ magrittr               2.0.3       2022-03-30 [2] CRAN (R 4.4.0)
+ maps                   3.4.2       2023-12-15 [2] CRAN (R 4.4.0)
+ Matrix                 1.6-5       2024-01-11 [2] CRAN (R 4.4.0)
+ MatrixGenerics       * 1.15.0      2023-10-24 [2] Bioconductor
+ matrixStats          * 1.3.0       2024-04-11 [1] CRAN (R 4.4.0)
+ memoise                2.0.1       2021-11-26 [2] CRAN (R 4.4.0)
+ mime                   0.12        2021-09-28 [2] CRAN (R 4.4.0)
+ munsell                0.5.1       2024-04-01 [1] CRAN (R 4.4.0)
+ paletteer              1.6.0       2024-01-21 [2] CRAN (R 4.4.0)
+ pillar                 1.9.0       2023-03-22 [2] CRAN (R 4.4.0)
+ pkgconfig              2.0.3       2019-09-22 [2] CRAN (R 4.4.0)
+ plotly                 4.10.4      2024-01-13 [2] CRAN (R 4.4.0)
+ png                    0.1-8       2022-11-29 [2] CRAN (R 4.4.0)
+ promises               1.2.1       2023-08-10 [2] CRAN (R 4.4.0)
+ purrr                * 1.0.2       2023-08-10 [2] CRAN (R 4.4.0)
+ R6                     2.5.1       2021-08-19 [2] CRAN (R 4.4.0)
+ rappdirs               0.3.3       2021-01-31 [2] CRAN (R 4.4.0)
+ RColorBrewer           1.1-3       2022-04-03 [2] CRAN (R 4.4.0)
+ Rcpp                   1.0.12      2024-01-09 [2] CRAN (R 4.4.0)
+ RCurl                  1.98-1.14   2024-01-09 [2] CRAN (R 4.4.0)
+ readr                * 2.1.5       2024-01-10 [2] CRAN (R 4.4.0)
+ rematch2               2.1.2       2020-05-01 [2] CRAN (R 4.4.0)
+ restfulr               0.0.15      2022-06-16 [2] CRAN (R 4.4.0)
+ rjson                  0.2.21      2022-01-09 [2] CRAN (R 4.4.0)
+ rlang                  1.1.3       2024-01-10 [2] CRAN (R 4.4.0)
+ rprojroot              2.0.4       2023-11-05 [2] CRAN (R 4.4.0)
+ Rsamtools              2.19.3      2024-01-17 [2] Bioconductor 3.19 (R 4.4.0)
+ RSQLite                2.3.6       2024-03-31 [1] CRAN (R 4.4.0)
+ rsvd                   1.0.5       2021-04-16 [2] CRAN (R 4.4.0)
+ rtracklayer            1.63.0      2023-10-24 [2] Bioconductor
+ S4Arrays               1.3.7       2024-04-09 [1] Bioconductor 3.19 (R 4.4.0)
+ S4Vectors            * 0.41.6      2024-04-05 [1] Bioconductor 3.19 (R 4.4.0)
+ sass                   0.4.8       2023-12-06 [2] CRAN (R 4.4.0)
+ ScaledMatrix           1.11.0      2023-10-24 [2] Bioconductor
+ scales                 1.3.0       2023-11-28 [2] CRAN (R 4.4.0)
+ scater               * 1.31.2      2024-01-28 [2] Bioconductor 3.19 (R 4.4.0)
+ scuttle              * 1.13.0      2023-10-24 [2] Bioconductor
+ sessioninfo          * 1.2.2       2021-12-06 [2] CRAN (R 4.4.0)
+ shiny                  1.8.0       2023-11-17 [2] CRAN (R 4.4.0)
+ shinyWidgets           0.8.1       2024-01-10 [2] CRAN (R 4.4.0)
+ SingleCellExperiment * 1.25.1      2024-03-27 [1] Bioconductor 3.19 (R 4.4.0)
+ spam                   2.10-0      2023-10-23 [2] CRAN (R 4.4.0)
+ SparseArray            1.3.5       2024-04-09 [1] Bioconductor 3.19 (R 4.4.0)
+ sparseMatrixStats      1.15.0      2023-10-24 [2] Bioconductor
+ SpatialExperiment    * 1.13.2      2024-04-05 [1] Bioconductor 3.19 (R 4.4.0)
+ spatialLIBD          * 1.15.1      2023-11-30 [2] Bioconductor 3.19 (R 4.4.0)
+ statmod                1.5.0       2023-01-06 [2] CRAN (R 4.4.0)
+ stringi                1.8.3       2023-12-11 [2] CRAN (R 4.4.0)
+ stringr              * 1.5.1       2023-11-14 [2] CRAN (R 4.4.0)
+ SummarizedExperiment * 1.33.3      2024-01-23 [2] Bioconductor 3.19 (R 4.4.0)
+ tibble               * 3.2.1       2023-03-20 [2] CRAN (R 4.4.0)
+ tidyr                * 1.3.1       2024-01-24 [2] CRAN (R 4.4.0)
+ tidyselect             1.2.1       2024-03-11 [1] CRAN (R 4.4.0)
+ tidyverse            * 2.0.0       2023-02-22 [2] CRAN (R 4.4.0)
+ timechange             0.3.0       2024-01-18 [2] CRAN (R 4.4.0)
+ tzdb                   0.4.0       2023-05-12 [2] CRAN (R 4.4.0)
+ UCSC.utils             0.99.5      2024-04-04 [1] Bioconductor 3.19 (R 4.4.0)
+ utf8                   1.2.4       2023-10-22 [2] CRAN (R 4.4.0)
+ vctrs                  0.6.5       2023-12-01 [2] CRAN (R 4.4.0)
+ vipor                  0.4.7       2023-12-18 [2] CRAN (R 4.4.0)
+ viridis                0.6.5       2024-01-29 [2] CRAN (R 4.4.0)
+ viridisLite            0.4.2       2023-05-02 [2] CRAN (R 4.4.0)
+ withr                  3.0.0       2024-01-16 [2] CRAN (R 4.4.0)
+ XML                    3.99-0.16.1 2024-01-22 [2] CRAN (R 4.4.0)
+ xtable                 1.8-4       2019-04-21 [2] CRAN (R 4.4.0)
+ XVector                0.43.1      2024-01-10 [2] Bioconductor 3.19 (R 4.4.0)
+ yaml                   2.3.8       2023-12-11 [2] CRAN (R 4.4.0)
+ zlibbioc               1.49.3      2024-03-13 [1] Bioconductor 3.19 (R 4.4.0)
+
+ [1] /users/bguo/R/devel
+ [2] /jhpce/shared/community/core/conda_R/devel/R/lib64/R/site-library
+ [3] /jhpce/shared/community/core/conda_R/devel/R/lib64/R/library
+
+──────────────────────────────────────────────────────────────────────────────
+**** Job ends ****
+Tue Apr 23 06:50:45 AM EDT 2024

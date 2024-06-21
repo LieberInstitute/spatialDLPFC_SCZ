@@ -1,0 +1,695 @@
+**** Job starts ****
+Mon Apr 15 10:04:25 PM EDT 2024
+**** JHPCE info ****
+User: bguo
+Job id: 4593972
+Job name: 03_plot_all_outlier
+Hostname: jhpce3
+Task id: 
+Loading conda_R/devel
+
+Currently Loaded Modules:
+  1) JHPCE_ROCKY9_DEFAULT_ENV   3) conda/3-23.3.1
+  2) JHPCE_tools/3.0            4) conda_R/devel
+
+ 
+
+                                 outlier local_outliers all_outlier
+AGAAGAGCGCCGTTCC-1_V12F14-053_A1   FALSE           TRUE       local
+ATTCGTCCCGAGGTTA-1_V12F14-053_A1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V12F14-053_A1    TRUE           TRUE        Both
+GCATCGGCCGTGTAGG-1_V12F14-053_A1   FALSE           TRUE       local
+GCGTCGTAACATGGTC-1_V12F14-053_A1   FALSE           TRUE       local
+TCAAATTATGTTCGAC-1_V12F14-053_A1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12F14-053_A1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12F14-053_A1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V12F14-053_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V12F14-053_C1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V12F14-053_C1   FALSE           TRUE       local
+GTTAATAGCGTCATTA-1_V12F14-053_C1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12F14-053_C1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12F14-053_C1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V12F14-053_C1   FALSE           TRUE       local
+TCGTGTCACGCTGACA-1_V12F14-053_C1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V12F14-053_D1   FALSE           TRUE       local
+ATTCGTCCCGAGGTTA-1_V12F14-053_D1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V12F14-053_D1   FALSE           TRUE       local
+GTTCCAAGACAGCGAC-1_V12F14-053_D1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V12F14-053_D1   FALSE           TRUE       local
+TCAAATTATGTTCGAC-1_V12F14-053_D1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12F14-053_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12F14-053_D1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V12F14-053_D1   FALSE           TRUE       local
+TCGTTCGTTATTATGT-1_V12F14-053_D1   FALSE           TRUE       local
+TTCGCACTCGCGTGCT-1_V12F14-053_D1   FALSE           TRUE       local
+ACAAGTAATTGTAAGG-1_V12F14-057_A1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V12F14-057_A1   FALSE           TRUE       local
+AGATAATCACACCTAT-1_V12F14-057_A1    TRUE           TRUE        Both
+AGCGACTTTGAAGACA-1_V12F14-057_A1    TRUE           TRUE        Both
+AGGCTTAAGTTGCACA-1_V12F14-057_A1    TRUE           TRUE        Both
+ATCAGAAGCTGGTTGC-1_V12F14-057_A1    TRUE           TRUE        Both
+ATGTCATAATAAACGA-1_V12F14-057_A1    TRUE           TRUE        Both
+CCCTAGCTCTAAGGTC-1_V12F14-057_A1    TRUE           TRUE        Both
+CCTACAGTTGAGGGAG-1_V12F14-057_A1    TRUE           TRUE        Both
+CGACTTGCCGGGAAAT-1_V12F14-057_A1    TRUE           TRUE        Both
+CTAAAGGATGAGATAC-1_V12F14-057_A1    TRUE           TRUE        Both
+CTTTATCCGACGCATG-1_V12F14-057_A1    TRUE           TRUE        Both
+GACGTGTAGGGATTAT-1_V12F14-057_A1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V12F14-057_A1   FALSE           TRUE       local
+GCCCGTTCACACAATT-1_V12F14-057_A1    TRUE           TRUE        Both
+GGAACTCGTGAATACG-1_V12F14-057_A1    TRUE           TRUE        Both
+GGTTCCGTACGACTAA-1_V12F14-057_A1    TRUE           TRUE        Both
+GTCATCCCAAACTCAC-1_V12F14-057_A1    TRUE           TRUE        Both
+GTCGTGTCTGGTCATC-1_V12F14-057_A1   FALSE           TRUE       local
+TCATGAAGCGCTGCAT-1_V12F14-057_A1    TRUE           TRUE        Both
+TCGCGTAGCAGTGTCC-1_V12F14-057_A1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12F14-057_A1   FALSE           TRUE       local
+TGCTCAAAGGATGCAC-1_V12F14-057_A1    TRUE           TRUE        Both
+ACCTCAGCGAGGCGCA-1_V12F14-057_B1    TRUE           TRUE        Both
+ACTTGTGGATGGAACG-1_V12F14-057_B1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V12F14-057_B1   FALSE           TRUE       local
+AGCTACGAATGGTGGT-1_V12F14-057_B1    TRUE           TRUE        Both
+AGGAGCGTTTATTATC-1_V12F14-057_B1    TRUE           TRUE        Both
+AGTAAGGGACAGAATC-1_V12F14-057_B1    TRUE           TRUE        Both
+ATTCGTGTACCCATTC-1_V12F14-057_B1    TRUE           TRUE        Both
+CCACTTTCCTTCTAGG-1_V12F14-057_B1    TRUE           TRUE        Both
+CCCGTGACAGTGCCTT-1_V12F14-057_B1   FALSE           TRUE       local
+CCTGCTACAACCATAC-1_V12F14-057_B1    TRUE           TRUE        Both
+CGTAATATGGCCCTTG-1_V12F14-057_B1    TRUE           TRUE        Both
+GAACGTTTGTATCCAC-1_V12F14-057_B1    TRUE           TRUE        Both
+GACGTGTAGGGATTAT-1_V12F14-057_B1   FALSE           TRUE       local
+GAGTCCACCAGGTTTA-1_V12F14-057_B1    TRUE           TRUE        Both
+GCATCGGCCGTGTAGG-1_V12F14-057_B1   FALSE           TRUE       local
+GGCATTCCCTCCCTCG-1_V12F14-057_B1    TRUE           TRUE        Both
+GGCGCACAGTTTACCT-1_V12F14-057_B1    TRUE           TRUE        Both
+GTTTCTAGAGGCGCGG-1_V12F14-057_B1   FALSE           TRUE       local
+TACCTCACCAATTGTA-1_V12F14-057_B1    TRUE           TRUE        Both
+TCATGGAGGCCTTTGT-1_V12F14-057_B1   FALSE           TRUE       local
+TCCCAATATCGACGAC-1_V12F14-057_B1    TRUE           TRUE        Both
+TCGCGTAGCAGTGTCC-1_V12F14-057_B1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12F14-057_B1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V12F14-057_B1   FALSE           TRUE       local
+TTAGCGAATAGATAGG-1_V12F14-057_B1    TRUE           TRUE        Both
+TTCCCAAAGTACTGAT-1_V12F14-057_B1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V12F14-057_C1   FALSE           TRUE       local
+CTAGCCCGGGAGACGA-1_V12F14-057_C1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V12F14-057_C1   FALSE           TRUE       local
+GGAACTCGTGAATACG-1_V12F14-057_C1   FALSE           TRUE       local
+GGCCGAGACTCTGGTG-1_V12F14-057_C1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V12F14-057_C1   FALSE           TRUE       local
+TACTGCATGATTAAAT-1_V12F14-057_C1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V12F14-057_C1   FALSE           TRUE       local
+TATGCTCCCTACTTAC-1_V12F14-057_C1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12F14-057_C1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12F14-057_C1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V12F14-057_C1   FALSE           TRUE       local
+TCTAGCATCTTCGATG-1_V12F14-057_C1   FALSE           TRUE       local
+TTAGCGAATAGATAGG-1_V12F14-057_C1   FALSE           TRUE       local
+TTCGACGGGAAGGGCG-1_V12F14-057_C1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V12F14-057_D1   FALSE           TRUE       local
+CCTGTCGTGTATGAAG-1_V12F14-057_D1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V12F14-057_D1   FALSE           TRUE       local
+GCCACCTTATTCGCGA-1_V12F14-057_D1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V12F14-057_D1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V12F14-057_D1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12F14-057_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12F14-057_D1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V12F14-057_D1   FALSE           TRUE       local
+TCGTGTTCGACCACAA-1_V12F14-057_D1   FALSE           TRUE       local
+ACTCTCTTATACACGA-1_V12D07-334_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V12D07-334_A1   FALSE           TRUE       local
+CGTCGCATGTGAGCCA-1_V12D07-334_A1   FALSE           TRUE       local
+CTAGGCGGCAGAGAAT-1_V12D07-334_A1   FALSE           TRUE       local
+GAATCTATACTCGGAC-1_V12D07-334_A1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V12D07-334_A1   FALSE           TRUE       local
+GATCGCTGTGGTGCGT-1_V12D07-334_A1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V12D07-334_A1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V12D07-334_A1   FALSE           TRUE       local
+TATGTCAAGACCGACT-1_V12D07-334_A1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12D07-334_A1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12D07-334_A1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V12D07-334_A1   FALSE           TRUE       local
+TTGTTAGCAAATTCGA-1_V12D07-334_A1   FALSE           TRUE       local
+AACTGGTGTGGGCCTT-1_V12D07-334_B1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V12D07-334_B1   FALSE           TRUE       local
+AGACATAGATCCTTCC-1_V12D07-334_B1   FALSE           TRUE       local
+CCTCGCGCTGTGCGAT-1_V12D07-334_B1   FALSE           TRUE       local
+CGTGTATGGGAGCTGA-1_V12D07-334_B1   FALSE           TRUE       local
+CTCAGAGCTAATGTCG-1_V12D07-334_B1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V12D07-334_B1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V12D07-334_B1   FALSE           TRUE       local
+GGAGCAACATTTCAAG-1_V12D07-334_B1   FALSE           TRUE       local
+GGGAGCGACCGTAGTG-1_V12D07-334_B1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V12D07-334_B1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V12D07-334_B1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12D07-334_B1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12D07-334_B1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V12D07-334_B1   FALSE           TRUE       local
+TCGTGTCACGCTGACA-1_V12D07-334_B1   FALSE           TRUE       local
+TCGTGTTCGACCACAA-1_V12D07-334_B1   FALSE           TRUE       local
+TTGTATCACACAGAAT-1_V12D07-334_B1   FALSE           TRUE       local
+AACAGCTGTGTGGCAA-1_V12D07-334_C1   FALSE           TRUE       local
+AATAGTCCGTCCCGAC-1_V12D07-334_C1   FALSE           TRUE       local
+AGGTCAGGTGAGAGTG-1_V12D07-334_C1   FALSE           TRUE       local
+AGTTATTGAAAGGTAA-1_V12D07-334_C1   FALSE           TRUE       local
+CATACAAAGCCGAACC-1_V12D07-334_C1   FALSE           TRUE       local
+CCGCGTAGGTAAGGGC-1_V12D07-334_C1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V12D07-334_C1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V12D07-334_C1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12D07-334_C1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12D07-334_C1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V12D07-334_C1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V12D07-334_D1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V12D07-334_D1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V12D07-334_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V12D07-334_D1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V12D07-334_D1   FALSE           TRUE       local
+AAGCATACTCTCCTGA-1_V13M06-279_A1   FALSE           TRUE       local
+ACGTTAGATTTGCCCG-1_V13M06-279_A1   FALSE           TRUE       local
+AGACCATGGGATACAA-1_V13M06-279_A1   FALSE           TRUE       local
+ATGAGGAGTGTTAATC-1_V13M06-279_A1   FALSE           TRUE       local
+CAAGACTCAGAAGCGC-1_V13M06-279_A1   FALSE           TRUE       local
+CACTCTCAAGCATCGA-1_V13M06-279_A1   FALSE           TRUE       local
+CCGCGGAATGCGTCAC-1_V13M06-279_A1   FALSE           TRUE       local
+CTAGTTACAACCCGGT-1_V13M06-279_A1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-279_A1    TRUE           TRUE        Both
+GCATGAGGGACGCGGC-1_V13M06-279_A1   FALSE           TRUE       local
+GGAGAAGTCATTGGCA-1_V13M06-279_A1   FALSE           TRUE       local
+GTCGTGTCTGGTCATC-1_V13M06-279_A1    TRUE           TRUE        Both
+TACCGGTCGTTTCCAT-1_V13M06-279_A1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-279_A1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-279_A1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-279_A1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V13M06-279_A1   FALSE           TRUE       local
+TGCCCGTACCGTTAAA-1_V13M06-279_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-279_B1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13M06-279_B1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-279_B1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V13M06-279_B1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-279_B1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-279_B1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-279_B1   FALSE           TRUE       local
+ACGGGTTGTGACCTGT-1_V13M06-279_C1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V13M06-279_C1   FALSE           TRUE       local
+CGTGAACTGACCCGAT-1_V13M06-279_C1   FALSE           TRUE       local
+CGTGTATGGGAGCTGA-1_V13M06-279_C1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13M06-279_C1   FALSE           TRUE       local
+GATATGCGGTAGCCAA-1_V13M06-279_C1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-279_C1    TRUE           TRUE        Both
+GGTAAACTCTGCGCTG-1_V13M06-279_C1   FALSE           TRUE       local
+GTCCTACAGGCGGCTC-1_V13M06-279_C1    TRUE           TRUE        Both
+GTCTTGTAGCTATTCA-1_V13M06-279_C1   FALSE           TRUE       local
+GTTTCTTGTTAGAGCT-1_V13M06-279_C1    TRUE           TRUE        Both
+TACCGGTCGTTTCCAT-1_V13M06-279_C1    TRUE           TRUE        Both
+TAGCCATGATTGCCTA-1_V13M06-279_C1    TRUE           TRUE        Both
+TATAGAGTCGCTTGAA-1_V13M06-279_C1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-279_C1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-279_C1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V13M06-279_C1    TRUE           TRUE        Both
+TTAGCATCCCTCACGT-1_V13M06-279_C1   FALSE           TRUE       local
+AAGCCGCCGTGAAATC-1_V13M06-279_D1    TRUE           TRUE        Both
+ACAAACCGACAAGGCG-1_V13M06-279_D1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-279_D1   FALSE           TRUE       local
+CCTGTCGTGTATGAAG-1_V13M06-279_D1   FALSE           TRUE       local
+CTAGTCACGTCTTAAG-1_V13M06-279_D1   FALSE           TRUE       local
+GTCCTACAGGCGGCTC-1_V13M06-279_D1    TRUE           TRUE        Both
+TACCGGTCGTTTCCAT-1_V13M06-279_D1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-279_D1   FALSE           TRUE       local
+TATGGCAGACTTTCGA-1_V13M06-279_D1    TRUE           TRUE        Both
+TCGCGTAGCAGTGTCC-1_V13M06-279_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-279_D1   FALSE           TRUE       local
+AACGTCATCCGGCTTG-1_V13M06-280_A1    TRUE           TRUE        Both
+AAGCTATGGATTGACC-1_V13M06-280_A1    TRUE           TRUE        Both
+AATTCTAGAGTTAGGC-1_V13M06-280_A1   FALSE           TRUE       local
+ACCAGGAGTGTGATCT-1_V13M06-280_A1   FALSE           TRUE       local
+ACTTGGGCTTTCGCCA-1_V13M06-280_A1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V13M06-280_A1    TRUE           TRUE        Both
+AGATAATCACACCTAT-1_V13M06-280_A1    TRUE           TRUE        Both
+AGGCTTAAGTTGCACA-1_V13M06-280_A1    TRUE           TRUE        Both
+ATCAGAAGCTGGTTGC-1_V13M06-280_A1    TRUE           TRUE        Both
+CAAACCATAAGCGTAT-1_V13M06-280_A1    TRUE           TRUE        Both
+CATGTGGGCTCATCAC-1_V13M06-280_A1   FALSE           TRUE       local
+CCCGCAAATAATCATC-1_V13M06-280_A1    TRUE           TRUE        Both
+CCCGTGACAGTGCCTT-1_V13M06-280_A1    TRUE           TRUE        Both
+CCCTAGCTCTAAGGTC-1_V13M06-280_A1    TRUE           TRUE        Both
+CCGGTATCTGGCGACT-1_V13M06-280_A1    TRUE           TRUE        Both
+CCTACAGTTGAGGGAG-1_V13M06-280_A1    TRUE           TRUE        Both
+CGGATTCTGCCTTATG-1_V13M06-280_A1    TRUE           TRUE        Both
+CTAGCCCGGGAGACGA-1_V13M06-280_A1    TRUE           TRUE        Both
+CTCTAACACCGGCAGC-1_V13M06-280_A1    TRUE           TRUE        Both
+CTTCATCACCAGGGCT-1_V13M06-280_A1    TRUE           TRUE        Both
+CTTTATCCGACGCATG-1_V13M06-280_A1    TRUE           TRUE        Both
+GACGTGTAGGGATTAT-1_V13M06-280_A1   FALSE           TRUE       local
+GATCCAACCTTTAAAC-1_V13M06-280_A1    TRUE           TRUE        Both
+GCCACCTTATTCGCGA-1_V13M06-280_A1    TRUE           TRUE        Both
+GCCCAGCGACACAAAG-1_V13M06-280_A1    TRUE           TRUE        Both
+GCGACGATAGTTGTAC-1_V13M06-280_A1   FALSE           TRUE       local
+GCTTTATTAAGTTACC-1_V13M06-280_A1    TRUE           TRUE        Both
+GTCGTGTCTGGTCATC-1_V13M06-280_A1   FALSE           TRUE       local
+GTCTTGTAGCTATTCA-1_V13M06-280_A1   FALSE           TRUE       local
+GTTCATCGTTTGGCTG-1_V13M06-280_A1   FALSE           TRUE       local
+GTTTGTTAGCCAAGTA-1_V13M06-280_A1   FALSE           TRUE       local
+TACTGCATGATTAAAT-1_V13M06-280_A1    TRUE           TRUE        Both
+TATAGAGTCGCTTGAA-1_V13M06-280_A1   FALSE           TRUE       local
+TCAGAGCATGTCAACG-1_V13M06-280_A1    TRUE           TRUE        Both
+TCGCGTAGCAGTGTCC-1_V13M06-280_A1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-280_A1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V13M06-280_A1   FALSE           TRUE       local
+TGCAAACGTACTAGTT-1_V13M06-280_A1    TRUE           TRUE        Both
+TTCGTGCATGTTATAG-1_V13M06-280_A1    TRUE           TRUE        Both
+TTGCCGGTGATCCCTC-1_V13M06-280_A1   FALSE           TRUE       local
+AACGTCATCCGGCTTG-1_V13M06-280_B1    TRUE           TRUE        Both
+AATAGGCACGACCCTT-1_V13M06-280_B1   FALSE           TRUE       local
+ACATCGCAATATTCGG-1_V13M06-280_B1   FALSE           TRUE       local
+ACCAAGAACGCGTGTC-1_V13M06-280_B1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-280_B1    TRUE           TRUE        Both
+AGAGTCTTAATGAAAG-1_V13M06-280_B1    TRUE           TRUE        Both
+AGCGACTTTGAAGACA-1_V13M06-280_B1   FALSE           TRUE       local
+AGTCGAATTAGCGTAA-1_V13M06-280_B1    TRUE           TRUE        Both
+ATGTCATAATAAACGA-1_V13M06-280_B1    TRUE           TRUE        Both
+ATTGAATTCCCTGTAG-1_V13M06-280_B1    TRUE           TRUE        Both
+CATGTAGGAGCGCCAA-1_V13M06-280_B1   FALSE           TRUE       local
+CCCGCAAATAATCATC-1_V13M06-280_B1    TRUE           TRUE        Both
+CCCTAGCTCTAAGGTC-1_V13M06-280_B1    TRUE           TRUE        Both
+CCCTCATCACAGAGTA-1_V13M06-280_B1   FALSE           TRUE       local
+CGTGCAGACTGGGACA-1_V13M06-280_B1   FALSE           TRUE       local
+CGTGTATGGGAGCTGA-1_V13M06-280_B1   FALSE           TRUE       local
+CTAAAGGATGAGATAC-1_V13M06-280_B1    TRUE           TRUE        Both
+CTAGCCCGGGAGACGA-1_V13M06-280_B1   FALSE           TRUE       local
+CTTTATCCGACGCATG-1_V13M06-280_B1    TRUE           TRUE        Both
+GAACGTTTGTATCCAC-1_V13M06-280_B1    TRUE           TRUE        Both
+GACAGAGGTCTTCAGT-1_V13M06-280_B1    TRUE           TRUE        Both
+GACTTTCGAGCGGTTC-1_V13M06-280_B1    TRUE           TRUE        Both
+GCATCGGCCGTGTAGG-1_V13M06-280_B1   FALSE           TRUE       local
+GCCCGTTCACACAATT-1_V13M06-280_B1   FALSE           TRUE       local
+GGAACTCGTGAATACG-1_V13M06-280_B1   FALSE           TRUE       local
+GGATCTACCGTTCGTC-1_V13M06-280_B1    TRUE           TRUE        Both
+GGTTCCGTACGACTAA-1_V13M06-280_B1   FALSE           TRUE       local
+GTCCTACAGGCGGCTC-1_V13M06-280_B1    TRUE           TRUE        Both
+GTCGTGTCTGGTCATC-1_V13M06-280_B1   FALSE           TRUE       local
+GTTCAAATCAGATGTC-1_V13M06-280_B1   FALSE           TRUE       local
+TAACATACAATGTGGG-1_V13M06-280_B1   FALSE           TRUE       local
+TACCTCACCAATTGTA-1_V13M06-280_B1    TRUE           TRUE        Both
+TATAGAGTCGCTTGAA-1_V13M06-280_B1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-280_B1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13M06-280_B1   FALSE           TRUE       local
+TGACAACTTAAAGGTG-1_V13M06-280_B1   FALSE           TRUE       local
+TGCAAACGTACTAGTT-1_V13M06-280_B1    TRUE           TRUE        Both
+TGGATGGCATCTTGGA-1_V13M06-280_B1    TRUE           TRUE        Both
+TTCGTGCATGTTATAG-1_V13M06-280_B1    TRUE           TRUE        Both
+TTGAAGTGCATCTACA-1_V13M06-280_B1    TRUE           TRUE        Both
+ACTTGGGCTTTCGCCA-1_V13M06-280_C1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V13M06-280_C1    TRUE           TRUE        Both
+CTAGTGAAGGACAGGA-1_V13M06-280_C1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13M06-280_C1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-280_C1    TRUE           TRUE        Both
+GGATTGAAGTAGCCTC-1_V13M06-280_C1   FALSE           TRUE       local
+GTCGTGTCTGGTCATC-1_V13M06-280_C1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V13M06-280_C1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-280_C1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-280_C1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-280_C1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13M06-280_C1   FALSE           TRUE       local
+TTAATGTAGACCAGGT-1_V13M06-280_C1   FALSE           TRUE       local
+AAGCCGCCGTGAAATC-1_V13M06-280_D1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V13M06-280_D1   FALSE           TRUE       local
+AGCTACGAATGGTGGT-1_V13M06-280_D1    TRUE           TRUE        Both
+AGTAAGGGACAGAATC-1_V13M06-280_D1    TRUE           TRUE        Both
+CAACTGCTCATCCGAT-1_V13M06-280_D1   FALSE           TRUE       local
+CCTGCTACAACCATAC-1_V13M06-280_D1    TRUE           TRUE        Both
+CTTCATCACCAGGGCT-1_V13M06-280_D1   FALSE           TRUE       local
+GAACGTTTGTATCCAC-1_V13M06-280_D1    TRUE           TRUE        Both
+GACGTGTAGGGATTAT-1_V13M06-280_D1   FALSE           TRUE       local
+GGCATTCCCTCCCTCG-1_V13M06-280_D1    TRUE           TRUE        Both
+GGCGCACAGTTTACCT-1_V13M06-280_D1    TRUE           TRUE        Both
+GGTTTGAGTGCTGGAA-1_V13M06-280_D1   FALSE           TRUE       local
+GTCCTACAGGCGGCTC-1_V13M06-280_D1    TRUE           TRUE        Both
+TACCGGTCGTTTCCAT-1_V13M06-280_D1   FALSE           TRUE       local
+TACCTCACCAATTGTA-1_V13M06-280_D1    TRUE           TRUE        Both
+TATAGAGTCGCTTGAA-1_V13M06-280_D1   FALSE           TRUE       local
+TATGGCAGACTTTCGA-1_V13M06-280_D1    TRUE           TRUE        Both
+TCCCAATATCGACGAC-1_V13M06-280_D1    TRUE           TRUE        Both
+TCCTCTGGCCCATTAG-1_V13M06-280_D1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-280_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-280_D1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13M06-280_D1   FALSE           TRUE       local
+TTGAAGTGCATCTACA-1_V13M06-280_D1    TRUE           TRUE        Both
+ACTTCGCTAGCGAGTG-1_V13M06-281_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-281_A1   FALSE           TRUE       local
+AGTACTCTTATGCCCA-1_V13M06-281_A1   FALSE           TRUE       local
+AGTCCATTGGCTGATG-1_V13M06-281_A1   FALSE           TRUE       local
+ATGAGGGCAGCGGCTA-1_V13M06-281_A1   FALSE           TRUE       local
+CCGCACTTGCAATGAC-1_V13M06-281_A1   FALSE           TRUE       local
+CCTATTATTCCGGCCG-1_V13M06-281_A1   FALSE           TRUE       local
+CGAAGCTATAAATTCA-1_V13M06-281_A1   FALSE           TRUE       local
+CGTATTGTTTCCTAAT-1_V13M06-281_A1   FALSE           TRUE       local
+CGTCTTGAGTGTGACG-1_V13M06-281_A1   FALSE           TRUE       local
+CTGGGATACGCTACCC-1_V13M06-281_A1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-281_A1   FALSE           TRUE       local
+GCTGAGCAACGGTTCT-1_V13M06-281_A1   FALSE           TRUE       local
+GTACTAAGATTTGGAG-1_V13M06-281_A1   FALSE           TRUE       local
+GTCGTGTCTGGTCATC-1_V13M06-281_A1   FALSE           TRUE       local
+TACGGCATGGACGCTA-1_V13M06-281_A1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-281_A1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-281_A1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V13M06-281_A1   FALSE           TRUE       local
+TCGTGTTCGACCACAA-1_V13M06-281_A1   FALSE           TRUE       local
+TCGTTGACAGGGTCCC-1_V13M06-281_A1   FALSE           TRUE       local
+TTCTAACCGAAGCTTA-1_V13M06-281_A1   FALSE           TRUE       local
+TTGAAGTGCATCTACA-1_V13M06-281_A1    TRUE           TRUE        Both
+AACGTCATCCGGCTTG-1_V13M06-281_B1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-281_B1   FALSE           TRUE       local
+ATGGAGCAGGCCGTGA-1_V13M06-281_B1   FALSE           TRUE       local
+CACAGGGCCGTTGTCA-1_V13M06-281_B1   FALSE           TRUE       local
+CATACTTCTTTCTCCG-1_V13M06-281_B1   FALSE           TRUE       local
+GAAGAAACGATATTGT-1_V13M06-281_B1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13M06-281_B1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-281_B1   FALSE           TRUE       local
+GTCTTGTAGCTATTCA-1_V13M06-281_B1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V13M06-281_B1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-281_B1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-281_B1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-281_B1    TRUE           TRUE        Both
+TGCCTGATCAAACGAT-1_V13M06-281_B1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-281_C1   FALSE           TRUE       local
+AGTGAGGGTTTCTGAC-1_V13M06-281_C1   FALSE           TRUE       local
+AGTTCTGCGTTGTATC-1_V13M06-281_C1   FALSE           TRUE       local
+GAAACTCGTGCGATGC-1_V13M06-281_C1   FALSE           TRUE       local
+GCCCAGCGACACAAAG-1_V13M06-281_C1   FALSE           TRUE       local
+GTCCTACAGGCGGCTC-1_V13M06-281_C1    TRUE           TRUE        Both
+TACCGGTCGTTTCCAT-1_V13M06-281_C1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-281_C1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-281_C1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-281_C1   FALSE           TRUE       local
+TCTTCGAATAGACGTT-1_V13M06-281_C1   FALSE           TRUE       local
+AAGCCGCCGTGAAATC-1_V13M06-281_D1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V13M06-281_D1   FALSE           TRUE       local
+CCTGTCGTGTATGAAG-1_V13M06-281_D1   FALSE           TRUE       local
+CGAGATTTCGCTCGGG-1_V13M06-281_D1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13M06-281_D1   FALSE           TRUE       local
+GATGTCGGTCAACTGC-1_V13M06-281_D1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-281_D1   FALSE           TRUE       local
+GTCCTACAGGCGGCTC-1_V13M06-281_D1    TRUE           TRUE        Both
+TACCGGTCGTTTCCAT-1_V13M06-281_D1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-281_D1   FALSE           TRUE       local
+TCCCGGTCAGGAATTT-1_V13M06-281_D1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-281_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-281_D1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V13M06-281_D1    TRUE           TRUE        Both
+ACTTGGGCTTTCGCCA-1_V13M06-282_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-282_A1   FALSE           TRUE       local
+CACCTTGCGAAACTCG-1_V13M06-282_A1   FALSE           TRUE       local
+CAGTGAATAAATGACT-1_V13M06-282_A1   FALSE           TRUE       local
+CTTGTGAGGACAGCGG-1_V13M06-282_A1   FALSE           TRUE       local
+GTCTATACACGCATGG-1_V13M06-282_A1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-282_A1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-282_A1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-282_A1   FALSE           TRUE       local
+TGTTGTCAAGAAGTCT-1_V13M06-282_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-282_B1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-282_B1    TRUE           TRUE        Both
+GTCCTACAGGCGGCTC-1_V13M06-282_B1    TRUE           TRUE        Both
+GTCGTGTCTGGTCATC-1_V13M06-282_B1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-282_B1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-282_B1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13M06-282_B1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-282_C1   FALSE           TRUE       local
+AGCTACGAATGGTGGT-1_V13M06-282_C1   FALSE           TRUE       local
+CCTACAGTTGAGGGAG-1_V13M06-282_C1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13M06-282_C1   FALSE           TRUE       local
+GACTTCAACGCATCAA-1_V13M06-282_C1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-282_C1    TRUE           TRUE        Both
+GTCCTACAGGCGGCTC-1_V13M06-282_C1    TRUE           TRUE        Both
+TATAGAGTCGCTTGAA-1_V13M06-282_C1    TRUE           TRUE        Both
+TCGCGTAGCAGTGTCC-1_V13M06-282_C1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13M06-282_C1   FALSE           TRUE       local
+AAGCCGCCGTGAAATC-1_V13M06-282_D1    TRUE           TRUE        Both
+ACAATAGTCGTACGTT-1_V13M06-282_D1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13M06-282_D1   FALSE           TRUE       local
+CGTGGAAGCCTCGTAC-1_V13M06-282_D1   FALSE           TRUE       local
+CTCGGTTGTCGGCCCT-1_V13M06-282_D1   FALSE           TRUE       local
+CTGTCCTGCGCACTAC-1_V13M06-282_D1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13M06-282_D1   FALSE           TRUE       local
+GATATGCGGTAGCCAA-1_V13M06-282_D1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13M06-282_D1   FALSE           TRUE       local
+GCCCAGCGACACAAAG-1_V13M06-282_D1   FALSE           TRUE       local
+GTCCTACAGGCGGCTC-1_V13M06-282_D1    TRUE           TRUE        Both
+GTCGTGTCTGGTCATC-1_V13M06-282_D1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V13M06-282_D1   FALSE           TRUE       local
+TAGAGATCATGCAACT-1_V13M06-282_D1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13M06-282_D1   FALSE           TRUE       local
+TATGGCAGACTTTCGA-1_V13M06-282_D1    TRUE           TRUE        Both
+TCACGATTAATACGTT-1_V13M06-282_D1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13M06-282_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13M06-282_D1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13M06-282_D1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13F27-293_A1    TRUE           TRUE        Both
+CCAAGGAACAGAGAGG-1_V13F27-293_A1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13F27-293_A1   FALSE           TRUE       local
+GGCTTCTCGTGGGTGG-1_V13F27-293_A1   FALSE           TRUE       local
+TAGGTCGCCGGAACTG-1_V13F27-293_A1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13F27-293_A1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13F27-293_A1   FALSE           TRUE       local
+TTGTGGTATAGGTATG-1_V13F27-293_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13F27-293_B1   FALSE           TRUE       local
+AGGACATCGCACGTCG-1_V13F27-293_B1   FALSE           TRUE       local
+CCTGTCGTGTATGAAG-1_V13F27-293_B1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V13F27-293_B1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13F27-293_B1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13F27-293_B1    TRUE           TRUE        Both
+TCGTATAGTGCAATTA-1_V13F27-293_B1   FALSE           TRUE       local
+TCGTGTACTATGGATG-1_V13F27-293_B1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13F27-293_B1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13F27-293_C1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13F27-293_C1   FALSE           TRUE       local
+GATATGCGGTAGCCAA-1_V13F27-293_C1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13F27-293_C1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13F27-293_C1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13F27-293_C1   FALSE           TRUE       local
+TCGTGTATTGGTCACG-1_V13F27-293_C1   FALSE           TRUE       local
+CACCAATCATCCGTCT-1_V13F27-293_D1   FALSE           TRUE       local
+TACCGGTCGTTTCCAT-1_V13F27-293_D1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13F27-293_D1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13F27-293_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13F27-293_D1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13F27-293_D1   FALSE           TRUE       local
+TGTACTTCCGGGCATG-1_V13F27-293_D1   FALSE           TRUE       local
+ATCTAATATCCTACGG-1_V13F27-294_A1   FALSE           TRUE       local
+CCTGTCGTGTATGAAG-1_V13F27-294_A1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13F27-294_A1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13F27-294_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13F27-294_B1    TRUE           TRUE        Both
+GATATGCGGTAGCCAA-1_V13F27-294_B1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13F27-294_B1    TRUE           TRUE        Both
+TACCGGTCGTTTCCAT-1_V13F27-294_B1    TRUE           TRUE        Both
+TCGCGTAGCAGTGTCC-1_V13F27-294_B1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13F27-294_B1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13F27-294_B1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13F27-294_C1   FALSE           TRUE       local
+CCTGTCGTGTATGAAG-1_V13F27-294_C1   FALSE           TRUE       local
+CGCCAGTAGTACCTTG-1_V13F27-294_C1    TRUE           TRUE        Both
+GCATCGGCCGTGTAGG-1_V13F27-294_C1   FALSE           TRUE       local
+TATAGAGTCGCTTGAA-1_V13F27-294_C1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13F27-294_C1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13F27-294_C1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13F27-294_C1    TRUE           TRUE        Both
+AGAAGAGCGCCGTTCC-1_V13F27-294_D1   FALSE           TRUE       local
+CGAGAGCTTTCACTAC-1_V13F27-294_D1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13F27-294_D1   FALSE           TRUE       local
+GTTAAAGTAGGACTGG-1_V13F27-294_D1   FALSE           TRUE       local
+TCCGCGGCCCAATGAA-1_V13F27-294_D1   FALSE           TRUE       local
+TCGCGTAGCAGTGTCC-1_V13F27-294_D1    TRUE           TRUE        Both
+TCGTGTACTATGGATG-1_V13F27-294_D1    TRUE           TRUE        Both
+TCGTGTATTGGTCACG-1_V13F27-294_D1   FALSE           TRUE       local
+TGAACAAGCAGGGACT-1_V13F27-294_D1   FALSE           TRUE       local
+AAATGACTGATCAAAC-1_V13F27-295_A1   FALSE           TRUE       local
+ACTTATTTATGTGCCA-1_V13F27-295_A1   FALSE           TRUE       local
+AGAAGAGCGCCGTTCC-1_V13F27-295_A1   FALSE           TRUE       local
+ATCTTGACCTGCAACG-1_V13F27-295_A1   FALSE           TRUE       local
+CAACGAGCTTATTATG-1_V13F27-295_A1    TRUE           TRUE        Both
+CATCGTCCGGTTACTA-1_V13F27-295_A1   FALSE           TRUE       local
+CCGAAGTATATTGTTC-1_V13F27-295_A1    TRUE           TRUE        Both
+CCGTAGGGTTGTTTAC-1_V13F27-295_A1   FALSE           TRUE       local
+CGCTGTGTGGATGTTG-1_V13F27-295_A1   FALSE           TRUE       local
+GACGTGTAGGGATTAT-1_V13F27-295_A1   FALSE           TRUE       local
+GATATGCGGTAGCCAA-1_V13F27-295_A1   FALSE           TRUE       local
+GCACGTGGTTTACTTA-1_V13F27-295_A1   FALSE           TRUE       local
+GCATCGGCCGTGTAGG-1_V13F27-295_A1   FALSE           TRUE       local
+ [ reached 'max' / getOption("max.print") -- omitted 454 rows ]
+[1] "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/plots/02_visium_qc/spot_plot_outliers.pdf"
+─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R Under development (unstable) (2023-11-13 r85520)
+ os       Rocky Linux 9.2 (Blue Onyx)
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       US/Eastern
+ date     2024-04-15
+ pandoc   3.1.3 @ /jhpce/shared/community/core/conda_R/devel/bin/pandoc
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package              * version     date (UTC) lib source
+ abind                  1.4-5       2016-07-21 [2] CRAN (R 4.4.0)
+ AnnotationDbi          1.65.2      2023-11-03 [2] Bioconductor
+ AnnotationHub          3.11.1      2023-12-11 [2] Bioconductor 3.19 (R 4.4.0)
+ attempt                0.3.1       2020-05-03 [2] CRAN (R 4.4.0)
+ beachmat               2.19.1      2024-01-22 [2] Bioconductor 3.19 (R 4.4.0)
+ beeswarm               0.4.0       2021-06-01 [2] CRAN (R 4.4.0)
+ benchmarkme            1.0.8       2022-06-12 [2] CRAN (R 4.4.0)
+ benchmarkmeData        1.0.4       2020-04-23 [2] CRAN (R 4.4.0)
+ Biobase              * 2.63.1      2024-03-29 [1] Bioconductor 3.19 (R 4.4.0)
+ BiocFileCache          2.11.2      2024-03-27 [1] Bioconductor 3.19 (R 4.4.0)
+ BiocGenerics         * 0.49.1      2023-11-01 [2] Bioconductor
+ BiocIO                 1.13.0      2023-10-24 [2] Bioconductor
+ BiocManager            1.30.22     2023-08-08 [2] CRAN (R 4.4.0)
+ BiocNeighbors          1.21.2      2023-12-19 [2] Bioconductor 3.19 (R 4.4.0)
+ BiocParallel           1.37.1      2024-03-04 [1] Bioconductor 3.19 (R 4.4.0)
+ BiocSingular           1.19.0      2023-10-24 [2] Bioconductor
+ BiocVersion            3.19.1      2023-10-26 [2] Bioconductor
+ Biostrings             2.71.2      2024-01-28 [2] Bioconductor 3.19 (R 4.4.0)
+ bit                    4.0.5       2022-11-15 [2] CRAN (R 4.4.0)
+ bit64                  4.0.5       2020-08-30 [2] CRAN (R 4.4.0)
+ bitops                 1.0-7       2021-04-24 [2] CRAN (R 4.4.0)
+ blob                   1.2.4       2023-03-17 [2] CRAN (R 4.4.0)
+ bslib                  0.6.1       2023-11-28 [2] CRAN (R 4.4.0)
+ cachem                 1.0.8       2023-05-01 [2] CRAN (R 4.4.0)
+ cli                    3.6.2       2023-12-11 [2] CRAN (R 4.4.0)
+ codetools              0.2-19      2023-02-01 [3] CRAN (R 4.4.0)
+ colorspace             2.1-0       2023-01-23 [2] CRAN (R 4.4.0)
+ config                 0.3.2       2023-08-30 [2] CRAN (R 4.4.0)
+ cowplot                1.1.3       2024-01-22 [2] CRAN (R 4.4.0)
+ crayon                 1.5.2       2022-09-29 [2] CRAN (R 4.4.0)
+ curl                   5.2.1       2024-03-01 [1] CRAN (R 4.4.0)
+ data.table             1.15.0      2024-01-30 [2] CRAN (R 4.4.0)
+ DBI                    1.2.2       2024-02-16 [1] CRAN (R 4.4.0)
+ dbplyr                 2.5.0       2024-03-19 [1] CRAN (R 4.4.0)
+ DelayedArray           0.29.9      2024-03-01 [1] Bioconductor 3.19 (R 4.4.0)
+ DelayedMatrixStats     1.25.1      2023-11-09 [2] Bioconductor
+ digest                 0.6.34      2024-01-11 [2] CRAN (R 4.4.0)
+ doParallel             1.0.17      2022-02-07 [2] CRAN (R 4.4.0)
+ dotCall64              1.1-1       2023-11-28 [2] CRAN (R 4.4.0)
+ dplyr                * 1.1.4       2023-11-17 [2] CRAN (R 4.4.0)
+ DT                     0.31        2023-12-09 [2] CRAN (R 4.4.0)
+ edgeR                  4.1.15      2024-01-29 [2] Bioconductor 3.19 (R 4.4.0)
+ ellipsis               0.3.2       2021-04-29 [2] CRAN (R 4.4.0)
+ ExperimentHub          2.11.1      2023-12-11 [2] Bioconductor 3.19 (R 4.4.0)
+ fansi                  1.0.6       2023-12-08 [2] CRAN (R 4.4.0)
+ farver                 2.1.1       2022-07-06 [2] CRAN (R 4.4.0)
+ fastmap                1.1.1       2023-02-24 [2] CRAN (R 4.4.0)
+ fields                 15.2        2023-08-17 [2] CRAN (R 4.4.0)
+ filelock               1.0.3       2023-12-11 [2] CRAN (R 4.4.0)
+ forcats              * 1.0.0       2023-01-29 [2] CRAN (R 4.4.0)
+ foreach                1.5.2       2022-02-02 [2] CRAN (R 4.4.0)
+ generics               0.1.3       2022-07-05 [2] CRAN (R 4.4.0)
+ GenomeInfoDb         * 1.39.13     2024-04-07 [1] Bioconductor 3.19 (R 4.4.0)
+ GenomeInfoDbData       1.2.12      2024-04-11 [1] Bioconductor
+ GenomicAlignments      1.39.2      2024-01-16 [2] Bioconductor 3.19 (R 4.4.0)
+ GenomicRanges        * 1.55.4      2024-03-18 [1] Bioconductor 3.19 (R 4.4.0)
+ ggbeeswarm             0.7.2       2023-04-29 [2] CRAN (R 4.4.0)
+ ggplot2              * 3.5.0       2024-02-23 [1] CRAN (R 4.4.0)
+ ggrepel                0.9.5       2024-01-10 [2] CRAN (R 4.4.0)
+ glue                   1.7.0       2024-01-09 [2] CRAN (R 4.4.0)
+ golem                  0.4.1       2023-06-05 [2] CRAN (R 4.4.0)
+ gridExtra              2.3         2017-09-09 [2] CRAN (R 4.4.0)
+ gtable                 0.3.4       2023-08-21 [2] CRAN (R 4.4.0)
+ here                 * 1.0.1       2020-12-13 [2] CRAN (R 4.4.0)
+ hms                    1.1.3       2023-03-21 [2] CRAN (R 4.4.0)
+ htmltools              0.5.7       2023-11-03 [2] CRAN (R 4.4.0)
+ htmlwidgets            1.6.4       2023-12-06 [2] CRAN (R 4.4.0)
+ httpuv                 1.6.14      2024-01-26 [2] CRAN (R 4.4.0)
+ httr                   1.4.7       2023-08-15 [2] CRAN (R 4.4.0)
+ IRanges              * 2.37.1      2024-01-19 [2] Bioconductor 3.19 (R 4.4.0)
+ irlba                  2.3.5.1     2022-10-03 [2] CRAN (R 4.4.0)
+ iterators              1.0.14      2022-02-05 [2] CRAN (R 4.4.0)
+ jquerylib              0.1.4       2021-04-26 [2] CRAN (R 4.4.0)
+ jsonlite               1.8.8       2023-12-04 [2] CRAN (R 4.4.0)
+ KEGGREST               1.43.0      2023-10-24 [2] Bioconductor
+ labeling               0.4.3       2023-08-29 [2] CRAN (R 4.4.0)
+ later                  1.3.2       2023-12-06 [2] CRAN (R 4.4.0)
+ lattice                0.22-5      2023-10-24 [3] CRAN (R 4.4.0)
+ lazyeval               0.2.2       2019-03-15 [2] CRAN (R 4.4.0)
+ lifecycle              1.0.4       2023-11-07 [2] CRAN (R 4.4.0)
+ limma                  3.59.2      2024-02-04 [2] Bioconductor 3.19 (R 4.4.0)
+ locfit                 1.5-9.8     2023-06-11 [2] CRAN (R 4.4.0)
+ lubridate            * 1.9.3       2023-09-27 [2] CRAN (R 4.4.0)
+ magick                 2.8.3       2024-02-18 [1] CRAN (R 4.4.0)
+ magrittr               2.0.3       2022-03-30 [2] CRAN (R 4.4.0)
+ maps                   3.4.2       2023-12-15 [2] CRAN (R 4.4.0)
+ Matrix                 1.6-5       2024-01-11 [2] CRAN (R 4.4.0)
+ MatrixGenerics       * 1.15.0      2023-10-24 [2] Bioconductor
+ matrixStats          * 1.3.0       2024-04-11 [1] CRAN (R 4.4.0)
+ memoise                2.0.1       2021-11-26 [2] CRAN (R 4.4.0)
+ mime                   0.12        2021-09-28 [2] CRAN (R 4.4.0)
+ munsell                0.5.1       2024-04-01 [1] CRAN (R 4.4.0)
+ paletteer              1.6.0       2024-01-21 [2] CRAN (R 4.4.0)
+ pillar                 1.9.0       2023-03-22 [2] CRAN (R 4.4.0)
+ pkgconfig              2.0.3       2019-09-22 [2] CRAN (R 4.4.0)
+ plotly                 4.10.4      2024-01-13 [2] CRAN (R 4.4.0)
+ png                    0.1-8       2022-11-29 [2] CRAN (R 4.4.0)
+ promises               1.2.1       2023-08-10 [2] CRAN (R 4.4.0)
+ purrr                * 1.0.2       2023-08-10 [2] CRAN (R 4.4.0)
+ R6                     2.5.1       2021-08-19 [2] CRAN (R 4.4.0)
+ rappdirs               0.3.3       2021-01-31 [2] CRAN (R 4.4.0)
+ RColorBrewer           1.1-3       2022-04-03 [2] CRAN (R 4.4.0)
+ Rcpp                   1.0.12      2024-01-09 [2] CRAN (R 4.4.0)
+ RCurl                  1.98-1.14   2024-01-09 [2] CRAN (R 4.4.0)
+ readr                * 2.1.5       2024-01-10 [2] CRAN (R 4.4.0)
+ rematch2               2.1.2       2020-05-01 [2] CRAN (R 4.4.0)
+ restfulr               0.0.15      2022-06-16 [2] CRAN (R 4.4.0)
+ rjson                  0.2.21      2022-01-09 [2] CRAN (R 4.4.0)
+ rlang                  1.1.3       2024-01-10 [2] CRAN (R 4.4.0)
+ rprojroot              2.0.4       2023-11-05 [2] CRAN (R 4.4.0)
+ Rsamtools              2.19.3      2024-01-17 [2] Bioconductor 3.19 (R 4.4.0)
+ RSQLite                2.3.6       2024-03-31 [1] CRAN (R 4.4.0)
+ rsvd                   1.0.5       2021-04-16 [2] CRAN (R 4.4.0)
+ rtracklayer            1.63.0      2023-10-24 [2] Bioconductor
+ S4Arrays               1.3.7       2024-04-09 [1] Bioconductor 3.19 (R 4.4.0)
+ S4Vectors            * 0.41.6      2024-04-05 [1] Bioconductor 3.19 (R 4.4.0)
+ sass                   0.4.8       2023-12-06 [2] CRAN (R 4.4.0)
+ ScaledMatrix           1.11.0      2023-10-24 [2] Bioconductor
+ scales                 1.3.0       2023-11-28 [2] CRAN (R 4.4.0)
+ scater               * 1.31.2      2024-01-28 [2] Bioconductor 3.19 (R 4.4.0)
+ scuttle              * 1.13.0      2023-10-24 [2] Bioconductor
+ sessioninfo          * 1.2.2       2021-12-06 [2] CRAN (R 4.4.0)
+ shiny                  1.8.0       2023-11-17 [2] CRAN (R 4.4.0)
+ shinyWidgets           0.8.1       2024-01-10 [2] CRAN (R 4.4.0)
+ SingleCellExperiment * 1.25.1      2024-03-27 [1] Bioconductor 3.19 (R 4.4.0)
+ spam                   2.10-0      2023-10-23 [2] CRAN (R 4.4.0)
+ SparseArray            1.3.5       2024-04-09 [1] Bioconductor 3.19 (R 4.4.0)
+ sparseMatrixStats      1.15.0      2023-10-24 [2] Bioconductor
+ SpatialExperiment    * 1.13.2      2024-04-05 [1] Bioconductor 3.19 (R 4.4.0)
+ spatialLIBD          * 1.15.1      2023-11-30 [2] Bioconductor 3.19 (R 4.4.0)
+ statmod                1.5.0       2023-01-06 [2] CRAN (R 4.4.0)
+ stringi                1.8.3       2023-12-11 [2] CRAN (R 4.4.0)
+ stringr              * 1.5.1       2023-11-14 [2] CRAN (R 4.4.0)
+ SummarizedExperiment * 1.33.3      2024-01-23 [2] Bioconductor 3.19 (R 4.4.0)
+ tibble               * 3.2.1       2023-03-20 [2] CRAN (R 4.4.0)
+ tidyr                * 1.3.1       2024-01-24 [2] CRAN (R 4.4.0)
+ tidyselect             1.2.1       2024-03-11 [1] CRAN (R 4.4.0)
+ tidyverse            * 2.0.0       2023-02-22 [2] CRAN (R 4.4.0)
+ timechange             0.3.0       2024-01-18 [2] CRAN (R 4.4.0)
+ tzdb                   0.4.0       2023-05-12 [2] CRAN (R 4.4.0)
+ UCSC.utils             0.99.5      2024-04-04 [1] Bioconductor 3.19 (R 4.4.0)
+ utf8                   1.2.4       2023-10-22 [2] CRAN (R 4.4.0)
+ vctrs                  0.6.5       2023-12-01 [2] CRAN (R 4.4.0)
+ vipor                  0.4.7       2023-12-18 [2] CRAN (R 4.4.0)
+ viridis                0.6.5       2024-01-29 [2] CRAN (R 4.4.0)
+ viridisLite            0.4.2       2023-05-02 [2] CRAN (R 4.4.0)
+ withr                  3.0.0       2024-01-16 [2] CRAN (R 4.4.0)
+ XML                    3.99-0.16.1 2024-01-22 [2] CRAN (R 4.4.0)
+ xtable                 1.8-4       2019-04-21 [2] CRAN (R 4.4.0)
+ XVector                0.43.1      2024-01-10 [2] Bioconductor 3.19 (R 4.4.0)
+ yaml                   2.3.8       2023-12-11 [2] CRAN (R 4.4.0)
+ zlibbioc               1.49.3      2024-03-13 [1] Bioconductor 3.19 (R 4.4.0)
+
+ [1] /users/bguo/R/devel
+ [2] /jhpce/shared/community/core/conda_R/devel/R/lib64/R/site-library
+ [3] /jhpce/shared/community/core/conda_R/devel/R/lib64/R/library
+
+──────────────────────────────────────────────────────────────────────────────
+sstat: fatal: Bad job/step specified: S
+**** Job ends ****
+Mon Apr 15 10:31:42 PM EDT 2024
