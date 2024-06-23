@@ -18,6 +18,9 @@ gene_df <- read_csv(
   "~/Downloads/test_PRECAST_07.csv"
 )
 
+
+
+
 sig_gene_df <- gene_df |>
   filter(fdr_ntc <= 0.05)
 
@@ -41,7 +44,7 @@ spd_anno_df <- read_csv(
 ) |>
   mutate(anno_lab = paste0(label, " (", spd, ") "))
 
-# Enrichment test results ----
+# Enrichment test results (-log10(p-value)) ----
 modeling_results <- readRDS(
   here(
     "processed-data", "rds", "layer_enrich_test",
@@ -72,26 +75,98 @@ colnames(heatmap_pec_spd_df) <- spd_anno_df$anno_lab[
 ]
 
 
+hc <- hclust(dist(heatmap_pec_spd_df))
+
 
 pdf(
   file = here(
     "plots/PB_dx_genes/",
-    "test_sig_gene_enrich_SCZ_spd.pdf"
+    "test_sig_gene_enrich_SCZ_spd_p_value.pdf"
   ),
   height = 20
 )
-heatmap_pec_spd_df[, order(colnames(heatmap_pec_spd_df))] |>
+heatmap_pec_spd_df[hc$order, order(colnames(heatmap_pec_spd_df))] |>
   data.matrix() |>
   pheatmap(
     mat = _,
     scale = "row",
-    cluster_rows = TRUE,
+    # cluster_rows = TRUE,
+    cluster_rows = FALSE,
     cluster_cols = FALSE,
     cellwidth = 10,
     cellheight = 10,
     annotation_row = ann_df
   )
 dev.off()
+
+# Plot t-testistics ----
+
+t_stat_mat <- modeling_results |>
+  mutate(
+    across(
+      starts_with("t_stat"),
+      ~ abs(.x),
+      .names = "abs_{.col}"
+    )
+  ) |>
+  filter(ensembl %in% sig_gene_df$ensembl) |>
+  column_to_rownames(var = "gene") |>
+  select(starts_with("abs_t_stat_")) |>
+  rename_with(
+    .fn = ~ gsub("^abs_t_stat_", "", .),
+    .cols = starts_with("abs_t_")
+  )
+
+colnames(t_stat_mat) <- spd_anno_df$anno_lab[
+  match(colnames(t_stat_mat), spd_anno_df$spd)
+]
+
+
+pdf(
+  file = here(
+    "plots/PB_dx_genes/",
+    "test_sig_gene_enrich_SCZ_spd_t_stat.pdf"
+  ),
+  height = 20
+)
+t_stat_mat[hc$order, order(colnames(t_stat_mat))] |>
+  data.matrix() |>
+  pheatmap(
+    mat = _,
+    # scale = "row",
+    # cluster_rows = TRUE,
+    cluster_rows = FALSE,
+    cluster_cols = FALSE,
+    cellwidth = 10,
+    cellheight = 10,
+    annotation_row = ann_df
+  )
+dev.off()
+
+pdf(
+  file = here(
+    "plots/PB_dx_genes/",
+    "test_sig_gene_enrich_SCZ_spd_t_stat_row_centered.pdf"
+  ),
+  height = 20
+)
+t_stat_mat[hc$order, order(colnames(t_stat_mat))] |>
+  data.matrix() |>
+  pheatmap(
+    mat = _,
+    scale = "row",
+    # cluster_rows = TRUE,
+    cluster_rows = FALSE,
+    cluster_cols = FALSE,
+    cellwidth = 10,
+    cellheight = 10,
+    annotation_row = ann_df
+  )
+
+dev.off()
+
+
+
 
 # Session Info ----
 session_info()
