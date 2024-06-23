@@ -18,12 +18,13 @@ gene_df <- read_csv(
   "~/Downloads/test_PRECAST_07.csv"
 )
 
+adj_p_cutoff <- 0.05
 sig_gene_df <- gene_df |>
-  filter(fdr_ntc <= 0.05)
+  filter(fdr_ntc <= adj_p_cutoff)
 
 
-ann_df <- gene_df |>
-  filter(fdr_ntc <= 0.05)|>
+# Annotation data for pheatmap
+ann_df <- sig_gene_df |>
   column_to_rownames(var = "gene") |>
   transmute(
     SCZ_reg = factor(
@@ -43,6 +44,7 @@ ann_df <- gene_df |>
 # )
 # Local path
 load(
+  # TODO: edit the file/path
   "~/modeling_results_BayesSpace_k09.Rdata"
 )
 
@@ -99,6 +101,8 @@ colnames(heatmap_pec_spd_df) <- spd_name_df$layer_combo[match(
 # select(starts_with("Sp09")) |>
 
 
+hc <- hclust(dist(heatmap_pec_spd_df))
+
 pdf(
   file = here(
     "plots/PB_dx_genes/",
@@ -106,7 +110,64 @@ pdf(
   ),
   height = 20
 )
-heatmap_pec_spd_df[, c(
+heatmap_pec_spd_df[hc$order, c(
+  "Sp09D01 ~ L1",
+  "Sp09D02 ~ L1",
+  "Sp09D03 ~ L2",
+  "Sp09D05 ~ L3",
+  "Sp09D08 ~ L4",
+  "Sp09D04 ~ L5",
+  "Sp09D07 ~ L6",
+  "Sp09D06 ~ WM",
+  "Sp09D09 ~ WM"
+)] |>
+  data.matrix() |>
+  pheatmap(
+    mat = _,
+    scale = "row",
+    # cluster_rows = TRUE,
+    cluster_rows = FALSE,
+    cluster_cols = FALSE,
+    cellwidth = 10,
+    cellheight = 10,
+    annotation_row = ann_df
+  )
+dev.off()
+
+
+
+
+# Plot t-testistics ----
+
+t_stat_mat <- modeling_results |>
+  mutate(
+    across(
+      starts_with("t_stat"),
+      ~ abs(.x),
+      .names = "abs_{.col}"
+    )
+  ) |>
+  filter(ensembl %in% sig_gene_df$ensembl) |>
+  column_to_rownames(var = "gene") |>
+  select(starts_with("abs_t_stat_")) |>
+  rename_with(
+    .fn = ~ gsub("^abs_t_stat_", "", .),
+    .cols = starts_with("abs_t_")
+  )
+
+colnames(t_stat_mat) <- spd_anno_df$anno_lab[
+  match(colnames(t_stat_mat), spd_anno_df$spd)
+]
+
+
+pdf(
+  file = here(
+    "plots/PB_dx_genes/",
+    "test_sig_gene_enrich_pec_spd_t_stat.pdf"
+  ),
+  height = 20
+)
+t_stat_mat[hc$order, c(
   "Sp09D01 ~ L1",
   "Sp09D02 ~ L1",
   "Sp09D03 ~ L2",
@@ -121,7 +182,8 @@ heatmap_pec_spd_df[, c(
   pheatmap(
     mat = _,
     # scale = "row",
-    cluster_rows = TRUE,
+    # cluster_rows = TRUE,
+    cluster_rows = FALSE,
     cluster_cols = FALSE,
     cellwidth = 10,
     cellheight = 10,
@@ -129,6 +191,37 @@ heatmap_pec_spd_df[, c(
   )
 dev.off()
 
+pdf(
+  file = here(
+    "plots/PB_dx_genes/",
+    "test_sig_gene_enrich_pec_spd_t_stat_row_centered.pdf"
+  ),
+  height = 20
+)
+t_stat_mat[hc$order, c(
+  "Sp09D01 ~ L1",
+  "Sp09D02 ~ L1",
+  "Sp09D03 ~ L2",
+  "Sp09D05 ~ L3",
+  "Sp09D08 ~ L4",
+  "Sp09D04 ~ L5",
+  "Sp09D07 ~ L6",
+  "Sp09D06 ~ WM",
+  "Sp09D09 ~ WM"
+)] |>
+  data.matrix() |>
+  pheatmap(
+    mat = _,
+    scale = "row",
+    # cluster_rows = TRUE,
+    cluster_rows = FALSE,
+    cluster_cols = FALSE,
+    cellwidth = 10,
+    cellheight = 10,
+    annotation_row = ann_df
+  )
+
+dev.off()
 
 
 
@@ -175,7 +268,7 @@ pec_snRNA_df |>
   data.matrix() |>
   pheatmap(
     mat = _,
-    # scale = "row",
+    scale = "row",
     cluster_rows = TRUE,
     cluster_cols = FALSE,
     cellwidth = 10,
