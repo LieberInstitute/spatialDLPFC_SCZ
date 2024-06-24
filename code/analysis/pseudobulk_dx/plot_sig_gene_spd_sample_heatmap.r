@@ -16,26 +16,22 @@ spe_pb <- readRDS(
 )
 
 gene_df <- read_csv(
-  #   here(
-  #     "processed-data/PB_dx_genes/",
-  #     "test_PRECAST_07.csv"
-  #   )
-  # )
+    here(
+      "processed-data/PB_dx_genes/",
+      "test_PRECAST_07.csv"
+    )
+  )
 
-  "~/Downloads/test_PRECAST_07.csv"
-)
+sig_gene <- readxl::read_excel(
+  here(
+    "code/analysis/pseudobulk_dx",
+    "Test_90DEGs.xlsx"
+  ),
+  col_names = FALSE
+)[[1]]
 
 sig_gene_df <- gene_df |>
-  filter(fdr_ntc <= 0.05)
-
-# sig_genes_df <- sig_gene_df <- gene_df |>
-#   filter(fdr_ntc <= 0.05)
-
-# up_genes <- sig_genes_df
-
-# down_genes <-
-
-
+  filter(gene %in% sig_gene)
 
 
 # Heat map ----

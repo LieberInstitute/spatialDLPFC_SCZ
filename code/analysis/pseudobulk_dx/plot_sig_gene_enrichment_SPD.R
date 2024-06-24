@@ -9,24 +9,25 @@ suppressPackageStartupMessages({
 # Read Data ----
 ## Dx DEG genes ----
 gene_df <- read_csv(
-  #   here(
-  #     "processed-data/PB_dx_genes/",
-  #     "test_PRECAST_07.csv"
-  #   )
-  # )
-
-  "~/Downloads/test_PRECAST_07.csv"
+  here(
+    "processed-data/PB_dx_genes/",
+    "test_PRECAST_07.csv"
+  )
 )
 
-
-
+sig_gene <- readxl::read_excel(
+  here(
+    "code/analysis/pseudobulk_dx",
+    "Test_90DEGs.xlsx"
+  ),
+  col_names = FALSE
+)[[1]]
 
 sig_gene_df <- gene_df |>
-  filter(fdr_ntc <= 0.05)
+  filter(gene %in% sig_gene)
 
-
-ann_df <- gene_df |>
-  filter(fdr_ntc <= 0.05) |>
+ann_df <- sig_gene_df  |>
+  # filter(fdr_ntc <= 0.05) |>
   column_to_rownames(var = "gene") |>
   transmute(
     SCZ_reg = factor(
@@ -77,6 +78,17 @@ colnames(heatmap_pec_spd_df) <- spd_anno_df$anno_lab[
 
 hc <- hclust(dist(heatmap_pec_spd_df))
 
+gene_names_hc_ordered <- rownames(heatmap_pec_spd_df)[hc$order]
+
+saveRDS(
+  gene_names_hc_ordered,
+  here(
+    "code/analysis/pseudobulk_dx",
+    "spd_hierarchical_cluster_order.rds"
+  )
+)
+
+
 
 pdf(
   file = here(
@@ -85,7 +97,7 @@ pdf(
   ),
   height = 20
 )
-heatmap_pec_spd_df[hc$order, order(colnames(heatmap_pec_spd_df))] |>
+heatmap_pec_spd_df[gene_names_hc_ordered, order(colnames(heatmap_pec_spd_df))] |>
   data.matrix() |>
   pheatmap(
     mat = _,
