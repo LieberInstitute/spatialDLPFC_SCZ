@@ -15,7 +15,7 @@ __Folders containing anscillary analysis__
 
 
 __Files that used to explore data & Results__
-
+* plot_sig_gene_spd_sample_heatmap.r - construct heatmap where each cell is the log-transformed gene expression of individual spd (contrast to the summary statistics, e.g. p-value.)
 * descriptive_dx_DEG_across_spd.r - summarize how many DEGs detected for each PRECAST K
 * plot_PB_Genes.R - Different viz (spagetti plot and heatmap) to highlight the difference of each genes comparing  NTC and SCZ samples. 
 

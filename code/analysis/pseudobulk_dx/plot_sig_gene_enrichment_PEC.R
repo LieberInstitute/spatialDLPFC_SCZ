@@ -21,7 +21,7 @@ gene_df <- read_csv(
 
 sig_gene <- readxl::read_excel(
   here(
-    "code/analysis/peudobulk_dx",
+    "code/analysis/pseudobulk_dx",
     "Test_90DEGs.xlsx"
   ),
   col_names = FALSE
@@ -45,7 +45,7 @@ ann_df <- sig_gene_df |>
 # Local path
 load(
   here(
-    "code/analysis/peudobulk_dx",
+    "code/analysis/pseudobulk_dx",
     "spatialDLPFC_BayesSpace_k09_registration.Rdata"
   )
 )
@@ -103,11 +103,21 @@ colnames(heatmap_pec_spd_df) <- spd_name_df$layer_combo[match(
 # select(starts_with("Sp09")) |>
 
 
-hc <- hclust(dist(heatmap_pec_spd_df))
 
-saveRDS(hc,
-here("here("code/analysis/peudobulk_dx")
+# Make sure the order of genes is consistent with PEC spd.
+gene_names_hc_ordered <- readRDS(
+  here(
+    "code/analysis/pseudobulk_dx",
+    "spd_hierarchical_cluster_order.rds"
+  )
 )
+
+
+# saveRDS(
+#   hc,
+#   here("code/analysis/pseudobulk_dx",
+#   "spd_hierarchical_cluster_order.rds")
+# )
 
 pdf(
   file = here(
@@ -116,7 +126,7 @@ pdf(
   ),
   height = 20
 )
-heatmap_pec_spd_df[hc$order, c(
+heatmap_pec_spd_df[gene_names_hc_ordered, c(
   "Sp09D01 ~ L1",
   "Sp09D02 ~ L1",
   "Sp09D03 ~ L2",
@@ -145,7 +155,7 @@ dev.off()
 
 # Plot t-testistics ----
 
-t_stat_mat <- modeling_results |>
+t_stat_mat <- pec_spd_df |>
   mutate(
     across(
       starts_with("t_stat"),
@@ -161,8 +171,8 @@ t_stat_mat <- modeling_results |>
     .cols = starts_with("abs_t_")
   )
 
-colnames(t_stat_mat) <- spd_anno_df$anno_lab[
-  match(colnames(t_stat_mat), spd_anno_df$spd)
+colnames(t_stat_mat) <- spd_name_df$layer_combo[
+  match(colnames(t_stat_mat), spd_name_df$cluster)
 ]
 
 
@@ -173,7 +183,7 @@ pdf(
   ),
   height = 20
 )
-t_stat_mat[hc$order, c(
+t_stat_mat[gene_names_hc_ordered, c(
   "Sp09D01 ~ L1",
   "Sp09D02 ~ L1",
   "Sp09D03 ~ L2",
@@ -204,7 +214,7 @@ pdf(
   ),
   height = 20
 )
-t_stat_mat[hc$order, c(
+t_stat_mat[gene_names_hc_ordered, c(
   "Sp09D01 ~ L1",
   "Sp09D02 ~ L1",
   "Sp09D03 ~ L2",
@@ -242,7 +252,10 @@ load(
   # here(
   #   "sn_velm_registration.Rdata"
   # )
-  "~/sn_hc_registration.Rdata"
+  here(
+    "code/analysis/pseudobulk_dx/",
+    "spatialDLPFC_sn_hc_registration.Rdata"
+  )
 )
 
 pec_snRNA_df <- sn_hc_registration$enrichment
