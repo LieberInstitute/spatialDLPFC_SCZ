@@ -16,11 +16,11 @@ spe_pb <- readRDS(
 )
 
 gene_df <- read_csv(
-    here(
-      "processed-data/PB_dx_genes/",
-      "test_PRECAST_07.csv"
-    )
+  here(
+    "processed-data/PB_dx_genes/",
+    "test_PRECAST_07.csv"
   )
+)
 
 sig_gene <- readxl::read_excel(
   here(
@@ -99,6 +99,8 @@ pheatmap(
     dx
   ),
   # Turn off names
+  cellwidth = 10,
+  cellheight = 10,
   show_rownames = FALSE,
   show_colnames = FALSE,
 )
