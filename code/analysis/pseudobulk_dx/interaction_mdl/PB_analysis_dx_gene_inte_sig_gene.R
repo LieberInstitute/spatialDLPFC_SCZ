@@ -8,6 +8,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(ggrepel)
   library(sessioninfo)
+  library(pheatmap)
 })
 
 spd_rds <- list.files(
@@ -52,7 +53,7 @@ spd_rds <- list.files(
 
   dx_sig_gene <- read_csv(
     "~/Downloads/test_PRECAST_07.csv"
-  ) |> filter(fdr_scz <= 0.05)
+  ) |> filter(fdr_scz <= 0.10)
 
 
   corfit <- duplicateCorrelation(
@@ -175,13 +176,27 @@ spd_rds <- list.files(
     data.matrix()
   colnames(heatmap_mat) <- spd_anno_df$anno_lab[match(colnames(heatmap_mat), spd_anno_df$spd)]
 
+gene_names_hc_ordered <- readRDS(
+  here(
+    "code/analysis/pseudobulk_dx",
+    "spd_hierarchical_cluster_order.rds"
+  )
+)
+
+
+
   pdf(here("plots/PB_dx_genes",
   "dx_sig_gene_layer_specific_heatmap.pdf"),
   height = 20)
   pheatmap(
-    heatmap_mat[, order(colnames(heatmap_mat))],
+    heatmap_mat[
+      gene_names_hc_ordered,
+       order(colnames(heatmap_mat))],
     # scale = "row",
+    cluster_rows = FALSE,
     cluster_cols = FALSE,
+    cellwidth = 10,
+    cellheight = 10,
     annotation_row = all_gene_mat |> transmute(`-log10P` = -1 * log10(P.Value))
   )
   dev.off()
