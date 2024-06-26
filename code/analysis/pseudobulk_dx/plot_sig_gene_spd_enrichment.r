@@ -7,36 +7,7 @@ suppressPackageStartupMessages({
   library(sessioninfo)
 })
 
-
-# Load Data ----
-## All data ---
-spe_pb <- readRDS(
-  here(
-    "processed-data", "rds", "layer_spd",
-    "test_spe_pseudo_PRECAST_07.rds"
-  )
-)
-
-## NTC only ---
-
-ntc_pb <- readRDS(
-  here(
-    "processed-data", "rds", "layer_spd",
-    "test_spe_pseudo_PRECAST_07_ntc.rds"
-  )
-)
-
-## SCZ only ---
-
-scz_pb <- readRDS(
-  here(
-    "processed-data", "rds", "layer_spd",
-    "test_spe_pseudo_PRECAST_07.rds"
-  )
-)
-
-# TODO: remove this
-# This matrix isn't that useful actually
+# Load Dx_DEG data ---
 gene_df <- read_csv(
   here(
     "processed-data/PB_dx_genes/",
@@ -65,55 +36,6 @@ ann_df <- sig_gene_df |>
     )
   )
 
-
-# Heat map ----
-
-col_df <- colData(spe_pb) |>
-  data.frame() |>
-  select(PRECAST_07, dx, sample_id) |>
-  mutate(
-    PRECAST_07 = factor(PRECAST_07,
-      levels = c(
-        "spd07", "spd06", "spd02",
-        "spd05", "spd03", "spd01", "spd04"
-      )
-    )
-  ) |>
-  arrange(
-    PRECAST_07, dx, sample_id
-  )
-
-gene_mat <- logcounts(spe_pb)[sig_gene_df$ensembl, rownames(col_df)]
-
-# Need to accumulate genes
-gene_mat_long <- gene_mat |>
-  data.frame() |>
-  rownames_to_column(var = "gene") |>
-  pivot_longer(
-    cols = starts_with("V"),
-    names_to = c("sample_id", "spd"),
-    names_pattern = "(.*)_(spd.*)"
-  )
-
-gene_mat_median <- gene_mat_long |>
-  group_by(gene, spd) |>
-  summarize(median = median(value)) |>
-  ungroup() |>
-  pivot_wider(
-    id_cols = "gene",
-    names_from = "spd",
-    values_from = "median"
-  ) |>
-  column_to_rownames("gene") |>
-  data.matrix()
-
-# Convert Ensembl to Gene name
-rownames(gene_mat_median) <- rowData(spe_pb)[
-  rownames(gene_mat_median),
-  "gene_name"
-]
-
-
 # Format SpD to readable form
 spd_anno_df <- read_csv(
   here(
@@ -123,16 +45,110 @@ spd_anno_df <- read_csv(
 ) |>
   mutate(anno_lab = paste0(label, " (", spd, ") "))
 
-colnames(gene_mat_median) <- spd_anno_df$anno_lab[
-  match(colnames(gene_mat_median), spd_anno_df$spd)
-]
+# Load PB Data ----
+## All data ---
+spe_pb <- readRDS(
+  here(
+    "processed-data", "rds", "layer_spd",
+    "test_spe_pseudo_PRECAST_07.rds"
+  )
+)
+
+## NTC only ---
+
+ntc_pb <- readRDS(
+  here(
+    "processed-data", "rds", "layer_spd",
+    "test_spe_pseudo_PRECAST_07_ntc.rds"
+  )
+)
+
+## SCZ only ---
+
+scz_pb <- readRDS(
+  here(
+    "processed-data", "rds", "layer_spd",
+    "test_spe_pseudo_PRECAST_07_scz.rds"
+  )
+)
+
+# Process PB Data
+
+## Function ---
+create_median_from_pb_data <- function(sce) {
+  col_df <- colData(sce) |>
+    data.frame() |>
+    select(PRECAST_07, dx, sample_id) |>
+    mutate(
+      PRECAST_07 = factor(PRECAST_07,
+        levels = c(
+          "spd07", "spd06", "spd02",
+          "spd05", "spd03", "spd01", "spd04"
+        )
+      )
+    ) |>
+    arrange(
+      PRECAST_07, dx, sample_id
+    )
+
+  gene_mat <- logcounts(sce)[sig_gene_df$ensembl, rownames(col_df)]
+
+  # Need to accumulate genes
+  gene_mat_long <- gene_mat |>
+    data.frame() |>
+    rownames_to_column(var = "gene") |>
+    pivot_longer(
+      cols = starts_with("V"),
+      names_to = c("sample_id", "spd"),
+      names_pattern = "(.*)_(spd.*)"
+    )
+
+  gene_mat_median <- gene_mat_long |>
+    group_by(gene, spd) |>
+    summarize(median = median(value)) |>
+    ungroup() |>
+    pivot_wider(
+      id_cols = "gene",
+      names_from = "spd",
+      values_from = "median"
+    ) |>
+    column_to_rownames("gene") |>
+    data.matrix()
+
+  # Convert Ensembl to Gene name
+  rownames(gene_mat_median) <- rowData(sce)[
+    rownames(gene_mat_median),
+    "gene_name"
+  ]
 
 
-gene_mat_median_scaled <- apply(
-  gene_mat_median,
-  MARGIN = 1,
-  FUN = scale
-) |> t()
+  colnames(gene_mat_median) <- spd_anno_df$anno_lab[
+    match(colnames(gene_mat_median), spd_anno_df$spd)
+  ]
+
+  # Code to scale each row
+  # only necessary when using ComplexHeatmap::Heatmap
+  gene_mat_median_scaled <- apply(
+    gene_mat_median,
+    MARGIN = 1,
+    FUN = scale
+  ) |> t()
+
+  return(gene_mat_median)
+}
+
+
+
+
+
+
+# Heat map ----
+
+all_data_median <- create_median_from_pb_data(spe_pb)
+ntc_data_median <- create_median_from_pb_data(ntc_pb)
+scz_data_median <- create_median_from_pb_data(scz_pb)
+
+
 
 # hc <- hclust(dist(gene_mat_median_scaled))
 
@@ -147,27 +163,22 @@ gene_mat_median_scaled <- apply(
 # )
 
 
-pdf(
-  file = here(
-    "plots/PB_dx_genes/",
-    "test_sig_gene_enrich_SCZ_spd_median_logCPM.pdf"
-  ),
-  height = 20
-)
-heatmap_res <- ComplexHeatmap::pheatmap(
-  mat = gene_mat_median[
+
+heatmap_all <- ComplexHeatmap::pheatmap(
+  mat = all_data_median[
     # gene_names_hc_ordered,
     ,
-    order(colnames(gene_mat_median))
+    order(colnames(all_data_median))
   ],
-  name = "Scaled median logCPM",
+  name = "ALL (Scaled median logCPM)",
   color = viridis(100, option = "magma"),
   scale = "row",
+  column_title = "All",
   # cluster_rows = FALSE,
   cluster_rows = TRUE,
   cluster_cols = FALSE,
-  row_split = ann_df[rownames(gene_mat_median), ],
-  annotation_row = ann_df[rownames(gene_mat_median), , drop = FALSE],
+  row_split = ann_df[rownames(all_data_median), ],
+  annotation_row = ann_df[rownames(all_data_median), , drop = FALSE],
   show_row_dend = FALSE,
   # annotation_col = col_df |> select(
   #   PRECAST_07,
@@ -181,12 +192,85 @@ heatmap_res <- ComplexHeatmap::pheatmap(
   annotation_colors = list(SCZ_reg = c("Up" = "red", "Down" = "blue"))
 )
 
-plot(heatmap_res)
 
+heatmap_ntc <- ComplexHeatmap::pheatmap(
+  mat = ntc_data_median[
+    # gene_names_hc_ordered,
+    ,
+    order(colnames(ntc_data_median))
+  ],
+  name = "NTC (Scaled median logCPM)",
+  color = viridis(100, option = "magma"),
+  scale = "row",
+  column_title = "NTC",
+  # cluster_rows = FALSE,
+  cluster_rows = TRUE,
+  cluster_cols = FALSE,
+  row_split = ann_df[rownames(ntc_data_median), ],
+  # annotation_row = ann_df[rownames(ntc_data_median), , drop = FALSE],
+  show_row_dend = FALSE,
+  # annotation_col = col_df |> select(
+  #   PRECAST_07,
+  #   # sample_id, # Overwhelm color pallete
+  #   dx
+  # ),
+  cellwidth = 10,
+  cellheight = 10,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  annotation_colors = list(SCZ_reg = c("Up" = "red", "Down" = "blue"))
+)
+
+heatmap_scz <- ComplexHeatmap::pheatmap(
+  mat = scz_data_median[
+    # gene_names_hc_ordered,
+    ,
+    order(colnames(scz_data_median))
+  ],
+  name = "SCZ (Scaled median logCPM)",
+  color = viridis(100, option = "magma"),
+  scale = "row",
+  column_title = "SCZ",
+  # cluster_rows = FALSE,
+  cluster_rows = TRUE,
+  cluster_cols = FALSE,
+  row_split = ann_df[rownames(scz_data_median), ],
+  # annotation_row = ann_df[rownames(scz_data_median), , drop = FALSE],
+  show_row_dend = FALSE,
+  # annotation_col = col_df |> select(
+  #   PRECAST_07,
+  #   # sample_id, # Overwhelm color pallete
+  #   dx
+  # ),
+  cellwidth = 10,
+  cellheight = 10,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  annotation_colors = list(SCZ_reg = c("Up" = "red", "Down" = "blue"))
+)
+
+pdf(
+  file = here(
+    "plots/PB_dx_genes/",
+    "test_sig_gene_enrich_SCZ_spd_median_logCPM_include_per_dx.pdf"
+  ),
+  height = 20
+)
+heatmap_all + heatmap_ntc + heatmap_scz
 dev.off()
 
 
-gene_names_hc_ordered <- heatmap_res@row_names_param$labels
+pdf(
+  file = here(
+    "plots/PB_dx_genes/",
+    "test_sig_gene_enrich_SCZ_spd_median_logCPM.pdf"
+  ),
+  height = 20
+)
+plot(heatmap_all)
+dev.off()
+
+gene_names_hc_ordered <- heatmap_all@row_names_param$labels[heatmap_all |> row_order() |> unlist()]
 
 saveRDS(
   gene_names_hc_ordered,
@@ -195,6 +279,9 @@ saveRDS(
     "spd_hierarchical_cluster_order.rds"
   )
 )
+
+
+
 
 
 
