@@ -1,3 +1,6 @@
+# NOTE:
+# Really need to clean up this file
+
 # Load Libray ----
 suppressPackageStartupMessages({
   library(here)
@@ -11,12 +14,12 @@ suppressPackageStartupMessages({
   library(pheatmap)
 })
 
-spd_rds <- list.files(
-  here(
-    "processed-data", "rds", "layer_spd"
-  ),
-  pattern = ".rds"
-)
+# spd_rds <- list.files(
+#   here(
+#     "processed-data", "rds", "layer_spd"
+#   ),
+#   pattern = ".rds"
+# )
 
 # Dx DE analysis ----
 # pdf(
@@ -51,13 +54,17 @@ spd_rds <- list.files(
   int_terms <- grep(":", dx_mod |> colnames(), value = TRUE)
 
 
-  dx_sig_gene <- read_csv(
-    "~/Downloads/test_PRECAST_07.csv"
-  ) |> filter(fdr_scz <= 0.10)
+#   dx_sig_gene <- read_csv(
+#     here(
+#       ,
+# "test_PRECAST_07.csv"
+#     )
+#   ) |> filter(fdr_scz <= 0.10)
+
 
 
   corfit <- duplicateCorrelation(
-    logcounts(sce_pseudo)[dx_sig_gene$ensembl, ],
+    logcounts(sce_pseudo),
     design = dx_mod,
     block = colData(sce_pseudo)$sample_id
   )
@@ -65,13 +72,23 @@ spd_rds <- list.files(
 
   # Naive without adjusting for sample-id random effect
   fit <- lmFit(
-    logcounts(sce_pseudo)[dx_sig_gene$ensembl, ],
+    logcounts(sce_pseudo),
     design = dx_mod,
     block = colData(sce_pseudo)$sample_id,
     correlation = corfit$consensus
   )
   fit <- eBayes(fit)
 
+  saveRDS(
+    fit,
+    here(
+      "processed-data/PB_dx_genes",
+      "test_inter_PRECAST_07_20240627.rds"
+    )
+  )
+
+
+ # Not: this is to test if interaction terms are significant, which is different to answer the question that if a there is a different for each laminar level between SCZ and NTC, or at least doesn't calculate the log fold change.
   Int_df <- topTable(fit, coef = c(int_terms), num = Inf)
 
   # cont.dif <- makeContrasts(
@@ -80,17 +97,74 @@ spd_rds <- list.files(
   #   levels = dx_mod
   # )
 
+
+ 
+
   cont.mat <- rbind(
     rep(-1, 7),
     rep(1, 7),
     matrix(0, nrow = 23, ncol = 7),
     cbind(rep(0, 6), diag(nrow = 6, ncol = 6))
   )
+#         [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+#  [1,]   -1   -1   -1   -1   -1   -1   -1
+#  [2,]    1    1    1    1    1    1    1
+#  [3,]    0    0    0    0    0    0    0
+#  [4,]    0    0    0    0    0    0    0
+#  [5,]    0    0    0    0    0    0    0
+#  [6,]    0    0    0    0    0    0    0
+#  [7,]    0    0    0    0    0    0    0
+#  [8,]    0    0    0    0    0    0    0
+#  [9,]    0    0    0    0    0    0    0
+# [10,]    0    0    0    0    0    0    0
+# [11,]    0    0    0    0    0    0    0
+# [12,]    0    0    0    0    0    0    0
+# [13,]    0    0    0    0    0    0    0
+# [14,]    0    0    0    0    0    0    0
+# [15,]    0    0    0    0    0    0    0
+# [16,]    0    0    0    0    0    0    0
+# [17,]    0    0    0    0    0    0    0
+# [18,]    0    0    0    0    0    0    0
+# [19,]    0    0    0    0    0    0    0
+# [20,]    0    0    0    0    0    0    0
+# [21,]    0    0    0    0    0    0    0
+# [22,]    0    0    0    0    0    0    0
+# [23,]    0    0    0    0    0    0    0
+# [24,]    0    0    0    0    0    0    0
+# [25,]    0    0    0    0    0    0    0
+# [26,]    0    1    0    0    0    0    0
+# [27,]    0    0    1    0    0    0    0
+# [28,]    0    0    0    1    0    0    0
+# [29,]    0    0    0    0    1    0    0
+# [30,]    0    0    0    0    0    1    0
+# [31,]    0    0    0    0    0    0    1
+
+   # TODO: to print out 
+      # dx_mod
+  # TODO: preint out contrast matrix
+
+dx_mod |> colnames()
+
+#  [1] "dxntc"              "dxscz"              "spdspd02"          
+#  [4] "spdspd03"           "spdspd04"           "spdspd05"          
+#  [7] "spdspd06"           "spdspd07"           "age"               
+# [10] "sexM"               "slide_idV12F14-053" "slide_idV12F14-057"
+# [13] "slide_idV13F27-293" "slide_idV13F27-294" "slide_idV13F27-295"
+# [16] "slide_idV13F27-296" "slide_idV13F27-336" "slide_idV13M06-279"
+# [19] "slide_idV13M06-280" "slide_idV13M06-281" "slide_idV13M06-282"
+# [22] "slide_idV13M06-340" "slide_idV13M06-342" "slide_idV13M06-343"
+# [25] "slide_idV13M06-344" "dxscz:spdspd02"     "dxscz:spdspd03"    
+# [28] "dxscz:spdspd04"     "dxscz:spdspd05"     "dxscz:spdspd06"    
+# [31] "dxscz:spdspd07"  
 
   colnames(cont.mat) <- sprintf("spd%02d", 1:7)
 
   contrast_fit <- contrasts.fit(fit, cont.mat)
   contrast_fit <- eBayes(contrast_fit)
+
+
+
+
 
 
   #
@@ -100,57 +174,27 @@ spd_rds <- list.files(
   # colnames(cont_df) <- paste0(colnames(cont_df), "_contrast")
   cont_df <- cont_df |> rownames_to_column("gene_id")
 
-  # saveRDS(
-  #   fit,
-  #   here(
-  #     "processed-data/PB_dx_genes",
-  #     "test_inter_PRECAST_07_sig_gene_only.rds"
-  #   )
-  # )
 
-  # Omnibus test for
-  # topTable(fit, coef = c("dxscz", int_terms), num = 30)
-
-  # Omnibus test for interaction terms
-
-  # # dx_df <- topTable(fit, coef = "dxscz", num = Inf)
-  # Int_df <- topTable(fit, coef = c(int_terms), num = Inf)
-
-  # tmp_int_df <- Int_df |> rownames_to_column("gene_id")
-
-
-  # matched_df <- full_join(
-  #   tmp_int_df,
-  #   cont_df
-  # )
-
-  # matched_df |> select(starts_with("P.Value"))
-
-  # int_dx_sig_gene <- dx_df |> filter(adj.P.Val <= 0.05)
-
-  # intersect(int_dx_sig_gene$gene_name,
-  # int_sig_df$gene_name
-  # )
-
-  # int_sig_df <- Int_df |>
-  #   filter(adj.P.Val <= 0.15) |>
-  # rownames_to_column(var = "gene_id") |>
-  # left_join(
-  #   rowData(sce_pseudo) |> data.frame() |> select(gene_id, gene_name)
-  # )
-  # rownames(int_sig_df) <- NULL
-  # int_sig_df <- int_sig_df |> column_to_rownames("gene_name")
-
-  # pheatmap(
-  #   Int_df |> select(starts_with("dxscz.")) |> data.matrix(),
-  #   scale = "row"
-  # )
+gene_names_hc_ordered <- readRDS(
+  here(
+    "code/analysis/pseudobulk_dx",
+    "spd_hierarchical_cluster_order.rds"
+  )
+)
 
   all_gene_mat <- cont_df |>
     left_join(
       rowData(sce_pseudo) |> data.frame() |> select(gene_id, gene_name)
     ) |>
+    filter(gene_name %in% gene_names_hc_ordered) |> 
     column_to_rownames("gene_name")
+
+stopifnot(
+  nrow(all_gene_mat) == length(gene_names_hc_ordered)
+  )
+
+
+
 
   # all_gene_mat <- cont_df |>
   #   rownames_to_column(var = "gene_id") |>
@@ -176,12 +220,7 @@ spd_rds <- list.files(
     data.matrix()
   colnames(heatmap_mat) <- spd_anno_df$anno_lab[match(colnames(heatmap_mat), spd_anno_df$spd)]
 
-gene_names_hc_ordered <- readRDS(
-  here(
-    "code/analysis/pseudobulk_dx",
-    "spd_hierarchical_cluster_order.rds"
-  )
-)
+
 
 
 
