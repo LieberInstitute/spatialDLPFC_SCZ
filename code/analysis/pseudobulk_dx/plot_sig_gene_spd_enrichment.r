@@ -173,7 +173,7 @@ heatmap_all <- ComplexHeatmap::pheatmap(
   name = "ALL (Scaled median logCPM)",
   color = viridis(100, option = "magma"),
   scale = "row",
-  column_title = "All",
+  column_title = "Enrichment",
   # cluster_rows = FALSE,
   cluster_rows = TRUE,
   cluster_cols = FALSE,
@@ -191,74 +191,6 @@ heatmap_all <- ComplexHeatmap::pheatmap(
   show_colnames = TRUE,
   annotation_colors = list(SCZ_reg = c("Up" = "red", "Down" = "blue"))
 )
-
-
-heatmap_ntc <- ComplexHeatmap::pheatmap(
-  mat = ntc_data_median[
-    # gene_names_hc_ordered,
-    ,
-    order(colnames(ntc_data_median))
-  ],
-  name = "NTC (Scaled median logCPM)",
-  color = viridis(100, option = "magma"),
-  scale = "row",
-  column_title = "NTC",
-  # cluster_rows = FALSE,
-  cluster_rows = TRUE,
-  cluster_cols = FALSE,
-  row_split = ann_df[rownames(ntc_data_median), ],
-  # annotation_row = ann_df[rownames(ntc_data_median), , drop = FALSE],
-  show_row_dend = FALSE,
-  # annotation_col = col_df |> select(
-  #   PRECAST_07,
-  #   # sample_id, # Overwhelm color pallete
-  #   dx
-  # ),
-  cellwidth = 10,
-  cellheight = 10,
-  show_rownames = TRUE,
-  show_colnames = TRUE,
-  annotation_colors = list(SCZ_reg = c("Up" = "red", "Down" = "blue"))
-)
-
-heatmap_scz <- ComplexHeatmap::pheatmap(
-  mat = scz_data_median[
-    # gene_names_hc_ordered,
-    ,
-    order(colnames(scz_data_median))
-  ],
-  name = "SCZ (Scaled median logCPM)",
-  color = viridis(100, option = "magma"),
-  scale = "row",
-  column_title = "SCZ",
-  # cluster_rows = FALSE,
-  cluster_rows = TRUE,
-  cluster_cols = FALSE,
-  row_split = ann_df[rownames(scz_data_median), ],
-  # annotation_row = ann_df[rownames(scz_data_median), , drop = FALSE],
-  show_row_dend = FALSE,
-  # annotation_col = col_df |> select(
-  #   PRECAST_07,
-  #   # sample_id, # Overwhelm color pallete
-  #   dx
-  # ),
-  cellwidth = 10,
-  cellheight = 10,
-  show_rownames = TRUE,
-  show_colnames = TRUE,
-  annotation_colors = list(SCZ_reg = c("Up" = "red", "Down" = "blue"))
-)
-
-pdf(
-  file = here(
-    "plots/PB_dx_genes/",
-    "test_sig_gene_enrich_SCZ_spd_median_logCPM_include_per_dx.pdf"
-  ),
-  height = 20
-)
-heatmap_all + heatmap_ntc + heatmap_scz
-dev.off()
-
 
 pdf(
   file = here(
@@ -279,63 +211,6 @@ saveRDS(
     "spd_hierarchical_cluster_order.rds"
   )
 )
-
-
-
-
-
-
-
-# plot(pheatmap_result)
-
-# # Orignial scale ----
-# pheatmap(
-#   mat = gene_mat,
-#   scale = "none",
-#   cluster_cols = FALSE,
-#   annotation_col = col_df |> select(
-#     PRECAST_07,
-#     # sample_id, # Overwhelm color pallete
-#     dx
-#   ),
-#   # Turn off names
-#   show_rownames = FALSE,
-#   show_colnames = FALSE,
-# )
-
-# # Row Centered plot -----
-# centered_gene_mat <- apply(gene_mat, 1, scale, scale = FALSE) |> t()
-
-# colnames(centered_gene_mat) <- colnames(gene_mat)
-
-# pheatmap(
-#   mat = centered_gene_mat,
-#   scale = "none",
-#   cluster_cols = FALSE,
-#   annotation_col = col_df |> select(
-#     PRECAST_07,
-#     # sample_id, # Overwhelm color pallete
-#     dx
-#   ),
-#   # Turn off names
-#   show_rownames = FALSE,
-#   show_colnames = FALSE,
-# )
-
-# # Row centered and scaled ----
-# pheatmap(
-#   mat = gene_mat,
-#   scale = "row",
-#   cluster_cols = FALSE,
-#   annotation_col = col_df |> select(
-#     PRECAST_07,
-#     # sample_id, # Overwhelm color pallete
-#     dx
-#   ),
-#   # Turn off names
-#   show_rownames = FALSE,
-#   show_colnames = FALSE,
-# )
 
 # Session Info ----
 session_info()

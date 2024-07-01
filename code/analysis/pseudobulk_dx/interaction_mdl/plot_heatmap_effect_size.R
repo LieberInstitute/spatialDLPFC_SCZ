@@ -110,6 +110,7 @@ effect_heatmap <- Heatmap(
     gene_names_hc_ordered,
     order(colnames(heatmap_mat))
   ],
+  column_title = "SCZ-NTC",
   cluster_rows = FALSE,
   cluster_columns = FALSE,
   right_annotation = right_anno,
