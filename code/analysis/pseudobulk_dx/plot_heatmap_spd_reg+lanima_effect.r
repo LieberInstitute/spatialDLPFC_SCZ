@@ -5,7 +5,7 @@ library(here)
 source(
   here(
     "code/analysis/pseudobulk_dx",
-    "plot_sig_gene_spd_enrichment_w_laminar_diff.r"
+    "plot_sig_gene_spd_enrichment.r"
   )
 )
 
