@@ -1,7 +1,7 @@
 # Load packages ----
 suppressPackageStartupMessages({
   library(tidyverse)
-  # library(pheatmap)
+  library(SingleCellExperiment)
   library(ComplexHeatmap)
   library(viridis)
   library(sessioninfo)
@@ -162,12 +162,18 @@ scz_data_median <- create_median_from_pb_data(scz_pb)
 #   )
 # )
 
+gene_names_hc_ordered <- readRDS(
+  here(
+    "code/analysis/pseudobulk_dx",
+    "spd_hierarchical_cluster_order.rds"
+  )
+)
+
 
 
 heatmap_all <- ComplexHeatmap::pheatmap(
   mat = all_data_median[
-    # gene_names_hc_ordered,
-    ,
+    gene_names_hc_ordered,
     order(colnames(all_data_median))
   ],
   name = "ALL (Scaled median logCPM)",
@@ -177,8 +183,8 @@ heatmap_all <- ComplexHeatmap::pheatmap(
   # cluster_rows = FALSE,
   cluster_rows = TRUE,
   cluster_cols = FALSE,
-  row_split = ann_df[rownames(all_data_median), ],
-  annotation_row = ann_df[rownames(all_data_median), , drop = FALSE],
+  row_split = ann_df[gene_names_hc_ordered, ],
+  annotation_row = ann_df[gene_names_hc_ordered, , drop = FALSE],
   show_row_dend = FALSE,
   # annotation_col = col_df |> select(
   #   PRECAST_07,
@@ -202,15 +208,15 @@ pdf(
 plot(heatmap_all)
 dev.off()
 
-gene_names_hc_ordered <- heatmap_all@row_names_param$labels[heatmap_all |> row_order() |> unlist()]
+# gene_names_hc_ordered <- heatmap_all@row_names_param$labels[heatmap_all |> row_order() |> unlist()]
 
-saveRDS(
-  gene_names_hc_ordered,
-  here(
-    "code/analysis/pseudobulk_dx",
-    "spd_hierarchical_cluster_order.rds"
-  )
-)
+# saveRDS(
+#   gene_names_hc_ordered,
+#   here(
+#     "code/analysis/pseudobulk_dx",
+#     "spd_hierarchical_cluster_order.rds"
+#   )
+# )
 
 # Session Info ----
 session_info()

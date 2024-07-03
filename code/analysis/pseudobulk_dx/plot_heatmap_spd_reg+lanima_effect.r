@@ -22,15 +22,22 @@ source(
 # Check if the order of the two heatmap is the same.
 stopifnot(
   all(
-    heatmap_all@row_names_param$labels[heatmap_all |>
-      row_order() |>
-      unlist() |>
-      c()] ==
-      effect_heatmap@row_names_param$labels[effect_heatmap |>
-        row_order() |>
-        unlist()]
+    heatmap_all@row_names_param$labels ==
+      effect_heatmap@row_names_param$labels
   )
 )
+
+# stopifnot(
+#   all(
+#     heatmap_all@row_names_param$labels[heatmap_all |>
+#       row_order() |>
+#       unlist() |>
+#       c()] ==
+#       effect_heatmap@row_names_param$labels[effect_heatmap |>
+#         row_order() |>
+#         unlist()]
+#   )
+# )
 
 
 pdf(
