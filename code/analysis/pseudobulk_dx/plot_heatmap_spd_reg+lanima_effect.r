@@ -43,9 +43,12 @@ stopifnot(
 pdf(
   here(
     "plots/PB_dx_genes",
-    "test_Heatmap_spd_reg_N_effect_size.pdf"
+    sprintf(
+      "test_Heatmap_spd_reg_N_effect_size_%02dGene.pdf",
+      n_gene
+    )
   ),
   height = 20
 )
-heatmap_all + effect_heatmap
+print(heatmap_all + effect_heatmap)
 dev.off()

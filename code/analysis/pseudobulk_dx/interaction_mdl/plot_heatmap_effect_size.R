@@ -36,10 +36,15 @@ cont_df <- topTable(contrast_fit, coef = sprintf("spd%02d", 1:7), num = Inf)
 cont_df <- cont_df |> rownames_to_column("gene_id")
 
 
+
+n_gene <- 67
 gene_names_hc_ordered <- readRDS(
   here(
     "code/analysis/pseudobulk_dx",
-    "spd_hierarchical_cluster_order.rds"
+    sprintf(
+      "spd_hierarchical_cluster_order_%02d_gene.rds",
+      n_gene
+    )
   )
 )
 
@@ -121,7 +126,10 @@ effect_heatmap <- Heatmap(
 pdf(
   here(
     "plots/PB_dx_genes",
-    "dx_sig_gene_layer_specific_heatmap.pdf"
+    sprintf(
+    "dx_sig_gene_layer_specific_heatmap_%02dGene.pdf",
+    n_gene
+    )
   ),
   height = 20
 )
