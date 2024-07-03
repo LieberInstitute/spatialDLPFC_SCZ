@@ -1,7 +1,9 @@
 # Load packages ----
 suppressPackageStartupMessages({
+  library(here)
   library(tidyverse)
   # library(pheatmap)
+  library(SingleCellExperiment)
   library(ComplexHeatmap)
   library(viridis)
   library(sessioninfo)
@@ -18,10 +20,13 @@ gene_df <- read_csv(
 sig_gene <- readxl::read_excel(
   here(
     "code/analysis/pseudobulk_dx",
-    "Test_90DEGs.xlsx"
+    # "Test_90DEGs.xlsx"
+    "Test_67DEGs.xlsx"
   ),
   col_names = FALSE
 )[[1]]
+
+n_gene <- length(sig_gene)
 
 sig_gene_df <- gene_df |>
   filter(gene %in% sig_gene)
@@ -252,7 +257,10 @@ heatmap_scz <- ComplexHeatmap::pheatmap(
 pdf(
   file = here(
     "plots/PB_dx_genes/",
-    "test_sig_gene_enrich_SCZ_spd_median_logCPM_include_per_dx.pdf"
+    sprintf(
+      "test_sig_gene_enrich_SCZ_spd_median_logCPM_include_per_dx_%02d_gene.pdf",
+      n_gene
+    )
   ),
   height = 20
 )
@@ -263,20 +271,28 @@ dev.off()
 pdf(
   file = here(
     "plots/PB_dx_genes/",
-    "test_sig_gene_enrich_SCZ_spd_median_logCPM.pdf"
+    sprintf(
+      "test_sig_gene_enrich_SCZ_spd_median_logCPM_%02d_gene.pdf",
+      n_gene
+    )
   ),
   height = 20
 )
 plot(heatmap_all)
 dev.off()
 
-gene_names_hc_ordered <- heatmap_all@row_names_param$labels[heatmap_all |> row_order() |> unlist()]
+gene_names_hc_ordered <- heatmap_all@row_names_param$labels[heatmap_all |>
+  row_order() |>
+  unlist()]
 
 saveRDS(
   gene_names_hc_ordered,
   here(
     "code/analysis/pseudobulk_dx",
-    "spd_hierarchical_cluster_order.rds"
+    sprintf(
+    "spd_hierarchical_cluster_order_%02d_gene.rds",
+    n_gene
+    )
   )
 )
 

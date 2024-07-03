@@ -2,6 +2,7 @@
 suppressPackageStartupMessages({
   library(tidyverse)
   library(here)
+  library(SingleCellExperiment)
   library(ComplexHeatmap)
   library(sessioninfo)
   library(viridis)
@@ -20,13 +21,16 @@ gene_df <- read_csv(
 sig_gene <- readxl::read_excel(
   here(
     "code/analysis/pseudobulk_dx",
-    "Test_90DEGs.xlsx"
+    # "Test_90DEGs.xlsx"
+    "Test_67DEGs.xlsx"
   ),
   col_names = FALSE
 )[[1]]
 
 sig_gene_df <- gene_df |>
   filter(gene %in% sig_gene)
+
+n_gene <- length(sig_gene)
 
 ann_df <- sig_gene_df |>
   column_to_rownames(var = "gene") |>
@@ -78,7 +82,15 @@ gene_mat_median <- gene_mat_long |>
 
 # Need to accumulate genes
 
-
+gene_names_hc_ordered <- readRDS(
+  here(
+    "code/analysis/pseudobulk_dx",
+    sprintf(
+      "spd_hierarchical_cluster_order_%02d_gene.rds",
+      n_gene
+    )
+  )
+)
 
 
 # Convert Ensembl to Gene name
@@ -90,23 +102,26 @@ rownames(gene_mat_median) <- rowData(snRNA_pb)[
 pdf(
   file = here(
     "plots/PB_dx_genes/",
-    "test_sig_gene_enrich_pec_snRNA_median_logCPM.pdf"
+    sprintf(
+      "test_sig_gene_enrich_pec_snRNA_median_logCPM_%02dGene.pdf",
+      n_gene
+    )
   ),
   height = 20
 )
 ComplexHeatmap::pheatmap(
   mat = gene_mat_median[
-    ,
+    gene_names_hc_ordered,
     order(colnames(gene_mat_median))
   ],
   name = "Scaled median logCPM",
   color = viridis(100, option = "magma"),
   scale = "row",
   column_title = "PEC snRNA",
-  cluster_rows = TRUE,
+  cluster_rows = FALSE,
   cluster_cols = FALSE,
-  row_split = ann_df[rownames(gene_mat_median), ],
-  annotation_row = ann_df[rownames(gene_mat_median), , drop = FALSE],
+  row_split = ann_df[gene_names_hc_ordered, ],
+  annotation_row = ann_df[gene_names_hc_ordered, , drop = FALSE],
   show_row_dend = FALSE,
   cellwidth = 10,
   cellheight = 10,

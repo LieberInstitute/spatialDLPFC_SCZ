@@ -2,6 +2,7 @@
 suppressPackageStartupMessages({
   library(tidyverse)
   library(here)
+  library(SingleCellExperiment)
   library(ComplexHeatmap)
   library(sessioninfo)
   library(viridis)
@@ -20,13 +21,16 @@ gene_df <- read_csv(
 sig_gene <- readxl::read_excel(
   here(
     "code/analysis/pseudobulk_dx",
-    "Test_90DEGs.xlsx"
+    # "Test_90DEGs.xlsx"
+    "Test_67DEGs.xlsx"
   ),
   col_names = FALSE
 )[[1]]
 
 sig_gene_df <- gene_df |>
   filter(gene %in% sig_gene)
+
+n_gene <- length(sig_gene)
 
 ann_df <- sig_gene_df |>
   column_to_rownames(var = "gene") |>
@@ -118,7 +122,10 @@ colnames(gene_mat_median) <- spd_name_df$layer_combo2[match(
 gene_names_hc_ordered <- readRDS(
   here(
     "code/analysis/pseudobulk_dx",
-    "spd_hierarchical_cluster_order.rds"
+    sprintf(
+      "spd_hierarchical_cluster_order_%02d_gene.rds",
+      n_gene
+    )
   )
 )
 
@@ -126,7 +133,10 @@ gene_names_hc_ordered <- readRDS(
 pdf(
   file = here(
     "plots/PB_dx_genes/",
-    "test_sig_gene_enrich_pec_spd_median_logCPM.pdf"
+    sprintf(
+      "test_sig_gene_enrich_pec_spd_median_logCPM_%02dGene.pdf",
+      n_gene
+    )
   ),
   height = 20
 )
@@ -149,7 +159,7 @@ ComplexHeatmap::pheatmap(
   show_rownames = TRUE,
   show_colnames = TRUE,
   annotation_colors = list(SCZ_reg = c("Up" = "red", "Down" = "blue"))
-)
+) |> print()
 dev.off()
 
 
