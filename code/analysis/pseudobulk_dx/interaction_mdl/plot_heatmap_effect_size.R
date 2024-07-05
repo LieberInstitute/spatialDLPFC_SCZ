@@ -36,17 +36,32 @@ cont_df <- topTable(contrast_fit, coef = sprintf("spd%02d", 1:7), num = Inf)
 cont_df <- cont_df |> rownames_to_column("gene_id")
 
 
-
-n_gene <- 67
-gene_names_hc_ordered <- readRDS(
+sig_gene <- readxl::read_excel(
   here(
     "code/analysis/pseudobulk_dx",
-    sprintf(
-      "spd_hierarchical_cluster_order_%02d_gene.rds",
-      n_gene
-    )
+    # "Test_90DEGs.xlsx"
+    "Test_68DEGs.xlsx"
+  ),
+  col_names = FALSE
+)[[1]]
+
+
+n_gene <- length(sig_gene)
+
+neg_gene <- c("MALAT1", "ARID1B", "AKT3")
+sub_gene_name <- c(
+  sig_gene,
+  neg_gene
   )
-)
+# gene_names_hc_ordered <- readRDS(
+#   here(
+#     "code/analysis/pseudobulk_dx",
+#     sprintf(
+#       "spd_hierarchical_cluster_order_%02d_gene.rds",
+#       n_gene
+#     )
+#   )
+# )
 
 
 sce_pseudo <- readRDS(
@@ -60,11 +75,11 @@ all_gene_mat <- cont_df |>
   left_join(
     rowData(sce_pseudo) |> data.frame() |> select(gene_id, gene_name)
   ) |>
-  filter(gene_name %in% gene_names_hc_ordered) |>
+  filter(gene_name %in% sub_gene_name) |>
   column_to_rownames("gene_name")
 
 stopifnot(
-  nrow(all_gene_mat) == length(gene_names_hc_ordered)
+  nrow(all_gene_mat) == length(sub_gene_name)
 )
 
 spd_anno_df <- read_csv(
@@ -82,9 +97,10 @@ heatmap_mat <- all_gene_mat |>
 colnames(heatmap_mat) <- spd_anno_df$anno_lab[match(colnames(heatmap_mat), spd_anno_df$spd)]
 
 
+# all_gene_mat[neg_gene,"adj.P.Val"] <- NA 
 
 right_anno <- rowAnnotation(
-  `sig_lvl` = all_gene_mat[gene_names_hc_ordered, ] |>
+  `sig_lvl` = all_gene_mat[sub_gene_name, ] |>
     transmute(
       `-log10P` = -1 * log10(P.Value),
       sig_lavel = case_when(
@@ -110,9 +126,11 @@ right_anno <- rowAnnotation(
 
 
 
+
+
 effect_heatmap <- Heatmap(
   heatmap_mat[
-    gene_names_hc_ordered,
+    sub_gene_name,
     order(colnames(heatmap_mat))
   ],
   name = "Log2FC",

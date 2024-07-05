@@ -20,7 +20,7 @@ sig_gene <- readxl::read_excel(
   here(
     "code/analysis/pseudobulk_dx",
     # "Test_90DEGs.xlsx"
-    "Test_67DEGs.xlsx"
+    "Test_68DEGs.xlsx"
   ),
   col_names = FALSE
 )[[1]]
@@ -29,6 +29,11 @@ sig_gene_df <- gene_df |>
   filter(gene %in% sig_gene)
 
 n_gene <- length(sig_gene)
+
+neg_gene <- c("MALAT1", "ARID1B", "AKT3")
+
+neg_gene_df <- gene_df |>
+  filter(gene %in% neg_gene)
 
 ann_df <- sig_gene_df |>
   column_to_rownames(var = "gene") |>
@@ -39,6 +44,11 @@ ann_df <- sig_gene_df |>
       labels = c("Up", "Down")
     )
   )
+
+ann_df_neg_gene <- data.frame(SCZ_reg = rep(NA, length(neg_gene)))
+rownames(ann_df_neg_gene) <- neg_gene
+
+ann_df <- rbind(ann_df, ann_df_neg_gene)
 
 # Format SpD to readable form
 spd_anno_df <- read_csv(
@@ -58,26 +68,7 @@ spe_pb <- readRDS(
   )
 )
 
-## NTC only ---
-
-ntc_pb <- readRDS(
-  here(
-    "processed-data", "rds", "layer_spd",
-    "test_spe_pseudo_PRECAST_07_ntc.rds"
-  )
-)
-
-## SCZ only ---
-
-scz_pb <- readRDS(
-  here(
-    "processed-data", "rds", "layer_spd",
-    "test_spe_pseudo_PRECAST_07_scz.rds"
-  )
-)
-
-# Process PB Data
-
+# Process PB Data ---
 ## Function ---
 create_median_from_pb_data <- function(sce) {
   col_df <- colData(sce) |>
@@ -95,7 +86,13 @@ create_median_from_pb_data <- function(sce) {
       PRECAST_07, dx, sample_id
     )
 
-  gene_mat <- logcounts(sce)[sig_gene_df$ensembl, rownames(col_df)]
+  gene_mat <- logcounts(sce)[
+    c(
+      sig_gene_df$ensembl,
+      neg_gene_df$ensembl
+    ),
+    rownames(col_df)
+  ]
 
   # Need to accumulate genes
   gene_mat_long <- gene_mat |>
@@ -132,11 +129,11 @@ create_median_from_pb_data <- function(sce) {
 
   # Code to scale each row
   # only necessary when using ComplexHeatmap::Heatmap
-  gene_mat_median_scaled <- apply(
-    gene_mat_median,
-    MARGIN = 1,
-    FUN = scale
-  ) |> t()
+  # gene_mat_median_scaled <- apply(
+  #   gene_mat_median,
+  #   MARGIN = 1,
+  #   FUN = scale
+  # ) |> t()
 
   return(gene_mat_median)
 }
@@ -147,10 +144,7 @@ create_median_from_pb_data <- function(sce) {
 
 
 # Heat map ----
-
 all_data_median <- create_median_from_pb_data(spe_pb)
-ntc_data_median <- create_median_from_pb_data(ntc_pb)
-scz_data_median <- create_median_from_pb_data(scz_pb)
 
 
 
@@ -166,23 +160,33 @@ scz_data_median <- create_median_from_pb_data(scz_pb)
 #   )
 # )
 
-gene_names_hc_ordered <- readRDS(
-  here(
-    "code/analysis/pseudobulk_dx",
-    sprintf(
-      "spd_hierarchical_cluster_order_%02d_gene.rds",
-      n_gene
-    )
-  )
+# gene_names_hc_ordered <- readRDS(
+#   here(
+#     "code/analysis/pseudobulk_dx",
+#     sprintf(
+#       "spd_hierarchical_cluster_order_%02d_gene.rds",
+#       n_gene
+#     )
+#   )
+# )
+
+
+enrich_heat_mat <- all_data_median[
+  c(sig_gene, neg_gene)
+  ,
+  order(colnames(all_data_median))
+]
+
+enrich_row_mat <- ann_df[rownames(enrich_heat_mat), , drop = FALSE]
+
+stopifnot(
+  rownames(enrich_row_mat) == rownames(enrich_heat_mat)
 )
 
 
 
 heatmap_all <- ComplexHeatmap::pheatmap(
-  mat = all_data_median[
-    gene_names_hc_ordered,
-    order(colnames(all_data_median))
-  ],
+  mat = enrich_heat_mat,
   name = "ALL (Scaled median logCPM)",
   color = viridis(100, option = "magma"),
   scale = "row",
@@ -190,8 +194,8 @@ heatmap_all <- ComplexHeatmap::pheatmap(
   # cluster_rows = FALSE,
   cluster_rows = TRUE,
   cluster_cols = FALSE,
-  row_split = ann_df[gene_names_hc_ordered, ],
-  annotation_row = ann_df[gene_names_hc_ordered, , drop = FALSE],
+  row_split = enrich_row_mat,
+  annotation_row = enrich_row_mat,
   show_row_dend = FALSE,
   # annotation_col = col_df |> select(
   #   PRECAST_07,
@@ -202,17 +206,22 @@ heatmap_all <- ComplexHeatmap::pheatmap(
   cellheight = 10,
   show_rownames = TRUE,
   show_colnames = TRUE,
-  annotation_colors = list(SCZ_reg = c("Up" = "red", "Down" = "blue"))
+  annotation_colors = list(
+    SCZ_reg = c(
+      "Up" = "red", "Down" = "blue"
+    )
+  )
 )
+
+
 
 pdf(
   file = here(
     "plots/PB_dx_genes/",
     sprintf(
-    "test_sig_gene_enrich_SCZ_spd_median_logCPM_%02dGene.pdf",
-    n_gene
+      "test_sig_gene_enrich_SCZ_spd_median_logCPM_%02dGene.pdf",
+      n_gene
     )
-
   ),
   height = 20
 )

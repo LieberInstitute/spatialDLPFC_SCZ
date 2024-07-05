@@ -22,7 +22,7 @@ sig_gene <- readxl::read_excel(
   here(
     "code/analysis/pseudobulk_dx",
     # "Test_90DEGs.xlsx"
-    "Test_67DEGs.xlsx"
+    "Test_68DEGs.xlsx"
   ),
   col_names = FALSE
 )[[1]]
