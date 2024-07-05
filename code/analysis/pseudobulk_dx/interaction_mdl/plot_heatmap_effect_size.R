@@ -115,6 +115,7 @@ effect_heatmap <- Heatmap(
     gene_names_hc_ordered,
     order(colnames(heatmap_mat))
   ],
+  name = "Log2FC",
   column_title = "SCZ-NTC",
   cluster_rows = FALSE,
   cluster_columns = FALSE,
