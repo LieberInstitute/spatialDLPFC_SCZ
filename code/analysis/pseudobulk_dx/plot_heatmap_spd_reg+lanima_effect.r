@@ -39,6 +39,30 @@ stopifnot(
 #   )
 # )
 
+# CREATE dot plot for GO Pathway
+source(
+  here(
+    "code/analysis/dx_deg_enrichment",
+    "plot_enrich_diff_string.r"
+  )
+)
+
+
+# pdf(
+#   here(
+#     "plots/PB_dx_genes",
+#     sprintf(
+#       "test_Heatmap_spd_reg_N_effect_size_%02dGene.pdf",
+#       n_gene
+#     )
+#   ),
+#   height = 20
+# )
+# print(heatmap_all + effect_heatmap)
+# dev.off()
+
+
+
 
 pdf(
   here(
@@ -50,5 +74,6 @@ pdf(
   ),
   height = 20
 )
-print(heatmap_all + effect_heatmap)
+print(heatmap_all + effect_heatmap + heatmap_go)
+
 dev.off()
