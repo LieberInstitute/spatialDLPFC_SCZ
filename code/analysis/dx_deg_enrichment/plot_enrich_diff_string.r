@@ -14,7 +14,7 @@ sig_gene <- readxl::read_excel(
   here(
     "code/analysis/pseudobulk_dx",
     # "Test_90DEGs.xlsx"
-    "Test_67DEGs.xlsx"
+    "Test_68DEGs.xlsx"
   ),
   col_names = FALSE
 )[[1]]
@@ -36,7 +36,12 @@ path_mat <- tmp_df$terms |>
   t()
 
 
-miss_genes <- setdiff(gene_names_hc_ordered, rownames(path_mat))
+miss_genes <- setdiff(sig_gene, rownames(path_mat))
+
+neg_gene <- neg_gene <- c("MALAT1", "ARID1B", "AKT3")
+
+miss_genes <- c(miss_genes, neg_gene)
+
 
 miss_genes_mat <- matrix(
   0,
@@ -49,18 +54,19 @@ path_mat <- path_mat |> rbind(miss_genes_mat)
 
 
 
-gene_names_hc_ordered <- readRDS(
-  here(
-    "code/analysis/pseudobulk_dx",
-    sprintf(
-      "spd_hierarchical_cluster_order_%02d_gene.rds",
-      n_gene
-    )
-  )
-)
+# gene_names_hc_ordered <- readRDS(
+#   here(
+#     "code/analysis/pseudobulk_dx",
+#     sprintf(
+#       "spd_hierarchical_cluster_order_%02d_gene.rds",
+#       n_gene
+#     )
+#   )
+# )
 
 path_ht_mat <- path_mat[
-  gene_names_hc_ordered,
+  # gene_names_hc_ordered,
+  c(sig_gene, neg_gene),
 ]
 
 heatmap_go <- Heatmap(

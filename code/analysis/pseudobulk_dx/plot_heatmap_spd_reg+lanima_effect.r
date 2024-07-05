@@ -21,8 +21,8 @@ source(
 
 # Check if the order of the two heatmap is the same.
 stopifnot(
-  all(
-    heatmap_all@row_names_param$labels ==
+  identical(
+    heatmap_all@row_names_param$labels,
       effect_heatmap@row_names_param$labels
   )
 )
@@ -47,6 +47,16 @@ source(
   )
 )
 
+
+# Check if the order of the two heatmap is the same.
+stopifnot(
+  all(
+    identical(
+      heatmap_all@row_names_param$labels,
+      heatmap_go@row_names_param$labels
+    )
+  )
+)
 
 # pdf(
 #   here(
