@@ -1,6 +1,6 @@
 # SBATCH info
 ## time 20 min
-## mem 10GB
+## mem 30GB
 
 # Load Packages ----
 suppressPackageStartupMessages({
