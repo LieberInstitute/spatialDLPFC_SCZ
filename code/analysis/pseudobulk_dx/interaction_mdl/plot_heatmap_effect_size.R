@@ -48,7 +48,8 @@ sig_gene <- readxl::read_excel(
 
 n_gene <- length(sig_gene)
 
-neg_gene <- c("MALAT1", "ARID1B", "AKT3")
+# neg_gene <- c("MALAT1", "ARID1B", "AKT3")
+neg_gene <- NULL
 sub_gene_name <- c(
   sig_gene,
   neg_gene
@@ -100,26 +101,26 @@ colnames(heatmap_mat) <- spd_anno_df$anno_lab[match(colnames(heatmap_mat), spd_a
 # all_gene_mat[neg_gene,"adj.P.Val"] <- NA 
 
 right_anno <- rowAnnotation(
-  `sig_lvl` = all_gene_mat[sub_gene_name, ] |>
+  `Significance` = all_gene_mat[sub_gene_name, ] |>
     transmute(
       `-log10P` = -1 * log10(P.Value),
       sig_lavel = case_when(
-        adj.P.Val <= 0.05 ~ "Adj.P.Val =< 0.05",
-        adj.P.Val >= 0.05 & adj.P.Val <= 0.1 ~ "0.1 >= Adj.P.Val > 0.05",
-        adj.P.Val > 0.1 ~ "Adj.P.Val > 0.1"
+        adj.P.Val <= 0.05 ~ "Adj. P =< 0.05",
+        adj.P.Val >= 0.05 & adj.P.Val <= 0.1 ~ "0.1 >= Adj. P > 0.05",
+        adj.P.Val > 0.1 ~ "Adj. P > 0.1"
       ) |> factor(
         levels = 
-        c("Adj.P.Val =< 0.05",
-      "0.1 >= Adj.P.Val > 0.05",
-      "Adj.P.Val > 0.1")
+        c("Adj. P =< 0.05",
+      "0.1 >= Adj. P > 0.05",
+      "Adj. P > 0.1")
       )
     ) |>
     pull(sig_lavel),
   col = list(
-    sig_lvl = c(
-      "Adj.P.Val =< 0.05" = "#c51b8a",
-      "0.1 >= Adj.P.Val > 0.05" = "#fa9fb5",
-      "Adj.P.Val > 0.1" = "#fde0dd"
+    Significance = c(
+      "Adj. P =< 0.05" = "#31a354",
+      "0.1 >= Adj. P > 0.05" = "#addd8e",
+      "Adj. P > 0.1" = "#f7fcb9"
     )
   )
 )

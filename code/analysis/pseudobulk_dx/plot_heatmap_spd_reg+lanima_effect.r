@@ -82,7 +82,8 @@ pdf(
       n_gene
     )
   ),
-  height = 20
+  height = 21,
+  width = 8
 )
 print(heatmap_all + effect_heatmap + heatmap_go)
 
