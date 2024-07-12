@@ -9,6 +9,22 @@ spe <- readRDS(
   )
 )
 
+# Total spots ----
+ncol(spe)
+
+## Total spots per dx ----
+colData(spe) |>
+  data.frame() |>
+  group_by(sample_id) |>
+  summarize(n = n()) |>
+  right_join(
+    metadata(spe)$dx_df,
+    by = "sample_id"
+  ) |>
+  group_by(dx) |>
+  summarise(
+    n = sum(n)
+  )
 
 # Medians ----
 colData(spe) |>
