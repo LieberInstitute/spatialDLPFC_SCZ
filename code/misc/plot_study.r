@@ -1,7 +1,7 @@
 library(tidyverse)
 library(here)
 
-# Plot Donor Comparison
+# Plot Donor Comparison ----
 donor_df <- readr::read_csv(
   here(
     "raw-data/experiment_info",
@@ -19,6 +19,7 @@ donor_df <- readr::read_csv(
     )
   )
 
+# Make barplots ----
 for (tmp_col in c("donor", "sample", "spot")) {
   pdf(
     here(
