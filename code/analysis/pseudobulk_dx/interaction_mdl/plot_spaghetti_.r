@@ -46,16 +46,16 @@ make_spaghetti_plot <- function(
   fc_mat_long <- fc_mat |> turn_long_form()
 
   # Make plot
-  ggplot(mapping = aes(x = name, y = value, group = gene)) +
+
+  ret_p <- ggplot(mapping = aes(x = name, y = value, group = gene)) +
     # Dashed line as reference
     geom_hline(aes(yintercept = 0), linetype = 2, alpha = 0.4) +
     # Create transparent paths for background genes
-
-    geom_line(
-      aes(color = "Background genes"),
-      data = fc_mat_long |> filter(gene %in% bg_genes),
-      alpha = 0.4, linewidth = 0.5
-    ) +
+    # geom_line(
+    #   aes(color = "Background genes"),
+    #   data = fc_mat_long |> filter(gene %in% bg_genes),
+    #   alpha = 0.4, linewidth = 0.5
+    # ) +
     geom_point(
       data = fc_mat_long |> filter(gene %in% genes),
       aes(color = "Sig.")
@@ -82,6 +82,8 @@ make_spaghetti_plot <- function(
       x = ""
     ) +
     theme_light(base_size = 12)
+
+  return(ret_p)
 }
 
 treg_genes <- c("AKT3", "MALAT1", "ARID1B")
@@ -137,7 +139,7 @@ ggpubr::ggarrange(
     .center = FALSE
   ),
   nrow = 2
-)
+) |> print()
 
 ggpubr::ggarrange(
   make_spaghetti_plot(
@@ -153,7 +155,7 @@ ggpubr::ggarrange(
     .center = FALSE
   ),
   nrow = 2
-)
+) |> print()
 
 ggpubr::ggarrange(
   make_spaghetti_plot(
@@ -169,7 +171,7 @@ ggpubr::ggarrange(
     .center = FALSE
   ),
   nrow = 2
-)
+) |> print()
 
 ggpubr::ggarrange(
   make_spaghetti_plot(
@@ -185,7 +187,7 @@ ggpubr::ggarrange(
     .center = FALSE
   ),
   nrow = 2
-)
+) |> print()
 dev.off()
 
 
@@ -262,3 +264,7 @@ ggpubr::ggarrange(
   nrow = 2
 )
 dev.off()
+
+
+# Session Info ----
+sessioninfo::session_info()
