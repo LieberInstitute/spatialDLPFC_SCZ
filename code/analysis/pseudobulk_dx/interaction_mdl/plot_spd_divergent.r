@@ -1,3 +1,6 @@
+# NOTE: deprecated code
+#       For more info, check out `code/analysis/pseudobulk_dx/interaction_mdl/plot_spaghetti_.r`
+
 suppressPackageStartupMessages({
   library(here)
   library(tidyverse)
@@ -8,7 +11,6 @@ suppressPackageStartupMessages({
 })
 
 # Load Libray ----
-
 ## gene info ----
 gene_df <- read_csv(
   here(

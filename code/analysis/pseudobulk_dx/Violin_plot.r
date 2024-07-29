@@ -1,5 +1,6 @@
 library(here)
 library(tidyverse)
+library(SingleCellExperiment)
 library(sessioninfo)
 
 # Load data ----
@@ -13,14 +14,16 @@ pb_spe <- readRDS(
 
 
 ## Load Genes ----
-gene_names <- readxl::read_excel(
-  here(
-    "code/analysis/pseudobulk_dx",
-    "Escher_genelist.xlsx"
-  ),
-  col_names = FALSE
-) |> unlist()
-names(gene_names) <- NULL
+# gene_names <- readxl::read_excel(
+#   here(
+#     "code/analysis/pseudobulk_dx",
+#     "Escher_genelist.xlsx"
+#   ),
+#   col_names = FALSE
+# ) |> unlist()
+# names(gene_names) <- NULL
+
+gene_names <-c("ALDH1A1", "SOD2")
 
 gene_ensembl <- rowData(pb_spe)$gene_id[match(gene_names, rowData(pb_spe)$gene_name)]
 
