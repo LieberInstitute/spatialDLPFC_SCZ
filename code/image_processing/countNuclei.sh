@@ -5,6 +5,10 @@
 #SBATCH -e logs/countNuclei_%a.txt
 #SBATCH --array=24
 #SBATCH --time=48:00:00
+#SBATCH --mail-type=FAIL            # Send email on job failure
+#SBATCH --mail-user=madhavitippani28@gmail.com  # Your email address
+
+
 
 echo "**** Job starts ****"
 date
@@ -37,7 +41,7 @@ echo "Processing sample ${fileName}"
 
 ## Read inputs
 jsonname1=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/${fileName}/outs/spatial/scalefactors_json.json
-posname1=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/${fileName}/outs/spatial/tissue_positions.csv
+posname1=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/spaceranger/${fileName}/outs/spatial/tissue_spot_counts.csv
 imgname=/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/VistoSeg/captureAreas/${fileName}.mat
 
 ## Run refineVNS function
