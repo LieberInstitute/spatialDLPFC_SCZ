@@ -1,5 +1,7 @@
 % neunFiles = dir('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/NeuN/slide3_final/*.tif');
 % DAPIfiles = dir('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/DAPI/slide3_final/*.tif');
+
+
 D = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/segmented_channels_stitched/slide3/';
 % for i=1:4
 %     fileP = fullfile(neunFiles(i).folder, neunFiles(i).name);
@@ -20,4 +22,15 @@ for i = 45:64
     %tb = [tb; size(WFA,1), size(DAPI,1), size(NeuN, 1), size(WFA, 2), size(DAPI,2), size(NeuN, 2)];
     %disp(tb)
     save(fullfile(segs,[currentSample, '_segs.mat']))
+end
+
+
+CLUADINfiles = dir("/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/single_channels_segmented/Claudin/**/*claudin_binarized.tif");
+segs = '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/image_processing/DAPI_NeuN_WFA_Segs';
+for i = 9:72
+    currentSample = CLUADINfiles(i).name(1:end-22);
+    fileP = fullfile(CLUADINfiles(i).folder, CLUADINfiles(i).name);
+    Claudin5 = imread(fileP);
+    save(fullfile(segs, [currentSample, '_segs.mat']), 'Claudin5', '-append');
+    disp(i)
 end
