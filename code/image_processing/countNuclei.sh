@@ -3,7 +3,8 @@
 #SBATCH --job-name=countNuclei
 #SBATCH -o logs/countNuclei_%a.txt 
 #SBATCH -e logs/countNuclei_%a.txt
-#SBATCH --array=1-64%8
+#SBATCH --array=24
+#SBATCH --time=48:00:00
 
 echo "**** Job starts ****"
 date
