@@ -4,6 +4,7 @@ library(tidyverse)
 library(limma)
 library(sessioninfo)
 library(here)
+library(spatialLIBD)
 
 
 
@@ -167,7 +168,18 @@ dx_res <- registration_stats_enrichment(
 )
 
 dx_res |>
-  arrange(fdr_scz) |>
+  mutate(abs_log_FC = abs(logFC_scz)) |>
+  arrange(desc(abs_log_FC)) |>
+  write_csv(
+    here(
+      "processed-data/PB_dx_pnn",
+      "test_dx_deg_pnn_pos_per_sample.csv"
+    )
+  )
+
+
+dx_res |>
+  arrange(dfdr_scz) |>
   head()
 
 ggplot(
