@@ -3,7 +3,7 @@
 #SBATCH --job-name=countNuclei
 #SBATCH -o logs/countNuclei_%a.txt 
 #SBATCH -e logs/countNuclei_%a.txt
-#SBATCH --array=1
+#SBATCH --array=2-64:8
 #SBATCH --time=48:00:00
 #SBATCH --mail-type=FAIL            # Send email on job failure
 #SBATCH --mail-user=madhavitippani28@gmail.com  # Your email address
