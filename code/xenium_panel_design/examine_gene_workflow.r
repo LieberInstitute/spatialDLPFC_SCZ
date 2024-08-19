@@ -70,7 +70,7 @@ raw_gene_df <- read.csv(
     "TableS8_sig_genes_FDR5perc_enrichment.csv"
   )
 ) |>
-mutate(spd = test)
+  mutate(spd = test)
 
 gene_df <- raw_gene_df |>
   filter(spatial_domain_resolution == "Sp09") |>
@@ -81,6 +81,14 @@ gene_df <- raw_gene_df |>
 gene_df <- gene_df[!gene_df$gene |> duplicated(), ]
 
 gene_names <- gene_df$ensembl
+
+gene_df |>
+  ungroup() |>
+  select(ensembl, gene) |>
+  write_csv(here(
+    "code/xenium_panel_design",
+    "layer_gene_86.csv"
+  ))
 
 # Create Heatmap -----
 source(

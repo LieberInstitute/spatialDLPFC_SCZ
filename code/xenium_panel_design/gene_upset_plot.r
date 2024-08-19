@@ -1,4 +1,5 @@
 library(readxl)
+library(tidyverse)
 library(here)
 library(UpSetR)
 
@@ -7,27 +8,36 @@ library(UpSetR)
 ## DEGs ----
 dx_degs <- read_csv(
   here("processed-data/PB_dx_genes/test_PRECAST_07.csv")
-) |> filter(fdr_scz <= 0.10) |> pull(ensembl)
+) |>
+  filter(fdr_scz <= 0.10) |>
+  pull(gene)
 
 
 ## Layer Marker genes ----
-gene_names
+layer_genes <- read_csv(
+  here(
+    "code/xenium_panel_design/",
+    "layer_gene_86.csv"
+  )
+) |> pull(gene)
 
 
-## Xenium Brain Panel ----
-panel_genes <- read_xlsx(here("code/xenium_panel_design/Xenium Human Brain Panel Gene List.xlsx")) |> pull(`Ensembl ID`)
+## cell_type ----
+cell_type_genes <- read_xlsx(
+  here(
+    "code/xenium_panel_design/",
+    "Xenium_SCZ_ProbeSelection_1.xlsx"
+  )
+) |> unlist()
+cell_type_genes <- cell_type_genes[which(!is.na(cell_type_genes))]
 
-listInput <- list(dx_degs = dx_degs, layer_genes = gene_names, panel = panel_genes)
 
-
-
-movies <- read.csv(system.file("extdata", "movies.csv", package = "UpSetR"), 
-    header = T, sep = ";")
+listInput <- list(dx_degs = dx_degs, layer_genes = layer_genes, cell_type = cell_type_genes)
 
 
 
 upset(fromList(listInput), order.by = "freq")
 
 
-intersect(dx_degs, gene_names)
+listInput |> unlist() |> unique() |> length()
 dx_degs |> filter()
