@@ -171,4 +171,83 @@ library(escheR)
 	         ) +
 	         labs(title = sample_id) )
 	  
-	
+   
+ 
+		     ##WFA
+		     p1 = ggplot(coldata_df, aes(x = PWFA)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()
+		     p11 = ggplot(coldata_df, aes(x = iWFA)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()
+	  
+		     p2 = ggplot(coldata_df, aes(x = PWFA)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()+ scale_y_log10() 
+		     p22 = ggplot(coldata_df, aes(x = iWFA)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()+ scale_y_log10() 
+   
+		     p3 = ggplot(coldata_df, aes(x = PWFA,y=iWFA, color = sample_id)) + geom_point(alpha = 0.3)+ theme_minimal() +theme(legend.position = "none") 
+		     p33 = ggplot(coldata_df, aes(x = PWFA,y=iWFA)) + geom_point(color = "black") + theme_minimal() + scale_y_log10() + scale_x_log10()
+		  
+		     ggsave(here("plots", "image_processing", "WFAp1.png"), plot = p1, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "WFAp11.png"), plot = p11, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "WFAp2.png"), plot = p2, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "WFAp22.png"), plot = p22, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "WFAp3.png"), plot = p3, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "WFAp33.png"), plot = p33, width = 6, height = 4, dpi = 300)
+
+		     ##CLaudin
+		     p1 = ggplot(coldata_df, aes(x = PClaudin5)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()
+		     p11 = ggplot(coldata_df, aes(x = iClaudin5)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()
+	  
+		     p2 = ggplot(coldata_df, aes(x = PClaudin5)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()+ scale_y_log10() 
+		     p22 = ggplot(coldata_df, aes(x = iClaudin5)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()+ scale_y_log10() 
+		  
+		     p3 = ggplot(coldata_df, aes(x = PClaudin5,y=iClaudin5, color = sample_id)) + geom_point(alpha = 0.3) + theme_minimal() +theme(legend.position = "none") 
+		     p33 = ggplot(coldata_df, aes(x = PClaudin5,y=iClaudin5)) + geom_point(color = "black") + theme_minimal() + scale_y_log10() + scale_x_log10()
+		  
+		     ggsave(here("plots", "image_processing", "Claudin5p1.png"), plot = p1, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "Claudin5p11.png"), plot = p11, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "Claudin5p2.png"), plot = p2, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "Claudin5p22.png"), plot = p22, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "Claudin5p3.png"), plot = p3, width = 6, height = 4, dpi = 300)
+		     ggsave(here("plots", "image_processing", "Claudin5p33.png"), plot = p33, width = 6, height = 4, dpi = 300)
+
+ 
+ 
+
+		     filtered_data <- coldata_df[coldata_df$PWFA > 0.25 & coldata_df$iWFA <=0.37, ]	
+		     #filtered_data <- coldata_df[coldata_df$sample_id == "V13F27-296_B1", ]
+
+		     p3 = ggplot(coldata_df, aes(x = PWFA,y=iWFA, color = slide)) + geom_point(alpha = 0.3) +labs(shape = "Slide") +
+		          geom_hline(yintercept = 0.01, linetype = "dashed", color = "red") +  # Horizontal line at y = 0.01
+		          geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
+		   	   geom_text(data = filtered_data, aes(label = sample_id), vjust = -1, color = "black") + theme_minimal() # Vertical line at x = 0.05
+
+		   	   spe$dapi_pos <- spe$PWFA >= 0.05 
+		   	   #spe$dapi_pos <- spe$iDAPI <= 0.25
+		   	   sample_id = "V12F14-053_A1"
+		   	   plot(
+		   	      make_escheR(spe[, spe$sample_id == sample_id]) |>
+		   	        add_ground("PRECAST_07") |>
+		   	        add_fill("dapi_pos") +
+		   	        scale_color_manual(
+		   	          values = set_names(
+		   	            Polychrome::palette36.colors(7)[seq.int(7)],
+		   	            unique(spe[["PRECAST_07"]]) |> sort()
+		   	          ),
+		   	          limits = spd_anno_df$spd[order(spd_anno_df$anno_lab)],
+		   	          labels = setNames(spd_anno_df$anno_lab, spd_anno_df$spd)
+		   	        ) +
+		   	        scale_fill_manual(
+		   	          values = c(
+		   	            "TRUE" = "black",
+		   	            "FALSE" = "transparent"
+		   	          )
+		   	        ) +
+		   	        labs(title = sample_id) )
+			
+			
+			
+		   			library(escheR)
+		   			library(SpatialExperiment)
+		   			library(tidyverse)
+		   			library(limma)
+		   			library(sessioninfo)
+		   			library(here)
+		   			library(spatialLIBD)
+			
