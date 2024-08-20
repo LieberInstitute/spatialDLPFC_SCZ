@@ -87,4 +87,40 @@ library(escheR)
     ggsave(here("plots", "image_processing", "DAPIp3.png"), plot = p3, width = 6, height = 4, dpi = 300)
     ggsave(here("plots", "image_processing", "DAPIp33.png"), plot = p33, width = 6, height = 4, dpi = 300)
   
+    filtered_data <- coldata_df[coldata_df$iDAPI < 0.12 | coldata_df$PDAPI > 0.75 , ]	
+
+    p3 = ggplot(coldata_df, aes(x = PDAPI,y=iDAPI, color = slide)) + geom_point(alpha = 0.3) +labs(shape = "Slide") +
+         geom_hline(yintercept = 0.01, linetype = "dashed", color = "red") +  # Horizontal line at y = 0.01
+         geom_vline(xintercept = 0.03, linetype = "dashed", color = "red") +
+  	   geom_text(data = filtered_data, aes(label = sample_id), vjust = -1, color = "black") + theme_minimal() # Vertical line at x = 0.05
+
+   ggsave(here("plots", "image_processing", "DAPIsampleexplore.png"), plot = p3, width = 12, height = 4, dpi = 300)
  
+   library(escheR)
+   spd_anno_df <- read_csv(here("processed-data/man_anno","spd_labels_k7.csv")) |>
+     mutate(anno_lab = paste0(label, " (", spd, ") "))
+  
+   spe$dapi_pos <- spe$PDAPI >= 0.75  
+   spe$dapi_pos <- spe$iDAPI <= 0.25
+   sample_id = "V13M06-280_A1"
+   plot(
+      make_escheR(spe[, spe$sample_id == sample_id]) |>
+        add_ground("PRECAST_07") |>
+        add_fill("dapi_pos") +
+        scale_color_manual(
+          values = set_names(
+            Polychrome::palette36.colors(7)[seq.int(7)],
+            unique(spe[["PRECAST_07"]]) |> sort()
+          ),
+          limits = spd_anno_df$spd[order(spd_anno_df$anno_lab)],
+          labels = setNames(spd_anno_df$anno_lab, spd_anno_df$spd)
+        ) +
+        scale_fill_manual(
+          values = c(
+            "TRUE" = "black",
+            "FALSE" = "transparent"
+          )
+        ) +
+        labs(title = sample_id) )
+	  
+	
