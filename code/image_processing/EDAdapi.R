@@ -70,3 +70,21 @@ library(escheR)
   coldata_df <- coldata_df %>%
     mutate(slide = sub("_(?!.*_).*", "", sample_id, perl = TRUE))
 	
+    ##DAPI
+    p1 = ggplot(coldata_df, aes(x = PDAPI)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()
+    p11 = ggplot(coldata_df, aes(x = iDAPI)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()
+	  
+    p2 = ggplot(coldata_df, aes(x = PDAPI)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()+ scale_y_log10() 
+    p22 = ggplot(coldata_df, aes(x = iDAPI)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()+ scale_y_log10() 
+		  
+    p3 = ggplot(coldata_df, aes(x = PDAPI,y=iDAPI, color = sample_id)) + theme_minimal() + geom_point(alpha = 0.3) +theme(legend.position = "none")
+    p33 = ggplot(coldata_df, aes(x = PDAPI,y=iDAPI)) + geom_point(color = "black") + theme_minimal() + scale_y_log10() + scale_x_log10()
+		  
+    ggsave(here("plots", "image_processing", "DAPIp1.png"), plot = p1, width = 6, height = 4, dpi = 300)
+    ggsave(here("plots", "image_processing", "DAPIp11.png"), plot = p11, width = 6, height = 4, dpi = 300)
+    ggsave(here("plots", "image_processing", "DAPIp2.png"), plot = p2, width = 6, height = 4, dpi = 300)
+    ggsave(here("plots", "image_processing", "DAPIp22.png"), plot = p22, width = 6, height = 4, dpi = 300)
+    ggsave(here("plots", "image_processing", "DAPIp3.png"), plot = p3, width = 6, height = 4, dpi = 300)
+    ggsave(here("plots", "image_processing", "DAPIp33.png"), plot = p33, width = 6, height = 4, dpi = 300)
+  
+ 
