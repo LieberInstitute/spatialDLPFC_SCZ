@@ -123,4 +123,20 @@ library(escheR)
         ) +
         labs(title = sample_id) )
 	  
+	    ##NeuN
+	    p1 = ggplot(coldata_df, aes(x = PNeuN)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()
+	    p11 = ggplot(coldata_df, aes(x = iNeuN)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()
+	  
+	    p2 = ggplot(coldata_df, aes(x = PNeuN)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()+ scale_y_log10() 
+	    p22 = ggplot(coldata_df, aes(x = iNeuN)) + geom_histogram(binwidth = 0.001, color = "black") +theme_minimal()+ scale_y_log10() 
+		  
+	    p3 = ggplot(coldata_df, aes(x = PNeuN,y=iNeuN, color = sample_id)) + geom_point(alpha = 0.3) + theme_minimal() +theme(legend.position = "none")  
+	    p33 = ggplot(coldata_df, aes(x = PNeuN,y=iNeuN)) + geom_point(color = "black") + theme_minimal() + scale_y_log10() + scale_x_log10()
+		  
+	    ggsave(here("plots", "image_processing", "NeuNp1.png"), plot = p1, width = 6, height = 4, dpi = 300)
+	    ggsave(here("plots", "image_processing", "NeuNp11.png"), plot = p11, width = 6, height = 4, dpi = 300)
+	    ggsave(here("plots", "image_processing", "NeuNp2.png"), plot = p2, width = 6, height = 4, dpi = 300)
+	    ggsave(here("plots", "image_processing", "NeuNp22.png"), plot = p22, width = 6, height = 4, dpi = 300)
+	    ggsave(here("plots", "image_processing", "NeuNp3.png"), plot = p3, width = 6, height = 4, dpi = 300)
+	    ggsave(here("plots", "image_processing", "NeuNp33.png"), plot = p33, width = 6, height = 4, dpi = 300)
 	
