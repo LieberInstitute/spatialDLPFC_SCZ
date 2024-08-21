@@ -34,7 +34,7 @@ tmp_pseudo <- sce_pseudo[rand_genes, ]
 # log_mat <- logcounts(tmp_pseudo)
 
 # Create permuted column order - perm spd within each individual
-# NOTE: optimally, I should permute the spd within each indiviudal. however, it is technically challenge to do.
+# NOTE: optimally, I should permute the spd within each indiviudal for each gene. however, it is technically challenge to do.
 
 col_df <- colData(tmp_pseudo) |> data.frame()
 
