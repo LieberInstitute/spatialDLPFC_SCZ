@@ -4,7 +4,7 @@ myfiles = dir([dt,'*1.mat']);
 
 % Specify colors for density curves
 colors = hsv(length(myfiles)); % Use the HSV color space for better distinguishability
-tb = table('Size', [0, 5], 'VariableNames', {'Sample', 'DAPI', 'NeuN', 'WFA', 'Claudin5'}, 'VariableTypes', {'string', 'single', 'single',  'single',  'single'});
+tb = table('Size', [0, 5], 'VariableNames', {'sample_id', 'DAPI', 'NeuN', 'WFA', 'Claudin5'}, 'VariableTypes', {'string', 'single', 'single',  'single',  'single'});
 
 % Plot density curves on the same axes
 
@@ -17,10 +17,12 @@ for i = 1:length(myfiles)
    W = max(WFA(:));
    C = max(Claudin5(:));
    Na = cellstr(myfiles(i).name(1:end-4)); 
-   temp = table(Na,D,N,W,C, 'VariableNames', {'Sample', 'DAPI', 'NeuN', 'WFA', 'Claudin5'});
+   temp = table(Na,D,N,W,C, 'VariableNames', {'sample_id', 'DAPI', 'NeuN', 'WFA', 'Claudin5'});
    tb = [tb; temp];
 disp(i)
 end
+
+%T = renamevars(tb, 'Sample', 'sample_id');
 writetable(tb, fullfile(ot,'minmax.csv'));
 
 % Compute the histogram
