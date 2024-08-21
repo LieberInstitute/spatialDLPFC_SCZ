@@ -41,7 +41,7 @@ gene_df <- read_csv(
   ensembl, gene
 )
 
-int_df <-  int_df |>
+int_df <- int_df |>
   left_join(
     gene_df,
     by = c("ensembl")
@@ -55,6 +55,36 @@ saveRDS(
     "test_hypo_test_vary_logFC_across_spd.rds"
   )
 )
+
+### Cacluate adjusted p for only 172 genes ----
+int_df <- readRDS(
+  here(
+    "processed-data/PB_dx_genes/interaction",
+    "test_hypo_test_vary_logFC_across_spd.rds"
+  )
+)
+
+gene_df <- read_csv(
+  here(
+    "processed-data/PB_dx_genes/",
+    "test_PRECAST_07.csv"
+  )
+) |>
+  filter(
+    fdr_scz <= 0.10
+  )
+
+tmp_df <- int_df |>
+  filter(int_df$ensembl %in% gene_df$ensembl) |>
+  mutate(adj.P.Val_172_only = p.adjust(P.Value, method = "fdr"))
+
+# Adjusting FDR at 0.05
+tmp_df |> filter(adj.P.Val_172_only <= 0.05) |> pull(gene)
+#[1] "HNRNPH3" "ALDH1A1"
+
+# Adjusting FDR at 0.10
+tmp_df |> filter(adj.P.Val_172_only <= 0.10) |> pull(gene)
+#[1] "HNRNPH3" "ALDH1A1" "SOD2"    "CCNI
 
 # Session Info ----
 sessioninfo::session_info()
