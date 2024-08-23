@@ -26,11 +26,13 @@ raw_spe <- readRDS(
 ### 20 Samples ----
 # Read Excel file
 sub_samples <- read_xlsx(
-  here::here("code/xenium_panel_design/Xenium_DonorList.xlsx"),
+  here::here("code/xenium_panel_design/Xenium_DonorList_Edit.xlsx"),
   col_names = FALSE
 )[, 1:2] |> unlist()
 sub_samples <- sub_samples[!is.na(sub_samples)]
+stopifnot(length(sub_samples) == 24)
 spe <- raw_spe[, raw_spe$brnum %in% sub_samples]
+stopifnot(length(unique(spe$sample_id)) == 24)
 
 
 ## Pseudobulked data
