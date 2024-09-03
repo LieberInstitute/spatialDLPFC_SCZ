@@ -92,9 +92,10 @@ write.table(
   colData(sce) |>
     data.frame() |>
     transmute(
-      barcode = Barcode,
+      # barcode = Barcode,
       annotation = cellType_broad_hc
-    ),
+    ) |>
+    rownames_to_column(var = "barcode"),
   file = here(
     "processed-data/Xenium_probe_design/PEC_snRNA_ref",
     "annotations.csv"
@@ -113,14 +114,22 @@ system("du -sh /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/
 
 
 # Create zip file ---
-utils::zip(
-  here(
-    "processed-data/Xenium_probe_design",
-    "PEC_snRNA_ref.zip"
-  ),
-  list.files(
-    here("processed-data/Xenium_probe_design/PEC_snRNA_ref"),
-    full.names = TRUE
-  ),
-  zip = "zip"
-)
+# NOTE: please manually zip files in terminal
+
+# Deprecated code
+# ERROR: creating too many layers in the zip file.
+# utils::zip(
+#   here(
+#     "processed-data/Xenium_probe_design",
+#     "PEC_snRNA_ref.zip"
+#   ),
+#   list.files(
+#     here("processed-data/Xenium_probe_design/PEC_snRNA_ref"),
+#     full.names = "TRUE"
+#   ),
+#   zip = "zip"
+# )
+
+
+# Debug
+##
