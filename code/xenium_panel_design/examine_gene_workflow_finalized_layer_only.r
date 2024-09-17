@@ -63,6 +63,8 @@ prob_df$ensembl <- rowData(spe)$gene_id[
 ## ----
 gene_names <- prob_df |>
   filter(!is.na(layer)) |>
+  # tmp
+  filter(gene!="AL353751.1") |>
   pull(ensembl)
 length(gene_names)
 # [1] 86
@@ -131,7 +133,7 @@ pdf(
     "plots/xenium_panel_design",
     paste0(
       "test_marker_gene_", length(gene_names),
-      "_finalized_probe_layer_only.pdf"
+      "_finalized_probe_layer_only_woAL3537.pdf"
     )
   ),
   height = 4, width = 10
