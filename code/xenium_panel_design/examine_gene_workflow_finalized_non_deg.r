@@ -63,6 +63,7 @@ prob_df$ensembl <- rowData(spe)$gene_id[
 ## ----
 gene_names <- prob_df |>
   filter(is.na(deg)) |>
+  filter(gene!="AL353751.1") |>
   pull(ensembl)
 # stopifnot(length(gene_names) == 300)
 
@@ -128,7 +129,7 @@ pdf(
     "plots/xenium_panel_design",
     paste0(
       "test_marker_gene_", length(gene_names),
-      "_finalized_probe_non_DEG.pdf"
+      "_finalized_probe_non_DEG_woAL.pdf"
     )
   ),
   height = 4, width = 10
