@@ -5,11 +5,11 @@
 function [count,prop,countC,inten] = countNuclei(mask,img,jsonname,posname,~) 
 
 disp('loading data')
-% img = load(img, 'DAPI', 'NeuN', 'WFA');
-% BW = load(mask, 'DAPI', 'NeuN', 'WFA');
+ %img = load(img);
+ %BW = load(mask);
  
-img = load(img, 'Claudin5');
-BW = load(mask, 'Claudin5');
+img = load(img, 'DAPI');
+BW = load(mask, 'DAPI');
 
 O = fieldnames(BW);
    
@@ -30,13 +30,13 @@ prop = [];
   %     inten.(O{C}) = table2array(tbl(:, b+3));
   %     b = b+4;
   %     end
-	if size(tbl, 2) > 18
-			disp("file error")
-    else
-       %tbl.Properties.VariableNames = {'barcode','tissue','row','col','imagerow','imagecol'};
-	   tbl.Properties.VariableNames = {'barcode','tissue','row','col','imagerow','imagecol','NDAPI','PDAPI','IDAPI','CNDAPI','NNeuN','PNeuN','INeuN','CNNeuN','NWFA','PWFA','IWFA','CNWFA'}
+  %	if size(tbl, 2) > 18
+  %			disp("file error")
+  %  else
+       tbl.Properties.VariableNames = {'barcode','tissue','row','col','imagerow','imagecol'};
+	   %tbl.Properties.VariableNames = {'barcode','tissue','row','col','imagerow','imagecol','NDAPI','PDAPI','IDAPI','CNDAPI','NNeuN','PNeuN','INeuN','CNNeuN','NWFA','PWFA','IWFA','CNWFA'}
        [count,prop,countC,inten] = countSpots_centroid(BW, img, R, tbl, posPath);
         
-    end
+  %  end
 end
 
