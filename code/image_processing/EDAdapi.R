@@ -7,7 +7,8 @@ library("dplyr")
 library("ggplot2")
 library("ggridges")
 library(escheR)
-
+library("purrr")
+library(tidyverse)
 # spe = readRDS(here("processed-data/rds/spatial_cluster/PRECAST/spe_wo_spg_N63_PRECAST.rds"))
 # samples = read_excel(here("raw-data","experiment_info","VisiumSPG_PNN_Master.xlsx"))
 # samples <- as.data.frame(samples %>% select('Slide #', 'Array #'))
@@ -37,10 +38,10 @@ library(escheR)
 #     )]
 #   colData(spe) <- cbind(colData(spe), segmentation_info)
 #
-#   saveRDS(spe,here("processed-data", "image_processing", "EDAspe1.rds"))
+#   saveRDS(spe,here("processed-data", "image_processing", "EDAspe_clean.rds"))
+# 
   
-  
-  spe = readRDS(here("processed-data", "image_processing", "EDAspe1.rds"))
+  spe = readRDS(here("processed-data", "image_processing", "EDAspe_clean.rds"))
   finalized_spd <- readRDS(here("processed-data/rds/spatial_cluster","PRECAST","test_clus_label_df_semi_inform_k_2-16.rds"))
   coldata_df <- colData(spe) |>
     data.frame() |>
@@ -148,9 +149,9 @@ library(escheR)
 
 	    ggsave(here("plots", "image_processing", "NeuNsampleexplore.png"), plot = p3, width = 12, height = 4, dpi = 300)
    
-	    spe$dapi_pos <- spe$PNeuN >= 0.75  
+	    spe$dapi_pos <- spe$PClaudin5 >= 0.1  
 	    #spe$dapi_pos <- spe$iDAPI <= 0.25
-	    sample_id = "V13F27-296_A1"
+	    sample_id = "V12D07-334_B1"
 	    plot(
 	       make_escheR(spe[, spe$sample_id == sample_id]) |>
 	         add_ground("PRECAST_07") |>
@@ -211,12 +212,14 @@ library(escheR)
  
 
 		     filtered_data <- coldata_df[coldata_df$PWFA > 0.25 & coldata_df$iWFA <=0.37, ]	
+			 filtered_data <- coldata_df[coldata_df$P > 0.25 & coldata_df$iWFA <=0.37, ]	
 		     #filtered_data <- coldata_df[coldata_df$sample_id == "V13F27-296_B1", ]
 
-		     p3 = ggplot(coldata_df, aes(x = PWFA,y=iWFA, color = slide)) + geom_point(alpha = 0.3) +labs(shape = "Slide") +
+		     p3 = ggplot(coldata_df, aes(x = PClaudin5,y=iClaudin5, color = sample_id)) + geom_point(alpha = 0.3) +#labs(shape = "Slide") +
 		          geom_hline(yintercept = 0.01, linetype = "dashed", color = "red") +  # Horizontal line at y = 0.01
 		          geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
-		   	   geom_text(data = filtered_data, aes(label = sample_id), vjust = -1, color = "black") + theme_minimal() # Vertical line at x = 0.05
+		   	   geom_text(data = coldata_df, aes(label = sample_id), vjust = -1, color = "black") + theme_minimal()+
+			   xlim(c(0.1,0.5)) + ylim(c(0,0.1))+theme(legend.position = "none")  # Vertical line at x = 0.05
 
 		   	   spe$dapi_pos <- spe$PWFA >= 0.05 
 		   	   #spe$dapi_pos <- spe$iDAPI <= 0.25
