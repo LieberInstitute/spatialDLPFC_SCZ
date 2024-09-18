@@ -109,8 +109,8 @@ colnames(spg_df)
 # Note 2: Naming Convention
 #* N-channel-: Number of segmented object of interest
 #* P-channel-: Percentage of pixel covered by the object of interest
-#* I-channel-: Pixel intensity
-#* CN-channel-:
+#* I-channel-: Mean intensity of all the segmented pixels in the spot
+#* CN-channel-: Centroid based signal count for that spot
 
 
 # clean up names for seg_df
