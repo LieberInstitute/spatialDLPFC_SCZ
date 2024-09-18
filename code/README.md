@@ -5,8 +5,8 @@
 TODO (maddy): adding short description of these/ feel free to suggest archiving something.
 - image_proccessing
 - RealPNN
-- code/1_Pilot_3plex_Visium_IF_Inform_no_overlap
-- code/2_MockPNN
+- 1_Pilot_3plex_Visium_IF_Inform_no_overlap
+- 2_MockPNN
 
 ## Data analysis
 - analysis : R code for all data analysis
