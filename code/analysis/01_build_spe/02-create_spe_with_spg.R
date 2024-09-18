@@ -11,33 +11,34 @@ suppressPackageStartupMessages({
 })
 
 
-## Related to 
+## Related to
 ## https://github.com/drighelli/SpatialExperiment/issues/135
 stopifnot(packageVersion("SpatialExperiment") >= "1.9.5")
-## Related to 
+## Related to
 ## https://github.com/LieberInstitute/spatialLIBD/commit/1ff74a8be040bf4cdbc906700913ad12fc929232
 stopifnot(packageVersion("spatialLIBD") >= "1.11.10")
 
 
 
 # Load SPE Object ---------------------------------------------------------
-# TODO: add path
+# Add path
 path_raw_spe <- here(
   "processed-data/rds/01_build_spe",
-  "raw_spe_wo_SPG_N63.rds")
+  "raw_spe_wo_SPG_N63.rds"
+)
 
-# TODO: check if spe exists
+# Check if spe exists
 stopifnot(
   "Please create raw spe object first" =
     file.exists(path_raw_spe)
 )
 
-# TODO: load in spe object
+# Load in spe object
 raw_spe <- readRDS(path_raw_spe)
 
-# TODO: error prevention
+# Error prevention
 stopifnot(
-  "Non DLPFC sample still exists" = 
+  "Non DLPFC sample still exists" =
     length(
       raw_spe$sample_id |> unique()
     ) == 63
@@ -47,10 +48,12 @@ print("Finish loading spe")
 
 # Load SPG file path ---------------------------------------------
 raw_expr_meta <- read.csv(
-  here("code", "visium_data_process",
-       "sample_meta_path.csv"),
+  here(
+    "code", "visium_data_process",
+    "sample_meta_path.csv"
+  ),
   header = TRUE
-) |> 
+) |>
   filter(
     # Successful spaceranger contains outs folder
     file.exists(
@@ -61,11 +64,11 @@ raw_expr_meta <- read.csv(
     )
   )
 
-expr_meta <- raw_expr_meta |> 
-  filter(sample_name !=  "V12F14-053_B1")
+expr_meta <- raw_expr_meta |>
+  filter(sample_name != "V12F14-053_B1")
 
 stopifnot(
-  "Non DLPFC sample still exists" = 
+  "Non DLPFC sample still exists" =
     length(
       expr_meta$sample_name |> unique()
     ) == 63
@@ -78,7 +81,7 @@ spg_df <- map_dfr(
   function(sampleid) {
     # browser()
     current <- expr_meta$sr_fldr_path[expr_meta$sample_name == sampleid]
-    stopifnot("more than one match or no match" = length(current)==1)
+    stopifnot("more than one match or no match" = length(current) == 1)
     stopifnot("not the same sample" = str_detect(current, sampleid))
     # Pixel based;
     file <- file.path(current, "outs/spatial", "tissue_spot_counts.csv")
@@ -89,30 +92,29 @@ spg_df <- map_dfr(
     x <- read.csv(file)
     x$key <- paste0(x$barcode, "_", sampleid)
     return(x)
-  })
-
-# stopifnot("SPG masking data doesn't match spe spots 1-to-1" = nrow(spg_df) == ncol(raw_spe))
+  }
+)
 
 colnames(spg_df)
 # [1] "barcode"    "tissue"     "row"        "col"        "imagerow"
-# [6] "imagecol"   "NAF"        "PAF"        "CNAF"       "NClaudin5"
-# [11] "PClaudin5"  "CNClaudin5" "NDAPI"      "PDAPI"      "CNDAPI"
-# [16] "NNeuN"      "PNeuN"      "CNNeuN"     "NWFA"       "PWFA"
-# [21] "CNWFA"      "key"
+# [6] "imagecol"   "NDAPI"      "PDAPI"      "IDAPI"      "CNDAPI"
+# [11] "NNeuN"      "PNeuN"      "INeuN"      "CNNeuN"     "NWFA"
+# [16] "PWFA"       "IWFA"       "CNWFA"      "NClaudin5"  "PClaudin5"
+# [21] "IClaudin5"  "CNClaudin5" "key"
 
-# TODO: explain
 # Note: 4 channels:
-#* AF -
-#* Claudin5 -
-#* Neun -
-#* WFA -
+#* DAPI - Cells
+#* Claudin5 - Blood vessels
+#* Neun - Neurons
+#* WFA - PNN
 # Note 2: Naming Convention
-#* N-channel-:
-#* P-channel-:
+#* N-channel-: Number of segmented object of interest
+#* P-channel-: Percentage of pixel covered by the object of interest
+#* I-channel-: Pixel intensity
 #* CN-channel-:
 
 
-# TODO: clean up names for seg_df
+# clean up names for seg_df
 # name starts with SPG_
 # ends with P and N
 colnames(spg_df) <- paste0("spg_", colnames(spg_df))
@@ -121,35 +123,34 @@ cat("Finish loading spg objects\n")
 
 spe <- raw_spe
 
-# TODO: remove the prefix spg_ of barcode etc repetative variables.
-
-
-
-col_data_df <- colData(spe) |> data.frame() |>
+col_data_df <- colData(spe) |>
+  data.frame() |>
   left_join(
-    spg_df, by = c("key" = "spg_key"),
+    spg_df |> select(
+      -c(
+        spg_tissue, spg_barcode,
+        spg_row, spg_col,
+        spg_imagerow, spg_imagecol
+      )
+    ),
+    by = c(
+      "key" = "spg_key"
+    ),
     relationship = "one-to-one"
   ) |>
   left_join(
     expr_meta |>
       select(
         sample_name,
-        BrNumbr),
+        BrNumbr
+      ),
     by = c("sample_id" = "sample_name")
   )
 
 # Add the information
-colData(spe) <- DataFrame(col_data_df)  # Will remove colnames(spe)
+colData(spe) <- DataFrame(col_data_df) # Remove colnames(spe)
 colnames(spe) <- spe$key
-# stopifnot(any(is.na(spe$spg_CNClaudin5)))
 
-# grep(
-#   pattern = "^spg_",
-#   x = names(colData(spe)),
-#   value = TRUE) |> 
-#   walk(.f = function(x)
-#     `$`(spe, x) <- NULL
-#     )
 
 
 
@@ -159,9 +160,10 @@ stopifnot(!is.null(colnames(spe)))
 
 saveRDS(
   spe,
-  file = here::here("processed-data", "rds", "01_build_spe",
-                    # TODO: rename
-                    "test_raw_spe_w_spg_N63.rds")
+  file = here::here(
+    "processed-data", "rds", "01_build_spe",
+    "raw_spe_w_spg_N63.rds"
+  )
 )
 
 
