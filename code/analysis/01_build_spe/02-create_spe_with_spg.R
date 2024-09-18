@@ -75,11 +75,10 @@ stopifnot(
 )
 
 # Add SPG Channels --------------------------------------------------------
-## Read in cell counts and segmentation results (TODO:)
+## Read in cell counts and segmentation results
 spg_df <- map_dfr(
   unique(raw_spe$sample_id),
   function(sampleid) {
-    # browser()
     current <- expr_meta$sr_fldr_path[expr_meta$sample_name == sampleid]
     stopifnot("more than one match or no match" = length(current) == 1)
     stopifnot("not the same sample" = str_detect(current, sampleid))
