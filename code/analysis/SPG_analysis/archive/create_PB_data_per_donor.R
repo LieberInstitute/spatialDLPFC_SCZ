@@ -1,19 +1,19 @@
-library(escheR)
-library(SpatialExperiment)
-library(tidyverse)
-library(limma)
-library(sessioninfo)
-library(here)
-library(spatialLIBD)
+# Load Packages ----
+suppressPackageStartupMessages({
+  library(escheR)
+  library(SpatialExperiment)
+  library(tidyverse)
+  library(limma)
+  library(sessioninfo)
+  library(here)
+  library(spatialLIBD)
+})
 
-
-
-# Create PNN+ category in PNN spots
+# Load SPG data ----
 spe <- readRDS(
   here::here(
     "processed-data", "rds", "02_visium_qc",
-    # TODO: rename
-    "test_qc_spe_w_spg_N63.rds"
+    "qc_spe_w_spg_N63.rds"
   )
 )
 
