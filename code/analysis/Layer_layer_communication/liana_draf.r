@@ -1,3 +1,7 @@
+# Cluster info
+# Mem: 50GB
+
+
 # Load packages ----
 # Load necessary packages and suppress startup messages
 suppressPackageStartupMessages({
@@ -58,9 +62,9 @@ colLabels(spe) <- spe$anno_spd
 rownames(spe) <- rowData(spe)$gene_name
 
 # Create dx-specific spe subset
-.dx <- "ntc"
+.dx <- "scz"
 sub_spe <- spe[, spe$dx == .dx]
-#sub_spe <- spe[, spe$sample_id == spe$sample_id[1]]
+# sub_spe <- spe[, spe$sample_id == spe$sample_id[1]]
 
 liana_test <- liana_wrap(
   sub_spe,
@@ -73,21 +77,35 @@ saveRDS(
   liana_res,
   here(
     "processed-data/layer_layer_comm",
-    "test_liana_res_", .dx, ".pdf"
+    paste0("test_liana_res_", .dx, ".rds")
   )
 )
 
 # LIANA visualizations -----
+
+
+## DotPlot ----
 pdf(
   here(
     "plots/layer_layer_comm",
-  paste("test_liana_plots_" , .dx, ".pdf" )
+    paste0("test_liana_dotplots_" , .dx, ".pdf")
+  ),
+  height = 8,
+  width = 50
+)
+liana_res %>%
+  liana_dotplot(ntop = 20)
+dev.off()
+
+
+pdf(
+  here(
+    "plots/layer_layer_comm",
+    paste0("test_liana_plots_" , .dx, ".pdf" )
   ),
   height = 12,
   width = 12
 )
-
-
 ## Frequency Heatmap ----
 liana_trunc <- liana_res %>%
    # only keep interactions concordant between methods
