@@ -1,2 +1,3 @@
 Files:
 - liana_draft.r: Layer-to-Layer communication analysis using `liana`. The analysis was run by each diagnosis group respectively under the variable `.dx`
+- cellchat.r: running comparative cell-cell communication between the diagnosis groups. It first run the cell-chat pipeline on the subset of samples from each diagnosis separately (stored), and then use xxx fucntion to merge the two cellchat object and identify the differential pattern and measure the strength of the evidence.

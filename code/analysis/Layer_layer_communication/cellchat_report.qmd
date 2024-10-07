@@ -1,0 +1,107 @@
+---
+title: "Differential cell-cell communication between SCZ and NTC using cellchat V2"
+format: pdf
+---
+
+# Method
+- A rough summary of cell chat V2.
+- Rational of uisng cell chat V2: enabling the comparative comparative cell-cell communication between the diagnosis groups.
+- Implementaion:
+ It first run the cell-chat pipeline on the subset of samples from each diagnosis separately (stored), and then use `mergeCellChat` fucntion to merge the two cellchat object and identify the differential pattern and measure the strength of the evidence.
+- Nuanced noted: despite cell chat V2 have spatially aware cell-cell communication analysis, we didn't use it. That's because that our objective is to identify the communication patter, or the differenital communication pattern, at the cortical layer level instead of at the spot level, and hence. We decided to use the without accounting more nuanced spatial coordinate information.
+
+
+## Code 
+```{r load_library, echo = FALSE}
+suppressPackageStartupMessages({
+  library(here)
+  library(CellChat)
+  library(tidyverse)
+  library(patchwork)
+
+})
+```
+
+```{r load_merged_cell_chat, echo = FALSE}
+cellchat <- readRDS(
+  here(
+    "processed-data/layer_layer_comm",
+    "merged_cellchat.rds"
+  )
+)
+```
+
+# Results
+
+## Number of interaction and interaction strength
+### Overall levelfor SCZ and NTC respectively
+- \# of interaction
+There's more interaction among NTC group compared to SCZ group.
+- The strength between the two groups seems to be equaly strong. 
+```{r}
+
+gg1 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2))
+gg2 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2), measure = "weight")
+gg1 + gg2
+```
+
+### At the layer level
+The differential number of interactions or interaction strength in the cell-cell communication network between two datasets can be visualized using circle plot, where red (or blue) colored edges represent increased (or decreased) signaling in the second dataset compared to the first one.
+
+In our data anlysis, teh first data set is **NTC** and teh second data set is **SCZ**. So this would mean we see
+- **Increased (red) signaling in SCZ group, (in reference to NTC group) for communication between SpD02 (L3/4) -SpD06 (L2/3) and SpD06(L2/3)-06(L2/3)**
+- **Decreased (blue) signaling in SCZ grup, (in reference to NTC group), for communication between spd01 and the rest of SpDs (SpD05, SpD 02, SpD 03, SpD 04)**
+Among NTC, there's more communication between SPD02 and SpD06 (can't see the directionality), and among SCZ group 
+
+Note: left is \# of interaction and right is strength of the interaction.
+```{r}
+par(mfrow = c(1,2), xpd=TRUE)
+netVisual_diffInteraction(cellchat, weight.scale = T)
+netVisual_diffInteraction(cellchat, weight.scale = T, measure = "weight")
+```
+
+Heat map visualization of this. Same conclusion holds as the above.
+```{r}
+gg1 <- netVisual_heatmap(cellchat)
+#> Do heatmap based on a merged object
+gg2 <- netVisual_heatmap(cellchat, measure = "weight")
+#> Do heatmap based on a merged object
+gg1 + gg2
+```
+
+
+# Compare major sources and targets
+These plots also suggest that spd01 (L6/WM) have larger outgoing interaction strenth in SCZ, and SpD06 (L2/3) have both larger outgoing interaction and more incoming interaction strenth in SCZ.
+
+```{r}
+
+ntc_cellchat <- readRDS(here(
+  "processed-data/layer_layer_comm",
+  "ntc_cellchat.rds"
+))
+scz_cellchat <- readRDS(
+  here(
+    "processed-data/layer_layer_comm",
+    "scz_cellchat.rds"
+  )
+)
+
+object.list <- list(ntc = ntc_cellchat, scz = scz_cellchat)
+
+num.link <- sapply(object.list, function(x) {rowSums(x@net$count) + colSums(x@net$count)-diag(x@net$count)})
+weight.MinMax <- c(min(num.link), max(num.link)) # control the dot size in the different datasets
+gg <- list()
+for (i in 1:length(object.list)) {
+  gg[[i]] <- object.list[[i]] #|> netAnalysis_computeCentrality(slot.name = "netP") |>
+   netAnalysis_signalingRole_scatter(title = names(object.list)[i], weight.MinMax = weight.MinMax)
+}
+#> Signaling role analysis on the aggregated cell-cell communication network from all signaling pathways
+#> Signaling role analysis on the aggregated cell-cell communication network from all signaling pathways
+patchwork::wrap_plots(plots = gg)
+```
+
+### signaling changes in spd 06(L2/3)
+```{r}
+gg1 <- netAnalysis_signalingChanges_scatter(cellchat, idents.use = "spd06")
+
+```
