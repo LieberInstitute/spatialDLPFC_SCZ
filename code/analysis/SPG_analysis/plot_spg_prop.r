@@ -156,7 +156,8 @@ spg_names |>
     p <- col_dat |>
       group_by(sample_id, PRECAST_07) |>
       summarize(
-        prop = sum(!!sym(.channel)) / n()
+        prop = sum(!!sym(.channel)) / n(),
+        n = n()
       ) |>
       left_join(
         metadata(spe)$dx_df |> select(sample_id, dx),

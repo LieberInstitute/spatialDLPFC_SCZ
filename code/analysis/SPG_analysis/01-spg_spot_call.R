@@ -4,6 +4,7 @@ suppressPackageStartupMessages({
   library(SpatialExperiment)
   library(tidyverse)
   library(sessioninfo)
+  library(spatialLIBD)
 })
 
 # Load Data ----
@@ -87,7 +88,7 @@ for (.spg in spg_names) {
       covars = c("dx", "age", "sex", "lot_num", "slide_id"),
       min_ncells = 10,
       pseudobulk_rds_file = here(
-        "processed-data", "rds", "layer_spd",
+        "processed-data", "rds", "PB_dx_spg",
         paste0("test_SPD_pseudo_", .spg, ".rds")
       )
     )
