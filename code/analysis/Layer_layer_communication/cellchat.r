@@ -66,7 +66,7 @@ subset_N_cellchat <- function(spe, .dx = "ntc") {
   # select data base
   cellchat@DB <- CellChatDB.human
   cellchat <- subsetData(cellchat)
-  future::plan("multisession", workers = 3) # do parallel
+  # future::plan("multisession", workers = 3) # do parallel
   cellchat <- identifyOverExpressedGenes(cellchat)
   # to prevent memory limit error
   options(future.globals.maxSize = 8.5 * 1024 * 1024^2)
