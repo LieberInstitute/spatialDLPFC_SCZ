@@ -5,5 +5,9 @@ Files:
 4. plot_vocano_DE.r: given an outcome file (in csv) from pseudobulked analysis, create a volcano plot for the analysis.
 
 
+Misc Files:
+1. neighbor/test_find_neighbors.r: Examine if `BayesSpace:::.find_neighbors` work as expected such that we cand define PNN neighbor analysis.
+
 TO be archived:
 1. spg_spot_prop_per_spd.R: previous code
+2. neighbor/01-spg_spot_call_neighbors.R: the code that Boyi actually didn't finish devleoping...
