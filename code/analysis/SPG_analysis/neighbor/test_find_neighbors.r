@@ -9,7 +9,6 @@ suppressPackageStartupMessages({
   library(escheR)
 })
 
-
 # Load test data -----
 # NOTE: one spe object that has spot calling for SPG channels
 sub_spe <- readRDS(
@@ -18,7 +17,6 @@ sub_spe <- readRDS(
     "test_small_spe_for_neighbor.rds"
   )
 )
-
 
 # This is something that Boyi tested for his other projects
 sub_spe$array_row |>
@@ -35,6 +33,8 @@ neighbors_list <-
 
 
 ### Helpfer function ----
+# Note: adopted from AD project
+# https://github.com/LieberInstitute/Visium_SPG_AD/blob/master/code/09_pathology_vs_BayesSpace/04_label_pathology_spots.R
 # NOTE: extract neighbors of specific SPG channel
 which_neighbors <- function(spe, var, return_keys = TRUE) {
   # browser()
@@ -60,11 +60,23 @@ sub_spe$pnn_neighbor <- FALSE
 sub_spe$pnn_neighbor[sub_spe$key %in% neighbor_pnn_pos] <- TRUE
 
 library(escheR)
-make_escheR(sub_spe) |>
-add_fill("pnn_pos") |>
-add_symbol("pnn_neighbor", size = 0.5) +
-scale_shape_manual(
-  breaks = c("FALSE","TRUE"),
-  values = c(NA, 2),
-  limits = c("TRUE")
+
+pdf(
+  here(
+    "code/analysis/SPG_analysis/neighbor",
+    "quick_validate_PNN_neighbor.pdf"
+  )
 )
+
+print(
+  make_escheR(sub_spe) |>
+    add_fill("pnn_pos") |>
+    add_symbol("pnn_neighbor", size = 0.5) +
+    scale_shape_manual(
+      breaks = c("FALSE", "TRUE"),
+      values = c(NA, 2),
+      limits = c("TRUE")
+    )
+)
+
+dev.off()
