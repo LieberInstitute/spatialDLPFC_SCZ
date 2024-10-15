@@ -10,7 +10,8 @@ suppressPackageStartupMessages({
 # Loop over all SPG + analysis level ----
 # p_cut_off <- 0.10
 analysis_type <- c("SPD", "donor")
-spg_names <- c("pnn_pos", "neuropil_pos", "neun_pos", "vasc_pos")
+# spg_names <- c("pnn_pos", "neuropil_pos", "neun_pos", "vasc_pos")
+spg_names <- c("pnn_N_neighbors")
 
 analysis_combo <- expand.grid(
   type = analysis_type,

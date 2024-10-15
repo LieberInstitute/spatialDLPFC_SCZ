@@ -54,12 +54,52 @@ spe$vasc_pos <- ifelse(
   TRUE, FALSE
 )
 
+## Call SPG Neighbors ----
+### Prepare data for BayesSpace ---- 
+# In order to use BayesSpace to identify neighbors, 
+# we first need to have `row` and `col` in the colData
+spe$row <- spe$array_row
+spe$col <- spe$array_col 
+
+### Helpfer function ----
+# NOTE: extract neighbors of specific SPG channel
+which_neighbors <- function(spe, var, return_keys = TRUE) {
+  i <- which(colData(spe)[[var]] == TRUE)
+
+  # NOTE: the trailing +1 is very important. Don't change
+  res <- sort(unique(unlist(neighbors_list[i]))) + 1
+  res_keys <- spe$key[res]
+
+
+  if (return_keys == TRUE) {
+    return(res_keys)
+  } else {
+    return(res)
+  }
+}
+
+pnn_neighbor_key <- c()
+
+for(.sample in unique(spe$sample_id)){
+  sub_spe <- spe[, spe$sample_id == .sample]
+  neighbors_list <- BayesSpace:::.find_neighbors(
+    sub_spe, platform = "Visium")
+  sub_key <- which_neighbors(sub_spe, "pnn_pos", return_keys = TRUE)
+  pnn_neighbor_key <- c(pnn_neighbor_key, sub_key) # concatenate keys
+}
+
+
+spe$pnn_neighbor <- FALSE
+spe$pnn_neighbor[spe$key %in% pnn_neighbor_key] <- TRUE
+
+spe$pnn_N_neighbors <- spe$pnn_pos | spe$pnn_neighbor
 
 
 
 # Create channel specific PB ----
 
-spg_names <- c("pnn_pos", "neuropil_pos", "neun_pos", "vasc_pos")
+# spg_names <- c("pnn_pos", "neuropil_pos", "neun_pos", "vasc_pos")
+spg_names <- c("pnn_N_neighbors")
 
 ## Create positive PNN only spe ----
 for (.spg in spg_names) {
