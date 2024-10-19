@@ -51,7 +51,7 @@ subset_N_cellchat <- function(spe, .dx = "ntc") {
   sub_spe <- spe[, spe$dx == .dx]
   data.input <- logcounts(sub_spe)
   # Convert emsembl id to gene symbol
-  rownames(data.input) <- rowData(sub_spe)$gene_name
+  rownames(data.input) <- rowData(sub_spe)$gene_name # Very important step!
   meta <- as.data.frame(SingleCellExperiment::colData(sub_spe))
   meta$samples <- meta$sample_id |> factor()
 
