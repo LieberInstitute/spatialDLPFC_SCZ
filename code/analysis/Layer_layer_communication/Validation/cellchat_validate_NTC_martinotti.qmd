@@ -1,0 +1,80 @@
+---
+title: "Viz showing Martinotti Cell Projection from L5 to L1 in NTC samples"
+format: pdf
+execute:
+  echo: false
+---
+
+This report documents a follow-up analysis to validate the layer-layer communication using Martinotti Cell projection as postivie control.
+
+In this analyis, we subset the NTC samples to only contain L1 (spd07) and L5(spd05) spots. Additionally, we use `logcounts(RELN) > 0` or `logcounts (PANTR1)>0` as criteria to call martinotti+/- spots in layer 5. For further details on deciding the threhold to call martinotti+/- spots in Layer 5, pleases see report `Ligand_expression_in_L5.pdf`. With the martinotti+/-&L1 subset data, we run `cellchat` with the dataset.
+
+```{r load_library, echo = FALSE}
+suppressPackageStartupMessages({
+  library(here)
+  library(CellChat)
+  library(tidyverse)
+  library(patchwork)
+})
+
+cellchat <- readRDS(
+  here(
+    "processed-data/layer_layer_comm",
+    "ntc_L1_5_cellchat.rds"
+  )
+)
+ # number of cells in each cell group
+groupSize <- as.numeric(table(cellchat@idents))
+```
+
+# Results
+## Overall pattern
+There's more connection within Layer 5 (communication between Martinotti+/- spots) than the number of connection from Layer 5 to Layer 1, which makes sense. 
+```{r, fig.height = 8}
+netVisual_circle(cellchat@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Number of interactions")
+```
+
+It looks like there are still a lot of `GABA-A` communication. While it is not shown here, but this time there's `SST` signals.s
+```{r, fig.width = 12, fig.height = 8}
+ht1 <- netAnalysis_signalingRole_heatmap(cellchat, pattern = "outgoing")
+ht2 <- netAnalysis_signalingRole_heatmap(cellchat, pattern = "incoming")
+ht1 + ht2
+```
+
+## GABA pathways
+It looks like that there are communication pattern from Martinotti+ spots to Layer 1.
+```{r}
+netVisual_aggregate(cellchat, signaling = "GABA-A")
+```
+Here is another quick view for for the explaination. There's still a lot of GABA-A signaling mainly within the martinotti+spots and there's also sending from martinotti+ spots to layer 1. 
+```{r}
+netVisual_heatmap(cellchat, signaling = "GABA-A", color.heatmap = "Reds")
+```
+
+### LR pairs in the `GABA_A` path
+
+```{r, fig.height = 6}
+# netAnalysis_contribution(cellchat, signaling = "GABA-A")
+```
+
+So the pathway `GABA−A−(GAD1+SLC6A8) − GABR_A1B2` and `GABA−A−(GAD2+SLC6A8) − GABR_A1B2` are idenitified to communicate from Martinotti+ spots to L1 spots. It is interesting that 
+`GABA−A−(GAD2+SLC6A1) − GABR_A1B2` is now showing that it is from Martinotti - spots to Layer 1. But Boyi thinks it could be that some of the Martinotti+ spots are misclassified as Martinotti- spots. But overall 2 out of 3 GABA-A LR pairs we previously identifed from the overall layer-layer communication remain detected after we calling Martinotti+ spots.
+
+
+```{r, fig.height = 12}
+netVisual_bubble(cellchat, signaling = "GABA-A", remove.isolate = FALSE)
+```
+
+
+
+
+## SST pathways
+There is some significant communication of SOMATOSTATIN signaling pathway. However, the significantly identified SST pathway is within the L5 layer instead of extending to Layer 1.
+
+```{r}
+netVisual_aggregate(cellchat, signaling = "SOMATOSTATIN")
+```
+
+```{r, fig.height = 12}
+netVisual_bubble(cellchat, signaling = "SOMATOSTATIN", remove.isolate = FALSE)
+```
