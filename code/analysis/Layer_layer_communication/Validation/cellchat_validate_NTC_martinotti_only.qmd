@@ -1,0 +1,77 @@
+---
+title: "Viz showing Martinotti Cell Projection from L5 to L1 in NTC samples"
+format: pdf
+execute:
+  echo: false
+---
+
+This is the same analysis as in the file `cellchat_validate_NTC_Martinotti.qmd`. The ony different here is that besides including all L1 (spd07), only a **subset of L5 (spd05)** is included - only the Martinotti+ spots is included. 
+
+```{r load_library, echo = FALSE}
+suppressPackageStartupMessages({
+  library(here)
+  library(CellChat)
+  library(tidyverse)
+  library(patchwork)
+})
+
+cellchat <- readRDS(
+  here(
+    "processed-data/layer_layer_comm",
+    "ntc_L1_5_cellchat_martinotti_only.rds"
+  )
+)
+ # number of cells in each cell group
+groupSize <- as.numeric(table(cellchat@idents))
+```
+
+# Results
+## Overall pattern
+Here are some information about the overall communication pattern considering all the possible pathways and LR communication pairs. It is not that important. Can directly jump to the @sec-gaba section.
+```{r, fig.height = 8}
+netVisual_circle(cellchat@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Number of interactions")
+```
+
+It looks like there are still a lot of `GABA-A` communication. 
+```{r, fig.width = 12, fig.height = 8}
+ht1 <- netAnalysis_signalingRole_heatmap(cellchat, pattern = "outgoing")
+ht2 <- netAnalysis_signalingRole_heatmap(cellchat, pattern = "incoming")
+ht1 + ht2
+```
+
+## GABA pathways  {#sec-gaba}
+If we focus on the communication that is in the GABA pathways, it looks like that there are communication pattern from Martinotti+ spots to Layer 1.
+```{r}
+netVisual_aggregate(cellchat, signaling = "GABA-A")
+```
+Here is another quick view for for the explaination. There's still a lot of GABA-A signaling mainly within the martinotti+spots and there's also sending from martinotti+ spots to layer 1. 
+```{r}
+netVisual_heatmap(cellchat, signaling = "GABA-A", color.heatmap = "Reds")
+```
+
+### LR pairs in the `GABA_A` path
+
+```{r, fig.height = 6}
+# netAnalysis_contribution(cellchat, signaling = "GABA-A")
+```
+
+So the LR pairs `GABA−A−(GAD1/2+SLC6A1/8) − GABR_A1B2` and `GABA−A−(GAD2+SLC6A8) − GABR_A1B2` are idenitified to communicate from Martinotti+ spots to L1 spots.
+
+
+```{r, fig.height = 12}
+netVisual_bubble(cellchat, signaling = "GABA-A", remove.isolate = FALSE)
+```
+
+
+
+
+## SST pathways
+There's no significant SST- realated LR pair are itentified from Martinotti+spots L5 to L1. 
+
+```{r}
+netVisual_aggregate(cellchat, signaling = "SOMATOSTATIN")
+```
+
+```{r, fig.height = 12}
+netVisual_bubble(cellchat, signaling = "SOMATOSTATIN", remove.isolate = FALSE)
+```
