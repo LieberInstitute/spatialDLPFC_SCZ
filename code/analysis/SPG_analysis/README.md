@@ -5,6 +5,11 @@ Files:
 4. plot_vocano_DE.r: given an outcome file (in csv) from pseudobulked analysis, create a volcano plot for the analysis.
 
 
+pnn_L2345 includes files that specifically to do pnn analysis within a subset of spatial domains
+
+`viz_spd_pb_data.R` creates a dot plot showing which spatial domains are still included in the pseudobulked and and how many cells are in the spatial domain. It also creates spd-specific rds files for L2/3 (spd06), L3/4 (spd02), and L5 (spd05).
+
+
 Misc Files:
 1. neighbor/test_find_neighbors.r: Examine if `BayesSpace:::.find_neighbors` work as expected such that we cand define PNN neighbor analysis.
 

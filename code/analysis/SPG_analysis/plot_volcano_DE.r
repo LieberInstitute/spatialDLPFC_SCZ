@@ -11,12 +11,21 @@ suppressPackageStartupMessages({
 # p_cut_off <- 0.10
 analysis_type <- c("SPD", "donor")
 # spg_names <- c("pnn_pos", "neuropil_pos", "neun_pos", "vasc_pos")
-spg_names <- c("pnn_N_neighbors")
+# spg_names <- c("pnn_N_neighbors")
+spg_names <- paste0("pnn_pos_", c("L2345", "L23", "L34", "L5"))
 
 analysis_combo <- expand.grid(
   type = analysis_type,
   spg = spg_names
 )
+
+# NOTE:
+# only use when testing the manually created SPD subsetted data
+# `pnn_L2345\viz_spd_pb_data.R`
+# analysis_combo <- tibble(
+#   type = c("SPD", "donor", "donor", "donor"),
+#   spg = c("pnn_pos_L2345", "pnn_pos_L23", "pnn_pos_L34", "pnn_pos_L5")
+# )
 
 pb_files <- analysis_combo |> glue_data("test_{type}_pseudo_{spg}.csv")
 
