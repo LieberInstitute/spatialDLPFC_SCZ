@@ -1,0 +1,374 @@
+---
+title: "PVALB Exporatory Analysis"
+format: 
+  pdf:
+    toc: true
+execute:
+  echo: false
+---
+
+# Summary
+**Objective**: The purpose of this report is to describe what would be a gene expression threshold to call PVALB+ spots (log_counts(PVALB)>0), and descriptive analysis summarzing proportion of PVALB+ and PVALB+/PNN+ spots across donors as well as spatial domains.
+
+**Summary**: 
+
+- log_counts(PVALB)>0 seems to be a good threshold to call PVALB+ spots
+- There seems to be an difference between the proportion of PNN+/PVALB+ spots across diagnosis groups (did not test for statistical significance).
+- It would be challenging to do Pseudobulk analysis among PNN+/PVALB+ spots between diagnosis groups. I think it is possible to do it, but the power would be pretty low for this analysis.
+
+```{r Load_package_data}
+# Load packages ----
+suppressPackageStartupMessages({
+  library(SpatialExperiment)
+  library(here)
+  library(tidyverse)
+  library(ggbeeswarm)
+  library(escheR)
+  library(sessioninfo)
+  library(ComplexHeatmap)
+})
+```
+
+
+# PVALB Spot Calling
+## Choose threshold
+Firstly, we used one sample (`V12F14-053_A1`) to decide/examine what a good threshold of PVALB gene expression would be.
+
+```{r}
+sub_spe <- readRDS(
+  here(
+    "processed-data/rds/PB_dx_spg",
+    "test_small_spe_for_neighbor.rds"
+  )
+)
+
+pvalb_index <- which(rowData(sub_spe)$gene_name == "PVALB")
+
+# Validate the gene is correct by cehcking ensemble ID
+pvalb_ensembl <- rowData(sub_spe)$gene_id[pvalb_index]
+# "ENSG00000100362"
+# Seems to be the right one
+```
+
+The five point descriptive statistics for the log2counts of PVALB in this sample is listed below, and the distribution of PVALB is visualized in a histogram. 
+
+Overall, we can see that most of the spots doesn't have a PVALB expression. Less than a quartar of the spots express PVALB. Hence, we decide `logcounts(PVALB)>0` could be a good threshold to call PVALB+ spots. 
+```{r, echo = TRUE}
+# five point summary statistics for the gene in this one sample
+# V12F14-053_A1
+logcounts(sub_spe)[pvalb_index, ] |> summary()
+#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+#  0.0000  0.0000  0.0000  0.2064  0.0000  3.3038
+
+hist(logcounts(sub_spe)[pvalb_index, ], breaks = 40)
+
+# It seems there's a clear separation between 0 and non-0 expression. Hence, we will use the threshold `logcounts > 0` to call PValb + spots
+```
+> NOTES: it is possible that in some spots, there's pvalb expression, just not being picked up/sequenced due to any techinical reasons. This is out of the scope of this study. 
+
+
+## PVALB+ spots and gene expression in `V12F14-053_A1`
+In this sample, around 2% of spots have PVALB expression.
+```{r}
+# Descriptive Analysis ----
+sub_spe$pvalb_logcnt = logcounts(sub_spe)[pvalb_index, ]
+sub_spe$pvalb_pos <- logcounts(sub_spe)[pvalb_index, ] > 0
+sum(logcounts(sub_spe)[pvalb_index, ] > 0) / nrow(logcounts(sub_spe))
+# 0.02156192
+# ~2% spots that have PVALB expression
+```
+
+The following shows that the gene expression of PVALB across `SPD07`.  We can see that there's most spots in SPD02 (Layer 3/4) express PVALB. Additionally, across all spatial domain, there's gap between 0 and express and hence, logcount(PVALB) >0 seems to be a good threshold. 
+```{r}
+## Per SPD gene expression distribution ----
+library(ggridges)
+data.frame(
+  spd = sub_spe$PRECAST_07,
+  pvalb_logcnt = logcounts(sub_spe)[pvalb_index, ]
+) |>
+  ggplot() +
+  geom_density_ridges(
+    aes(x = pvalb_logcnt, y = spd, fill = spd),
+    jittered_points = TRUE,
+    position = position_points_jitter(width = 0.05, height = 0),
+    point_shape = "|", point_size = 3, point_alpha = 1, alpha = 0.7,
+  ) +
+  scale_y_discrete(
+    limits = c(
+      "spd07", "spd06", "spd02",
+      "spd05", "spd03", "spd01", "spd04"
+    )
+  ) +
+  theme_minimal()
+```
+
+The following plot show the proportion (color) of PVALB+ spots across spatial domains, with and without accounts for individual donor.
+
+```{r}
+data.frame(
+  spd = sub_spe$PRECAST_07,
+  pvalb_logcnt = logcounts(sub_spe)[pvalb_index, ]
+) |>
+  mutate(pvalb_pos = pvalb_logcnt > 0) |>
+  group_by(spd) |>
+  summarize(
+    spd_size = n(),
+    pval_prop = sum(pvalb_pos) / n()
+  ) |>
+  ungroup() |>
+  mutate(
+    spg_type = "pvalb"
+  ) |>
+  ggplot() +
+  geom_point(
+    aes(x = spg_type, y = spd, size = spd_size, color = pval_prop)
+  ) + 
+  scale_color_gradient(low = "lightblue", high = "darkblue") +
+  theme_minimal() +
+  scale_y_discrete(
+    limits = c(
+      "spd07", "spd06", "spd02",
+      "spd05", "spd03", "spd01", "spd04"
+    )
+  )
+```
+
+Here is the spot plot showing the gene expression of PVALB (log2count) - also showing higher gene expression in SpD02 (L3/4)
+
+```{r}
+## Expression Distribution ----
+## Spot plot for location ----
+make_escheR(sub_spe) |>
+  add_fill("pvalb_logcnt") |>
+  add_ground("PRECAST_07") +
+  scale_shape_manual(
+    breaks = c("FALSE", "TRUE"),
+    values = c(NA, 3),
+    limits = c("TRUE")
+  ) +
+  scale_fill_gradient(low = "white", high = "black") +
+  scale_color_discrete(limits = c(
+      "spd07", "spd06", "spd02",
+      "spd05", "spd03", "spd01", "spd04"
+    ))
+```
+
+
+# PVALB+ Spots (Not very informative)
+In this section, we conduct descriptive analysis and visualization among all donors/samples.
+```{r load_all_spe}
+# Load Data ----
+## Load SPG spe object ----
+spe <- readRDS(
+  here(
+    "processed-data/rds/02_visium_qc",
+    "qc_spe_w_spg_N63.rds"
+  )
+)
+
+## Load SpD data ----
+finalized_spd <- readRDS(
+  here(
+    "processed-data/rds/spatial_cluster",
+    "PRECAST",
+    "test_clus_label_df_semi_inform_k_2-16.rds"
+  )
+)
+
+## Attach SpD label to spe ----
+col_data_df <- colData(spe) |>
+  data.frame() |>
+  left_join(
+    finalized_spd,
+    by = c("key"),
+    relationship = "one-to-one"
+  )
+
+rownames(col_data_df) <- colnames(spe)
+colData(spe) <- DataFrame(col_data_df)
+
+## Call PNN+ spots ----
+spe$pnn_pos <- ifelse(spe$spg_PWFA > 0.05, TRUE, FALSE)
+
+## Call PVALB+ Spots----
+pvalb_index <- which(rowData(spe)$gene_name == "PVALB")
+spe$pvalb_pos <- logcounts(spe)[pvalb_index, ] > 0
+spe$logcount_pvalb <- logcounts(spe)[pvalb_index, ]
+```
+
+We first viualize the proportion of PVALB+ spots within each donor across diagnosis group. Qualitatively, it seems like the proportion of pvalb+ spots is slightly higher among NTC group than SCZ group.
+
+```{r}
+## Proportion of Pvalb+ spots ----
+### Overall ----
+col_df <- colData(spe)
+col_df |>
+  data.frame() |>
+  group_by(sample_id) |>
+  summarize(
+    n = n(),
+    prop_pvalb = sum(pvalb_pos) / n(),
+    dx = unique(dx)
+  ) |>
+  ungroup() |>
+  ggplot(aes(x = dx, y = prop_pvalb)) +
+  geom_boxplot(aes(group = dx)) +
+  geom_jitter(aes(color = dx), alpha = 0.7) +
+  theme_minimal()
+```
+
+Here is the boxplot accounts for spatial domain. THere's more PVALB+ spots in SpD02(L3/4) and SpD05(L5). It still seems like there's more pvalb+ spots among NTC group than SCZ group.
+```{r}
+### Per spatial domain ----
+col_df |>
+  data.frame() |>
+  group_by(sample_id, PRECAST_07) |>
+  summarize(
+    n = n(),
+    prop_pvalb = sum(pvalb_pos) / n(),
+    dx = unique(dx)
+  ) |>
+  ungroup() |>
+  ggplot(aes(x = PRECAST_07, y = prop_pvalb, fill = dx)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  theme_minimal() +
+  scale_x_discrete(
+    limits = c(
+      "spd07", "spd06", "spd02",
+      "spd05", "spd03", "spd01", "spd04"
+    )
+  )
+```
+Here it visualizes the distribution of gene expression, instead of the proportion of positive spots. (Probably not that useful though)
+```{r}
+col_df |>
+  data.frame() |>
+  filter(pvalb_pos) |>
+  ggplot() +
+  geom_boxplot(aes(x = sample_id, y = logcount_pvalb, color = dx)) +
+  theme_minimal() +
+  scale_x_discrete(
+    limits = metadata(spe)$dx$sample_id[order(metadata(spe)$dx$dx)]
+  )
+```
+Heatmap showing median logcount(PVALB) among PVALB+ spots per spatial domain. I dont' think this is that informative. 
+
+> NOTE: Here we visualize the median expression of PVALB+ spots per SpD and sample. This is different from visaulize the mean/median PVALB expression of per SpD-sample_id
+```{r}
+heatmap_data <- col_df |>
+  data.frame() |>
+  filter(pvalb_pos) |>
+  group_by(sample_id, PRECAST_07) |>
+  summarize(
+    median_pvalb = median(logcount_pvalb),
+    dx = unique(dx)
+  ) |>
+  pivot_wider(names_from = PRECAST_07, values_from = median_pvalb) |>
+  column_to_rownames("sample_id")
+
+# Create row annotation for the heatmap
+row_annotation <- rowAnnotation(
+  dx = col_df$dx[match(rownames(heatmap_data), col_df$sample_id)],
+  col = list(
+    dx = c("ntc" = "blue", "scz" = "red")
+  ),
+  annotation_legend_param = list(dx = list(title = "Diagnosis"))
+)
+
+# Generate the heatmap with row annotation
+# Doesn't seem to have specific pattern.
+Heatmap(
+  as.matrix(heatmap_data |> select(-dx)),
+  name = "Median PVALB Expression",
+  row_title = "Sample ID",
+  column_title = "Spatial Domain",
+  cluster_rows = TRUE,
+  cluster_columns = TRUE,
+  show_row_dend = TRUE,
+  show_column_dend = TRUE,
+  heatmap_legend_param = list(title = "Expression"),
+  left_annotation = row_annotation
+)
+```
+
+
+# PNN+ & PVALB+ Spots
+In this section, we aim to investigate the PNN+ and PVALB+ spots, ie. spots that have both PNN expression and PVALB expression. 
+
+Similarly, we first visualize the proportion of PNN+/PVALB+ spots acounts for domain or not.
+
+```{r}
+## Call PNN+ & PVALB+ spots ----
+spe$PNN_Pvalb <- spe$pnn_pos & spe$pvalb_pos
+
+## Proportion of Pvalb+ spots ----
+### Overall ----
+col_df <- colData(spe)
+col_df |>
+  data.frame() |>
+  group_by(sample_id) |>
+  summarize(
+    n = n(),
+    prop_pp = sum(PNN_Pvalb) / n(),
+    dx = unique(dx)
+  ) |>
+  ungroup() |>
+  ggplot(aes(x = dx, y = prop_pp)) +
+  geom_boxplot(aes(group = dx)) +
+  geom_jitter(aes(color = dx), alpha = 0.7) +
+  theme_minimal()
+
+### Per spatial domain ----
+# Proportion of spots
+col_df |>
+  data.frame() |>
+  group_by(sample_id, PRECAST_07) |>
+  summarize(
+    n = n(),
+    prop_pp = sum(PNN_Pvalb) / n(),
+    dx = unique(dx)
+  ) |>
+  ungroup() |>
+  ggplot(aes(x = PRECAST_07, y = prop_pp, fill = dx)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  theme_minimal() +
+  scale_x_discrete(
+    limits = c(
+      "spd07", "spd06", "spd02",
+      "spd05", "spd03", "spd01", "spd04"
+    )
+  )
+```
+
+Overall, we can see that there's not a lot of PNN+/PVALB+ spots in most of the spatial domain, etc Layer 3/4 and L5.
+
+```{r}
+# Number of spots
+col_df |>
+  data.frame() |>
+  group_by(sample_id, PRECAST_07) |>
+  summarize(
+    n = n(),
+    n_pp = sum(PNN_Pvalb),
+    n_gt_10 = n_pp > 10,
+    dx = unique(dx)
+  ) |>
+  ungroup() |>
+  ggplot() +
+  geom_point(
+    aes(x = PRECAST_07, y = sample_id, size = n_pp, color = n_gt_10)
+  ) +
+  theme_minimal() +
+  scale_x_discrete(
+    limits = c(
+      "spd07", "spd06", "spd02",
+      "spd05", "spd03", "spd01", "spd04"
+    )
+  )
+```
+
+
+# Session Info
+```{r}
+sessioninfo::session_info()
+```
