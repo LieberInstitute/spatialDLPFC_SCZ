@@ -95,7 +95,7 @@ ntc_cellchat <- subset_N_cellchat(spe, .dx = "ntc")
 ntc_cellchat |> saveRDS(
   #TODO: change the path
   here(
-    "processed-data/spg_ccc",
+    "processed-data/rds/spg_ccc",
     "neun_claudin_ntc_cellchat.rds"
   )
 )
@@ -106,7 +106,7 @@ set.seed(20241107)
 scz_cellchat <- subset_N_cellchat(spe, .dx = "scz")
 scz_cellchat |> saveRDS(
   here(
-    "processed-data/spg_ccc",
+    "processed-data/rds/spg_ccc",
     "neun_claudin_scz_cellchat.rds"
   )
 )
@@ -116,12 +116,12 @@ scz_cellchat |> saveRDS(
 
 # Create merged cellChat object ----
 ntc_cellchat <- readRDS(here(
-  "processed-data/spg_ccc",
+  "processed-data/rds/spg_ccc",
   "neun_claudin_ntc_cellchat.rds"
 ))
 scz_cellchat <- readRDS(
   here(
-    "processed-data/spg_ccc",
+    "processed-data/rds/spg_ccc",
     "neun_claudin_scz_cellchat.rds"
   )
 )
@@ -135,7 +135,7 @@ cellchat <- mergeCellChat(
 saveRDS(
   cellchat,
   here(
-    "processed-data/spg_ccc",
+    "processed-data/rds/spg_ccc",
     "neun_claudin_merged_cellchat.rds"
   )
 )
