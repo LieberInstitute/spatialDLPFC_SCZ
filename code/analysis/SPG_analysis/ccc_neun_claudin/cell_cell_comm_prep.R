@@ -16,6 +16,7 @@ suppressPackageStartupMessages({
   library(presto)
 })
 
+
 # Load Data ----
 ## Load SPG spe object ----
 spe <- readRDS(
@@ -24,6 +25,25 @@ spe <- readRDS(
     "qc_spe_w_spg_N63.rds"
   )
 )
+
+## Load Spatial Domain data ----
+PRECAST_df_final <- readRDS(
+  here(
+    "processed-data/rds/spatial_cluster",
+    "PRECAST",
+    "test_clus_label_df_semi_inform_k_2-16.rds"
+  )
+)
+
+col_data_df <- PRECAST_df_final |>
+  right_join(
+    colData(spe) |> data.frame(),
+    by = c("key"),
+    relationship = "one-to-one"
+  )
+
+rownames(col_data_df) <- colnames(spe)
+colData(spe) <- DataFrame(col_data_df)
 
 ## Call SPG + spots ----
 # Call SPG spots ----
@@ -56,9 +76,17 @@ spe <- spe[,!is.na(spe$neun_claudin)]
 stopifnot(ncol(spe) < 80000) # Error prevention
 
 
+## Create domain-specific neun_claudin label ----
+spe$spd_neun_claudin <- paste0(spe$neun_claudin, "_", spe$PRECAST_07)
+
+
+
+
+
 
 # Create Cell Chat Objects for dx groups ----
-subset_N_cellchat <- function(spe, .dx = "ntc") {
+## Function ----
+subset_N_cellchat <- function(spe, .dx = "ntc", var) {
   sub_spe <- spe[, spe$dx == .dx]
   data.input <- logcounts(sub_spe)
   # Convert emsembl id to gene symbol
@@ -71,7 +99,7 @@ subset_N_cellchat <- function(spe, .dx = "ntc") {
   # create object
   cellchat <- createCellChat(
     object = data.input, meta = meta,
-    group.by = "neun_claudin"
+    group.by = var
   )
 
   # select data base
@@ -90,8 +118,9 @@ subset_N_cellchat <- function(spe, .dx = "ntc") {
   return(cellchat)
 }
 
+## Domain-agnostic CellChat object ----
 set.seed(20241107)
-ntc_cellchat <- subset_N_cellchat(spe, .dx = "ntc")
+ntc_cellchat <- subset_N_cellchat(spe, .dx = "ntc", var = "neun_claudin")
 ntc_cellchat |> saveRDS(
   #TODO: change the path
   here(
@@ -103,7 +132,7 @@ ntc_cellchat |> saveRDS(
 rm(ntc_cellchat) # Clean Memory
 
 set.seed(20241107)
-scz_cellchat <- subset_N_cellchat(spe, .dx = "scz")
+scz_cellchat <- subset_N_cellchat(spe, .dx = "scz", var = "neun_claudin")
 scz_cellchat |> saveRDS(
   here(
     "processed-data/rds/spg_ccc",
@@ -111,10 +140,6 @@ scz_cellchat |> saveRDS(
   )
 )
 
-
-#
-
-# Create merged cellChat object ----
 ntc_cellchat <- readRDS(here(
   "processed-data/rds/spg_ccc",
   "neun_claudin_ntc_cellchat.rds"
@@ -139,6 +164,59 @@ saveRDS(
     "neun_claudin_merged_cellchat.rds"
   )
 )
+
+## Domain-specific CellChat object ----
+set.seed(20241107)
+ntc_cellchat <- subset_N_cellchat(spe, .dx = "ntc", var = "spd_neun_claudin")
+ntc_cellchat |> saveRDS(
+  #TODO: change the path
+  here(
+    "processed-data/rds/spg_ccc",
+    "spd_neun_claudin_ntc_cellchat.rds"
+  )
+)
+
+rm(ntc_cellchat) # Clean Memory
+
+set.seed(20241107)
+scz_cellchat <- subset_N_cellchat(spe, .dx = "scz", var = "spd_neun_claudin")
+scz_cellchat |> saveRDS(
+  here(
+    "processed-data/rds/spg_ccc",
+    "spd_neun_claudin_scz_cellchat.rds"
+  )
+)
+
+ntc_cellchat <- readRDS(here(
+  "processed-data/rds/spg_ccc",
+  "spd_neun_claudin_ntc_cellchat.rds"
+))
+scz_cellchat <- readRDS(
+  here(
+    "processed-data/rds/spg_ccc",
+    "spd_neun_claudin_scz_cellchat.rds"
+  )
+)
+
+object.list <- list(ntc = ntc_cellchat, scz = scz_cellchat)
+cellchat <- mergeCellChat(
+  object.list,
+  add.names = names(object.list)
+)
+
+saveRDS(
+  cellchat,
+  here(
+    "processed-data/rds/spg_ccc",
+    "spd_neun_claudin_merged_cellchat.rds"
+  )
+)
+
+
+
+
+
+
 
 # Session Info ----
 session_info()
