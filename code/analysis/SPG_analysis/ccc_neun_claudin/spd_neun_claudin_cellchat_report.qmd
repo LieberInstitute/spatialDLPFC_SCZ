@@ -1,0 +1,146 @@
+---
+title: "Differential cell-cell communication between SCZ and NTC using cellchat V2"
+format:
+  pdf:
+    toc: true
+execute:
+  echo: false
+---
+
+# Method
+
+# Results
+```{r load_library, echo = FALSE}
+suppressPackageStartupMessages({
+  library(here)
+  library(CellChat)
+  library(tidyverse)
+  library(patchwork)
+})
+```
+
+```{r load_merged_cell_chat, echo = FALSE}
+cellchat <- readRDS(
+  here(
+    "processed-data/rds/spg_ccc",
+    "spd_neun_claudin_merged_cellchat.rds"
+  )
+)
+```
+
+
+## Number of interaction and interaction strength
+### Overall levelfor SCZ and NTC respectively
+
+```{r}
+gg1 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2))
+gg2 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2), measure = "weight")
+gg1 + gg2
+```
+
+### Communication pattern between Neun+ and Claudin+ spots
+
+```{r}
+gg1 <- netVisual_heatmap(cellchat)
+#> Do heatmap based on a merged object
+gg2 <- netVisual_heatmap(cellchat, measure = "weight")
+#> Do heatmap based on a merged object
+gg1 + gg2
+```
+
+```{r fig.width=10, fig.height = 10}
+# par(mfrow = c(1,2), xpd=TRUE)
+netVisual_diffInteraction(cellchat, weight.scale = T)
+# netVisual_diffInteraction(cellchat, weight.scale = T, measure = "weight")
+```
+
+
+# Compare major sources and targets - Not very informative
+
+```{r}
+
+ntc_cellchat <- readRDS(here(
+  "processed-data/rds/spg_ccc",
+  "spd_neun_claudin_ntc_cellchat.rds"
+))
+scz_cellchat <- readRDS(
+  here(
+    "processed-data/rds/spg_ccc",
+    "spd_neun_claudin_scz_cellchat.rds"
+  )
+)
+
+object.list <- list(ntc = ntc_cellchat, scz = scz_cellchat)
+
+num.link <- sapply(object.list, function(x) {rowSums(x@net$count) + colSums(x@net$count)-diag(x@net$count)})
+weight.MinMax <- c(min(num.link), max(num.link)) # control the dot size in the different datasets
+gg <- list()
+for (i in 1:length(object.list)) {
+  gg[[i]] <- object.list[[i]] |> 
+  #netAnalysis_computeCentrality(slot.name = "netP") |>
+   netAnalysis_signalingRole_scatter(title = names(object.list)[i], weight.MinMax = weight.MinMax)
+}
+#> Signaling role analysis on the aggregated cell-cell communication network from all signaling pathways
+#> Signaling role analysis on the aggregated cell-cell communication network from all signaling pathways
+patchwork::wrap_plots(plots = gg)
+```
+
+
+
+## overall information flow of each signaling pathway or ligand-receptor pair
+
+```{r, fig.height = 8}
+# gg1 <- rankNet(cellchat, mode = "comparison", measure = "weight", sources.use = NULL, targets.use = NULL, stacked = T, do.stat = TRUE)
+gg2 <- rankNet(cellchat, mode = "comparison", measure = "weight", sources.use = NULL, targets.use = NULL, stacked = F, do.stat = TRUE)
+
+# gg1 + gg2
+gg2
+```
+
+## Overall
+```{r, fig.width=8}
+library(ComplexHeatmap)
+i = 1
+pathway.union <- union(object.list[[i]]@netP$pathways, object.list[[i+1]]@netP$pathways)
+ht1 = netAnalysis_signalingRole_heatmap(object.list[[i]], pattern = "all", signaling = pathway.union, title = names(object.list)[i], width = 5, height = 6)
+ht2 = netAnalysis_signalingRole_heatmap(object.list[[i+1]], pattern = "all", signaling = pathway.union, title = names(object.list)[i+1], width = 5, height = 6)
+draw(ht1 + ht2, ht_gap = unit(0.5, "cm"))
+```
+
+## Outgoing
+```{r, fig.width=8}
+library(ComplexHeatmap)
+i = 1
+pathway.union <- union(object.list[[i]]@netP$pathways, object.list[[i+1]]@netP$pathways)
+ht1 = netAnalysis_signalingRole_heatmap(object.list[[i]], pattern = "outgoing", signaling = pathway.union, title = names(object.list)[i], width = 5, height = 6)
+ht2 = netAnalysis_signalingRole_heatmap(object.list[[i+1]], pattern = "outgoing", signaling = pathway.union, title = names(object.list)[i+1], width = 5, height = 6)
+draw(ht1 + ht2, ht_gap = unit(0.5, "cm"))
+```
+
+## Incoming
+```{r, fig.width=8}
+library(ComplexHeatmap)
+i = 1
+pathway.union <- union(object.list[[i]]@netP$pathways, object.list[[i+1]]@netP$pathways)
+ht1 = netAnalysis_signalingRole_heatmap(object.list[[i]], pattern = "incoming", signaling = pathway.union, title = names(object.list)[i], width = 5, height = 6)
+ht2 = netAnalysis_signalingRole_heatmap(object.list[[i+1]], pattern = "incoming", signaling = pathway.union, title = names(object.list)[i+1], width = 5, height = 6)
+draw(ht1 + ht2, ht_gap = unit(0.5, "cm"))
+```
+
+# Upregulated and downregulated signaling LR pairs
+
+### Increased signaling in SCZ
+```{r, fig.width=8, fig.height=15}
+netVisual_bubble(cellchat, comparison = c(1, 2), angle.x = 45,
+title.name = "Increased signaling in SCZ",
+max.dataset = 2,
+remove.isolate = TRUE)
+```
+
+### Decreased signaling in SCZ
+```{r, fig.width=8, fig.height=15}
+netVisual_bubble(cellchat,   comparison = c(1, 2), angle.x = 45,
+title.name = "Decreased signaling in SCZ",
+max.dataset = 1,
+remove.isolate = TRUE)
+```
