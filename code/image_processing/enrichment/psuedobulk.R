@@ -1,3 +1,4 @@
+setwd('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/')
 suppressPackageStartupMessages({
   library(here)
   library(SpatialExperiment)
@@ -28,10 +29,8 @@ colData(spe) <- DataFrame(col_data_df)
 # Call SPG spots ----
 spe$pnn_pos <- ifelse(spe$spg_PWFA > 0.05, TRUE, FALSE)
 # NOTE: neuropil spot are spots doesn't have DAPI staining
-spe$neuropil_pos <- ifelse(
-  spe$spg_PDAPI > 0.05 & spe$spg_PDAPI < 0.5,
-  FALSE, TRUE
-)
+spe$neuropil_pos <- ifelse(spe$spg_PDAPI > 0.05,FALSE, TRUE)
+
 spe$neun_pos <- ifelse(
   spe$spg_PNeuN > 0.05 & spe$spg_PNeuN < 0.3,
   TRUE, FALSE
@@ -42,6 +41,14 @@ spe$vasc_pos <- ifelse(
 )
 
 spe_ntc <- spe[, colData(spe)$dx == "ntc"]
+head(colData(spe_ntc))
+
+spe_ntc$neun_pos <- ifelse(
+  spe_ntc$spg_PNeuN > 0.05 & spe_ntc$spg_PNeuN < 0.3,
+  TRUE, FALSE
+)
+
+spe_ntc_neun <- spe_ntc[, colData(spe_ntc)$neun_pos == FALSE]
 head(colData(spe_ntc))
 
 
@@ -67,26 +74,47 @@ dx_res <- registration_stats_enrichment(
   gene_ensembl = "gene_id",
   gene_name = "gene_name"
 )
+write.csv(dx_res, file = here("processed-data", "image_processing", "enrichment", "neuropil_dx_res.csv"), row.names = TRUE)
 
-
+filtered_dx_res <- dx_res %>%
+  filter(fdr_TRUE < 0.1) %>%     # Subset rows with fdr_TRUE < 0.1
+  arrange(fdr_TRUE)
 
 
 library(readxl)
 
-df <- read.table(here("raw-data/images/SPG_Spot_Valid/Neuropil/maddy.csv"), header = TRUE)
+df <- read.csv(here("raw-data/images/SPG_Spot_Valid/Neuropil/maddy.csv"), header = TRUE)
  unique(df$cluster)
+unique_genes = unique(df$gene)
+unique_ensembles = rownames(spe)[match(unique_genes, rowData(spe)$gene_name)]
+non_na_ensembles <- unique_ensembles[!is.na(unique_ensembles)]
+expr_data <- assay(spe_ntc, "counts")[non_na_ensembles, ]
+sum_expression <- colSums(expr_data)
 
+# Add the sum to the colData of spe as a new column
+colData(spe_ntc)$sum_expression <- sum_expression
+
+# Create a box plot of the sum of expression by neuropil_pos group
+ggplot(as.data.frame(colData(spe_ntc)), aes(x = neuropil_pos, y = sum_expression)) +
+  geom_violin() +
+  labs(title = "Sum of Expression of Unique Genes by Neuropil spots",
+       x = "Neuropil",
+       y = "Sum of Expression") +
+  theme_minimal()
+  
 [1] "Synapse_ExPFC" "Synapse_In"    "LO-synapse"    "N-synapse"    
 [5] "ODCjunction"   "ASCjunction"
 
 df_sub = df[df$cluster=="LO-synapse", ]
 
-df_neuropil <- merge(dx_res, df_sub, by = "gene")
+
+df_neuropil <- merge(dx_res, df, by = "gene")
+df_neuropil_filter <- merge(filtered_dx_res, df, by = "gene")
 Cneuropil = cor(df_neuropil$logFC_TRUE,df_neuropil$avg_log2FC)
 
 png(here("plots", "image_processing", "enrichment", "Neuropil.png"), width = 800, height = 600)
-plot(df_neuron$logFC_TRUE, df_neuron$logFC, 
-     main = paste0("neuropil ",dim(df_neuropil)[[1]],",", Cneuropil),
+plot(df_neuropil$logFC_TRUE, df_neuropil$avg_log2FC, 
+     #main = paste0("neuropil ",dim(df_neuropil)[[1]],",", Cneuropil),
      xlab = "logFC_TRUE", 
      ylab = "logFC", 
      col = "blue", 
