@@ -7,77 +7,28 @@ library(tidyverse)
 library(sessioninfo)
 library(msigdbr)
 
-# Load Data ----
 
-## Load PNN+ DEG results
-.pb_file <- "test_SPD_pseudo_pnn_pos.csv"
-
-dx_res <- read_csv(
-  here(
-    "processed-data/spg_pb_de",
-    .pb_file |> str_replace(".rds", ".csv")
-  )
-)
-
-## Load Pathways ----
-
+# Intro to MSigDB ----
 # See all collection in MSigbr
 # https://www.gsea-msigdb.org/gsea/msigdb/index.jsp
 msigdbr_collections()
 
+## Define MSigDB Gene set ----
+msigdbr_gene_sets <- msigdbr(species = "Homo sapiens", category = "C5") # GO genesets
+# NOTE: the following allows a more comprehensive gene sets.
+# msigdbr_gene_sets <- all_gene_sets |> filter(
+#   # gs_cat %in% c("H", "C2", "C3", "C5", "C8")
+# )
 
-all_gene_sets <- msigdbr(species = "Homo sapiens") # More comprehensive
-# h_gene_sets <- msigdbr(species = "Homo sapiens", category = "C8")
-
-msigdbr_gene_sets <- all_gene_sets |> filter(
-  # gs_cat %in% c("H", "C2", "C3", "C5", "C8")
-  gs_cat %in% c("C5") # Include only GE
-)
-
+## Format Gene set for FGSEA ----
 # NOTE: we'll use ensembl id for the enrichment analysis
 msigdbr_list <- split(
   x = msigdbr_gene_sets$ensembl_gene,
   f = msigdbr_gene_sets$gs_name
 )
 
-# fgsea analysis ----
-# Order the genes based on t_statistics in SCZ
-ordered_gene_vector <- dx_res |>
-  arrange(desc(t_stat_scz)) |>
-  select(ensembl, t_stat_scz) |>
-  deframe()
 
-set.seed(20241122)
-fgseaRes <- fgsea(
-  pathways = msigdbr_list,
-  stats = ordered_gene_vector,
-  nPermSimple = 10000
-)
-
-sig_pathway <- fgseaRes |>
-  arrange(padj) |>
-  filter(padj < 0.05) |>
-  mutate(regulation = case_when(
-    NES > 0 ~ "Up in SCZ",
-    NES <= 0 ~ "Down in SCZ"
-  ))
-
-# Exploratory analysis of the result
-str(sig_pathway)
-nrow(sig_pathway)
-sig_pathway |>
-  arrange(NES |> desc()) |>
-  head(n = 10)
-sig_pathway |>
-  arrange(NES) |>
-  head(n = 10)
-
-write_csv(
-  sig_pathway,
-  here("processed-data/PB_dx_pnn/fgsea", .pb_file)
-)
-
-## FGSEA with xxx ----
+# Intro to BrainGMT ----
 # NOTE: adapted from https://github.com/hagenaue/Brain_GMT/blob/main/BrainGMT_exampleUsage.R
 # Load Brain GMT pathway
 BrainGMT <- gmtPathways(
@@ -87,62 +38,82 @@ BrainGMT <- gmtPathways(
   )
 )
 
-set.seed(20241125)
-ordered_gene_vector <- dx_res |>
-  arrange(desc(t_stat_scz)) |>
-  select(gene, t_stat_scz) |>
-  deframe()
+# Batch analysis ----
+# NOTE: looping over all the DEG csv file
+pnn_deg_files <- list.files(here("processed-data/spg_pb_de"))
 
-GSEA_Results <- fgsea(BrainGMT, ordered_gene_vector,
-  minSize = 10, maxSize = 1000,
-  nPermSimple = 10000
-)
+pnn_deg_files |>
+  walk(.f = function(.pb_file) {
+    # browser()
+    # .pb_file <- "test_SPD_pseudo_pnn_pos.csv"
 
-GSEA_Results$leadingEdge<-vapply(GSEA_Results$leadingEdge, paste, collapse= ",", character(1L))
+    ## Load Data ----
 
+    dx_res <- read_csv(
+      here(
+        "processed-data/spg_pb_de",
+        .pb_file
+      )
+    )
 
-sig_pathway <- GSEA_Results |>
-  arrange(padj) |>
-  filter(padj < 0.05) |>
-  mutate(regulation = case_when(
-    NES > 0 ~ "Up in SCZ",
-    NES <= 0 ~ "Down in SCZ"
-  ))
+    ## fgsea analysis ----
+    ### GO via MSigDB ----
+    # Order the genes based on t_statistics in SCZ
+    ordered_gene_vector_msigdb <- dx_res |>
+      arrange(desc(t_stat_scz)) |>
+      select(ensembl, t_stat_scz) |>
+      deframe()
 
+    set.seed(20241122)
+    msigdb_res <- fgsea(
+      pathways = msigdbr_list,
+      stats = ordered_gene_vector_msigdb,
+      nPermSimple = 10000
+    )
 
+    msigdb_res |>
+      arrange(padj) |>
+      filter(padj < 0.05) |>
+      mutate(regulation = case_when(
+        NES > 0 ~ "Up in SCZ",
+        NES <= 0 ~ "Down in SCZ"
+      )) |>
+      write_csv(
+        here("processed-data/PB_dx_pnn/fgsea", .pb_file)
+      )
 
-# Exploratory analysis of the result
-str(sig_pathway)
-nrow(sig_pathway)
-sig_pathway |>
-  arrange(NES |> desc()) |>
-  head(n = 10)
-sig_pathway |>
-  arrange(NES) |>
-  head(n = 10)
+    ### BrainGMT ----
+    set.seed(20241125)
+    ordered_gene_vector_braingmt <- dx_res |>
+      arrange(desc(t_stat_scz)) |>
+      select(gene, t_stat_scz) |>
+      deframe()
 
-write_csv(
-  sig_pathway,
-  here("processed-data/PB_dx_pnn/fgsea", paste0("BrainGMT_", .pb_file))
-)
+    braingmt_res <- fgsea(BrainGMT, ordered_gene_vector_braingmt,
+      minSize = 10, maxSize = 1000,
+      nPermSimple = 10000
+    )
 
+    braingmt_res$leadingEdge <- vapply(braingmt_res$leadingEdge,
+      paste,
+      collapse = ",", character(1L)
+    )
 
+    braingmt_res |>
+      arrange(padj) |>
+      filter(padj < 0.05) |>
+      mutate(regulation = case_when(
+        NES > 0 ~ "Up in SCZ",
+        NES <= 0 ~ "Down in SCZ"
+      )) |>
+      write_csv(
+        here(
+          "processed-data/PB_dx_pnn/fgsea",
+          str_replace(.pb_file, ".csv", "_brainGMT.csv")
+        )
+      )
+  })
 
-
-# Viz (Deprecated) ----
-## Viz one pathway ----
-# plotEnrichment(
-#   examplePathways[["5991130_Programmed_Cell_Death"]],
-#   exampleRanks
-# ) + labs(title = "Programmed Cell Death")
-
-# ## Viz up and down pathway ----
-# topPathwaysUp <- fgseaRes[ES > 0][head(order(pval), n = 10), pathway]
-# topPathwaysDown <- fgseaRes[ES < 0][head(order(pval), n = 10), pathway]
-# topPathways <- c(topPathwaysUp, rev(topPathwaysDown))
-# plotGseaTable(examplePathways[topPathways], exampleRanks, fgseaRes,
-#   gseaParam = 0.5
-# )
 
 # Session Info ----
 sessioninfo::session_info()
