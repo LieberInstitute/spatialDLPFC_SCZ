@@ -54,16 +54,23 @@ spe$vasc_pos <- ifelse(
   TRUE, FALSE
 )
 
+# Call PNN & PVALB + ----
+pvalb_index <- which(rowData(spe)$gene_name == "PVALB")
+spe$pvalb_pos <- logcounts(spe)[pvalb_index, ] > 0
+spe$logcount_pvalb <- logcounts(spe)[pvalb_index, ]
+
+spe$pnn_pvalb <- spe$pnn_pos & spe$pvalb_pos
+
 ## Call SPG Neighbors ----
-### Prepare data for BayesSpace ---- 
-# In order to use BayesSpace to identify neighbors, 
+### Prepare data for BayesSpace ----
+# In order to use BayesSpace to identify neighbors,
 # we first need to have `row` and `col` in the colData
 spe$row <- spe$array_row
-spe$col <- spe$array_col 
+spe$col <- spe$array_col
 
 ### Helpfer function ----
 # NOTE: extract neighbors of specific SPG channel
-which_neighbors <- function(spe, var, return_keys = TRUE) {
+which_neighbors <- function(spe, neighbors_list, var, return_keys = TRUE) {
   i <- which(colData(spe)[[var]] == TRUE)
 
   # NOTE: the trailing +1 is very important. Don't change
@@ -78,28 +85,44 @@ which_neighbors <- function(spe, var, return_keys = TRUE) {
   }
 }
 
-pnn_neighbor_key <- c()
+## Calculate PNN Neighbors ----
 
-for(.sample in unique(spe$sample_id)){
-  sub_spe <- spe[, spe$sample_id == .sample]
-  neighbors_list <- BayesSpace:::.find_neighbors(
-    sub_spe, platform = "Visium")
-  sub_key <- which_neighbors(sub_spe, "pnn_pos", return_keys = TRUE)
-  pnn_neighbor_key <- c(pnn_neighbor_key, sub_key) # concatenate keys
+find_neighbors_for <- function(spe, var) {
+  neighbor_key <- c()
+  stopifnot( var %in% names(colData(spe)))
+  for (.sample in unique(spe$sample_id)) {
+    sub_spe <- spe[, spe$sample_id == .sample]
+    neighbors_list <- BayesSpace:::.find_neighbors(
+      sub_spe,
+      platform = "Visium"
+    )
+    # browser()
+    sub_key <- which_neighbors(sub_spe, neighbors_list, var, return_keys = TRUE)
+    neighbor_key <- c(neighbor_key, sub_key) # concatenate keys
+  }
+
+  neighbor_vec <- rep(FALSE, ncol(spe))
+  neighbor_vec[spe$key %in% neighbor_key] <- TRUE
+
+  return(spe[[var]] | neighbor_vec)
 }
 
+spe$pnn_N_neighbors <- find_neighbors_for(
+  spe = spe, var = "pnn_pos"
+)
 
-spe$pnn_neighbor <- FALSE
-spe$pnn_neighbor[spe$key %in% pnn_neighbor_key] <- TRUE
-
-spe$pnn_N_neighbors <- spe$pnn_pos | spe$pnn_neighbor
+# Calculate PNN PVALB Neighbors ----
+spe$pnn_pvalb_N_neighbors <- find_neighbors_for(
+  spe = spe, var = "pnn_pvalb"
+)
 
 
 
 # Create channel specific PB ----
 
 # spg_names <- c("pnn_pos", "neuropil_pos", "neun_pos", "vasc_pos")
-spg_names <- c("pnn_N_neighbors")
+# spg_names <- c("pnn_N_neighbors")
+spg_names <- c("pnn_pvalb", "pnn_pvalb_N_neighbors")
 
 ## Create positive PNN only spe ----
 for (.spg in spg_names) {
