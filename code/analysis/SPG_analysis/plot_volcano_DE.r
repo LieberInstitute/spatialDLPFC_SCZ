@@ -12,7 +12,8 @@ suppressPackageStartupMessages({
 analysis_type <- c("SPD", "donor")
 # spg_names <- c("pnn_pos", "neuropil_pos", "neun_pos", "vasc_pos")
 # spg_names <- c("pnn_N_neighbors")
-spg_names <- paste0("pnn_pos_", c("L2345", "L23", "L34", "L5"))
+# spg_names <- paste0("pnn_pos_", c("L2345", "L23", "L34", "L5"))
+spg_names <- c("pnn_pvalb", "pnn_pvalb_N_neighbors")
 
 analysis_combo <- expand.grid(
   type = analysis_type,
