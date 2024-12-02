@@ -30,25 +30,10 @@ colData(spe) <- DataFrame(col_data_df)
 spe$pnn_pos <- ifelse(spe$spg_PWFA > 0.05, TRUE, FALSE)
 # NOTE: neuropil spot are spots doesn't have DAPI staining
 spe$neuropil_pos <- ifelse(spe$spg_PDAPI > 0.05,FALSE, TRUE)
-
-spe$neun_pos <- ifelse(
-  spe$spg_PNeuN > 0.05 & spe$spg_PNeuN < 0.3,
-  TRUE, FALSE
-)
-spe$vasc_pos <- ifelse(
-  spe$spg_PClaudin5 > 0.05 & spe$spg_PClaudin5 < 0.20,
-  TRUE, FALSE
-)
+spe$neun_pos <- ifelse(spe$spg_PNeuN > 0.05 & spe$spg_PNeuN < 0.3,TRUE, FALSE)
+spe$vasc_pos <- ifelse(spe$spg_PClaudin5 > 0.05 & spe$spg_PClaudin5 < 0.20,TRUE, FALSE)
 
 spe_ntc <- spe[, colData(spe)$dx == "ntc"]
-head(colData(spe_ntc))
-
-spe_ntc$neun_pos <- ifelse(
-  spe_ntc$spg_PNeuN > 0.05 & spe_ntc$spg_PNeuN < 0.3,
-  TRUE, FALSE
-)
-
-spe_ntc_neun <- spe_ntc[, colData(spe_ntc)$neun_pos == FALSE]
 head(colData(spe_ntc))
 
 
@@ -64,100 +49,44 @@ neuropil_pseudo <-
     )
 
 dim(neuropil_pseudo)
-#[1] 15719    62	
+#[1] 15717    62	
 
-dx_res <- registration_stats_enrichment(
-  neuropil_pseudo,
-  block_cor = NaN,
-  covars = c("age", "sex"),
-  var_registration = "neuropil_pos",
-  gene_ensembl = "gene_id",
-  gene_name = "gene_name"
-)
-write.csv(dx_res, file = here("processed-data", "image_processing", "enrichment", "neuropil_dx_res.csv"), row.names = TRUE)
-
-filtered_dx_res <- dx_res %>%
-  filter(fdr_TRUE < 0.1) %>%     # Subset rows with fdr_TRUE < 0.1
-  arrange(fdr_TRUE)
-
-
-library(readxl)
-
-df <- read.csv(here("raw-data/images/SPG_Spot_Valid/Neuropil/maddy.csv"), header = TRUE)
- unique(df$cluster)
-unique_genes = unique(df$gene)
-unique_ensembles = rownames(spe)[match(unique_genes, rowData(spe)$gene_name)]
-non_na_ensembles <- unique_ensembles[!is.na(unique_ensembles)]
-expr_data <- assay(spe_ntc, "counts")[non_na_ensembles, ]
-sum_expression <- colSums(expr_data)
-
-# Add the sum to the colData of spe as a new column
-colData(spe_ntc)$sum_expression <- sum_expression
-
-# Create a box plot of the sum of expression by neuropil_pos group
-ggplot(as.data.frame(colData(spe_ntc)), aes(x = neuropil_pos, y = sum_expression)) +
-  geom_violin() +
-  labs(title = "Sum of Expression of Unique Genes by Neuropil spots",
-       x = "Neuropil",
-       y = "Sum of Expression") +
-  theme_minimal()
-  
-[1] "Synapse_ExPFC" "Synapse_In"    "LO-synapse"    "N-synapse"    
-[5] "ODCjunction"   "ASCjunction"
-
-df_sub = df[df$cluster=="LO-synapse", ]
-
-
-df_neuropil <- merge(dx_res, df, by = "gene")
-df_neuropil_filter <- merge(filtered_dx_res, df, by = "gene")
-Cneuropil = cor(df_neuropil$logFC_TRUE,df_neuropil$avg_log2FC)
-
-png(here("plots", "image_processing", "enrichment", "Neuropil.png"), width = 800, height = 600)
-plot(df_neuropil$logFC_TRUE, df_neuropil$avg_log2FC, 
-     #main = paste0("neuropil ",dim(df_neuropil)[[1]],",", Cneuropil),
-     xlab = "logFC_TRUE", 
-     ylab = "logFC", 
-     col = "blue", 
-     pch = 19)
-grid()  # Adds grid lines to the plot
-dev.off()  # Save and close the file
-
-
-neuron_pseudo <-
+neun_pseudo <-
   registration_pseudobulk(
     spe_ntc,
     var_registration = "neun_pos",
     var_sample_id = "sample_id",
     covars = c("age", "sex", "lot_num", "slide_id"),
     min_ncells = 10,
-    pseudobulk_rds_file = here("processed-data", "image_processing", "enrichment", "neuron_pseudo.rds")
+    pseudobulk_rds_file = here("processed-data", "image_processing", "enrichment", "neun_pseudo.rds")
     )
-	
 
-dx_res <- registration_stats_enrichment(
-  neuron_pseudo,
-  block_cor = NaN,
-  covars = c("age", "sex"),
-  var_registration = "neun_pos",
-  gene_ensembl = "gene_id",
-  gene_name = "gene_name"
-)
+dim(neun_pseudo)
+#[1] 15637    62	
 
-df <- read.csv(here("raw-data/images/SPG_Spot_Valid/NeuN/maddy.csv"), header = TRUE)
+pnn_pseudo <-
+  registration_pseudobulk(
+    spe_ntc,
+    var_registration = "pnn_pos",
+    var_sample_id = "sample_id",
+    covars = c("age", "sex", "lot_num", "slide_id"),
+    min_ncells = 10,
+    pseudobulk_rds_file = here("processed-data", "image_processing", "enrichment", "pnn_pseudo.rds")
+    )
 
-celltypes = c("Inhib", "Excit", "Excit_L3/4/5", "Excit_L3", "Excit_L4", "Excit_L6", "Excit_L5/6", "Excit_L5", "Excit_L2/3")
-df_sub = df[df$cellType.target %in% celltypes,]
-colnames(df_sub)[colnames(df_sub) == "gene"] <- "ensembl"
+dim(pnn_pseudo)
+#[1] 14899    62	
 
-df_neuron  = merge(dx_res, df_sub, by = "ensembl")
-Cneuron = cor(df_neuron$logFC_TRUE,df_neuron$logFC)
+vasc_pseudo <-
+  registration_pseudobulk(
+    spe_ntc,
+    var_registration = "vasc_pos",
+    var_sample_id = "sample_id",
+    covars = c("age", "sex", "lot_num", "slide_id"),
+    min_ncells = 10,
+    pseudobulk_rds_file = here("processed-data", "image_processing", "enrichment", "vasc_pseudo.rds")
+    )
 
-png(here("plots", "image_processing", "enrichment", "Neuron.png"), width = 800, height = 600)
-plot(df_neuron$logFC_TRUE, df_neuron$logFC, 
-     main = paste0("neuron ",dim(df_neuron)[[1]],",", Cneuron),
-     xlab = "logFC_TRUE", 
-     ylab = "logFC", 
-     col = "blue", 
-     pch = 19)
-grid()  # Adds grid lines to the plot
-dev.off() 
+dim(vasc_pseudo)
+#[1] 14755    62	
+
