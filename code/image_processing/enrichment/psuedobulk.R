@@ -1,4 +1,4 @@
-setwd('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/')
+setwd('/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/')
 suppressPackageStartupMessages({
   library(here)
   library(SpatialExperiment)
@@ -35,7 +35,7 @@ spe$vasc_pos <- ifelse(spe$spg_PClaudin5 > 0.05 & spe$spg_PClaudin5 < 0.20,TRUE,
 
 spe_ntc <- spe[, colData(spe)$dx == "ntc"]
 head(colData(spe_ntc))
-
+saveRDS(spe_ntc,here("processed-data", "image_processing", "enrichment", "spe_ntc.rds"))
 
  ## Per sample & domain ----
 neuropil_pseudo <-
