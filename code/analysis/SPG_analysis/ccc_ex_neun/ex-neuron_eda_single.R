@@ -7,6 +7,9 @@ suppressPackageStartupMessages({
   library(ggbeeswarm)
   library(escheR)
   library(sessioninfo)
+  library(scran)
+  library(bluster)
+  library(pheatmap)
 })
 
 # Load spe data ----
@@ -24,13 +27,62 @@ neun_spe <- sub_spe[, sub_spe$neun_pos == TRUE]
 
 
 # Analysis ----
+## Data driven clustering analysis ----
+top_HVG <- getTopHVGs(neun_spe, n = 2000)
+set.seed(20241202)
+neun_spe <- fixedPCA(neun_spe, subset.row = top_HVG)
+clust_kmeans <- clusterCells(neun_spe,
+  use.dimred = "PCA",
+  BLUSPARAM = KmeansParam(centers = 2)
+)
+colLabels(neun_spe) <- clust_kmeans
+
+### Gene express heatmap ----
+mk_gene_ind <- which(rowData(neun_spe)$gene_name %in% c("SLC17A7", "GAD1", "GAD2"))
+stopifnot(length(mk_gene_ind) == 3)
+mk_gene_ensmbl <- rownames(neun_spe)[mk_gene_ind]
+
+# Generate heatmap using pheatmap
+pheatmap(
+  mat = logcounts(neun_spe)[mk_gene_ind, ],
+  scale = "row",
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+  annotation_col = as.data.frame(colData(neun_spe)$label |> factor())
+)
+
+mat <- logcounts(neun_spe)[mk_gene_ind, ]
+
+mat[abs(mat) > 3] <- NA
+pheatmap(
+  mat,
+  scale = "row",
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+  annotation_col = as.data.frame(colData(neun_spe)$label |> factor())
+)
+
+
+## Marker Gene Distribution ----
+# SLC17A7 - enriched in Ex cells
+library(scater)
+plotExpression(neun_spe, features = c("ENSG00000104888"))
+
+# GAD1 - depleted in Ex cells
+
+# GAD2 - depleted in Ex cells
+
+
+# 
+
 # NOTE: marker genes for excitatory neurons - high SLC17A7 transcripts, but with low GAD1 and GAD2 transcripts.
 
 mk_gene_ind <- which(rowData(neun_spe)$gene_name %in% c("SLC17A7", "GAD1", "GAD2"))
 stopifnot(length(mk_gene_ind) == 3)
-
-
-
 
 ## Viz pairwise correaltion ----
 marker_gene_df <- logcounts(neun_spe)[mk_gene_ind, ] |> data.matrix()
