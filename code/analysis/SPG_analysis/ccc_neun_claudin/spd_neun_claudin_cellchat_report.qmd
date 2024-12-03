@@ -142,5 +142,57 @@ remove.isolate = TRUE)
 netVisual_bubble(cellchat,   comparison = c(1, 2), angle.x = 45,
 title.name = "Decreased signaling in SCZ",
 max.dataset = 1,
-remove.isolate = TRUE)
+remove.isolate = FALSE)
+```
+
+## Somatostatin
+### Increased signaling in SCZ
+
+
+```{r}
+netVisual_bubble(scz_cellchat, #comparison = c(1, 2),
+ angle.x = 45,
+signaling = "CD99",
+title.name = "Increased signaling in SCZ",
+# thresh = 3,
+# max.dataset = 2,
+remove.isolate = TRUE,
+return.data = FALSE)
+
+
+netVisual_bubble(ntc_cellchat, #comparison = c(1, 2),
+ angle.x = 45,
+signaling = "SOMATOSTATIN",
+title.name = "Uniquely expressed in NTC",
+# thresh = 3,
+# max.dataset = 2,
+remove.isolate = FALSE,
+return.data = FALSE)
+
+```
+
+
+```{r}
+### Increased signaling in SCZ
+```{r, fig.width=8, fig.height=15}
+source("/Users/bguo6/GitHub/spatialDLPFC_SCZ/code/analysis/SPG_analysis/ccc_neun_claudin/fun_netVisual_bubble.r")
+source("/Users/bguo6/GitHub/spatialDLPFC_SCZ/code/analysis/SPG_analysis/ccc_neun_claudin/fun_subsetCommunication.r")
+source("/Users/bguo6/GitHub/spatialDLPFC_SCZ/code/analysis/SPG_analysis/ccc_neun_claudin/fun_subsetCommunication_internal.r")
+netVisual_bubble(cellchat, comparison = c(1, 2), angle.x = 45,
+signaling = "CD99",
+title.name = "Increased signaling in SCZ",
+# thresh = 3,
+max.dataset = 2,
+remove.isolate = FALSE,
+return.data = FALSE)
+```
+
+### Decreased signaling in SCZ
+```{r, fig.width=8, fig.height=15}
+netVisual_bubble(cellchat,   comparison = c(1, 2), angle.x = 45,
+signaling = "GABA",
+title.name = "Decreased signaling in SCZ",
+# thresh = 1,
+max.dataset = 1,
+remove.isolate = FALSE)
 ```
