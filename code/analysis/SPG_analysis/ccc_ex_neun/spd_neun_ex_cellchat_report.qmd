@@ -1,11 +1,13 @@
 ---
-title: "Between-SPD Differential cell-cell communication between SCZ and NTC for Neun+ and Claudin+"
+title: "Between-SPD Differential cell-cell communication between SCZ and NTC for Neun+"
 format:
   pdf:
     toc: true
 execute:
   echo: false
 ---
+
+**Please ignore any Boyi's interpretation, if any, in this particular report.**
 
 # Method
 
@@ -23,7 +25,7 @@ suppressPackageStartupMessages({
 cellchat <- readRDS(
   here(
     "processed-data/rds/spg_ccc",
-    "spd_neun_claudin_merged_cellchat.rds"
+    "spd_neun_ex_merged_cellchat.rds"
   )
 )
 ```
@@ -61,12 +63,12 @@ netVisual_diffInteraction(cellchat, weight.scale = T)
 
 ntc_cellchat <- readRDS(here(
   "processed-data/rds/spg_ccc",
-  "spd_neun_claudin_ntc_cellchat.rds"
+  "spd_neun_ex_ntc_cellchat.rds"
 ))
 scz_cellchat <- readRDS(
   here(
     "processed-data/rds/spg_ccc",
-    "spd_neun_claudin_scz_cellchat.rds"
+    "spd_neun_ex_ntc_cellchat.rds"
   )
 )
 
@@ -142,57 +144,5 @@ remove.isolate = TRUE)
 netVisual_bubble(cellchat,   comparison = c(1, 2), angle.x = 45,
 title.name = "Decreased signaling in SCZ",
 max.dataset = 1,
-remove.isolate = FALSE)
-```
-
-## Somatostatin
-### Increased signaling in SCZ
-
-
-```{r}
-netVisual_bubble(scz_cellchat, #comparison = c(1, 2),
- angle.x = 45,
-signaling = "CD99",
-title.name = "Increased signaling in SCZ",
-# thresh = 3,
-# max.dataset = 2,
-remove.isolate = TRUE,
-return.data = FALSE)
-
-
-netVisual_bubble(ntc_cellchat, #comparison = c(1, 2),
- angle.x = 45,
-signaling = "SOMATOSTATIN",
-title.name = "Uniquely expressed in NTC",
-# thresh = 3,
-# max.dataset = 2,
-remove.isolate = FALSE,
-return.data = FALSE)
-
-```
-
-
-```{r}
-### Increased signaling in SCZ
-```{r, fig.width=8, fig.height=15}
-source("/Users/bguo6/GitHub/spatialDLPFC_SCZ/code/analysis/SPG_analysis/ccc_neun_claudin/fun_netVisual_bubble.r")
-source("/Users/bguo6/GitHub/spatialDLPFC_SCZ/code/analysis/SPG_analysis/ccc_neun_claudin/fun_subsetCommunication.r")
-source("/Users/bguo6/GitHub/spatialDLPFC_SCZ/code/analysis/SPG_analysis/ccc_neun_claudin/fun_subsetCommunication_internal.r")
-netVisual_bubble(cellchat, comparison = c(1, 2), angle.x = 45,
-signaling = "CD99",
-title.name = "Increased signaling in SCZ",
-# thresh = 3,
-max.dataset = 2,
-remove.isolate = FALSE,
-return.data = FALSE)
-```
-
-### Decreased signaling in SCZ
-```{r, fig.width=8, fig.height=15}
-netVisual_bubble(cellchat,   comparison = c(1, 2), angle.x = 45,
-signaling = "GABA",
-title.name = "Decreased signaling in SCZ",
-# thresh = 1,
-max.dataset = 1,
-remove.isolate = FALSE)
+remove.isolate = TRUE)
 ```
