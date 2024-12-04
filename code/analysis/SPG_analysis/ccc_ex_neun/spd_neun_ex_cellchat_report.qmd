@@ -1,5 +1,5 @@
 ---
-title: "Between-SPD Differential cell-cell communication between SCZ and NTC for Neun+"
+title: "Between-SPD Differential cell-cell communication between SCZ and NTC for PNN+/PVALB+ and Excitory cells"
 format:
   pdf:
     toc: true
@@ -7,7 +7,11 @@ execute:
   echo: false
 ---
 
-**Please ignore any Boyi's interpretation, if any, in this particular report.**
+
+## Excitatoary spot calling
+Excitatory spot calling - we used a semi-supervised way to call the Excitatory spot. We firstly subset the dataset such that only neun+ spots are included. Then we chose 50~ cell type makers (from DLPFC data analysis) and used K-means (k=2) to dichotomize all spots to two clusters. The cluster with higher average expression of SLC17A7 and lower GAD1 and GAD2 is annotated as the excitatory spots.
+
+For more detail, please go to `code/analysis/SPG_analysis/ccc_ex_neun/ex_neuron_eda.R`
 
 # Method
 
@@ -34,6 +38,8 @@ cellchat <- readRDS(
 ## Number of interaction and interaction strength
 ### Overall levelfor SCZ and NTC respectively
 
+I'm not quietly sure how to interpreting this result. I see that there are huge different when interpreting the difference using the number of interaction and the weight of the interaciton. Boyi would go read the cellchat paper to understand this part. 
+
 ```{r}
 gg1 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2))
 gg2 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2), measure = "weight")
@@ -41,6 +47,10 @@ gg1 + gg2
 ```
 
 ### Communication pattern between Neun+ and Claudin+ spots
+
+Boyi wants to quickly highlight the difference communication from Ex Only spots of L2/3 (spd06) to , which is enriched in SCZ samples both in terms of the number of interactions and the strength of the interaction.
+
+Following previous convention, the red color means enriched in SCZ, and the blue color means more/stronger interactions in NTC sample.
 
 ```{r}
 gg1 <- netVisual_heatmap(cellchat)
@@ -50,6 +60,8 @@ gg2 <- netVisual_heatmap(cellchat, measure = "weight")
 gg1 + gg2
 ```
 
+Similar information as visualized in the previous heatmap, the viz below only visualizes the amount of interaction that are different between NTC samples and SCZ samples, but not the weight though. 
+
 ```{r fig.width=10, fig.height = 10}
 # par(mfrow = c(1,2), xpd=TRUE)
 netVisual_diffInteraction(cellchat, weight.scale = T)
@@ -58,7 +70,7 @@ netVisual_diffInteraction(cellchat, weight.scale = T)
 
 
 # Compare major sources and targets - Not very informative
-
+I don't think the difference is strong enoguht to be catpureed in this plot.
 ```{r}
 
 ntc_cellchat <- readRDS(here(
@@ -90,7 +102,7 @@ patchwork::wrap_plots(plots = gg)
 
 
 ## overall information flow of each signaling pathway or ligand-receptor pair
-
+Well, it is good to see where that there are a lot of pairs that are differentiating between two diagnosis groups. 
 ```{r, fig.height = 8}
 # gg1 <- rankNet(cellchat, mode = "comparison", measure = "weight", sources.use = NULL, targets.use = NULL, stacked = T, do.stat = TRUE)
 gg2 <- rankNet(cellchat, mode = "comparison", measure = "weight", sources.use = NULL, targets.use = NULL, stacked = F, do.stat = TRUE)
