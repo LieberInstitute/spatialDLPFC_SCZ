@@ -72,7 +72,7 @@ all_pathways <- rankNet(cellchat, mode = "comparison", measure = "weight", sourc
 
 all_pw_names <- all_pathways$name |> unique()
 
-selected_pw_names <- c("CCK", "GRN", "2-AG", "Glutamate", "GABA-B", "GABA-A", "NRXN")
+selected_pw_names <- c("CCK", "GRN", "2-AG", "Glutamate", "GABA-B", "GABA-A", "NRXN", "OPIOID")
 stopifnot(all(selected_pw_names %in% all_pw_names))
 
 ## Make plot -----
