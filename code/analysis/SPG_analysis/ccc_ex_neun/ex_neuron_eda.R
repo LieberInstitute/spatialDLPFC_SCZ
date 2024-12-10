@@ -143,7 +143,11 @@ pheatmap(
 ## Marker Gene Distribution ----
 # SLC17A7 - enriched in Ex cells
 library(scater)
-plotExpression(pseudobulk_sce, features = c("ENSG00000104888"), x = "label", color_by = "label", point_size = 0.1)
+plotExpression(pseudobulk_sce, features = c(
+  "ENSG00000104888",    # SLC17A7
+  "ENSG00000128683",    # GAD1
+  "ENSG00000136750"     # GAD2
+), x = "label", color_by = "label", point_size = 0.1, scale = "free_y")
 
 # GAD1 - depleted in Ex cells
 plotExpression(pseudobulk_sce, features = c("ENSG00000128683"), x = "label", color_by = "label", point_size = 0.1)
