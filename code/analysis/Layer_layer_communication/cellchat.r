@@ -46,6 +46,22 @@ col_data_df <- PRECAST_df_final |>
 rownames(col_data_df) <- colnames(spe)
 colData(spe) <- DataFrame(col_data_df)
 
+# Change label ----
+# Find annotation file
+spd_anno_df <- read_csv(
+  here(
+    "processed-data/man_anno",
+    "spd_labels_k7.csv"
+  )
+) |>
+  mutate(anno_lab = paste0(label, " (", spd, ") ")) |>
+  column_to_rownames("spd")
+
+
+# Create a column with annoated labels.
+spe$spd_annotated <- spd_anno_df[spe$PRECAST_07, "anno_lab"]
+
+
 # Create Cell Chat Objects for dx groups ----
 subset_N_cellchat <- function(spe, .dx = "ntc") {
   sub_spe <- spe[, spe$dx == .dx]
@@ -60,13 +76,13 @@ subset_N_cellchat <- function(spe, .dx = "ntc") {
   # create object
   cellchat <- createCellChat(
     object = data.input, meta = meta,
-    group.by = "PRECAST_07"
+    group.by = "spd_annotated"
   )
 
   # select data base
   cellchat@DB <- CellChatDB.human
   cellchat <- subsetData(cellchat)
-  # future::plan("multisession", workers = 3) # do parallel
+  future::plan("multisession", workers = 3) # do parallel
   cellchat <- identifyOverExpressedGenes(cellchat)
   # to prevent memory limit error
   options(future.globals.maxSize = 8.5 * 1024 * 1024^2)
@@ -84,7 +100,7 @@ ntc_cellchat <- subset_N_cellchat(spe, .dx = "ntc")
 ntc_cellchat |> saveRDS(
   here(
     "processed-data/layer_layer_comm",
-    "ntc_cellchat.rds"
+    "ntc_cellchat_annotated.rds"
   )
 )
 
@@ -95,7 +111,7 @@ scz_cellchat <- subset_N_cellchat(spe, .dx = "scz")
 scz_cellchat |> saveRDS(
   here(
     "processed-data/layer_layer_comm",
-    "scz_cellchat.rds"
+    "scz_cellchat_annotated.rds"
   )
 )
 
@@ -105,12 +121,12 @@ scz_cellchat |> saveRDS(
 # Create merged cellChat object ----
 ntc_cellchat <- readRDS(here(
   "processed-data/layer_layer_comm",
-  "ntc_cellchat.rds"
+  "ntc_cellcha_annotatedt.rds"
 ))
 scz_cellchat <- readRDS(
   here(
     "processed-data/layer_layer_comm",
-    "scz_cellchat.rds"
+    "scz_cellchat_annotated.rds"
   )
 )
 
@@ -124,16 +140,16 @@ saveRDS(
   cellchat,
   here(
     "processed-data/layer_layer_comm",
-    "merged_cellchat.rds"
+    "merged_cellchat_annotated.rds"
   )
 )
 
-# Compare the total number of interactions & Strength--
-gg1 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2))
-gg2 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2), measure = "weight")
-gg1 + gg2
+# # Compare the total number of interactions & Strength--
+# gg1 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2))
+# gg2 <- compareInteractions(cellchat, show.legend = F, group = c(1, 2), measure = "weight")
+# gg1 + gg2
 
-netVisual_diffInteraction(cellchat, weight.scale = T)
+# netVisual_diffInteraction(cellchat, weight.scale = T)
 
 
 # Session Info ----
