@@ -5,13 +5,23 @@ library(tidyverse)
 library(sessioninfo)
 
 # Load Data -----
+# Load diagnosis from meta data
+# Merge dx information into df
+tmp_spe <- readRDS(
+  here("processed-data/rds/layer_spd", "test_spe_pseudo_PRECAST_07.rds")
+)
+
+
+# Process cellchat per-sample objects ----
 rds_files <- list.files(
   here(
     "processed-data/layer_layer_comm/per_sample"
   )
 )
 
-tmp <- rds_files |>
+stopifnot(length(rds_files) == 63)
+
+pathway_df_long <- rds_files |>
   set_names() |>
   map_dfr(
     .f = function(file_name) {
@@ -29,22 +39,41 @@ tmp <- rds_files |>
     }
   )
 
+pathway_df_long <- pathway_df_long |>
+  left_join(
+    metadata(tmp_spe)$dx_df |> select(sample_id, dx),
+    by = "sample_id"
+  )
+
 # Convert list of named vectors to a dataframe
-# TODO: debug this part
+pathway_df <- pathway_df_long |>
+  pivot_wider(id_cols = "sample_id", names_from = "name", values_from = "value")
 
-df <- enframe(tmp) %>%
-  as.data.frame()
+pathway_df <- pathway_df |>
+  left_join(
+    metadata(tmp_spe)$dx_df |> select(sample_id, dx),
+    by = "sample_id"
+  )
 
-# Rename columns to match the names of the list elements
-colnames(df) <- names(tmp)
+# Viz the pathway groups
+pathway_df_long |>
+  ggplot() +
+  geom_violin(
+    aes(x = dx, y = value, color = dx)
+  ) +
+  geom_jitter(
+    aes(x = dx, y = value, color = dx)
+  ) +
+  facet_wrap("name", scales = "free_y")
 
-# Calcualte the pathway for each object
 
+# NOTE:  how to do with the NA values
+sum(is.na(pathway_df)) / (dim(pathway_df) |> prod())
 
-# Create Union of the pathway
-unique(c(names(tmp)))
+(is.na(pathway_df) |> colSums()) / nrow(pathway_df)
 
-# Create a matrix to compiling the pathways across all samples contianing all samples
+t.test(Glutamate ~ dx, pathway_df)
+wilcox.test(RA ~ dx, pathway_df)
 
 
 # Viz
