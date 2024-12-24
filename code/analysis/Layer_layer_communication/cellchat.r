@@ -119,10 +119,13 @@ scz_cellchat |> saveRDS(
 #
 
 # Create merged cellChat object ----
-ntc_cellchat <- readRDS(here(
-  "processed-data/layer_layer_comm",
-  "ntc_cellcha_annotatedt.rds"
-))
+ntc_cellchat <- readRDS(
+  here(
+    "processed-data/layer_layer_comm",
+    "ntc_cellchat_annotated.rds"
+  )
+)
+
 scz_cellchat <- readRDS(
   here(
     "processed-data/layer_layer_comm",
@@ -131,6 +134,7 @@ scz_cellchat <- readRDS(
 )
 
 object.list <- list(ntc = ntc_cellchat, scz = scz_cellchat)
+
 cellchat <- mergeCellChat(
   object.list,
   add.names = names(object.list)
