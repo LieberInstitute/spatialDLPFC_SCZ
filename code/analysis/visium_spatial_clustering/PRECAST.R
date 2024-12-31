@@ -43,6 +43,15 @@ cat(
   " unique gene markers are selected for spatial clustering. \n"
 )
 
+write_csv(
+  gene_df,
+  here(
+    "manuscript/tables",
+    "stable_selected_gene_for_PRECAST.csv"
+  )
+)
+
+
 
 # PRECAST Workflow -----
 ## Create Seurat List for PRECAST -----
