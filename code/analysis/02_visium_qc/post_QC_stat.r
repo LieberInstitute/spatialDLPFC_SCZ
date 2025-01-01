@@ -57,28 +57,7 @@ colData(spe) |>
 # 2 scz     4590
 
 
-# Plot ----
-## Box plot ----
-colData(spe) |>
-  data.frame() |>
-  group_by(sample_id) |>
-  summarize(n = n()) |>
-  right_join(
-    metadata(spe)$dx_df,
-    by = "sample_id"
-  ) |>
-  ggplot(aes(x = dx, y = n)) +
-  geom_boxplot(aes(color = dx)) +
-  geom_jitter(size = 0.5, alpha = 0.3) +
-  theme_light() +
-  ylab("# of Spots") +
-  xlab("") +
-  scale_color_manual(
-    values = c(
-      "ntc" = "blue",
-      "scz" = "red"
-    )
-  )
+
 
 # Session Info ----
 session_info()
