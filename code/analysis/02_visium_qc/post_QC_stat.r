@@ -1,7 +1,11 @@
-library(SpatialExperiment)
-library(here)
-library(tidyverse)
+# Load packages ----
+suppressPackageStartupMessages({
+  library(SpatialExperiment)
+  library(here)
+  library(tidyverse)
+})
 
+# Load data (outliers removed) ----
 spe <- readRDS(
   here(
     "processed-data/rds/02_visium_qc",
@@ -9,8 +13,10 @@ spe <- readRDS(
   )
 )
 
-# Total spots ----
+# Characterizing statistics ----
+## Total spots ----
 ncol(spe)
+# [1] 279806
 
 ## Total spots per dx ----
 colData(spe) |>
@@ -26,6 +32,11 @@ colData(spe) |>
     n = sum(n)
   )
 
+#   dx         n
+#   <chr>  <int>
+# 1 ntc   136456
+# 2 scz   143350
+
 # Medians ----
 colData(spe) |>
   data.frame() |>
@@ -40,7 +51,14 @@ colData(spe) |>
     median = median(n)
   )
 
-# Box plot ----
+#   dx    median
+#   <chr>  <dbl>
+# 1 ntc     4556
+# 2 scz     4590
+
+
+# Plot ----
+## Box plot ----
 colData(spe) |>
   data.frame() |>
   group_by(sample_id) |>
@@ -51,7 +69,7 @@ colData(spe) |>
   ) |>
   ggplot(aes(x = dx, y = n)) +
   geom_boxplot(aes(color = dx)) +
-  geom_jitter(point = 0.5, alpha = 0.3) +
+  geom_jitter(size = 0.5, alpha = 0.3) +
   theme_light() +
   ylab("# of Spots") +
   xlab("") +
@@ -61,3 +79,6 @@ colData(spe) |>
       "scz" = "red"
     )
   )
+
+# Session Info ----
+session_info()
