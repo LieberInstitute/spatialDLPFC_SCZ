@@ -61,6 +61,7 @@ spe <- spe[, spe$in_tissue == TRUE]
 
 
 
+# TODO: this might be change to scatter more ----
 png(
   here("plots/02_visium_qc/post_qc_metric.png"),
   width = 816, height = 1056, units = "px"
