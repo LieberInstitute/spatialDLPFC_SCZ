@@ -2,6 +2,12 @@
 
 - cellchat.r: running comparative cell-cell communication between the diagnosis groups. It first run the cell-chat pipeline on the subset of samples from each diagnosis separately (stored), and then use xxx fucntion to merge the two cellchat object and identify the differential pattern and measure the strength of the evidence.
 
+- DEG_only: Folder containing code to characterize dx-DEGs in the data-driven layer-layer communication analysis.
+  - [DEG_only/understanding_pathways.R](DEG_only/understanding_pathways.R) contain characterization and plotting. 
+  - *.csv containing the pathways/ligand receptor pairs where DEGs serves as ligand or receptor genes.
+
+- `/Users/bguo6/GitHub/spatialDLPFC_SCZ/code/analysis/Layer_layer_communication/vulnerablility_charact` studies the vulnerable layers, especially L2/3 and L6/WM differential pathways.
+
 - Validation
   - cellchat_validate_NTC.qmd/.pdf: Visualizes the results generated from `cellchat.r`, provides summary report and 
 
