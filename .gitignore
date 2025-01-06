@@ -11,6 +11,10 @@ processed-data/VistoSeg/to_be_deleted_loupe/
 
 # Ignore NMF plots
 plots/NMF/
+plots/archived/
+plots/spatial_cluster/archived
+plots/01_build_spe/archived
+
 
 # Extremely large data files from PEC study
 code/analysis/pseudobulk_dx/spatialDLPFC_BayesSpace_k09_registration.Rdata
