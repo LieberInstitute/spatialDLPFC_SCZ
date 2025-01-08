@@ -169,7 +169,6 @@ ggsave(
   width = 9, height = 4, units = "in"
 )
 
-
 ## Mito_ratio ----
 p_mito <- plotColData(spe,
   x = "sample_label", y = "expr_chrM_ratio",
@@ -217,17 +216,17 @@ ggsave(
   width = 9, height = 4, units = "in"
 )
 
-
+## Create panel ----
 paneled_p <- ggpubr::ggarrange(
   p_umi, p_gene, p_mito,
   ncol = 1,
   heights = c(2, 2, 2.5),
-  # widths = c(1, 1, 0.7),
   align = "v",
   legend = "bottom",
   common.legend = TRUE
 )
 
+## Save plot ----
 ggsave(
   here(
     "plots/02_visium_qc",
@@ -236,7 +235,6 @@ ggsave(
   plot = paneled_p,
   width = 8, height = 10, unit = "in"
 )
-
 
 # Session Info ----
 sessioninfo::session_info()
