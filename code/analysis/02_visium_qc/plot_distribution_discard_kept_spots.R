@@ -5,8 +5,6 @@ suppressPackageStartupMessages({
   library(here)
   library(cowplot)
   library(sessioninfo)
-
-  # library(scater)
 })
 
 # Load Data -----
