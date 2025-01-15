@@ -41,117 +41,112 @@ spe$brnum <- metadata(spe)$dx_df$subject[
   )
 ]
 
-spe$sample_id <- paste0(
-  spe$brnum, "_", spe$dx
+spe$sample_label <- paste0(
+  spe$brnum, "_", toupper(spe$dx)
 )
 
+## Subset to representative samples ----
+# error prevention
+stopifnot(all(c("V13M06-342_D1", "V13M06-343_D1") %in% unique(spe$sample_id)))
+
+spe <- spe[, spe$sample_id %in% c("V13M06-342_D1", "V13M06-343_D1")]
 
 # Create visualization ----
-
-plot_list <- vector("list", length = 63) |>
-  setNames(
-    unique(spe$sample_id)
-  )
-
-for (.smp in names(plot_list)) {
-  # browser()
-  sub_spe <- spe[, spe$sample_id == .smp]
-
-  RBG_norm_MBP <- scales::rescale(
-    # TODO: change this to logcounts
-    logcounts(sub_spe)[which(rowData(sub_spe)$gene_name == "MBP"), ] |>
-      scale(center = TRUE, scale = FALSE) |>
-      sapply(max, 0),
-    to = c(0, 1)
-  )
-  RBG_norm_PCP4 <- scales::rescale(
-    logcounts(sub_spe)[which(rowData(sub_spe)$gene_name == "PCP4"), ] |>
-      scale(center = TRUE, scale = FALSE) |>
-      sapply(max, 0),
-    to = c(0, 1)
-  )
-  RBG_norm_SNAP25 <- scales::rescale(
-    logcounts(sub_spe)[which(rowData(sub_spe)$gene_name == "SNAP25"), ] |>
-      scale(center = TRUE, scale = FALSE) |>
-      sapply(max, 0),
-    to = c(0, 1)
-  )
-
-  sub_spe$rbg_val <- rgb(
-    red = RBG_norm_MBP,
-    green = RBG_norm_PCP4,
-    blue = RBG_norm_SNAP25
-  )
-
-  plot_list[[.smp]] <- make_escheR(sub_spe) |>
-    add_fill("rbg_val") +
-    scale_fill_identity() +
-    theme(
-      plot.background = element_rect(fill = "black"),
-      legend.position = "none",
-      plot.title = ggplot2::element_text(size = 40)
-    )
-}
-
-
-
-
-# spe$rbg_val <- rgb(
-#   red = RBG_norm_MBP,
-#   green = RBG_norm_PCP4,
-#   blue = RBG_norm_SNAP25
-# )
-
-# plot_list <- vis_grid_gene(
-#   spe,
-#   gene_id = "rbg_val",
-#   sample_order = unique(spe$sample_id) |> sort(),
-#   spatial = FALSE,
-#   point_size = 2,
-#   return_plots = TRUE
-# )
-
-pdf(
-  file = here::here(
-    "plots", "02_visium_qc",
-    paste0("rgb_plot_anatomy_sfigur.pdf")
-  ),
-  height = 6 * 8, width = 6 * 8 - 1
-  # height = 1 * 8, width = 6 * 8 - 1 # Test
-)
-# Plot png for place holder in google drive.
-# png(
-#   file = here::here(
-#     "plots", "02_visium_qc",
-#     paste0("vis_clus_sample_aware_low_lib_size_sfigur.png")
-#   ),
-#   height = 5 * 8, width = 8 * 8
-# )
-
-# Plot ntc and scz in separate groups
-idx_list <- spe$dx |>
-  unique() |>
+plot_list <- unique(spe$sample_label) |>
   set_names() |>
-  imap(~ str_detect(names(plot_list), .x))
+  map(.f = function(.smp) {
+    sub_spe <- spe[, spe$sample_label == .smp]
 
-for (.idx in idx_list) {
-  print(
-    ggpubr::ggarrange(
-      plotlist = plot_list[.idx],
-      ncol = 6, nrow = 6,
-      common.legend = TRUE
+    RBG_norm_MBP <- scales::rescale(
+      logcounts(sub_spe)[which(rowData(sub_spe)$gene_name == "MBP"), ] |>
+        scale(center = TRUE, scale = FALSE) |>
+        sapply(max, 0),
+      to = c(0, 1)
     )
+
+    RBG_norm_PCP4 <- scales::rescale(
+      logcounts(sub_spe)[which(rowData(sub_spe)$gene_name == "PCP4"), ] |>
+        scale(center = TRUE, scale = FALSE) |>
+        sapply(max, 0),
+      to = c(0, 1)
+    )
+
+    RBG_norm_SNAP25 <- scales::rescale(
+      logcounts(sub_spe)[which(rowData(sub_spe)$gene_name == "SNAP25"), ] |>
+        scale(center = TRUE, scale = FALSE) |>
+        sapply(max, 0), # ignore small counts
+      to = c(0, 1)
+    )
+
+    sub_spe$rbg_val <- rgb(
+      red = RBG_norm_MBP,
+      green = RBG_norm_PCP4,
+      blue = RBG_norm_SNAP25
+    )
+
+    # browser()
+    make_escheR(sub_spe) |>
+      add_fill(
+        "rbg_val",
+        point_size = 2.1
+      ) +
+      scale_fill_identity() +
+      labs(title = .smp) +
+      theme(
+        # legend.position = "none",
+        plot.title = element_text(size = 20, hjust = 0.5),
+        panel.background = element_rect(fill = "black"),
+        panel.border = element_rect(colour = "black", fill = NA, size = 1)
+      )
+  })
+
+
+# Create a custom legend ----
+legend_plot <- data.frame(
+  x = 1, y = 1,
+  Gene = c("MBP", "PCP4", "SNAP25")
+) |>
+  ggplot() +
+  geom_point(aes(x, y, color = Gene)) + # Increase the size of the points
+  scale_color_manual(
+    name = "Gene",
+    values = c(
+      "MBP" = "red",
+      "PCP4" = "green",
+      "SNAP25" = "blue"
+    ),
+    guide = guide_legend(
+      override.aes = list(size = 7) # Increase the size of the legend keys
+    )
+  ) +
+  theme_void() +
+  theme(
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.title = element_text(size = 15),
+    legend.text = element_text(size = 15)
   )
-}
 
-# Test code (TODO: delete)
-# ggpubr::ggarrange(
-#   plotlist = plot_list,
-#   ncol = 6, nrow = 1,
-#   common.legend = TRUE
-# )
+# Combine plots with legend ----
+combined_plot <- ggpubr::ggarrange(
+  plotlist = plot_list,
+  nrow = 1,
+  ncol = 2,
+  common.legend = TRUE,
+  legend = "bottom",
+  legend.grob = ggpubr::get_legend(legend_plot)
+)
 
-dev.off()
+# Save combined plot ----
+ggsave(
+  filename = here(
+    "plots/02_visium_qc",
+    "qc_spot_plot_anatomical_orientation_rep_sample_with_legend.pdf"
+  ),
+  plot = combined_plot,
+  height = 5.5, width = 9.5,
+  unit = "in"
+)
 
 # Session Info
 session_info()
