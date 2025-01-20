@@ -58,6 +58,7 @@ for (.file in spd_rds) {
   saveRDS(
     layer_res,
     here(
+      # TODO: need organize
       "processed-data", "rds", "layer_enrich_test",
       paste0("test_enrich_", .spd, ".rds")
     )
