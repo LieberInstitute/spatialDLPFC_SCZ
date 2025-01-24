@@ -63,6 +63,12 @@ for (.file in spd_rds) {
       paste0("test_enrich_", .spd, ".rds")
     )
   )
+
+  layer_res <- readRDS(here(
+      # TODO: need organize
+      "processed-data", "rds", "layer_enrich_test",
+      paste0("test_enrich_PRECAST_07.rds")
+    ))
   ## Format enrichment test res ----
   t_stats <- layer_res[, grep("^t_stat_", colnames(layer_res))]
   colnames(t_stats) <- gsub("^t_stat_", "", colnames(t_stats))
