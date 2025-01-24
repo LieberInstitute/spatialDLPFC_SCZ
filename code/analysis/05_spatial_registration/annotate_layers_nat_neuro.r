@@ -11,11 +11,10 @@ suppressPackageStartupMessages({
 # Load data -----
 ## Enrichment analysis -----
 layer_res <- readRDS(here(
-  # TODO: need organize
   "processed-data", "rds", "layer_enrich_test",
-  # TODO: need to rename this part
   paste0("test_enrich_PRECAST_07.rds")
 ))
+
 ## format enrichment test res
 t_stats <- layer_res[, grep("^t_stat_", colnames(layer_res))]
 colnames(t_stats) <- gsub("^t_stat_", "", colnames(t_stats))
@@ -37,14 +36,14 @@ manual_cor_all <- layer_stat_cor(
   manual_modeling_results,
   model_type = "enrichment",
   reverse = FALSE,
-  top_n = NULL
+  top_n = 100
 )
 
 # Annotation confidence -----
 anno_conf_df <- annotate_registered_clusters(
   cor_stats_layer = manual_cor_all,
   confidence_threshold = 0.25,
-  cutoff_merge_ratio = 0.1
+  cutoff_merge_ratio = 0.25
 ) |>
   arrange(cluster)
 # r$> annotate_registered_clusters(
@@ -125,7 +124,8 @@ anno_matrix <- anno_matrix[
 
 pdf(
   here("plots/05_spatial_registration",
-  "heatmap_registration_nat_neuro_all_gene.pdf"),
+  # "heatmap_registration_nat_neuro_100G_with_X.pdf"),
+    "heatmap_registration_nat_neuro_100G.pdf"),
   height = 4,
   width = 5.5
 )
@@ -142,12 +142,14 @@ Heatmap(
   cluster_columns = FALSE,
   right_annotation = subset_color_bar,
   bottom_annotation = layer_color_bar,
-  column_order = ,
-  cell_fun = function(j, i, x, y, width, height, fill) {
-    grid.text(anno_matrix[i, j], x, y, gp = gpar(fontsize = 10))
-  }
+  # column_order = ,
+  # cell_fun = function(j, i, x, y, width, height, fill) {
+  #   grid.text(anno_matrix[i, j], x, y, gp = gpar(fontsize = 10))
+  # }
 ) |> print()
 dev.off()
+
+# Save 
 
 
 
