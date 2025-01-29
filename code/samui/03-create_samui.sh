@@ -1,10 +1,9 @@
 #!/bin/bash
-
 #SBATCH --mem=20G
 #SBATCH --job-name=03-create_samui
-#SBATCH -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/samui/logs/
-#SBATCH -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/samui/logs/
-#SBATCH --array=1-63%4
+#SBATCH -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/samui/logs/samui_%a.txt
+#SBATCH -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/samui/logs/samui_%a.txt
+#SBATCH --array=5-63%4
 
 echo "**** Job starts ****"
 date
@@ -12,7 +11,7 @@ date
 
 echo "**** JHPCE info ****"
 echo "User: ${USER}"
-echo "Job id: ${SLURM_JOBID}"s
+echo "Job id: ${SLURM_JOBID}"
 echo "Job name: ${SLURM_JOB_NAME}"
 echo "Hostname: ${SLURM_NODENAME}"
 echo "Task id: ${SLURM_ARRAY_TASK_ID}"
