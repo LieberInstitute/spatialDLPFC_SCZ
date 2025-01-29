@@ -90,3 +90,32 @@ vasc_pseudo <-
 dim(vasc_pseudo)
 #[1] 14755    62	
 
+## marker genes voilin ##
+
+rownames(vasc_pseudo) = rowData(vasc_pseudo)$gene_name
+rownames(pnn_pseudo) = rowData(pnn_pseudo)$gene_name
+rownames(neun_pseudo) = rowData(neun_pseudo)$gene_name
+rownames(neuropil_pseudo) = rowData(neuropil_pseudo)$gene_name
+
+library(scater)
+pdf(here("plots", "image_processing", "enrichment", "markergenes_voilins.pdf"), width = 8, height = 6)
+
+p = plotExpression(vasc_pseudo, c("CLDN5"), x = "vasc_pos", exprs_values = "logcounts")
+print(p)
+
+p = plotExpression(pnn_pseudo, c("PVALB"), x = "pnn_pos", exprs_values = "logcounts")
+print(p)
+
+p = plotExpression(neun_pseudo, c("SNAP25"), x = "neun_pos", exprs_values = "logcounts")
+print(p)
+
+p = plotExpression(neuropil_pseudo, c("CAMK2A"), x = "neuropil_pos", exprs_values = "logcounts")
+print(p)
+
+dev.off()
+
+
+
+
+
+
