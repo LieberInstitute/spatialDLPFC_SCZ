@@ -65,10 +65,20 @@ for (.file in spd_rds) {
   )
 
   layer_res <- readRDS(here(
-      # TODO: need organize
-      "processed-data", "rds", "layer_enrich_test",
-      paste0("test_enrich_PRECAST_07.rds")
-    ))
+    # TODO: need organize
+    "processed-data", "rds", "layer_enrich_test",
+    paste0("test_enrich_PRECAST_07.rds")
+  ))
+
+  write_csv(
+    layer_res,
+    here(
+      "code/analysis/04_SpD_marker_genes",
+      "raw_enrichment_spd_marker_gene.csv"
+    )
+  )
+
+
   ## Format enrichment test res ----
   t_stats <- layer_res[, grep("^t_stat_", colnames(layer_res))]
   colnames(t_stats) <- gsub("^t_stat_", "", colnames(t_stats))

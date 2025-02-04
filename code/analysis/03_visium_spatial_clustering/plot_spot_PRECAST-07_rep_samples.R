@@ -13,7 +13,7 @@ suppressPackageStartupMessages({
 # Load Data ----
 # note(Boyi): It would be much eaiser if Boyi created a spe object only contains
 # the two representative samples and relevant colData.
-raw_spe <- readRDS(
+spe <- readRDS(
   here(
     "processed-data/rds/spatial_cluster",
     "PRECAST",
@@ -22,11 +22,11 @@ raw_spe <- readRDS(
 )
 
 # error prevention
-stopifnot(all(raw_spe$in_tissue))
+stopifnot(all(spe$in_tissue))
 
 # create sample_label
-raw_spe$sample_label <- paste0(
-  raw_spe$brnum, "_", toupper(raw_spe$dx)
+spe$sample_label <- paste0(
+  spe$brnum, "_", toupper(spe$dx)
 )
 
 # ## Load PRECAST df ----
@@ -44,7 +44,7 @@ precast_vars <- grep(
   value = TRUE
 )
 
-spe <- raw_spe[, raw_spe$key %in% PRECAST_df$key]
+spe <- spe[, spe$key %in% PRECAST_df$key]
 col_data_df <- PRECAST_df |>
   right_join(
     colData(spe) |> data.frame(),
