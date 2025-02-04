@@ -65,6 +65,58 @@ saveRDS(
   )
 )
 
+# Save CSV file for Sang Ho ----
+.spd <- "PRECAST_07"
+layer_res <- readRDS(
+  here(
+    # TODO: need organize
+    "processed-data", "rds", "layer_enrich_test",
+    paste0("test_pairwise_", .spd, ".rds")
+  )
+)
+
+# note: based on the distribution of p-value,
+#  it feels this test is misspecificed.
+hist(layer_res$`p_value_spd01-spd04`)
+
+layer_res |>
+  select(gene, ensembl, ends_with("spd01-spd04")) |>
+  filter(`fdr_spd01-spd04` <= 0.05) |>
+  arrange(`fdr_spd01-spd04`) |>
+  tail()
+
+## raw csv file ----
+layer_res |> 
+  write_csv(
+    here(
+      "code/analysis/04_SpD_marker_genes",
+      "pairwise_DEG_enriched_all.csv"
+    )
+  )
+
+## Spd01 genes, pos t_stat ----
+layer_res |>
+  select(gene, ensembl, ends_with("spd01-spd04")) |>
+  filter(`fdr_spd01-spd04` <= 0.05, `t_stat_spd01-spd04` > 0) |>
+  arrange(desc(`t_stat_spd01-spd04`)) |>
+  write_csv(
+    here(
+      "code/analysis/04_SpD_marker_genes",
+      "pairwise_DEG_enriched_in_spd01.csv"
+    )
+  )
+
+layer_res |>
+  select(gene, ensembl, ends_with("spd01-spd04")) |>
+  filter(`fdr_spd01-spd04` <= 0.05, `t_stat_spd01-spd04` < 0) |>
+  arrange(`t_stat_spd01-spd04`) |>
+  write_csv(
+    here(
+      "code/analysis/04_SpD_marker_genes",
+      "pairwise_DEG_enriched_in_spd04.csv"
+    )
+  )
+
 
 # Session Info ----
 session_info()
