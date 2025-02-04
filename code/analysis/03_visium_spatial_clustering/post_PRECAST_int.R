@@ -66,6 +66,39 @@ PRECAST_df_final <- PRECAST_df_final |>
   rownames_to_column(var = "key")
 
 
+
+
+
+# Load PRECAST data ----
+PRECASTObj_model_select <- SelectModel(PRECASTObj)
+
+
+# NOTE:
+# Boyi deoesn't really like this step, in the sense that the batch correction step is slightly iffy for the following reasons
+# 1. threatically speaking, the batch correction is done with house keeping genes. 
+# How often the author would update the house keeping genes and where to acquire it.
+
+# Recommentation
+# It would probably better to export the PRECAST latent embedding, and run batch correction methods external to this step. 
+seuInt <- IntegrateSpaData(PRECASTObj_model_select, species = "Human")
+
+
+# TODO: run SelectModel to generate that sucker matrix for integration step
+
+seuInt <- AddUMAP(seuInt,
+  seed = 1
+)
+seuInt <- AddTSNE(seuInt, seed = 1)
+
+
+seuInt <- readRDS(
+  here(
+    "processed-data/rds/spatial_cluster/PRECAST",
+    "test_seuInt_UMAP_tsne.rds"
+  )
+)
+
+
 # Save Data ----
 ## PRECAST labels as data.frame ----
 saveRDS(
