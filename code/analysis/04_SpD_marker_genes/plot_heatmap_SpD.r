@@ -5,6 +5,7 @@ suppressPackageStartupMessages({
   library(here)
   library(scuttle)
   library(ComplexHeatmap)
+  library(viridisLite)
   library(sessioninfo)
 })
 
@@ -33,9 +34,117 @@ spd_enrich_df <- readRDS(here(
   "test_enrich_PRECAST_07.rds"
 ))
 
+# save a csv file for Sang Ho
+write_csv(
+  spd_enrich_df,
+  here(
+    "processed-data/rds/layer_enrich_test",
+    "marker_gene_enrichment_PRECAST_07.csv"
+  ),
+  col_names = FALSE,
+)
+
+## Load Spatial Domain Annotate DF----
+# Load SpD annotation
+spd_anno_df <- read_csv(
+  here(
+    "processed-data/man_anno",
+    "spd_labels_k7.csv"
+  )
+) |>
+  mutate(anno_lab = paste0(label, " (", spd, ") "))
+
+
+
+## Choose marker genes ----
+# Top 20 enrichment gene for Sang Ho
+sprintf("logFC_spd%02d", 1:7) |>
+  map(.f = function(.var) {
+    # browser()
+    spd_enrich_df |>
+      arrange(pick(.var)) |>
+      slice_tail(n = 20) |>
+      select(gene, ensembl) |>
+      mutate(
+        spd = str_remove(.var, "logFC_"),
+        rank = 20:1
+      )
+  }) |>
+  list_rbind() |>
+  left_join(
+    spd_anno_df
+  ) |>
+  write_csv(
+    here(
+      "code/analysis/04_SpD_marker_genes",
+      "top_20_enrichment_SpD_maker_genes.csv"
+    ),
+    col_names = TRUE,
+  )
+
+
+
+
+# Choose top 10 most enriched genes (of logFC) for each spd
+# slct_gene_df <- paste0(
+#   "logFC_",
+#   spd_anno_df |> arrange(anno_lab) |> pull(spd)
+# ) |>
+#   map(.f = function(.var) {
+#     browser()
+#     spd_enrich_df |>
+#       arrange(pick(.var)) |>
+#       slice_tail(n = 10) |>
+#       select(gene, ensembl)
+#   }) |>
+#   list_rbind() |>
+#   distinct()
+
+# Choose top 10 t_test enriched gene for each spd
+slct_gene_df <-
+  paste0(
+    "t_stat_",
+    spd_anno_df |> arrange(anno_lab) |> pull(spd)
+  ) |>
+  # sprintf("t_stat_spd%02d", 1:7) |>
+  map(.f = function(.var) {
+    # browser()
+    spd_enrich_df |>
+      arrange(pick(.var)) |>
+      slice_tail(n = 10) |>
+      select(gene, ensembl, t_stat = .var) |>
+      mutate(spd = str_remove(.var, "t_stat_"))
+  }) |>
+  list_rbind() |>
+  distinct()
+
+dim(slct_gene_df)
+
+
+# note: quick analysis
+# TODO: remove later
+
+# spd_enrich_df |>
+#   arrange(desc(logFC_spd01)) |>
+#   slice_head(n = 10) |>
+#   pull(gene)
+
+
+
+
+
 # TODO: replace actual genes here
-slct_genes <- spd_enrich_df[1:70, ] |>
-  with(setNames(gene, ensembl)) # Create vector of gene symbol, named by ensembl
+# slct_genes <- spd_enrich_df[slct_gene_ensembl, ] |>
+#   with(setNames(gene, ensembl)) # Create vector of gene symbol, named by ensembl
+
+# length(slct_genes)
+anyDuplicated(slct_gene_df)
+# stopifnot(anyDuplicated(slct_genes) == 0)
+
+# Keep unique elements of slct_genes
+# slct_genes <- unique(slct_genes)
+
+
 
 # Plot heatmap ----
 
@@ -55,10 +164,10 @@ stopifnot("logcounts" %in% assayNames(pb_agg_spd))
 
 
 ## Organize data for heamtap ----
-gene_mat <- logcounts(pb_agg_spd)[names(slct_genes), ]
+gene_mat <- logcounts(pb_agg_spd)[slct_gene_df$ensembl, ]
 
 # replace sample gene emsembl with gene names
-rownames(gene_mat) <- slct_genes[rownames(gene_mat)]
+rownames(gene_mat) <- slct_gene_df$gene
 
 
 # TODO: annotate spd domain name and color
@@ -71,23 +180,14 @@ rownames(gene_mat) <- slct_genes[rownames(gene_mat)]
 
 
 ## Create annotation for SpD ----
-# Load SpD annotation
-spd_anno_df <- read_csv(
-  here(
-    "processed-data/man_anno",
-    "spd_labels_k7.csv"
-  )
-) |>
-  mutate(anno_lab = paste0(label, " (", spd, ") "))
+
 
 # order spatial domains by cortical layers
 gene_mat <- gene_mat[, spd_anno_df$spd[order(spd_anno_df$anno_lab)]]
 
 
-
-
 col_annotation <- columnAnnotation(
-  spd = spd_anno_df$spd,
+  spd = gene_mat |> colnames(),
   col = list(
     spd = set_names(
       Polychrome::palette36.colors(7)[seq.int(7)],
@@ -97,6 +197,20 @@ col_annotation <- columnAnnotation(
   # labels = spd_anno_df$anno_lab,
   show_legend = FALSE
 )
+
+row_annotation <- rowAnnotation(
+  spd = slct_gene_df$spd,
+  col = list(
+    spd = set_names(
+      Polychrome::palette36.colors(7)[seq.int(7)],
+      spd_anno_df$spd |> sort()
+    )
+  ),
+  # labels = spd_anno_df$anno_lab,
+  show_legend = FALSE
+)
+
+
 
 
 # colnames(gene_mat) <- spd_anno_df$anno_lab[
@@ -121,9 +235,13 @@ colnames(scaled_gene_mat) <- colnames(gene_mat)
 # NOTE: maybe need to swap the row and columns
 
 
-library(viridisLite)
+# Save plot
 pdf(
-  here("test.pdf")
+  here(
+    "plots/04_SpD_marker_genes",
+    "heatmap_spd_marker_genes_enrichment_top_10_t-stat.pdf"
+  ),
+  height = 10
 )
 Heatmap(
   scaled_gene_mat,
@@ -131,36 +249,21 @@ Heatmap(
   col = viridis(100), # Any sequential color palette would do.
   name = "scaled median log2 counts\n across samples",
   bottom_annotation = col_annotation, # Add bottom annotation
+  left_annotation = row_annotation,
   show_row_names = TRUE,
   show_column_names = TRUE,
-  column_labels = spd_anno_df$anno_lab,
-  column_order = order(spd_anno_df$anno_lab), # NOTE: Boyi think the column_order is extremely flowed.
-  cluster_rows = TRUE, # TODO: remove this
+  column_labels = spd_anno_df$anno_lab[
+    match(
+      colnames(scaled_gene_mat),
+      spd_anno_df$spd
+    )
+  ],
+  cluster_rows = FALSE, # TODO: remove this
   cluster_columns = FALSE,
   row_title = "Marker Genes",
   column_title = "Spatial Domains"
 ) |> print()
 dev.off()
-# ## Create complex heatmap ----
-# heatmap <- pheatmap::pheatmap(
-#   gene_mat,
-#   scale = "row", # Scale across spd
-#   show_rownames = TRUE,
-#   show_colnames = TRUE,
-#   cluster_rows = TRUE,
-#   cluster_cols = FALSE,
-#   # fontsize_row = 10,
-#   # fontsize_col = 10,
-#   legend = TRUE,
-#   main = "scaled median log2 counts\n across samples"
-# )
-
-## Annotate SpD row ----
-
-
-## Save plot ----
-
-
 
 # Session info ----
 session_info()
