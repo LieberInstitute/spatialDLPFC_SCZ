@@ -2,6 +2,7 @@
 suppressPackageStartupMessages({
   library(PRECAST)
   library(SpatialExperiment)
+  library(tidyverse)
   library(scater)
   library(sessioninfo)
   library(here)
@@ -173,7 +174,8 @@ tsne_spd <- plotReducedDim(
     values = set_names(
       Polychrome::palette36.colors(7)[seq.int(7)],
       unique(spe$PRECAST_07) |> sort()
-    )[spd_order],
+    ),
+    breaks =  spd_anno_df$spd[spd_order],
     labels = spd_anno_df$anno_lab[spd_order]
   ) +
   guides(
