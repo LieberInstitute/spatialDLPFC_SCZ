@@ -56,12 +56,12 @@ seuInt <- AddTSNE(seuInt, seed = 1)
 
 
 
-# seuInt <- readRDS(
-#   here(
-#     "processed-data/rds/spatial_cluster/PRECAST_prelim",
-#     "test_seuIntObj_semi_inform_K8.rds"
-#   )
-# )
+seuInt <- readRDS(
+  here(
+    "processed-data/rds/spatial_cluster/PRECAST",
+    "test_seuInt_UMAP_tsne.rds"
+  )
+)
 
 
 
