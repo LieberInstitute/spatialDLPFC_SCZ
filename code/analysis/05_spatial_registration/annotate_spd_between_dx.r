@@ -2,6 +2,9 @@
 suppressPackageStartupMessages({
   library(SingleCellExperiment)
   library(here)
+  library(spatialLIBD)
+  library(ComplexHeatmap)
+  library(ggplot2)
   library(sessioninfo)
 })
 
@@ -43,6 +46,23 @@ manual_cor_all <- layer_stat_cor(
   reverse = FALSE,
   top_n = 100
 )
+
+# Calculate confidence
+annotate_registered_clusters(
+  cor_stats_layer = manual_cor_all,
+  confidence_threshold = 0.45,
+  cutoff_merge_ratio = 0.25
+)
+
+#   cluster layer_confidence layer_label
+# 1   spd01             good spd01/spd04
+# 2   spd04             good spd04/spd01
+# 3   spd07             good       spd07
+# 4   spd02             good       spd02
+# 5   spd06             good       spd06
+# 6   spd03             good       spd03
+# 7   spd05             good       spd05
+
 
 # Order based on layers
 manual_cor_all <- manual_cor_all[sprintf("spd%02d", c(7, 6, 2, 5, 3, 1, 4)), sprintf("spd%02d", c(7, 6, 2, 5, 3, 1, 4))]
@@ -100,3 +120,4 @@ Heatmap(
 dev.off()
 
 # Session info ----
+session_info()
