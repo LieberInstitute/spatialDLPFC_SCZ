@@ -138,7 +138,10 @@ ret_p <- n_spots_per_spd |>
     y = "Proportion",
     fill = "PRECAST_07"
   ) +
-  scale_x_discrete(limits = sample_WM_ordered)
+  scale_x_discrete(
+    # change the order of the x-axis
+    limits = sample_WM_ordered
+  )
 
 
 
@@ -154,23 +157,95 @@ spd_anno_df <- read_csv(
 
 spd_order <- order(spd_anno_df$anno_lab)
 
-ret_p +
+bar_p <- ret_p +
   scale_fill_manual(
     name = "Spatial Domain",
+    # change fill palette
     values = set_names(
       Polychrome::palette36.colors(7)[seq.int(7)],
       unique(spe$PRECAST_07) |> sort()
     ),
+    # change order of fill
     breaks = spd_anno_df$spd[spd_order],
     labels = spd_anno_df$anno_lab[spd_order]
-  )
-# TODO: change theme
-# change fill palette
-# change order of fill
-# change the order of the x-axis
+  ) +
+  theme_minimal()
 
+## Create symbol for sample id ----
+demo_df <- metadata(spe)$dx_df |>
+  transmute(
+    DX = toupper(dx),
+    sample_label = paste0(
+      subject, "_", toupper(dx)
+    ),
+    sex,
+    h_pos = 1,
+  )
+
+
+dx_p <- demo_df |>
+  ggplot() +
+  geom_point(
+    aes(
+      x = sample_label,
+      y = h_pos,
+      color = DX,
+      shape = sex
+    ),
+    size = 3
+  ) +
+  scale_x_discrete(
+    # change the order of the x-axis
+    limits = sample_WM_ordered
+  ) +
+  scale_color_manual(
+    values = c("NTC" = "blue", "SCZ" = "red"),
+    guide = "none"
+  )
+  # ) #+
+# theme_void()
+
+tmp_p <- dx_p +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  )
+
+
+library(cowplot)
+
+plot_grid(
+  # Adjust plot
+  bar_p +
+    theme(
+      axis.title.x = element_blank(),
+      axis.text.x = element_blank(),
+      plot.margin = margin(t = 0, r = 0, b = 0, l = 0)
+    ),
+  tmp_p +
+    # theme_void() +
+    theme(
+      # legend.position = "none",
+      plot.margin = margin(t = 0, r = 0, b = 0, l = 0),
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      panel.background = element_rect(fill = "transparent", color = NA),
+      panel.grid = element_blank(),
+      plot.background = element_rect(fill = "transparent", color = NA)
+    ),
+  align = "v",
+  ncol = 1,
+  rel_heights = c(0.8, 0.2)
+)
+
+
+# Save plot -----
 ggsave(
-  ,
+  here(
+    "plots/03_visium_spatial_clustering",
+    "bar_plot_spd_prop_per_sample.pdf"
+  ),
   width = 11, height = 5,
 )
 
