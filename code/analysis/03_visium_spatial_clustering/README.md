@@ -1,10 +1,6 @@
 Order to run files:
 
-01_PRECAST
-02_post_PRECAST_int.R
+01_PRECAST.R/sh: running PRECAST with selected marker genes from PEC study
+02_post_PRECAST_int.R: extract PRECAST labels, save as an file `processed-data/rds/spatial_cluster/PRECAST/test_clus_label_df_semi_inform_k_2-16.rds`, and merge to SPE object
 
-To run any of the scripts locally in the background, please use the code
-
-```
-Rscript viz_PRECAST_k.R > logs/viz_PRECAST_k.txt 2>&1 & disown
-```
+plot_*: make plots for panels in Figure 1 or Supplementary figures.
