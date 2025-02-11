@@ -28,7 +28,7 @@ module list
 ulimit -s unlimited
 
 ## Run code
-Rscript PRECAST.R
+Rscript 01_PRECAST.R
 
 
 ## Estimate JHPCE Memory
