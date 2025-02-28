@@ -71,7 +71,8 @@ demo_df_formated |>
       Age ~ "{mean} ({sd})",
       RIN ~ "{mean} ({sd})",
       PMI ~ "{mean} ({sd})"
-    )
+    ),
+    digits = list(Age=2)
   ) |>
   # Note: View output on JHPCE
   # as_tibble()
