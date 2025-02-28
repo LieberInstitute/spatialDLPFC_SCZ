@@ -21,8 +21,7 @@ spe <- readRDS(
 ## Select spatialDLPFC marker genes  -----
 gene_df_raw <- read.csv(
   here(
-    # TODO: change path
-    "code/analysis/visium_spatial_clustering",
+    "code/analysis/03_visium_spatial_clustering",
     "TableS8_sig_genes_FDR5perc_enrichment.csv"
   )
 )

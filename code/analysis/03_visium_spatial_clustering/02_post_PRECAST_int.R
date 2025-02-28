@@ -77,6 +77,11 @@ saveRDS(
     "PRECAST",
     "test_clus_label_df_semi_inform_k_2-16.rds"
   )
+  # NOTE: later manually renamed to
+  # here(
+  #   "processed-data/rds/03_visium_spatial_clustering",
+  #   "PRECAST_label_df_semi_sup_k_2-16.rds"
+  # )
 )
 
 
@@ -113,11 +118,11 @@ saveRDS(
 
 # # NOTE:
 # # Boyi deoesn't really like this step, in the sense that the batch correction step is slightly iffy for the following reasons
-# # 1. threatically speaking, the batch correction is done with house keeping genes. 
+# # 1. threatically speaking, the batch correction is done with house keeping genes.
 # # How often the author would update the house keeping genes and where to acquire it.
 
 # # Boyi's Recommentation
-# # It would probably better to export the PRECAST latent embedding, and run batch correction methods external to this step. 
+# # It would probably better to export the PRECAST latent embedding, and run batch correction methods external to this step.
 
 # # Note:  Integration based on PRECAST pipeline (not used.)
 # seuInt <- IntegrateSpaData(PRECASTObj_model_select, species = "Human")
@@ -136,4 +141,3 @@ saveRDS(
 
 # Session info -----
 sessioninfo::session_info()
-
