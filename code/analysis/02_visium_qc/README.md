@@ -15,4 +15,5 @@ TODO: add validation/plot/descriptive stat for QC step here.
    - multigene_plot.r is a toy example with using different RGB colors for the channels.
 
 
-- 
+# NOTE:
+- Outlier/quality control information are stored in `processed-data/rds/01_build_spe/fnl_spe_*.rds` objects
