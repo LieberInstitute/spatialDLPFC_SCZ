@@ -56,9 +56,11 @@ volcano_p <- ggplot() +
     aes(x = logFC, y = -log10(fdr), color = type)
   ) +
   geom_hline(aes(yintercept = -log10(0.05))) +
+  geom_vline(aes(xintercept = 0), linetype = "dashed") +
   labs(
     x = expression(log[2]("Fold Change")),
-    y = expression(-log[10]("FDR"))
+    y = expression(-log[10]("FDR")),
+    color = "Type"
   ) +
   theme_classic() +
   theme(
