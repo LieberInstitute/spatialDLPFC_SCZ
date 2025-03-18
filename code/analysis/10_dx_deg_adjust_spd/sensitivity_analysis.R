@@ -33,6 +33,8 @@ merged_res <- inner_join(
 )
 
 
+prelim_res |> filter(gene == "GBP2")
+
 # histogram of p-value
 ## prelim_res ----
 hist(prelim_res$p_value_scz, breaks = 100)
@@ -60,6 +62,22 @@ cor(
   merged_res$logFC_scz_rin_adj
 )
 # [1] 0.6997641
+
+## Scatter plot of t-statistics ----
+plot(
+  merged_res$t_stat_scz_prelim,
+  merged_res$t_stat_scz_rin_adj,
+  xlab = "t-stat Preliminary",
+  ylab = "t-stat RIN Adjusted",
+  main = "t-stat Comparison"
+)
+abline(a = 0, b = 1, col = "red")
+
+cor(
+  merged_res$t_stat_scz_prelim,
+  merged_res$t_stat_scz_rin_adj
+)
+# [1] 0.7198662
 
 # Session Info ----
 sessioninfo::session_info()
