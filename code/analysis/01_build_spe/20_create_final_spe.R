@@ -12,9 +12,9 @@ suppressPackageStartupMessages({
 spe <- readRDS(
   here::here(
     "processed-data/rds/01_build_spe",
-    "raw_spe_w_spg_N63.rds"
+    "test_raw_spe_w_spg_N63.rds"
     # Or using the with image version
-    # "raw_spe_wo_SPG_N63_loaded_img.rds"
+    # "raw_spe_w_SPG_N63_loaded_img.rds"
   )
 )
 
@@ -105,22 +105,64 @@ col_data_df <- PRECAST_df |>
   )
 
 table(col_data_df$PRECAST_07, useNA = "always")
-# Match with outlier
+# Match with outlier N_outlier = 34,689
+
+rownames(col_data_df) <- col_data_df$key
 
 # error prevention
 stopifnot(nrow(col_data_df) == ncol(spe))
 
+# DataFrame(col_data_df)|> names()
+
 # NOTE: not sure why this line doesn't work any more
-# colData(spe) <- DataFrame(col_data_df)
+# colData(spe) <- col_data_df |> select(-sample_id) |> DataFrame()
+# rownames(colData(spe)) <- spe$key
 
 precast_vars <- grep("^PRECAST", colnames(PRECAST_df), value = TRUE)
 
-for (var in precast_vars) {
-  spe[[var]] <- col_data_df[, var]
-}
+# Creates mismatch in merged results
+# for (var in precast_vars) {
+#   spe[[var]][spe$key] <- col_data_df[, var]
+# }
+
+rownames(col_data_df)
+
+
+# spe$PRECAST_07 <- col_data_df$PRECAST_07
+spe$PRECAST_02 <- col_data_df$PRECAST_02[match(spe$key, col_data_df$key)]
+spe$PRECAST_03 <- col_data_df$PRECAST_03[match(spe$key, col_data_df$key)]
+spe$PRECAST_04 <- col_data_df$PRECAST_04[match(spe$key, col_data_df$key)]
+spe$PRECAST_05 <- col_data_df$PRECAST_05[match(spe$key, col_data_df$key)]
+spe$PRECAST_06 <- col_data_df$PRECAST_06[match(spe$key, col_data_df$key)]
+spe$PRECAST_07 <- col_data_df$PRECAST_07[match(spe$key, col_data_df$key)]
+spe$PRECAST_08 <- col_data_df$PRECAST_08[match(spe$key, col_data_df$key)]
+spe$PRECAST_09 <- col_data_df$PRECAST_09[match(spe$key, col_data_df$key)]
+spe$PRECAST_10 <- col_data_df$PRECAST_10[match(spe$key, col_data_df$key)]
+spe$PRECAST_11 <- col_data_df$PRECAST_11[match(spe$key, col_data_df$key)]
+spe$PRECAST_12 <- col_data_df$PRECAST_12[match(spe$key, col_data_df$key)]
+spe$PRECAST_13 <- col_data_df$PRECAST_13[match(spe$key, col_data_df$key)]
+spe$PRECAST_14 <- col_data_df$PRECAST_14[match(spe$key, col_data_df$key)]
+spe$PRECAST_15 <- col_data_df$PRECAST_15[match(spe$key, col_data_df$key)]
+spe$PRECAST_16 <- col_data_df$PRECAST_16[match(spe$key, col_data_df$key)]
 
 # error prevention
 stopifnot(all(precast_vars %in% names(colData(spe))))
+
+stopifnot(
+  identical(
+    table(PRECAST_df$PRECAST_07),
+    table(spe$PRECAST_07)
+  )
+)
+
+stopifnot(
+  identical(
+    table(spe$sample_id, spe$PRECAST_07),
+    table(col_data_df$sample_id, col_data_df$PRECAST_07)
+  )
+)
+
+
 
 ### create annotated spd labels (PRECAST_07) ----
 spe$fnl_spd <- spe$PRECAST_07
