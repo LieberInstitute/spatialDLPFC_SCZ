@@ -31,6 +31,12 @@ sce_donor_bulk <-
     )
   )
 
+# 2025-03-20 17:20:35.517979 make pseudobulk object
+# 2025-03-20 17:20:40.655068 dropping 0 pseudo-bulked samples that are below 'min_ncells'.
+# 2025-03-20 17:20:40.674525 drop lowly expressed genes
+# 2025-03-20 17:20:40.743831 normalize expression
+# 2025-03-20 17:20:41.33546 saving sce_pseudo to /Users/bguo6/GitHub/spatialDLPFC_SCZ/processed-data/rds/07_dx_pseudobulk/sce_pseudo_donor.rds
+
 colData(sce_donor_bulk) |> str()
 # NOTE: Analysis is in code/analysis/08_dx_deg_bulk
 
@@ -38,7 +44,7 @@ colData(sce_donor_bulk) |> str()
 sce_pseudo <-
   registration_pseudobulk(
     spe,
-    var_registration = "spd_label",
+    var_registration = "PRECAST_07",
     var_sample_id = "sample_id",
     covars = c("dx", "age", "sex", "lot_num", "slide_id"),
     min_ncells = 10,
@@ -48,17 +54,13 @@ sce_pseudo <-
     )
   )
 
-# NOTE: one pseudo-bulked sample is dropped
-# 2025-03-17 14:53:19.498221 make pseudobulk object
-# 2025-03-17 14:53:37.693132 dropping 1 pseudo-bulked samples that are below 'min_ncells'.
-# 2025-03-17 14:53:37.76985 drop lowly expressed genes
-# Repeated column names found in count matrix
-# 2025-03-17 14:53:38.02077 normalize expression
-# Repeated column names found in count matrix
-# Warning message:
-# In filterByExpr.DGEList(y, design = design, group = group, lib.size = lib.size,  :
-#   All samples appear to belong to the same group.
-colData(sce_pseudo) |> str()
+# 2025-03-20 17:34:37.349655 make pseudobulk object
+# 2025-03-20 17:34:46.653274 dropping 7 pseudo-bulked samples that are below 'min_ncells'.
+# 2025-03-20 17:34:46.714936 drop lowly expressed genes
+# 2025-03-20 17:34:47.042811 normalize expression
+# 2025-03-20 17:34:50.169608 saving sce_pseudo to /Users/bguo6/GitHub/spatialDLPFC_SCZ/processed-data/rds/07_dx_pseudobulk/sce_pseudo_PRECAST07_donor_spd_debug.rds
+
+
 
 # Session Info ----
 sessioninfo::session_info()
