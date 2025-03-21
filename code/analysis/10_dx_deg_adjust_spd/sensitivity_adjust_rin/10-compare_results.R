@@ -115,5 +115,41 @@ merged_res |>
   )
 
 
+  # Venn Diagram ----
+  library(VennDiagram)
+
+  # Define the two sets of significant genes
+  prelim_sig_genes <- prelim_res %>%
+    filter(fdr_scz < 0.10) %>%
+    pull(ensembl)
+
+  rin_sig_genes <- RIN_adj_res %>%
+    filter(fdr_scz< 0.10) %>%
+    pull(ensembl)
+
+  # Create a Venn diagram
+  venn.diagram(
+    x = list(
+      `w/o RIN` = prelim_sig_genes,
+      `w RIN` = rin_sig_genes
+    ),
+    filename = here("plots/10_dx_deg_adjust_spd/venn_diagram_compare_rin.tiff"),
+    disable.logging = TRUE,
+    fill = c("orange", "purple"),
+    alpha = 0.5,
+    cex = 1,
+    cat.cex = 1,
+    cat.pos = 0,
+    height = 1.5,
+    width = 3,
+    units = "in",
+    resolution = 300
+  )
+
+  # Save the Venn diagram to a file
+  pdf("venn_diagram.pdf")
+  grid.draw(venn.plot)
+  dev.off()
+
 # Session Info ----
 sessioninfo::session_info()
