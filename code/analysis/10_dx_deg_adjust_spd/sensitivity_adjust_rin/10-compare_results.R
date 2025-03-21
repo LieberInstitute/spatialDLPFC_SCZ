@@ -9,8 +9,8 @@ suppressPackageStartupMessages({
 ## Load preliminary DEG res ----
 prelim_res <- read_csv(
   here(
-    "processed-data/rds/10_dx_deg_adjust_spd/preliminary",
-    "test_PRECAST_07.csv"
+    "processed-data/rds/10_dx_deg_adjust_spd",
+    "dx-deg_PRECAST07.csv"
   )
 )
 
@@ -18,7 +18,7 @@ prelim_res <- read_csv(
 RIN_adj_res <- read_csv(
   here(
     "processed-data/rds/10_dx_deg_adjust_spd",
-    "tmp_rin_adj_PRECAST07.csv"
+    "dx-deg_rin_adj_PRECAST07.csv"
   )
 )
 # Error prevention
