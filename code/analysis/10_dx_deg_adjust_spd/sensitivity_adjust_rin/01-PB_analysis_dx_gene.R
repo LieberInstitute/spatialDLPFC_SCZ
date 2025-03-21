@@ -47,9 +47,8 @@ dx_res |>
   arrange(fdr_scz) |>
   write.csv(
     here(
-      # TODO: rename the path
       "processed-data/rds/10_dx_deg_adjust_spd",
-      "tmp_rin_adj_PRECAST07.csv"
+      "dx-deg_rin_adj_PRECAST07.csv"
     )
   )
 
