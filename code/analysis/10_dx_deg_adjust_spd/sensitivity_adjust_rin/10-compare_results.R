@@ -146,10 +146,5 @@ merged_res |>
     resolution = 300
   )
 
-  # Save the Venn diagram to a file
-  pdf("venn_diagram.pdf")
-  grid.draw(venn.plot)
-  dev.off()
-
 # Session Info ----
 sessioninfo::session_info()
