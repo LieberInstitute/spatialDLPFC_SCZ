@@ -10,8 +10,8 @@ suppressPackageStartupMessages({
 ## Load SCZ-DEG ----
 gene_df <- read_csv(
   here(
-    "processed-data/rds/10_dx_deg_adjust_spd/preliminary",
-    "test_PRECAST_07.csv"
+    "processed-data/rds/10_dx_deg_adjust_spd",
+    "dx-deg_PRECAST07.csv"
   )
   # here(
   #   "processed-data/rds/10_dx_deg_adjust_spd",
@@ -46,15 +46,15 @@ nrow(brainseq_v2_df)
 ## Create merged data set ----
 # Inner join data as experiment
 inner_merge_df <- inner_join(
-  gene_df,
+  gene_df |> filter(fdr_scz < 0.10),
   brainseq_v2_df,
   by = c("ensembl" = "ensemblID")
 )
 
 nrow(inner_merge_df)
-# [1] 42
+# [1] 36
 
-inner_merge_df |>
+inner_merge_df |> pull(gene)
   select(
     ensembl, gene, gene_type, fdr_scz, adj.P.Val
   ) |>
@@ -166,6 +166,29 @@ merged_df |>
 merged_df |>
   filter(fdr_scz < 0.10 & is.na(adj.P.Val)) |>
   pull(gene)
+
+# Venn Diagram ----
+ library(VennDiagram)
+
+  # Create a Venn diagram
+  venn.diagram(
+    x = list(
+      `172 DEGs` = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
+      `BrainSeq V2` = brainseq_v2_df|> pull(ensemblID)
+    ),
+    filename = here("plots/10_dx_deg_adjust_spd/venn_diagram_compare_brainseqv2.tiff"),
+    disable.logging = TRUE,
+    fill = c("orange", "purple"),
+    alpha = 0.5,
+    cex = 1,
+    cat.cex = 1,
+    cat.pos = 0,
+    height = 1.5,
+    width = 3,
+    units = "in",
+    resolution = 300
+  )
+
 
 # Session Info ----
 sessioninfo::session_info()
