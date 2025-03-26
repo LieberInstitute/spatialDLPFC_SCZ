@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
 spe <- readRDS(
   here::here(
     "processed-data/rds/01_build_spe",
-    "test_raw_spe_w_spg_N63.rds"
+    "raw_spe_w_spg_N63.rds"
     # Or using the with image version
     # "raw_spe_w_SPG_N63_loaded_img.rds"
   )
@@ -128,7 +128,7 @@ precast_vars <- grep("^PRECAST", colnames(PRECAST_df), value = TRUE)
 rownames(col_data_df)
 
 
-# spe$PRECAST_07 <- col_data_df$PRECAST_07
+# Hard coding to prevent merging errors
 spe$PRECAST_02 <- col_data_df$PRECAST_02[match(spe$key, col_data_df$key)]
 spe$PRECAST_03 <- col_data_df$PRECAST_03[match(spe$key, col_data_df$key)]
 spe$PRECAST_04 <- col_data_df$PRECAST_04[match(spe$key, col_data_df$key)]
@@ -203,9 +203,9 @@ spe <- scuttle::computeLibraryFactors(spe)
 
 # Note 18 spots doesn't have any RNA sequenced
 sum(sizeFactors(spe) == 0)
-# [1] 18
 
 non_zero_keys <- which(sizeFactors(spe) != 0) |> names()
+
 
 spe <- spe[, spe$key %in% non_zero_keys]
 
