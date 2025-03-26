@@ -25,6 +25,9 @@ stopifnot(packageVersion("spatialLIBD") >= "1.11.10")
 path_raw_spe <- here(
   "processed-data/rds/01_build_spe",
   "raw_spe_wo_SPG_N63.rds"
+  # NOTE:
+  # If need to include loaded image, please use the following file
+  # "raw_spe_wo_SPG_N63_loaded_img.rds"
 )
 
 # Check if spe exists
@@ -124,6 +127,7 @@ spe <- raw_spe
 
 col_data_df <- colData(spe) |>
   data.frame() |>
+  # Add spg info
   left_join(
     spg_df |> select(
       -c(
@@ -137,6 +141,7 @@ col_data_df <- colData(spe) |>
     ),
     relationship = "one-to-one"
   ) |>
+  # Add BrNumber - many spots-to-BrNumbr merge
   left_join(
     expr_meta |>
       select(
@@ -146,11 +151,27 @@ col_data_df <- colData(spe) |>
     by = c("sample_id" = "sample_name")
   )
 
+# Add key to make sure the merged data can be matched back correctly
+rownames(col_data_df) <- col_data_df$key
+
 # Add the information
 colData(spe) <- DataFrame(col_data_df) # Remove colnames(spe)
 colnames(spe) <- spe$key
 
+# After merge check to see if merge is successful.
+stopifnot(
+  identical(
+    spe$spg_INeuN |> summary(),
+    col_data_df$spg_INeuN |> summary()
+  )
+)
 
+stopifnot(
+  identical(
+    spe$spg_INeuN |> head(),
+    col_data_df$spg_INeuN |> head()
+  )
+)
 
 
 # Save SPE-SPG object ---------------------------------------------------
@@ -168,3 +189,6 @@ saveRDS(
 
 # Session Info ------------------------------------------------------------
 session_info()
+#  [1] /users/bguo/R/4.3.x
+#  [2] /jhpce/shared/community/core/conda_R/4.3.x/R/lib64/R/site-library
+#  [3] /jhpce/shared/community/core/conda_R/4.3.x/R/lib64/R/library
