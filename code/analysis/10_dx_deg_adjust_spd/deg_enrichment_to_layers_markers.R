@@ -15,9 +15,10 @@ gene_df <- read_csv(
   )
 )
 
+# NOTE: not useful
 ## format enrichment test res
-t_stats <- gene_df[, grep("^t_stat_", colnames(gene_df))]
-colnames(t_stats) <- gsub("^t_stat_", "", colnames(t_stats))
+# t_stats <- gene_df[, grep("^t_stat_", colnames(gene_df))]
+# colnames(t_stats) <- gsub("^t_stat_", "", colnames(t_stats))
 
 ## Load layer-markers ----
 raw_layer_df <- read_csv(
@@ -39,41 +40,46 @@ load(
 nat_neuro_layer_df <- modeling_results
 
 ## Load PEC layer-markers ----
+pec_layer_df <- fetch_data(
+  type = "spatialDLPFC_Visium_modeling_results",
+  destdir = tempdir(),
+  eh = ExperimentHub::ExperimentHub(),
+  bfc = BiocFileCache::BiocFileCache()
+)
 
 ## Format the layer_df to a list of layer-specific gene sets ----
-layer_df_long <- raw_layer_df |>
-  select(ensembl, gene, starts_with("fdr")) |>
-  # turn to long form
-  pivot_longer(
-    cols = starts_with("fdr"),
-    names_to = "layer",
-    values_to = "fdr"
-  ) |>
-  mutate(
-    layer = str_remove(layer, "fdr_")
-  ) |>
-  filter(
-    fdr < 0.05
-  )
+### Not useful section -----
+# layer_df_long <- raw_layer_df |>
+#   select(ensembl, gene, starts_with("fdr")) |>
+#   # turn to long form
+#   pivot_longer(
+#     cols = starts_with("fdr"),
+#     names_to = "layer",
+#     values_to = "fdr"
+#   ) |>
+#   mutate(
+#     layer = str_remove(layer, "fdr_")
+#   ) |>
+#   filter(
+#     fdr < 0.05
+#   )
 
-list_layer_marker_genes <- layer_df_long |>
-  group_by(
-    layer
-  ) |>
-  summarise(
-    ensembl = list(ensembl)
-  ) |>
-  deframe()
-
-
+# list_layer_marker_genes <- layer_df_long |>
+#   group_by(
+#     layer
+#   ) |>
+#   summarise(
+#     ensembl = list(ensembl)
+#   ) |>
+#   deframe()
 
 # Enrichment analysis ----
-spatialLIBD::gene_set_enrichment(
-  gene_list = list_layer_marker_genes,
-  modeling_results = list("enrichment" = gene_df),
-  model_type = "enrichment",
-  fdr_cut = 0.05
-)
+# spatialLIBD::gene_set_enrichment(
+#   gene_list = list_layer_marker_genes,
+#   modeling_results = list("enrichment" = gene_df),
+#   model_type = "enrichment",
+#   fdr_cut = 0.05
+# )
 # Unexpected observation: why the NumSig is different between ntc and scz tests?
 # I would expect NumSig to be the same for ntc and scz tests.
 # Is this a bug of the function?
@@ -83,14 +89,15 @@ spatialLIBD::gene_set_enrichment(
 
 # Check if fdr_scz and fdr_ntc columns are identical up to a reasonable precision level
 
-identical_fdr <- all.equal(gene_df$fdr_scz, gene_df$fdr_ntc, tolerance = 1e-8)
-print(identical_fdr)
+# identical_fdr <- all.equal(gene_df$fdr_scz, gene_df$fdr_ntc, tolerance = 1e-8)
+# print(identical_fdr)
 
-gene_df[with(gene_df, t_stat_ntc == -1 * t_stat_scz), ]
+# gene_df[with(gene_df, t_stat_ntc == -1 * t_stat_scz), ]
 
 
 
-res <- spatialLIBD::gene_set_enrichment(
+# res <- spatialLIBD::gene_set_enrichment(
+res <- gene_set_enrichment_test(
   gene_list = list(
     `172 degs` = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
     `upreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
@@ -162,12 +169,7 @@ spatialLIBD::gene_set_enrichment(
 
 ## Enrich dx-DEG in PEC study
 
-pec_layer_df <- fetch_data(
-  type = "spatialDLPFC_Visium_modeling_results",
-  destdir = tempdir(),
-  eh = ExperimentHub::ExperimentHub(),
-  bfc = BiocFileCache::BiocFileCache()
-)
+
 
 bayes_anno <-
   read_csv(
