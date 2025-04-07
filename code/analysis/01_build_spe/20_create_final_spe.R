@@ -189,13 +189,31 @@ spd_anno_df <- read_csv(
 
 spe$spd_label <- spd_anno_df[
   match(spe$fnl_spd, spd_anno_df$spd),
-  "anno_lab"
+  "anno_lab", drop = TRUE
 ]
+
+# Make sure the column is a vector instead of a DF
+stopifnot(
+  "factor" %in% class(spe$spd_label)
+)
 
 # error prevention
 # Note: the numbers should be the same as the PRECAST_07 table
 table(spe$spd_label, useNA = "always")
 
+## Add SPG calling ----
+spe$pnn_pos <- ifelse(spe$spg_PWFA > 0.05, TRUE, FALSE)
+# NOTE: neuropil spot are spots doesn't have DAPI staining
+spe$neuropil_pos <- ifelse(spe$spg_PDAPI > 0.05,FALSE, TRUE)
+spe$neun_pos <- ifelse(spe$spg_PNeuN > 0.05 & spe$spg_PNeuN < 0.3,TRUE, FALSE)
+spe$vasc_pos <- ifelse(spe$spg_PClaudin5 > 0.05 & spe$spg_PClaudin5 < 0.20,TRUE, FALSE)
+
+table(spe$pnn_pos, useNA = "always")
+#  FALSE   TRUE   <NA> 
+# 301964  12531      0 
+table(spe$neuropil_pos, useNA = "always")
+#  FALSE   TRUE   <NA> 
+# 133666 180829      0 
 
 # Log transformation ----
 ## Identify spots that can't be log normalized -----
