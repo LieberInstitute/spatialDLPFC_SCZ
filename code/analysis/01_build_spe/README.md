@@ -12,3 +12,6 @@ NOTE:
   ```
   Rscript 11_donor_dx.R > logs/11_donor_dx.txt 2>&1
   ```
+
+
+* In the finalized spe object, there are missing values, e.g., `NA` or `nan`, as the mean intensity value (`spg_I` SPG columns in `colData()`) for the four SPG channels. The technical reasons for these missing values is because there are no pixel of the corresponding channel is detected in the spot. Hence, when caclulating the average, the denominator, i.e., the number of pixels, is zero.
