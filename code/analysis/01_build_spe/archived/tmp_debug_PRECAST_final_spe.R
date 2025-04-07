@@ -43,3 +43,11 @@ spe |> colData() |> data.frame() |> filter(sample_id == "V13M06-344_C1") |>
 
 
 colData(spe) |> data.frame() |> str()
+
+
+spe <- readRDS(
+  here(
+    "processed-data/rds/01_build_spe",
+    "fnl_spe_kept_spots_only.rds"
+  )
+)
