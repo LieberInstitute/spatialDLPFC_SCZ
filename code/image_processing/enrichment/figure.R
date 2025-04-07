@@ -391,7 +391,6 @@ mutate(
   )
 
 
-
 properties <- c("pnn", "neuropil", "neun", "vasc")
 pdf(here("plots", "image_processing", "enrichment", "dot_plots.pdf"), width = 8, height = 6)
 
@@ -399,6 +398,72 @@ for (prop in properties) {
   p = ggplot(prop_df, aes_string(
     x = "PRECAST_07", 
     y = paste0("proportion_", prop), 
+    fill = paste0("mean_", prop), 
+    size = paste0("proportion_", prop)
+  )) +
+    geom_point(alpha = 0.7, shape = 21) +
+    scale_fill_gradient(low = "white", high = "black") +
+    labs(
+      title = paste("Dot Plot of", toupper(prop)),
+      x = "PRECAST_07",
+      y = paste("Proportion of matching spots"),
+      fill = "Mean Expression",
+      size = paste("Proportion", toupper(prop) , "+spots")
+    ) +
+    theme_minimal()
+    print(p) # Print plot to the PDF
+}
+
+dev.off()
+
+unique_spd_values <- unique(df$PRECAST_07)
+
+# Initialize empty lists to store results
+prop_neuropil <- list()
+prop_neun <- list()
+prop_pnn <- list()
+prop_vasc <- list()
+
+# Loop through each unique PRECAST_07 value and calculate the proportion
+for (spd in unique_spd_values) {
+  # Calculate the proportion for neuropil
+  proportion_neuropil <- sum(df$neuropil_pos == TRUE & df$PRECAST_07 == spd) / sum(df$neuropil_pos == TRUE)
+  prop_neuropil[[spd]] <- proportion_neuropil
+  mean_neuropil[[spd]] = mean(df$sum_expression_neuropil[df$PRECAST_07 == spd])
+  # Calculate the proportion for NeuN
+  proportion_neun <- sum(df$neun_pos == TRUE & df$PRECAST_07 == spd) / sum(df$neun_pos == TRUE)
+  prop_neun[[spd]] <- proportion_neun
+  mean_neun[[spd]] = mean(df$sum_expression_neun[df$PRECAST_07 == spd])
+  # Calculate the proportion for PNN
+  proportion_pnn <- sum(df$pnn_pos == TRUE & df$PRECAST_07 == spd) / sum(df$pnn_pos == TRUE)
+  prop_pnn[[spd]] <- proportion_pnn
+  mean_pnn[[spd]] = mean(df$sum_expression_pnn[df$PRECAST_07 == spd])
+  # Calculate the proportion for vascular position
+  proportion_vasc <- sum(df$vasc_pos == TRUE & df$PRECAST_07 == spd) / sum(df$vasc_pos == TRUE)
+  prop_vasc[[spd]] <- proportion_vasc
+  mean_vasc[[spd]] = mean(df$sum_expression_vasc[df$PRECAST_07 == spd])
+}
+
+# Combine the results into a data frame
+prop_df1 <- data.frame(
+  PRECAST_07 = unique_spd_values,
+  Neuropil = unlist(prop_neuropil),
+  NeuropilM = unlist(mean_neuropil),
+  NeuN = unlist(prop_neun),
+  NeuNM = unlist(mean_neun),
+  WFA = unlist(prop_pnn),
+  WFAM = unlist(mean_pnn),
+  Claudin_5 = unlist(prop_vasc),
+  Claudin_5M = unlist(mean_vasc)
+)
+
+properties <- c("WFA", "Neuropil", "NeuN", "Claudin_5")
+pdf(here("plots", "image_processing", "enrichment", "dot_plots1.pdf"), width = 8, height = 6)
+
+for (prop in properties) {
+  p = ggplot(prop_df1, aes_string(
+    x = "PRECAST_07", 
+    y =  prop, 
     fill = paste0("mean_", prop), 
     size = paste0("proportion_", prop)
   )) +
