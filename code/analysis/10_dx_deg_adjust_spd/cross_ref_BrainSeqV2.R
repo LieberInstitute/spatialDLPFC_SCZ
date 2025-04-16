@@ -2,6 +2,7 @@
 suppressPackageStartupMessages({
   library(here)
   library(tidyverse)
+  library(readxl)
   library(ggrepel)
   library(sessioninfo)
 })
@@ -37,11 +38,11 @@ nrow(brainseq_v2_df)
 # NOTE: transcriptome wide
 
 names(brainseq_v2_df)
-#  [1] "Length"       "gencodeID"    "ensemblID"    "gene_type"   
-#  [5] "Symbol"       "EntrezID"     "Class"        "meanExprs"   
-#  [9] "NumTx"        "gencodeTx"    "passExprsCut" "logFC"       
-# [13] "AveExpr"      "t"            "P.Value"      "adj.P.Val"   
-# [17] "B"        
+#  [1] "Length"       "gencodeID"    "ensemblID"    "gene_type"
+#  [5] "Symbol"       "EntrezID"     "Class"        "meanExprs"
+#  [9] "NumTx"        "gencodeTx"    "passExprsCut" "logFC"
+# [13] "AveExpr"      "t"            "P.Value"      "adj.P.Val"
+# [17] "B"
 
 hist(brainseq_v2_df$P.Value, breaks = 100)
 
@@ -53,7 +54,7 @@ sum(brainseq_v2_df$adj.P.Val < 0.1, na.rm = TRUE)
 # Inner join data as experiment
 inner_merge_df <- inner_join(
   gene_df |> filter(fdr_scz < 0.10),
-  brainseq_v2_df|> filter(adj.P.Val < 0.10),
+  brainseq_v2_df |> filter(adj.P.Val < 0.10),
   by = c("ensembl" = "ensemblID")
 )
 
@@ -152,7 +153,7 @@ merged_df |> dim()
 # merged_df |> filter(adj.P.Val < 0.10)
 
 merged_df |>
-  filter(adj.P.Val & fdr_scz < 0.10) |>
+  filter(adj.P.Val < 0.1 & fdr_scz < 0.10) |>
   write.csv(
     here(
       "processed-data/rds/10_dx_deg_adjust_spd",
@@ -186,6 +187,58 @@ venn.diagram(
   units = "in",
   resolution = 300
 )
+
+# SynGO analysis ----
+## Load SynGO results ----
+synGO_df <- read_xlsx(
+  here(
+    "processed-data/SynGO/syngo_genes.xlsx"
+  )
+)
+
+merged_df <- merged_df |>
+  mutate(
+    synGO = ensembl %in% synGO_df$ensembl_id
+  )
+
+# Prob that 172 DEG is a synGO
+merged_df |>
+  filter(fdr_scz < 0.10) |>
+  pull(synGO) |> 
+  mean()
+# [1] 0.127907
+
+# Prob that BrainSeqV2 is a synGO
+merged_df |>
+  filter(adj.P.Val < 0.10) |>
+  pull(synGO) |> 
+  mean()
+# [1] 0.1585624
+
+# Odds ratio that 
+(0.1586/(1-0.1586))/(0.1279/(1-0.1279))
+# [1] 1.285276
+
+
+merged_df |>
+  filter(adj.P.Val > 0.1 & fdr_scz < 0.10) |> 
+  write_csv(
+    here(
+      "code/analysis/10_dx_deg_adjust_spd",
+      "dx-DEGs_on_sig_in_PNN.csv"
+    )
+  )
+
+merged_df |>
+  filter(adj.P.Val < 0.1 & fdr_scz > 0.10) |> 
+  write_csv(
+    here(
+      "code/analysis/10_dx_deg_adjust_spd",
+      "dx-DEGs_on_sig_in_BrainSeqV2.csv"
+    )
+  )
+
+
 
 
 # Session Info ----
