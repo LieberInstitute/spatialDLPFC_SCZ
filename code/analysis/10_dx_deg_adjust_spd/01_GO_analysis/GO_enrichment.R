@@ -10,15 +10,11 @@ suppressPackageStartupMessages({
 
 # Load Data ----
 gene_df <- read_csv(
-  #   here(
-  #     "processed-data/PB_dx_genes/",
-  #     "test_PRECAST_07.csv"
-  #   )
-  # )
-
-  "~/Downloads/test_PRECAST_07.csv"
+  here(
+    "processed-data/rds/10_dx_deg_adjust_spd",
+    "dx-deg_PRECAST07.csv"
+  )
 )
-
 adj_p_cutoff <- 0.10
 
 sig_gene_df <- gene_df |>
@@ -97,9 +93,13 @@ go_ora_list <- c("BP", "MF", "CC") |>
     )
   )
 
-pdf(here("plots/PB_dx_genes/enrichment",
-    paste0("test_GO_ora_", adj_p_cutoff, ".pdf")),
-    height = 10, width = 10)
+pdf(
+  here(
+    "plots/PB_dx_genes/enrichment",
+    paste0("test_GO_ora_", adj_p_cutoff, ".pdf")
+  ),
+  height = 10, width = 10
+)
 go_ora_list |> iwalk(
   ~ dotplot(
     .x,
@@ -138,17 +138,28 @@ GO_ora@compareClusterResult |>
 
 # Deprecated Code ----
 ## All genes ----
-# ego <- enrichGO(
-#   gene = sig_gene,
-# universe = gene_df$ensembl,
-# OrgDb = org.Hs.eg.db,
-# ont = "ALL",
-# keyType = "ENSEMBL",
-# pAdjustMethod = "BH",
-# pvalueCutoff = 0.01,
-# qvalueCutoff = 0.05,
-# readable = TRUE
-# )
+ego <- enrichGO(
+  gene = down_gene,
+universe = gene_df$ensembl,
+OrgDb = org.Hs.eg.db,
+ont = "ALL",
+keyType = "ENSEMBL",
+pAdjustMethod = "BH",
+pvalueCutoff = 0.01,
+qvalueCutoff = 0.05,
+readable = TRUE
+)
+
+ego@result |> View()
+
+edox <- setReadable(ego, 'org.Hs.eg.db', 'ENTREZID')
+cnetplot(edox, node_label="all", 
+        cex_label_category = 1.2) 
+
+library(enrichplot)
+edo <- pairwise_termsim(ego)
+emapplot(edo)
+treeplot(edo)
 # # dotplot(ego)
 # write.csv(
 #   ego@result,
