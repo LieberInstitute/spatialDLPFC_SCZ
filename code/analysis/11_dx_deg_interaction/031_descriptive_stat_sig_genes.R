@@ -164,7 +164,7 @@ dev.off()
 
 
 # Idenitfy Layer specific genes ----
-# Nom p-value ----
+## Nom p-value ----
 unique_genes_nom <- map(
   names(nom_p_geneList),
   ~ setdiff(
@@ -201,7 +201,7 @@ write_csv(
   )
 )
 
-# FDR p-value 10 ----
+## FDR p-value 10 ----
 
 unique_genes_fdr <- map(
   names(fdr_10_geneList),
