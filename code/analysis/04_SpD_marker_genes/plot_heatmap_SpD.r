@@ -30,7 +30,7 @@ stopifnot("PRECAST_07" %in% names(colData(spe_pb)))
 # TODO: Needs different way of showing results
 spd_enrich_df <- readRDS(here(
   # TODO: need organize
-  "processed-data/rds/layer_enrich_test",
+  "processed-data/rds/04_SpD_marker_genes",
   "test_enrich_PRECAST_07.rds"
 ))
 
@@ -38,10 +38,10 @@ spd_enrich_df <- readRDS(here(
 write_csv(
   spd_enrich_df,
   here(
-    "processed-data/rds/layer_enrich_test",
+    "processed-data/rds/04_SpD_marker_genes",
     "marker_gene_enrichment_PRECAST_07.csv"
   ),
-  col_names = FALSE,
+  col_names = TRUE,
 )
 
 ## Load Spatial Domain Annotate DF----
