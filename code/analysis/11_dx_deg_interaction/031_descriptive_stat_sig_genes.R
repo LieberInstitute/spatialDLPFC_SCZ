@@ -104,6 +104,14 @@ nom_p_geneList <- spd_deg_list |>
     ~ .x$gene_id[.x$P.Value < 0.05]
   )
 
+pdf(
+  here(
+    "plots/11_dx_deg_interaction",
+    "upset_layer_gene_nominal_p_value.pdf"
+  ),
+  width = 10,
+  height = 8
+)
 upset(
   fromList(nom_p_geneList),
   nsets = 7,
@@ -119,6 +127,7 @@ upset(
   # mainbar.y.label = "Enriched Genes",
   sets.x.label = "Spatial Domains"
 )
+dev.off()
 
 ## FDR p-value < 0.10 ----
 
@@ -127,6 +136,15 @@ fdr_10_geneList <- spd_deg_list |>
     ~ .x$gene_id[.x$adj.P.Val < 0.10]
   )
 
+
+pdf(
+  here(
+    "plots/11_dx_deg_interaction",
+    "upset_layer_gene_fdr_10.pdf"
+  ),
+  width = 10,
+  height = 8
+)
 upset(
   fromList(fdr_10_geneList),
   nsets = 7,
@@ -142,10 +160,12 @@ upset(
   # mainbar.y.label = "Enriched Genes",
   sets.x.label = "Spatial Domains"
 )
+dev.off()
 
 
 # Idenitfy Layer specific genes ----
-unique_genes <- map(
+# Nom p-value ----
+unique_genes_nom <- map(
   names(nom_p_geneList),
   ~ setdiff(
     nom_p_geneList[[.x]],
@@ -155,9 +175,9 @@ unique_genes <- map(
   set_names(names(nom_p_geneList))
 
 
-unique_genes <- map(
-  unique_genes,
-  .f = function(.x) {
+unique_genes_nom <- imap_dfr(
+  unique_genes_nom,
+  .f = function(.x, idx) {
     # browser()
     # Convert genes from ensembl to symbol
     # NOTE: some ensembl ID may not be converted.
@@ -167,6 +187,54 @@ unique_genes <- map(
       OrgDb = "org.Hs.eg.db",
       drop = FALSE
     ) |>
-      pull(SYMBOL)
+      mutate(
+        spd = idx
+      )
   }
+)
+
+write_csv(
+  unique_genes_nom,
+  here(
+    "processed-data/rds/11_dx_deg_interaction",
+    "layer_uniquely_specific_genes_nom_p.csv"
+  )
+)
+
+# FDR p-value 10 ----
+
+unique_genes_fdr <- map(
+  names(fdr_10_geneList),
+  ~ setdiff(
+    fdr_10_geneList[[.x]],
+    Reduce(union, fdr_10_geneList[names(fdr_10_geneList) != .x])
+  )
+) |>
+  set_names(names(fdr_10_geneList))
+
+
+unique_genes_fdr <- imap_dfr(
+  unique_genes_fdr,
+  .f = function(.x, idx) {
+    # browser()
+    # Convert genes from ensembl to symbol
+    # NOTE: some ensembl ID may not be converted.
+    clusterProfiler::bitr(
+      .x,
+      fromType = "ENSEMBL", toType = "SYMBOL",
+      OrgDb = "org.Hs.eg.db",
+      drop = FALSE
+    ) |>
+      mutate(
+        spd = idx
+      )
+  }
+)
+
+write_csv(
+  unique_genes_fdr,
+  here(
+    "processed-data/rds/11_dx_deg_interaction",
+    "layer_uniquely_specific_genes_fdr.csv"
+  )
 )
