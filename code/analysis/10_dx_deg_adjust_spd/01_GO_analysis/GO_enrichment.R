@@ -39,6 +39,47 @@ down_gene <- sig_gene_df |>
 # query_string <- paste0(sig_gene, collapse = "::")
 
 
+# Up-reg genes -----
+up_ego <- enrichGO(
+  gene = up_gene,
+universe = gene_df$ensembl,
+OrgDb = org.Hs.eg.db,
+ont = "ALL",
+keyType = "ENSEMBL",
+pAdjustMethod = "fdr",
+pvalueCutoff = 0.05,
+qvalueCutoff = 0.05,
+readable = TRUE
+)
+
+up_ego@result |>
+  write.csv(
+    here(
+      "processed-data/rds/10_dx_deg_adjust_spd",
+      "GO_up_gene.csv")
+    )
+
+# Down-reg genes ----
+down_ego <- enrichGO(
+  gene = down_gene,
+universe = gene_df$ensembl,
+OrgDb = org.Hs.eg.db,
+ont = "ALL",
+keyType = "ENSEMBL",
+pAdjustMethod = "fdr",
+pvalueCutoff = 0.05,
+qvalueCutoff = 0.05,
+readable = TRUE
+)
+
+down_ego@result |>
+  write.csv(
+    here(
+      "processed-data/rds/10_dx_deg_adjust_spd",
+      "GO_down_gene.csv")
+    )
+
+
 
 # GO enrichment (Overrepresentative analysis) ----
 gc_list <- list(
