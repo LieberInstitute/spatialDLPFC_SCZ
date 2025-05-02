@@ -1,0 +1,72 @@
+**** Job starts ****
+Thu Feb  6 03:42:17 PM EST 2025
+**** JHPCE info ****
+User: mtippani
+Job id: 13382535
+Job name: 03-create_samui
+Hostname: 
+Task id: 28
+Processing sample Br5622
+Thu Feb  6 03:42:17 PM EST 2025
+Loading LIBD SLURM module for samui/1.0.0-next.45
+/jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
+* 'allow_mutation' has been removed
+  warnings.warn(message, UserWarning)
+[15:43:35] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5622_V13F27-293_A1/V1             
+                    3F27-293_A1.tif to COG.                                     
+           INFO     'Br5622_V13F27-293_A1' Executing queued         logger.py:27
+                    functions                                                   
+           INFO     Br5622_V13F27-293_A1 Adding coords 'coords'     logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5622_V13F27-293_A1/V1             
+                    3F27-293_A1_1.tif                                           
+[15:43:49] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5622_V13F27-293_A1/V1             
+                    3F27-293_A1_2.tif                                           
+[15:44:05] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5622_V13F27-293_A1/V1             
+                    3F27-293_A1_1.tif                                           
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5622_V13F27-293_A1/V1             
+                    3F27-293_A1_2.tif                                           
+[15:44:17] INFO     Br5622_V13F27-293_A1 Adding csv feature         logger.py:27
+                    'Domains'                                                   
+           INFO     Br5622_V13F27-293_A1 Adding csv feature         logger.py:27
+                    'Spot_Calling'                                              
+           INFO     Br5622_V13F27-293_A1 Adding csv feature         logger.py:27
+                    'Spot_Calling_metrics'                                      
+[15:44:19] INFO     Br5622_V13F27-293_A1 Adding chunked feature     logger.py:27
+                    'Genes'                                                     
+[15:49:33] INFO     Br5622_V13F27-293_A1 Concatenating and          logger.py:27
+                    compressing chunks                                          
+[15:50:10] INFO     Writing compressed chunks for Genes: 11770072   logger.py:27
+                    bytes                                                       
+           INFO     'Br5622_V13F27-293_A1' written to               logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5622_V13F27-293_A1                
+-----
+PIL                 10.0.0
+affine              2.4.0
+anndata             0.9.1
+loopy               NA
+matplotlib          3.7.2
+numpy               1.24.4
+pandas              2.0.3
+pyhere              1.0.0
+scanpy              1.9.3
+scipy               1.11.1
+session_info        1.0.0
+tifffile            2023.7.4
+-----
+Python 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
+Linux-5.14.0-427.13.1.el9_4.x86_64-x86_64-with-glibc2.34
+-----
+Session information updated at 2025-02-06 15:50
+**** Job ends ****
+Thu Feb  6 03:50:11 PM EST 2025

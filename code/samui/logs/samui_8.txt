@@ -1,0 +1,49 @@
+**** Job starts ****
+Thu Feb  6 02:46:09 PM EST 2025
+**** JHPCE info ****
+User: mtippani
+Job id: 13371467
+Job name: 03-create_samui
+Hostname: 
+Task id: 8
+Processing sample Br5373
+Thu Feb  6 02:46:09 PM EST 2025
+Loading LIBD SLURM module for samui/1.0.0-next.45
+/jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
+* 'allow_mutation' has been removed
+  warnings.warn(message, UserWarning)
+[14:48:16] INFO     Transforming                                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5373_V12D07-334_A1/V1             
+                    2D07-334_A1.tif to COG.                                     
+           INFO     'Br5373_V12D07-334_A1' Executing queued         logger.py:27
+                    functions                                                   
+           INFO     Br5373_V12D07-334_A1 Adding coords 'coords'     logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5373_V12D07-334_A1/V1             
+                    2D07-334_A1_1.tif                                           
+[14:48:28] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5373_V12D07-334_A1/V1             
+                    2D07-334_A1_2.tif                                           
+[14:48:40] INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5373_V12D07-334_A1/V1             
+                    2D07-334_A1_1.tif                                           
+           INFO     Writing COG                                     logger.py:27
+                    /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
+                    00/processed-data/samui/Br5373_V12D07-334_A1/V1             
+                    2D07-334_A1_2.tif                                           
+[14:48:55] INFO     Br5373_V12D07-334_A1 Adding csv feature         logger.py:27
+                    'Domains'                                                   
+           INFO     Br5373_V12D07-334_A1 Adding csv feature         logger.py:27
+                    'Spot_Calling'                                              
+           INFO     Br5373_V12D07-334_A1 Adding csv feature         logger.py:27
+                    'Spot_Calling_metrics'                                      
+           INFO     Br5373_V12D07-334_A1 Adding chunked feature     logger.py:27
+                    'Genes'                                                     
+/var/spool/slurm/d/job13371467/slurm_script: line 25: 3698453 Killed                  python 03-create_samui.py $donor
+**** Job ends ****
+Thu Feb  6 02:48:59 PM EST 2025
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=13371467.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
