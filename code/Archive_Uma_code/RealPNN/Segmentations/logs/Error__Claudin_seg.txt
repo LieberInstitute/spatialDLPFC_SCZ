@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 127, in <module>
+    contour_img, claudin_df_all, mean_pix_int_list = all.pixels.all_pix_pnns(A1, claudin_contoured_img, claudin)
+AttributeError: 'builtin_function_or_method' object has no attribute 'pixels'
+/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/stitched_functions/all_pixels.py:63: RuntimeWarning: Mean of empty slice.
+  print("pix mean:", (np.array(pix_list)).mean()) # convert list to array and find the mean pix intensities
+/users/ukaipa/.conda/envs/venv_segmentations/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/stitched_functions/all_pixels.py:65: RuntimeWarning: Mean of empty slice.
+  mean_pix_int_list.append((np.array(pix_list)).mean()) # and their mean intensities
+Traceback (most recent call last):
+  File "/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/RealPNN/Segmentations/Code/Claudin_contours.py", line 128, in <module>
+    claudin_df_all.to_csv(dst_dir_claudin + img_path.split('.')[0] + '_pix_info.csv')
+NameError: name 'img_path' is not defined

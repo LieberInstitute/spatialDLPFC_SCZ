@@ -1,0 +1,7 @@
+{Error using load
+Unable to find file or directory
+'/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/RealPNN/segmented_channels_stitched/slide7/V13M06-281_C1_thresholded.mat'.
+
+Error in countNuclei_without_WFA (line 9)
+ BW = load(mask);
+} 
