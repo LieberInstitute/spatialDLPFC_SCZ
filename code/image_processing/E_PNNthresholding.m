@@ -12,7 +12,7 @@ for i = 62:length(myfiles)
 [counts, x]=imhist(WFA);
 level=triangle_th(counts(10:end),numel(x)-10)+x(10);
 BW=imbinarize(WFA,level);
-[x0,x1,x11,x22,y0,y1,y11,y22]=extract_coords(counts,x,level,10);
+[x0,x1,x11,x22,y0,y1,y11,y22]=E_extract_coords(counts,x,level,10);
 
     figure('visible', 'off')
     ax1 = subplot(2,2,1);
