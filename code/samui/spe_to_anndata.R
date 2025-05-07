@@ -8,8 +8,8 @@ suppressPackageStartupMessages(library("here"))
 library(dplyr)
 
 
-spe <- readRDS(here("processed-data/rds/02_visium_qc","qc_spe_w_spg_N63.rds"))
-
+#spe <- readRDS(here("processed-data/rds/02_visium_qc","qc_spe_w_spg_N63.rds"))
+spe = readRDS("/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/rds/01_build_spe/fnl_spe_all_spots.rds")
 ## Load SpD data ----
 finalized_spd <- readRDS(here("processed-data/rds/spatial_cluster", "PRECAST","test_clus_label_df_semi_inform_k_2-16.rds"))
 
