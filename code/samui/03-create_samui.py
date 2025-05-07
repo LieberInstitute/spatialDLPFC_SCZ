@@ -32,7 +32,7 @@ m_per_px = 4.20390369911423e-07
 ################################################################################
 #   Gather gene-expression data into a DataFrame to later as a feature
 ################################################################################
-spg_path = here("processed-data", "samui", "spg.h5ad")
+spg_path = here("processed-data", "samui", "spg1.h5ad")
 spg = sc.read(spg_path)
 
 #path_groups = spg.obs['path_groups'].cat.categories
