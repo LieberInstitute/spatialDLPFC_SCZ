@@ -3,7 +3,7 @@
 #SBATCH --job-name=03-create_samui
 #SBATCH -o /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/samui/logs/samui_%a.txt
 #SBATCH -e /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/code/samui/logs/samui_%a.txt
-#SBATCH --array=1-63%4
+#SBATCH --array=1-1%4
 
 echo "**** Job starts ****"
 date
