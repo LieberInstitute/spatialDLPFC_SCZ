@@ -11,7 +11,7 @@ load(fullfile(dt,myfiles(i).name), 'WFA');
 
 lim = 13;
 % Plot the smoothed histogram
-[thresh, lnP] = triangle_threshold_right_tail(counts(lim:end));
+[thresh, lnP] = 01_triangle_threshold_right_tail(counts(lim:end));
 level = x(lim)+x(thresh)+0.1;
 BW=imbinarize(WFA,level);
 %imshow(BW)

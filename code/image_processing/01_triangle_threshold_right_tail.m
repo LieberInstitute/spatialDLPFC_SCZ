@@ -1,4 +1,4 @@
-function [threshold, line_endpoints] = triangle_threshold_right_tail(histogram)
+function [threshold, line_endpoints] = 01_triangle_threshold_right_tail(histogram)
     % Find the maximum value and its location in the histogram
     [max_value, max_index] = max(histogram);
     

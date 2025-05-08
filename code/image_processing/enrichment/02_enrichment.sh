@@ -18,7 +18,7 @@ echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 ## load MATLAB
 module load conda_R/devel
 
-Rscript enrichment.R
+Rscript 02_enrichment.R
 
 
 echo "**** Job ends ****"

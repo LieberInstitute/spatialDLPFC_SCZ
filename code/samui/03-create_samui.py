@@ -32,7 +32,7 @@ m_per_px = 4.20390369911423e-07
 ################################################################################
 #   Gather gene-expression data into a DataFrame to later as a feature
 ################################################################################
-spg_path = here("processed-data", "samui", "spg.h5ad")
+spg_path = here("processed-data", "samui", "spg1.h5ad")
 spg = sc.read(spg_path)
 
 #path_groups = spg.obs['path_groups'].cat.categories
@@ -55,13 +55,14 @@ gene_df = gene_df.loc[: , ~gene_df.columns.duplicated()].copy()
 gene_df.index.name = None
 
 precast_columns = spgP.obs.filter(like="PRECAST")
+precast_columns = spgP.obs[["spd_label"]].join(precast_columns)
 precast_df = pd.DataFrame(precast_columns)
 
 sample_df = spgP.obs[['sample_id']].copy()
 spotCalling_df = spgP.obs[['pnn_pos', 'neuropil_pos', 'neun_pos', 'vasc_pos']]
-spotCalling_metrics = spgP.obs[['spg_NDAPI', 'spg_PDAPI', 'spg_IDAPI', 'spg_CNDAPI',
-       'spg_NNeuN', 'spg_PNeuN', 'spg_INeuN', 'spg_CNNeuN', 'spg_NWFA', 'spg_PWFA', 'spg_IWFA', 'spg_CNWFA',
-       'spg_NClaudin5', 'spg_PClaudin5', 'spg_IClaudin5']]
+#spotCalling_metrics = spgP.obs[['spg_NDAPI', 'spg_PDAPI', 'spg_IDAPI', 'spg_CNDAPI',
+#       'spg_NNeuN', 'spg_PNeuN', 'spg_INeuN', 'spg_CNNeuN', 'spg_NWFA', 'spg_PWFA', 'spg_IWFA', 'spg_CNWFA',
+#       'spg_NClaudin5', 'spg_PClaudin5', 'spg_IClaudin5']]
 
 ################################################################################
 #   Use the Samui API to create the importable directory for this combined "sample"
@@ -85,7 +86,7 @@ this_sample.add_image(tiff = img_path,channels = img_channels,defaultChannels = 
 
 this_sample.add_csv_feature(precast_df, name = "Domains", coordName = "coords", dataType = "categorical")
 this_sample.add_csv_feature(spotCalling_df, name = "Spot_Calling", coordName = "coords", dataType = "categorical")
-this_sample.add_csv_feature(spotCalling_metrics, name = "Spot_Calling_metrics", coordName = "coords", dataType = "quantitative")
+#this_sample.add_csv_feature(spotCalling_metrics, name = "Spot_Calling_metrics", coordName = "coords", dataType = "quantitative")
 this_sample.add_chunked_feature(gene_df, name = "Genes", coordName = "coords", dataType = "quantitative")
 this_sample.set_default_feature(group = "Genes", feature = default_gene)
 

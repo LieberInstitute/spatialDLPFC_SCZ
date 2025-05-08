@@ -20,7 +20,7 @@ echo "Task id: ${SLURM_ARRAY_TASK_ID}"
 module load matlab/R2023a
 
 ## Run WFAseg version 2 function
-matlab -nodesktop -nosplash -r "run('preprocess.m'); exit" 
+matlab -nodesktop -nosplash -r "run('01_preprocess.m'); exit" 
 
 echo "**** Job ends ****"
 date
