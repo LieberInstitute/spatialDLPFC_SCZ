@@ -2,6 +2,8 @@
 suppressPackageStartupMessages({
   library(here)
   library(tidyverse)
+  library(ComplexHeatmap)
+  library(circlize)
   library(spatialLIBD)
   library(sessioninfo)
 })
@@ -126,7 +128,7 @@ ruzicka_deg_list_down |>
 #                3
 
 # Run gene_set_enrichment_test ----
-
+##  Dot plot wrapper (ggplot) ----
 enrichment_dot_plot_ggplot <- function(
     res # , PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
     ) {
@@ -134,7 +136,8 @@ enrichment_dot_plot_ggplot <- function(
   res |>
     ggplot(aes(x = test, y = ID, color = OR, size = -log10(Pval))) +
     geom_point() +
-    scale_color_viridis_c(option = "C", direction = -1) + # Colorblind-friendly palette
+    # Colorblind-friendly palette
+    scale_color_viridis_c(option = "C", direction = -1) +
     scale_size_continuous(range = c(1, 10)) +
     theme_minimal(base_size = 14) + # Adjust text size for publication
     theme(
@@ -150,35 +153,72 @@ enrichment_dot_plot_ggplot <- function(
     )
 }
 
-
+## Dot plot wrapper (complexHeatmap) ----
 enrichment_dot_plot_heatmap <- function(
     res # , PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
     ) {
-  browser()
-  library(ComplexHeatmap)
-  library(circlize)
-
   # Prepare data for ComplexHeatmap
   mat <- res |>
+    select(
+      ID, test, OR
+    ) |>
     pivot_wider(names_from = test, values_from = OR, values_fill = 0) |>
     column_to_rownames("ID") |>
     as.matrix()
 
   # Scale the size based on -log10(Pval)
   size_mat <- res |>
-    pivot_wider(names_from = test, values_from = -log10(Pval), values_fill = 0) |>
+    mutate(
+      fdr_p = Pval |> p.adjust(method = "fdr"),
+      sig_cat = case_when(
+        Pval >= 0.05 ~ "nonsig",
+        Pval < 0.05 & fdr_p >= 0.05 ~ "Nominal p < 0.05",
+        fdr_p < 0.05 ~ "FDR < 0.05"
+      ),
+      size = case_when(
+        sig_cat == "nonsig" ~ 0.5,
+        sig_cat == "Nominal p < 0.05" ~ 1,
+        sig_cat == "FDR < 0.05" ~ 1.5
+      )
+    ) |>
+    select(
+      ID, test, size
+    ) |>
+    pivot_wider(names_from = test, values_from = size, values_fill = 0) |>
     column_to_rownames("ID") |>
     as.matrix()
+
+  # Reorder the matrix based on the order of spd_anno_df
+  spd_order <- c(
+    "L1 (spd07) ", "L2/3 (spd06) ", "L3/4 (spd02) ",
+    "L5 (spd05) ", "L6 (spd03) ", "WMtz (spd01) ", "WM (spd04) "
+  ) |> rev()
+
+  cell_type_order <- res$ID |> unique()
+
+  mat <- mat[cell_type_order, spd_order]
+  size_mat <- size_mat[cell_type_order, spd_order]
+
+  # Change matrix orientation
+  mat <- t(mat)
+  size_mat <- t(size_mat)
 
   # Define color function for Odds Ratio
   col_fun <- colorRamp2(c(min(mat), max(mat)), c("white", "blue"))
 
+  # browser()
+  #
+
+
   # Create the dot plot using ComplexHeatmap
-  Heatmap(
+  ht_list <- Heatmap(
     mat,
     name = "Odds Ratio",
     col = col_fun,
-    rect_gp = gpar(type = "none"), # Remove default heatmap rectangles
+    cluster_columns = FALSE,
+    cluster_rows = FALSE,
+    # Keep cell boundaries with black lines but hide the heatmap elements
+    rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid.circle(
         x = x, y = y,
@@ -194,6 +234,20 @@ enrichment_dot_plot_heatmap <- function(
       labels_gp = gpar(fontsize = 12)
     )
   )
+
+  # browser()
+  lgd_list <- list(
+    # dot size for p-value
+    Legend(
+      labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
+      title = "Significance", type = "points",
+      pch = 16,
+      legend_gp = gpar(fill = "black"),
+      size = unit(1:3, "mm"),
+    )
+  )
+
+  draw(ht_list, annotation_legend_list = lgd_list)
 }
 
 ##  ALL GENS ----
@@ -215,7 +269,7 @@ all_gene_res <- ruzicka_deg_list_sig[
   mutate(test = anno_lab) |>
   select(-label, -anno_lab)
 
-all_gene_res |> enrichment_dot_plot_ggplot()
+# all_gene_res |> enrichment_dot_plot_ggplot()
 all_gene_res |> enrichment_dot_plot_heatmap()
 
 # |>
