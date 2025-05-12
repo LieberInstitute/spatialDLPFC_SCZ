@@ -158,7 +158,11 @@ enrichment_dot_plot_heatmap <- function(
     res # , PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
     ) {
   # Prepare data for ComplexHeatmap
+  # browser()
   mat <- res |>
+    mutate(
+      OR = ifelse(OR<1, 1, OR),
+    ) |> 
     select(
       ID, test, OR
     ) |>
@@ -204,12 +208,13 @@ enrichment_dot_plot_heatmap <- function(
   size_mat <- t(size_mat)
 
   # Define color function for Odds Ratio
-  col_fun <- colorRamp2(c(min(mat), max(mat)), c("white", "blue"))
+  col_fun <- colorRamp2(
+    c(min(mat), 3, max(mat)),
+    c("white", "yellow", "blue")
+  )
 
   # browser()
-  #
-
-
+  
   # Create the dot plot using ComplexHeatmap
   ht_list <- Heatmap(
     mat,
@@ -222,7 +227,7 @@ enrichment_dot_plot_heatmap <- function(
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid.circle(
         x = x, y = y,
-        r = unit(size_mat[i, j] / max(size_mat), "mm"),
+        r = unit(1.5*size_mat[i, j], "mm"),
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
@@ -231,7 +236,8 @@ enrichment_dot_plot_heatmap <- function(
     heatmap_legend_param = list(
       title = "Odds Ratio",
       title_gp = gpar(fontsize = 14),
-      labels_gp = gpar(fontsize = 12)
+      labels_gp = gpar(fontsize = 12),
+      at = c(1, 3, 6)
     )
   )
 
