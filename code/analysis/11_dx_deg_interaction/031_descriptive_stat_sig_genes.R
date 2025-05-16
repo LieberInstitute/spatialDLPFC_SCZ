@@ -54,8 +54,6 @@ spd_deg_list <-
     ~ read_csv(.x)
   )
 
-##
-
 
 # Descriptive Statistics ----
 ## Nomial p-value < 0.05 ----
@@ -63,6 +61,37 @@ nom_p_vec <- spd_deg_list |>
   map_int(
     ~ sum(.x$P.Value < 0.05, na.rm = TRUE)
   )
+
+sum(nom_p_vec)
+
+spd_deg_list |>
+  map(
+    ~ .x |>
+      filter(P.Value < 0.05) |>
+      pull(gene_id)
+  ) |>
+  unlist() |>
+  unique() |>
+  length()
+
+spd_deg_list[c("SpD01-WMtz", "SpD04-WM")] |>
+  imap_dfr(
+    ~ .x |>
+      filter(P.Value < 0.05) |>
+      mutate(spd = .y)
+  ) |>
+  mutate(
+    direction = case_when(
+      logFC > 0 ~ "up",
+      logFC < 0 ~ "down"
+    )
+  ) |>
+  group_by(direction) |>
+  summarise(
+    n = n()
+  )
+
+
 
 # SpD01-WMtz SpD02-L3/4   SpD03-L6   SpD04-WM   SpD05-L5 SpD06-L2/3
 #       1581        284        283       2521        468        782
@@ -76,10 +105,24 @@ fdr_10_vec <- spd_deg_list |>
     ~ sum(.x$adj.P.Val < 0.1, na.rm = TRUE)
   )
 
+# total number of genes
+sum(fdr_10_vec)
+
 # SpD01-WMtz SpD02-L3/4   SpD03-L6   SpD04-WM   SpD05-L5 SpD06-L2/3
 #         30          0          0        894          1          2
 #   SpD07-L1
 #         17
+# Total number of unique genes
+spd_deg_list |>
+  map(
+    ~ .x |>
+      filter(adj.P.Val < 0.1) |>
+      pull(gene_id)
+  ) |>
+  unlist() |>
+  unique() |>
+  length()
+
 
 
 cbind(
