@@ -111,6 +111,14 @@ select_layer_specific_gene_df_logFC <- bind_rows(
   )) |>
   arrange(spd, desc(logFC))
 
+write_csv(
+  select_layer_specific_gene_df_logFC,
+  here(
+    "code/analysis/11_dx_deg_interaction",
+    "layer_specific_DEG_logFC_top_5.csv"
+  )
+)
+
 # Ranked based on t-stat
 select_layer_specific_gene_df_t <- bind_rows(
   layer_specific_gene_df |> slice_max(t, n = 5, by = spd),
