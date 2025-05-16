@@ -106,6 +106,7 @@ ruzicka_deg_list_down <- ruzicka_deg_list |>
       ) |>
       pull(ensembl, name = NULL)
   )
+
 ruzicka_deg_list_down |>
   map_int(~ length(.x))
 #            Ex-L2           Ex-L23            Ex-L3
@@ -161,8 +162,8 @@ enrichment_dot_plot_heatmap <- function(
   # browser()
   mat <- res |>
     mutate(
-      OR = ifelse(OR<1, 1, OR),
-    ) |> 
+      OR = ifelse(OR < 1, 1, OR),
+    ) |>
     select(
       ID, test, OR
     ) |>
@@ -214,7 +215,7 @@ enrichment_dot_plot_heatmap <- function(
   )
 
   # browser()
-  
+
   # Create the dot plot using ComplexHeatmap
   ht_list <- Heatmap(
     mat,
@@ -227,7 +228,7 @@ enrichment_dot_plot_heatmap <- function(
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid.circle(
         x = x, y = y,
-        r = unit(1.5*size_mat[i, j], "mm"),
+        r = unit(1.5 * size_mat[i, j], "mm"),
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
@@ -276,26 +277,17 @@ all_gene_res <- ruzicka_deg_list_sig[
   select(-label, -anno_lab)
 
 # all_gene_res |> enrichment_dot_plot_ggplot()
+pdf()
 all_gene_res |> enrichment_dot_plot_heatmap()
-
-# |>
-# gene_set_enrichment_plot(
-#   # res,
-#   PThresh = 12,
-#   ORcut = 3,
-#   enrichOnly = FALSE,
-#   cex = 0.5 # control the size of the text
-# ) + title(
-#   "Ruzicka cell type-dx-DEGs enriched in PRECAST spd"
-# )
-
-# TODO: save the plot
+dev.off()
 
 ## Up-reg gene only enrichment ----
-# Remove cell ypes with less than 25 DEGs
-ruzicka_deg_list_up <- ruzicka_deg_list_up[-which(ruzicka_deg_list_up |>
-  map_int(~ length(.x)) < 25)]
-ruzicka_deg_list_up |>
+ruzicka_deg_list_up <- ruzicka_deg_list_up[
+  # Remove cell ypes with less than 25 DEGs
+  -which(ruzicka_deg_list_up |>
+    map_int(~ length(.x)) < 25)
+]
+up_gene_res <- ruzicka_deg_list_up |>
   spatialLIBD::gene_set_enrichment(
     modeling_results = list("enrichment" = raw_layer_df),
     model_type = "enrichment",
@@ -307,24 +299,15 @@ ruzicka_deg_list_up |>
     by = c("test" = "spd")
   ) |>
   mutate(test = anno_lab) |>
-  select(-label, -anno_lab) |>
-  # make the plot
-  gene_set_enrichment_plot(
-    # res,
-    PThresh = 12,
-    ORcut = 3,
-    enrichOnly = FALSE,
-    cex = 0.5 # control the size of the text
-  ) + title(
-    "Ruzicka cell type-dx-DEGs (up-reg only) enriched in PRECAST spd"
-  )
+  select(-label, -anno_lab)
 
-# TODO: save the plot
+  up_gene_res |> enrichment_dot_plot_heatmap()
+
 
 ## Down-reg gene only enrichment ----
 ruzicka_deg_list_down <- ruzicka_deg_list_down[-which(ruzicka_deg_list_down |>
   map_int(~ length(.x)) < 25)]
-ruzicka_deg_list_down |>
+down_gene_res <- ruzicka_deg_list_down |>
   spatialLIBD::gene_set_enrichment(
     modeling_results = list("enrichment" = raw_layer_df),
     model_type = "enrichment",
@@ -336,17 +319,9 @@ ruzicka_deg_list_down |>
     by = c("test" = "spd")
   ) |>
   mutate(test = anno_lab) |>
-  select(-label, -anno_lab) |>
-  # make the plot
-  gene_set_enrichment_plot(
-    # res,
-    PThresh = 12,
-    ORcut = 3,
-    enrichOnly = FALSE,
-    cex = 0.5 # control the size of the text
-  ) + title(
-    "Ruzicka cell type-dx-DEGs (down-reg only) enriched in PRECAST spd"
-  )
+  select(-label, -anno_lab) 
+
+down_gene_res |> enrichment_dot_plot_heatmap()
 
 # Session info ----
 session_info()
