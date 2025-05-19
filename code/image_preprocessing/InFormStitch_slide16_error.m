@@ -18,6 +18,7 @@ temp = cellfun(@(x) strsplit(x{P},','), loc,  'UniformOutput', false);
 X = cellfun(@(x) str2double(x{1}(2:end)), temp);
 %Y = cellfun(@(x) str2double(x{2}(1:end-1)), temp);
 X = sort(unique(X));
+X1 = [12541, 10486, 10197, 9945, 9585, 8972, 8719, 7061]; X = setdiff(X,X1);
 %Y = sort(unique(Y));
 
 toc

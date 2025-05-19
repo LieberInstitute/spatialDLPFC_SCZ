@@ -8,6 +8,7 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(tidyr)
   library(readxl)
+  library(ggrepel)
 })
 
 # Load Data ----
@@ -326,14 +327,14 @@ genes = read_excel(here("code/image_processing/enrichment/Maddy_SPG_volcano_high
     	    fill = "white",         # Fill color of the bounding box
     	    fontface = "bold",      # Make the text bold
     	    max.overlaps = Inf,  # Allow all labels to be shown even if overlapping
-    	    na.rm = FALSE
+    	    na.rm = FALSE, size = 5
     	  ) +
     	  geom_hline(yintercept = -log10(0.1), color = "black", linetype = "dashed", size = 1) +
-    	  theme_minimal() +
+    	  theme_minimal(base_size = 18) +
     	  labs(
     	    x = expression(log[2]~"fold change"), 
     	    y = expression(-log[10]~FDR), 
-    	    title = "Differential expression in neuropil+ spots"
+    	    title = "Differential expression in DAPI- spots"
     	  )
 			  
 ggsave(here("plots", "image_processing", "enrichment", "neuropil_volcano.pdf"), plot = p, width = 8, height = 6, dpi = 300)

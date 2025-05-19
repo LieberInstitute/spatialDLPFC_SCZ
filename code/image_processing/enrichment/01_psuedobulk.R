@@ -91,7 +91,10 @@ dim(vasc_pseudo)
 #[1] 14755    62	
 
 ## marker genes voilin ##
-
+vasc_pseudo = readRDS(here("processed-data", "image_processing", "enrichment", "vasc_pseudo.rds"))
+pnn_pseudo = readRDS(here("processed-data", "image_processing", "enrichment", "pnn_pseudo.rds"))
+neun_pseudo = readRDS(here("processed-data", "image_processing", "enrichment", "neun_pseudo.rds"))
+neuropil_pseudo = readRDS(here("processed-data", "image_processing", "enrichment", "neuropil_pseudo.rds"))
 rownames(vasc_pseudo) = rowData(vasc_pseudo)$gene_name
 rownames(pnn_pseudo) = rowData(pnn_pseudo)$gene_name
 rownames(neun_pseudo) = rowData(neun_pseudo)$gene_name
@@ -100,16 +103,34 @@ rownames(neuropil_pseudo) = rowData(neuropil_pseudo)$gene_name
 library(scater)
 pdf(here("plots", "image_processing", "enrichment", "markergenes_voilins.pdf"), width = 8, height = 6)
 
-p = plotExpression(vasc_pseudo, c("CLDN5"), x = "vasc_pos", exprs_values = "logcounts")
+theme_big_fonts <- theme(
+  axis.text = element_text(size = 18),
+  axis.title = element_text(size = 18),
+  plot.title = element_text(size = 36, face = "bold", hjust = 0.5)
+)
+
+p = plotExpression(vasc_pseudo, c("CLDN5"), x = "vasc_pos", exprs_values = "logcounts") +
+	scale_x_discrete(labels = c("TRUE" = "Claudin5+ ", "FALSE" = "Claudin5- ")) +
+  	labs(x = "") +
+  	theme_big_fonts
 print(p)
 
-p = plotExpression(pnn_pseudo, c("PVALB"), x = "pnn_pos", exprs_values = "logcounts")
+p = plotExpression(pnn_pseudo, c("PVALB"), x = "pnn_pos", exprs_values = "logcounts") +
+	scale_x_discrete(labels = c("TRUE" = "WFA+ ", "FALSE" = "WFA- ")) +
+	labs(x = "") +
+theme_big_fonts
 print(p)
 
-p = plotExpression(neun_pseudo, c("SNAP25"), x = "neun_pos", exprs_values = "logcounts")
+p = plotExpression(neun_pseudo, c("SNAP25"), x = "neun_pos", exprs_values = "logcounts") + 
+	scale_x_discrete(labels = c("TRUE" = "NeuN+ ", "FALSE" = "NeuN- ")) +
+	labs(x = "") +
+	theme_big_fonts
 print(p)
 
-p = plotExpression(neuropil_pseudo, c("CAMK2A"), x = "neuropil_pos", exprs_values = "logcounts")
+p = plotExpression(neuropil_pseudo, c("CAMK2A"), x = "neuropil_pos", exprs_values = "logcounts") + 
+	scale_x_discrete(labels = c("TRUE" = "DAPI- ", "FALSE" = "DAPI+")) +
+	labs(x = "") +
+	theme_big_fonts
 print(p)
 
 dev.off()

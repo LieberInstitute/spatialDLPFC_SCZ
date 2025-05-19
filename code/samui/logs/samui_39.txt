@@ -1,18 +1,18 @@
 **** Job starts ****
-Thu Feb  6 04:02:51 PM EST 2025
+Wed May  7 04:48:11 PM EDT 2025
 **** JHPCE info ****
 User: mtippani
-Job id: 13386199
+Job id: 16522939
 Job name: 03-create_samui
 Hostname: 
 Task id: 39
 Processing sample Br8772
-Thu Feb  6 04:02:51 PM EST 2025
+Wed May  7 04:48:11 PM EDT 2025
 Loading LIBD SLURM module for samui/1.0.0-next.45
 /jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
 * 'allow_mutation' has been removed
   warnings.warn(message, UserWarning)
-[16:03:51] INFO     Transforming                                    logger.py:27
+[16:49:21] INFO     Transforming                                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br8772_V13F27-295_D1/V1             
                     3F27-295_D1.tif to COG.                                     
@@ -23,11 +23,11 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br8772_V13F27-295_D1/V1             
                     3F27-295_D1_1.tif                                           
-[16:04:05] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+[16:49:36] INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br8772_V13F27-295_D1/V1             
                     3F27-295_D1_2.tif                                           
-[16:04:11] INFO     Writing COG                                     logger.py:27
+[16:49:50] INFO     Writing COG                                     logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br8772_V13F27-295_D1/V1             
                     3F27-295_D1_1.tif                                           
@@ -35,17 +35,15 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br8772_V13F27-295_D1/V1             
                     3F27-295_D1_2.tif                                           
-[16:04:25] INFO     Br8772_V13F27-295_D1 Adding csv feature         logger.py:27
+[16:50:11] INFO     Br8772_V13F27-295_D1 Adding csv feature         logger.py:27
                     'Domains'                                                   
-           INFO     Br8772_V13F27-295_D1 Adding csv feature         logger.py:27
+[16:50:12] INFO     Br8772_V13F27-295_D1 Adding csv feature         logger.py:27
                     'Spot_Calling'                                              
-           INFO     Br8772_V13F27-295_D1 Adding csv feature         logger.py:27
-                    'Spot_Calling_metrics'                                      
            INFO     Br8772_V13F27-295_D1 Adding chunked feature     logger.py:27
                     'Genes'                                                     
-[16:14:07] INFO     Br8772_V13F27-295_D1 Concatenating and          logger.py:27
+[16:56:38] INFO     Br8772_V13F27-295_D1 Concatenating and          logger.py:27
                     compressing chunks                                          
-[16:15:06] INFO     Writing compressed chunks for Genes: 14159698   logger.py:27
+[16:57:13] INFO     Writing compressed chunks for Genes: 10250740   logger.py:27
                     bytes                                                       
            INFO     'Br8772_V13F27-295_D1' written to               logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
@@ -67,6 +65,6 @@ tifffile            2023.7.4
 Python 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
 Linux-5.14.0-427.13.1.el9_4.x86_64-x86_64-with-glibc2.34
 -----
-Session information updated at 2025-02-06 16:15
+Session information updated at 2025-05-07 16:57
 **** Job ends ****
-Thu Feb  6 04:15:06 PM EST 2025
+Wed May  7 04:57:17 PM EDT 2025

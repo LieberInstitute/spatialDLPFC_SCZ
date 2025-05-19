@@ -151,12 +151,12 @@ prop_df <- data.frame(
   )
   
   
-pdf(here("plots", "image_processing", "enrichment", "vascheatmap_update.pdf"), width = 10, height = 8) 
+pdf(here("plots", "image_processing", "enrichment", "DAPIheatmap_update.pdf"), width = 10, height = 8) 
   # neuropil
-p = ggplot(gene_df, aes(x = sample_id, y = PRECAST_07, fill = P_vasc)) +
+p = ggplot(gene_df, aes(x = sample_id, y = PRECAST_07, fill = P_neuropil)) +
    geom_tile() +
    scale_fill_gradient(low = "white", high = "black", na.value = "grey50") +
-   labs(title = "Proportion of Vasculature+ spots with sum of marker gene expression > 2500",	
+   labs(title = "Proportion of Neuropil+ spots with sum of marker gene expression > 1000",	
         x = NULL,
         y = NULL,
 		fill = NULL) +
@@ -167,10 +167,10 @@ p = ggplot(gene_df, aes(x = sample_id, y = PRECAST_07, fill = P_vasc)) +
 	 print(p)
 	 
  
-p = ggplot(prop_df, aes(x = sample_id, y = PRECAST_07, fill = P_vasc)) +
+p = ggplot(prop_df, aes(x = sample_id, y = PRECAST_07, fill = P_neuropil)) +
    geom_tile() +
    scale_fill_gradient(low = "white", high = "black", na.value = "grey50") +
-   labs(title = "Proportion of Claudin5+ spots with segmented Claudin5 signal > 5% of spot area",
+   labs(title = "Proportion of DAPI- spots with segmented DAPI signal < 5% of spot area",
         x = NULL,
         y = NULL,
 		fill = NULL) +

@@ -1,21 +1,22 @@
-function splitSlide_IF(fname,O)
+function splitSlide_IF_offset_V13M06_279(fname)
 
 img = load(fname);
-%O = fieldnames(img);
+O = fieldnames(img);
 %N = 4; %number of capture areas
 disp(['The IF image has ',num2str(numel(O)),' channels'])
 
 [y,~,~] = size(img.(O{1}));
+
 
 tic
 disp('Splitting whole slide into individual capture areas')
 
 for i = 1:numel(O)
     tic
-    I1.(O{i}) = img.(O{i})(1:round(y/4),:);
-    I2.(O{i}) = img.(O{i})(round(y/4)+1:round(y/4)*2,:);
-    I3.(O{i}) = img.(O{i})((round(y/4)*2)+1:round(y/4)*3,:);
-    I4.(O{i}) = img.(O{i})((round(y/4)*3)+1:end,:);
+    I1.(O{i}) = img.(O{i})(1:ceil(y/4),:);
+    I2.(O{i}) = img.(O{i})(ceil(y/4)+1:ceil(y/4)*2,:);
+    I3.(O{i}) = img.(O{i})((ceil(y/4)*2)+1:ceil(y/4)*3,:);
+    I4.(O{i}) = img.(O{i})((ceil(y/4)*3)+1:end,:);
     toc
 end
 
