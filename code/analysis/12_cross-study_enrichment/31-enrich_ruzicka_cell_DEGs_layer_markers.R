@@ -86,8 +86,8 @@ ruzicka_deg_list_up <- ruzicka_deg_list |>
   )
 
 # Number of up-reg DEGs per cell type
-ruzicka_deg_list_up |>
-  map_int(~ length(.x))
+# ruzicka_deg_list_up |>
+#   map_int(~ length(.x))
 #           Ex-L2           Ex-L23            Ex-L3
 #              135              186               67
 #       Ex-L4_MYLK       Ex-L45_MET     Ex-L45_LRRK1
@@ -167,8 +167,9 @@ enrichment_dot_plot_ggplot <- function(
 
 ## Dot plot wrapper (complexHeatmap) ----
 enrichment_dot_plot_heatmap <- function(
-    res # , PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
-    ) {
+    res,
+    #  PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
+    title) {
   # Prepare data for ComplexHeatmap
   # browser()
   mat <- res |>
@@ -206,8 +207,13 @@ enrichment_dot_plot_heatmap <- function(
 
   # Reorder the matrix based on the order of spd_anno_df
   spd_order <- c(
-    "L1 (spd07) ", "L2/3 (spd06) ", "L3/4 (spd02) ",
-    "L5 (spd05) ", "L6 (spd03) ", "WMtz (spd01) ", "WM (spd04) "
+    "SpD07-L1",
+    "SpD06-L2/3",
+    "SpD02-L3/4",
+    "SpD05-L5",
+    "SpD03-L6",
+    "SpD01-WMtz",
+    "SpD04-WM"
   ) |> rev()
 
   cell_type_order <- res$ID |> unique()
@@ -265,7 +271,11 @@ enrichment_dot_plot_heatmap <- function(
     )
   )
 
-  draw(ht_list, annotation_legend_list = lgd_list)
+  draw(ht_list,
+    annotation_legend_list = lgd_list,
+    column_title = title,
+    column_title_gp = gpar(fontsize = 14, fontface = "bold")
+  )
 }
 
 ##  ALL GENS ----
@@ -288,8 +298,16 @@ all_gene_res <- ruzicka_deg_list_sig[
   select(-label, -anno_lab)
 
 # all_gene_res |> enrichment_dot_plot_ggplot()
-pdf()
-all_gene_res |> enrichment_dot_plot_heatmap()
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "Ruzicka_DEGs_vs_PRECAST_layer_markers_all.pdf"
+  ),
+  height = 3.5
+)
+all_gene_res |> enrichment_dot_plot_heatmap(
+  title = "Overall Ruzicka DEGs"
+)
 dev.off()
 
 ## Up-reg gene only enrichment ----
@@ -312,8 +330,17 @@ up_gene_res <- ruzicka_deg_list_up |>
   mutate(test = anno_lab) |>
   select(-label, -anno_lab)
 
-up_gene_res |> enrichment_dot_plot_heatmap()
-
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "Ruzicka_DEGs_vs_PRECAST_layer_markers_up-reg.pdf"
+  ),
+  height = 3.5
+)
+up_gene_res |> enrichment_dot_plot_heatmap(
+  title = "Up-regulated Ruzicka DEGs"
+)
+dev.off()
 
 ## Down-reg gene only enrichment ----
 ruzicka_deg_list_down <- ruzicka_deg_list_down[-which(ruzicka_deg_list_down |>
@@ -332,7 +359,17 @@ down_gene_res <- ruzicka_deg_list_down |>
   mutate(test = anno_lab) |>
   select(-label, -anno_lab)
 
-down_gene_res |> enrichment_dot_plot_heatmap()
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "Ruzicka_DEGs_vs_PRECAST_layer_markers_down-reg.pdf"
+  ),
+  height = 3.5
+)
+down_gene_res |> enrichment_dot_plot_heatmap(
+  title = "Down-regulated Ruzicka DEGs"
+)
+dev.off()
 
 # Session info ----
 session_info()
