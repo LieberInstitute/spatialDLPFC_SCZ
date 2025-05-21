@@ -37,7 +37,18 @@ spd_anno_df <- read_csv(
     "spd_labels_k7.csv"
   )
 ) |>
-  mutate(anno_lab = paste0(label, " (", spd, ") "))
+  mutate(anno_lab = factor(
+    paste0(gsub("spd", "SpD", spd), "-", label),
+    levels = c(
+      "SpD07-L1",
+      "SpD06-L2/3",
+      "SpD02-L3/4",
+      "SpD05-L5",
+      "SpD03-L6",
+      "SpD01-WMtz",
+      "SpD04-WM"
+    )
+  ))
 
 # change the order of the labels
 spd_order <- spd_anno_df$order
@@ -301,7 +312,7 @@ up_gene_res <- ruzicka_deg_list_up |>
   mutate(test = anno_lab) |>
   select(-label, -anno_lab)
 
-  up_gene_res |> enrichment_dot_plot_heatmap()
+up_gene_res |> enrichment_dot_plot_heatmap()
 
 
 ## Down-reg gene only enrichment ----
@@ -319,7 +330,7 @@ down_gene_res <- ruzicka_deg_list_down |>
     by = c("test" = "spd")
   ) |>
   mutate(test = anno_lab) |>
-  select(-label, -anno_lab) 
+  select(-label, -anno_lab)
 
 down_gene_res |> enrichment_dot_plot_heatmap()
 
