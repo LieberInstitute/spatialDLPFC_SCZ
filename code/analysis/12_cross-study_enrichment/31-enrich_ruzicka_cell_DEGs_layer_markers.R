@@ -140,31 +140,6 @@ ruzicka_deg_list_down |>
 #                3
 
 # Run gene_set_enrichment_test ----
-##  Dot plot wrapper (ggplot) ----
-enrichment_dot_plot_ggplot <- function(
-    res # , PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
-    ) {
-  # browser()
-  res |>
-    ggplot(aes(x = test, y = ID, color = OR, size = -log10(Pval))) +
-    geom_point() +
-    # Colorblind-friendly palette
-    scale_color_viridis_c(option = "C", direction = -1) +
-    scale_size_continuous(range = c(1, 10)) +
-    theme_minimal(base_size = 14) + # Adjust text size for publication
-    theme(
-      axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 12),
-      axis.text.y = element_text(size = 12),
-      axis.title = element_blank(),
-      legend.title = element_text(size = 14),
-      legend.text = element_text(size = 12)
-    ) +
-    labs(
-      color = "Odds Ratio",
-      size = "-log10(p-value)"
-    )
-}
-
 ## Dot plot wrapper (complexHeatmap) ----
 enrichment_dot_plot_heatmap <- function(
     res,
@@ -215,8 +190,10 @@ enrichment_dot_plot_heatmap <- function(
     "SpD01-WMtz",
     "SpD04-WM"
   ) |> rev()
-
+  browser()
   cell_type_order <- res$ID |> unique()
+
+  # TODO: manullay group cells to groups
 
   mat <- mat[cell_type_order, spd_order]
   size_mat <- size_mat[cell_type_order, spd_order]
@@ -373,3 +350,28 @@ dev.off()
 
 # Session info ----
 session_info()
+
+
+# Deprecated functions ----
+## (Deprecated) Dot plot wrapper (ggplot) ----
+enrichment_dot_plot_ggplot <- function(
+    res) {
+  res |>
+    ggplot(aes(x = test, y = ID, color = OR, size = -log10(Pval))) +
+    geom_point() +
+    # Colorblind-friendly palette
+    scale_color_viridis_c(option = "C", direction = -1) +
+    scale_size_continuous(range = c(1, 10)) +
+    theme_minimal(base_size = 14) + # Adjust text size for publication
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title = element_blank(),
+      legend.title = element_text(size = 14),
+      legend.text = element_text(size = 12)
+    ) +
+    labs(
+      color = "Odds Ratio",
+      size = "-log10(p-value)"
+    )
+}
