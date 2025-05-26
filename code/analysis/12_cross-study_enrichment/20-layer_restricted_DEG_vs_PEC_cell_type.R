@@ -9,8 +9,8 @@ suppressPackageStartupMessages({
 })
 
 # Load Data ----
-## load Layer_specific DEGs ----
-layer_specifc_DEG_df <- read_csv(
+## load Layer_restricted DEGs ----
+layer_restricted_DEG_df <- read_csv(
   here(
     "processed-data/rds/11_dx_deg_interaction",
     "layer_restricted_degs_all_spds.csv"
@@ -19,10 +19,10 @@ layer_specifc_DEG_df <- read_csv(
   # keep the nominal p-value < 0.05 DEGs
   filter(P.Value < 0.05)
 
-overall_deg_list <- layer_specifc_DEG_df |>
+overall_deg_list <- layer_restricted_DEG_df |>
   group_split(PRECAST_spd) |>
   set_names(
-    nm = layer_specifc_DEG_df |>
+    nm = layer_restricted_DEG_df |>
       distinct(PRECAST_spd) |>
       pull(PRECAST_spd)
   )
@@ -114,16 +114,26 @@ enrichment_dot_plot_heatmap <- function(
     "SpD04-WM"
   )
 
-  # cell_type_order <- res$ID |> unique()
+  # cell_type_order <- res$test |> unique()
 
-  mat <- mat[spd_order, ]
-  size_mat <- size_mat[spd_order, ]
+  cell_type_order <- c(
+    # Excitatary neurons
+    "L2.3.IT", "L4.IT", "L5.ET", "L5.IT",
+    "L5.6.NP", "L6.CT", "L6.IT", "L6.IT.Car3", "L6b",
+    # Inhibitory neurons
+    "Chandelier", "Lamp5", "Lamp5.Lhx6", "Pax6", "Pvalb",
+    "Sncg", "Sst", "Vip",
+    # Non-neuronal cells
+    "Astro", "Endo", "Immune", "Micro", "OPC", "Oligo",
+    "PC", "SMC", "VLMC"
+  )
+
+  mat <- mat[spd_order, cell_type_order]
+  size_mat <- size_mat[spd_order, cell_type_order]
 
   # Change matrix orientation
   # mat <- t(mat)
   # size_mat <- t(size_mat)
-
-browser()
 
   # Define color function for Odds Ratio
   col_fun <- colorRamp2(
@@ -131,8 +141,6 @@ browser()
     c(min(mat), median(mat), max(mat)),
     c("grey", "yellow", "blue")
   )
-
-  # browser()
 
   # Create the dot plot using ComplexHeatmap
   ht_list <- Heatmap(
@@ -160,7 +168,6 @@ browser()
     )
   )
 
-  # browser()
   lgd_list <- list(
     # dot size for p-value
     Legend(
@@ -200,7 +207,7 @@ pdf(
 )
 overall_enrich_res |>
   enrichment_dot_plot_heatmap(
-    title = "Overall Layer-Specifc SCZ-DEGs"
+    title = "Overall Layer-restricted SCZ-DEGs"
   )
 dev.off()
 
@@ -223,7 +230,7 @@ pdf(
 )
 up_reg_enrich_res |>
   enrichment_dot_plot_heatmap(
-    title = "up-regulated Layer-Specifc SCZ-DEGs"
+    title = "up-regulated Layer-restricted SCZ-DEGs"
   )
 dev.off()
 
@@ -247,10 +254,9 @@ pdf(
 )
 down_reg_enrich_res |>
   enrichment_dot_plot_heatmap(
-    title = "Down-regulated Layer-Specifc SCZ-DEGs"
+    title = "Down-regulated Layer-restricted SCZ-DEGs"
   )
 dev.off()
-
 
 ## (Deprecated) Heatmap Visualization ----
 # gene_set_enrichment_plot(
