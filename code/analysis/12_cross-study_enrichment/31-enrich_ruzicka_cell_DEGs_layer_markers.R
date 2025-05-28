@@ -189,8 +189,8 @@ enrichment_dot_plot_heatmap <- function(
     "SpD03-L6",
     "SpD01-WMtz",
     "SpD04-WM"
-  ) |> rev()
-  browser()
+  )
+  # browser()
   cell_type_order <- res$ID |> unique()
 
   # TODO: manullay group cells to groups
@@ -226,12 +226,12 @@ enrichment_dot_plot_heatmap <- function(
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
-    row_names_gp = gpar(fontsize = 12),
-    column_names_gp = gpar(fontsize = 12, rot = 45, just = "right"),
+    row_names_gp = gpar(fontsize = 8),
+    column_names_gp = gpar(fontsize = 8, rot = 45, just = "right"),
     heatmap_legend_param = list(
       title = "Odds Ratio",
-      title_gp = gpar(fontsize = 14),
-      labels_gp = gpar(fontsize = 12),
+      title_gp = gpar(fontsize = 8),
+      labels_gp = gpar(fontsize = 8),
       at = c(1, 3, 6)
     )
   )
@@ -251,7 +251,7 @@ enrichment_dot_plot_heatmap <- function(
   draw(ht_list,
     annotation_legend_list = lgd_list,
     column_title = title,
-    column_title_gp = gpar(fontsize = 14, fontface = "bold")
+    column_title_gp = gpar(fontsize = 8, fontface = "bold")
   )
 }
 
