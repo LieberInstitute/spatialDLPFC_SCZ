@@ -25,6 +25,20 @@ PRECAST_layer_enrichment <- read_csv(
   )
 )
 
+### Number of markers per layer ----
+tstats <- PRECAST_layer_enrichment[, grep("[f|t]_stat_", colnames(PRECAST_layer_enrichment))]
+colnames(tstats) <- gsub("[f|t]_stat_", "", colnames(tstats))
+fdrs <- PRECAST_layer_enrichment[, grep("fdr_", colnames(PRECAST_layer_enrichment))]
+colnames(fdrs) <- gsub("fdr_", "", colnames(fdrs))
+
+n_layer_marker <- colnames(tstats) |>
+  set_names() |>
+  map_dbl(
+    # NOTE: the fdr threshold should be consistent with the enrichrment test parameters
+    ~ sum(tstats[, .x] > 0 & fdrs[, .x] < 0.05)
+  )
+
+
 ## Load SpD annotation ----
 spd_anno_df <- read_csv(
   here(
@@ -68,6 +82,11 @@ annotated_res <- res |>
   ) |>
   mutate(test = anno_lab) |>
   select(-label, -anno_lab)
+
+n_layer_marker_annotated <- n_layer_marker
+names(n_layer_marker_annotated) <- spd_anno_df$anno_lab[match(names(n_layer_marker), spd_anno_df$spd)]
+
+
 
 ## Visaulize via dot plot -----
 # Wrapper function for the dot plot
@@ -126,8 +145,52 @@ enrichment_dot_plot_heatmap <- function(
   size_mat <- size_mat[cell_type_order, spd_order]
 
   # Change matrix orientation
+  # Change to layer-by-DEGs
   mat <- t(mat)
   size_mat <- t(size_mat)
+
+  # browser()
+
+  n_degs <- res |>
+    select(ID, SetSize) |>
+    distinct(ID, SetSize) |>
+    deframe()
+
+  deg_ha <- HeatmapAnnotation(
+    # Create a named list for the annotation
+    DEGs = anno_barplot(
+      n_degs,
+      border = TRUE,
+      axis = TRUE,
+      gp = gpar(fill = "black"),
+      height = unit(1, "cm"),
+      axis_param = list(
+        # direction = "reverse",
+        at = seq(0, max(n_degs), by = 50),
+        labels = seq(0, max(n_degs), by = 50)
+      )
+    ),
+    annotation_name_gp = gpar(fontsize = 8) # set annotation title font size
+  )
+
+  layer_marker_ha <- rowAnnotation(
+    # Create a named list for the annotation
+    n_layer_marker = anno_barplot(
+      n_layer_marker_annotated[spd_order],
+      border = TRUE,
+      axis = TRUE,
+      gp = gpar(fill = "black"),
+      height = unit(1, "cm"),
+      axis_param = list(
+        direction = "reverse",
+        at = seq(0, max(n_layer_marker_annotated), by = 2000),
+        labels = seq(0, max(n_layer_marker_annotated), by = 2000)
+      )
+    ),
+    annotation_name_gp = gpar(fontsize = 8) # set annotation title font size
+  )
+
+
 
   # Define color function for Odds Ratio
   col_fun <- colorRamp2(
@@ -150,33 +213,40 @@ enrichment_dot_plot_heatmap <- function(
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid.circle(
         x = x, y = y,
-        r = unit(1.5 * size_mat[i, j], "mm"),
+        r = unit(size_mat[i, j], "mm"),
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
-    row_names_gp = gpar(fontsize = 12),
-    column_names_gp = gpar(fontsize = 12, rot = 45, just = "right") # ,
-    # heatmap_legend_param = list(
-    #   title = "Odds Ratio",
-    #   title_gp = gpar(fontsize = 14),
-    #   labels_gp = gpar(fontsize = 12),
-    #   at = c(1, 3, 6)
-    # )
-  )
+    # Annotation Bar plot
+    top_annotation = deg_ha,
+    left_annotation = layer_marker_ha,
 
-  # browser()
-  lgd_list <- list(
-    # dot size for p-value
-    Legend(
-      labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
-      title = "Significance", type = "points",
-      pch = 16,
-      legend_gp = gpar(fill = "black"),
-      size = unit(1:3, "mm"),
+    # Aesthetics
+    row_names_gp = gpar(fontsize = 8),
+    column_names_gp = gpar(fontsize = 8, rot = 45, just = "right"),
+    heatmap_legend_param = list(
+      title = "Odds Ratio",
+      title_gp = gpar(fontsize = 8),
+      labels_gp = gpar(fontsize = 6),
+      at = c(1, 3, 6)
     )
   )
 
-  draw(ht_list, annotation_legend_list = lgd_list)
+  # browser()
+  # lgd_list <- list(
+  #   # dot size for p-value
+  #   Legend(
+  #     labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
+  #     title = "Significance", type = "points",
+  #     pch = 16,
+  #     legend_gp = gpar(fill = "black"),
+  #     size = unit(1:3, "mm"),
+  #   )
+  # )
+
+  # draw(ht_list, annotation_legend_list = lgd_list)
+
+  ht_list
 }
 
 
@@ -191,29 +261,32 @@ pdf(
   file = here(
     "plots/12_cross_study_enrichment",
     "dotplot_layer_adj_DEG_vs_PRECAST_SpD.pdf"
-  )
+  ),
+  width = 3, height = 2.5
 )
 ret_htmap
 dev.off()
 
-## Visaulize via heatmap (Deprecated) -----
-pdf(
-  file = here(
-    "plots/12_cross_study_enrichment",
-    "heatmap_layer_adj_DEG_vs_PRECAST_SpD.pdf"
-  ),
-  width = 3, height = 4
-)
-# plot
-annotated_res |>
-  gene_set_enrichment_plot(
-    # res,
-    PThresh = 12,
-    ORcut = 3,
-    enrichOnly = FALSE,
-    cex = 1.5 # control the size of the text
-  ) + title("Layer-adjusted SCZ-DEGs")
-dev.off()
 
 # Session Info ----
 sessioninfo::session_info()
+
+# Deprecateted code
+## Visaulize via heatmap (Deprecated) -----
+# pdf(
+#   file = here(
+#     "plots/12_cross_study_enrichment",
+#     "heatmap_layer_adj_DEG_vs_PRECAST_SpD.pdf"
+#   ),
+#   width = 3, height = 4
+# )
+# # plot
+# annotated_res |>
+#   gene_set_enrichment_plot(
+#     # res,
+#     PThresh = 12,
+#     ORcut = 3,
+#     enrichOnly = FALSE,
+#     cex = 1.5 # control the size of the text
+#   ) + title("Layer-adjusted SCZ-DEGs")
+# dev.off()
