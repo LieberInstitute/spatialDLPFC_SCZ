@@ -66,6 +66,15 @@ pnn_df <- read_csv(
   )
 )
 
+#### Number of markers per SPG ----
+n_spg_marker <- list(
+  Neuropil = neuropil_df |> filter(fdr_TRUE < 0.05 & t_stat_TRUE > 0) |> nrow(),
+  Neun = neun_df |> filter(fdr_TRUE < 0.05 & t_stat_TRUE > 0) |> nrow(),
+  Vasculature = vasc_df |> filter(fdr_TRUE < 0.05 & t_stat_TRUE > 0) |> nrow(),
+  PNN = pnn_df |> filter(fdr_TRUE < 0.05 & t_stat_TRUE > 0) |> nrow()
+) |> unlist()
+
+
 
 # Exact test for enrichment ----
 ## Overall DEGs ----
@@ -318,16 +327,28 @@ enrichment_dot_plot_heatmap <- function(
     "SpD04-WM"
   )
 
-  # cell_type_order <- res$ID |> unique()
+  if_order <- res$test |> unique()
 
-  mat <- mat[spd_order, ]
-  size_mat <- size_mat[spd_order, ]
+  mat <- mat[spd_order, if_order]
+  size_mat <- size_mat[spd_order, if_order]
+
+  spg_ha <- HeatmapAnnotation(
+    spg = anno_barplot(
+      n_spg_marker[if_order],
+      axis = TRUE,
+      axis_name = "# of SPG",
+      border = TRUE,
+      gp = gpar(fill = "black"),
+      axis_param = list(
+        at = seq(0, max(n_spg_marker[if_order]), by = 1000),
+        labels = seq(0, max(n_spg_marker[if_order]), by = 1000)
+      )
+    )
+  )
 
   # Change matrix orientation
   # mat <- t(mat)
   # size_mat <- t(size_mat)
-
-# browser()
 
   # Define color function for Odds Ratio
   col_fun <- colorRamp2(
@@ -336,7 +357,8 @@ enrichment_dot_plot_heatmap <- function(
     c("grey", "yellow", "blue")
   )
 
-  # browser()
+
+
 
   # Create the dot plot using ComplexHeatmap
   ht_list <- Heatmap(
@@ -354,32 +376,35 @@ enrichment_dot_plot_heatmap <- function(
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
-    row_names_gp = gpar(fontsize = 12),
-    column_names_gp = gpar(fontsize = 12, rot = 45, just = "right"),
+    # Add the SPG annotation
+    top_annotation = spg_ha,
+    # Aethetics
+    row_names_gp = gpar(fontsize = 6),
+    column_names_gp = gpar(fontsize = 6, rot = 45, just = "right"),
     heatmap_legend_param = list(
       title = "Odds Ratio",
-      title_gp = gpar(fontsize = 14),
-      labels_gp = gpar(fontsize = 12) # ,
+      title_gp = gpar(fontsize = 8),
+      labels_gp = gpar(fontsize = 6) # ,
       # at = c(min(mat), max(mat))
     )
   )
 
   # browser()
-  lgd_list <- list(
-    # dot size for p-value
-    Legend(
-      labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
-      title = "Significance", type = "points",
-      pch = 16,
-      legend_gp = gpar(fill = "black"),
-      size = unit(1:3, "mm"),
-    )
-  )
+  # lgd_list <- list(
+  #   # dot size for p-value
+  #   Legend(
+  #     labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
+  #     title = "Significance", type = "points",
+  #     pch = 16,
+  #     legend_gp = gpar(fill = "black"),
+  #     size = unit(1:3, "mm"),
+  #   )
+  # )
 
   draw(ht_list,
-    annotation_legend_list = lgd_list,
+    # annotation_legend_list = lgd_list,
     column_title = title,
-    column_title_gp = grid::gpar(fontsize = 16)
+    column_title_gp = grid::gpar(fontsize = 6)
   )
 }
 
@@ -388,7 +413,8 @@ pdf(
   here(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_SPG_marker_overall.pdf"
-  )
+  ),
+  height = 3, width = 2.5
 )
 enrichment_dot_plot_heatmap(
   res = enrich_df_overall,
@@ -401,7 +427,8 @@ pdf(
   here(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_SPG_marker_upregulated.pdf"
-  )
+  ),
+  height = 3, width = 2.5
 )
 enrichment_dot_plot_heatmap(
   res = enrich_df_up,
@@ -414,7 +441,8 @@ pdf(
   here(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_SPG_marker_downregulated.pdf"
-  )
+  ),
+  height = 3, width = 2.5
 )
 enrichment_dot_plot_heatmap(
   res = enrich_df_down,
