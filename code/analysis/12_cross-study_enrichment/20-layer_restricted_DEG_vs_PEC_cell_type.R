@@ -62,6 +62,19 @@ cell_type_enrich_df <- readRDS(
   )
 )
 
+#### Retrieve # of marker genes per cell type ----
+tstats <- cell_type_enrich_df[, grep("[f|t]_stat_", colnames(cell_type_enrich_df))]
+colnames(tstats) <- gsub("[f|t]_stat_", "", colnames(tstats))
+fdrs <- cell_type_enrich_df[, grep("fdr_", colnames(cell_type_enrich_df))]
+colnames(fdrs) <- gsub("fdr_", "", colnames(fdrs))
+
+n_cell_type_marker <- colnames(tstats) |>
+  set_names() |>
+  map_dbl(
+    # NOTE: the fdr threshold should be consistent with the enrichrment test parameters
+    ~ sum(tstats[, .x] > 0 & fdrs[, .x] < 0.05)
+  )
+
 # Enrichment Test ----
 ## Wrapper function for the dot plot ---
 enrichment_dot_plot_heatmap <- function(
@@ -131,6 +144,44 @@ enrichment_dot_plot_heatmap <- function(
   mat <- mat[spd_order, cell_type_order]
   size_mat <- size_mat[spd_order, cell_type_order]
 
+  # browser()
+  celltype_ha <- HeatmapAnnotation(
+    n_celltype = anno_barplot(
+      n_cell_type_marker[cell_type_order],
+      border = TRUE,
+      axis = TRUE,
+      gp = gpar(fill = "black"),
+      height = unit(2, "cm"),
+      axis_param = list(
+        at = seq(0, max(n_cell_type_marker), by = 1000),
+        labels = seq(0, max(n_cell_type_marker), by = 1000)
+      )
+    )
+  )
+
+  n_DEG <- res |>
+    select(ID, SetSize) |>
+    # group_by(ID) |>
+    distinct(ID, SetSize) |>
+    deframe()
+
+  DEG_ha <- rowAnnotation(
+    n_DEG = anno_barplot(
+      n_DEG[spd_order],
+      border = TRUE,
+      axis = TRUE,
+      gp = gpar(fill = "black"),
+      height = unit(2, "cm"),
+      axis_param = list(
+        direction = "reverse",
+        at = seq(0, max(n_DEG), by = 500),
+        labels = seq(0, max(n_DEG), by = 500)
+      )
+    ) # ,
+    # annotation_name_side = "left",
+    # annotation_name_gp = gpar(fontsize = 12)
+  )
+
   # Change matrix orientation
   # mat <- t(mat)
   # size_mat <- t(size_mat)
@@ -158,6 +209,11 @@ enrichment_dot_plot_heatmap <- function(
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
+    # Add cell type annotation - bar plot
+    top_annotation = celltype_ha,
+    left_annotation = DEG_ha,
+
+    # Aesthetics
     row_names_gp = gpar(fontsize = 12),
     column_names_gp = gpar(fontsize = 12, rot = 45, just = "right"),
     heatmap_legend_param = list(
@@ -203,7 +259,7 @@ pdf(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_PEC_cell_type_marker_overall.pdf"
   ),
-  height = 3
+  height = 4, width = 9.5
 )
 overall_enrich_res |>
   enrichment_dot_plot_heatmap(
@@ -226,7 +282,7 @@ pdf(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_PEC_cell_type_marker_up_reg.pdf"
   ),
-  height = 3
+  height = 4, width = 9.5
 )
 up_reg_enrich_res |>
   enrichment_dot_plot_heatmap(
@@ -250,7 +306,7 @@ pdf(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_PEC_cell_type_marker_down_reg.pdf"
   ),
-  height = 3
+  height = 4, width = 9.5
 )
 down_reg_enrich_res |>
   enrichment_dot_plot_heatmap(
