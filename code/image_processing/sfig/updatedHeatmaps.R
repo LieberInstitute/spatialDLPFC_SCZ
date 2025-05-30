@@ -14,6 +14,8 @@ spe_ntc = readRDS(here("processed-data", "image_processing", "enrichment", "spe_
 colData(spe_ntc)$slide_id <- sapply(strsplit(colData(spe_ntc)$sample_id, "_"), `[`, 1)
 df = as.data.frame(colData(spe_ntc))
 
+df$brnum_dx <- paste(df$brnum, toupper(df$dx), sep = "_")
+
 neuropil <- read_excel(here("raw-data/images/SPG_Spot_Valid/Neuropil/Supple_Table_10_Neuropil.xlsx"), sheet = "10_human_synase_markers", skip = 1)
 # Remove the first 8 columns
 neuropil <- neuropil[, -(1:8)]
@@ -102,6 +104,9 @@ gene_df <- data.frame(
   mutate(PRECAST_07 = factor(PRECAST_07, levels = c("spd04","spd01","spd03", "spd05","spd02","spd06", "spd07"),
      labels = c("SpD04-WM", "SpD01-WMtz", "SpD03-L6", "SpD05-L5", "SpD02-L3/4", "SpD06-L2/3","SpD07-L1" ))
   )
+
+df_unique <- df[!duplicated(df$sample_id), c("sample_id", "brnum_dx")]
+gene_df <- left_join(gene_df, df_unique, by = "sample_id")
   
 # Initialize empty lists
 prop_neuropil <- list()
@@ -150,13 +155,15 @@ prop_df <- data.frame(
      labels = c("SpD04-WM", "SpD01-WMtz", "SpD03-L6", "SpD05-L5", "SpD02-L3/4", "SpD06-L2/3","SpD07-L1" ))
   )
   
-  
-pdf(here("plots", "image_processing", "enrichment", "DAPIheatmap_update.pdf"), width = 10, height = 8) 
+df_unique <- df[!duplicated(df$sample_id), c("sample_id", "brnum_dx")]
+prop_df <- left_join(prop_df, df_unique, by = "sample_id")
+
+pdf(here("plots", "image_processing", "enrichment", "Claudin5heatmap_update1.pdf"), width = 10, height = 8) 
   # neuropil
-p = ggplot(gene_df, aes(x = sample_id, y = PRECAST_07, fill = P_neuropil)) +
+p = ggplot(gene_df, aes(x = brnum_dx, y = PRECAST_07, fill = P_vasc)) +
    geom_tile() +
    scale_fill_gradient(low = "white", high = "black", na.value = "grey50") +
-   labs(title = "Proportion of Neuropil+ spots with sum of marker gene expression > 1000",	
+   labs(title = "spots with sum of marker gene expression > 1000",	
         x = NULL,
         y = NULL,
 		fill = NULL) +
@@ -167,10 +174,10 @@ p = ggplot(gene_df, aes(x = sample_id, y = PRECAST_07, fill = P_neuropil)) +
 	 print(p)
 	 
  
-p = ggplot(prop_df, aes(x = sample_id, y = PRECAST_07, fill = P_neuropil)) +
+p = ggplot(prop_df, aes(x = brnum_dx, y = PRECAST_07, fill = P_vasc)) +
    geom_tile() +
    scale_fill_gradient(low = "white", high = "black", na.value = "grey50") +
-   labs(title = "Proportion of DAPI- spots with segmented DAPI signal < 5% of spot area",
+   labs(title = "spots with segmented signal < 5% of spot area",
         x = NULL,
         y = NULL,
 		fill = NULL) +
