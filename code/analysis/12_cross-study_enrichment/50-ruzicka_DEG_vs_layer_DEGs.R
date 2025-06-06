@@ -230,7 +230,7 @@ plot_up_enrich <- up_enrich_long |>
   mutate(
     ruzicka_name = factor(ruzicka_name, levels = names(ruzicka_deg_list_up)),
     layer_name = factor(layer_name, levels = c(
-      "SpD07-L1",
+      "SpD07-L1/M",
       "SpD06-L2/3",
       "SpD02-L3/4",
       "SpD05-L5",
@@ -266,7 +266,7 @@ plot_down_enrich <- down_enrich_long |>
   mutate(
     ruzicka_name = factor(ruzicka_name, levels = names(ruzicka_deg_list_down)),
     layer_name = factor(layer_name, levels = c(
-      "SpD07-L1",
+      "SpD07-L1/M",
       "SpD06-L2/3",
       "SpD02-L3/4",
       "SpD05-L5",

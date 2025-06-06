@@ -42,7 +42,7 @@ spd_anno_df <- read_csv(
   mutate(anno_lab = factor(
     paste0(gsub("spd", "SpD", spd), "-", label),
     levels = c(
-      "SpD07-L1",
+      "SpD07-L1/M",
       "SpD06-L2/3",
       "SpD02-L3/4",
       "SpD05-L5",
