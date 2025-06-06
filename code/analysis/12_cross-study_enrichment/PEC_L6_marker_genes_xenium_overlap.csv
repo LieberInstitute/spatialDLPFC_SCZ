@@ -1,0 +1,64 @@
+ensembl,gene,PEC_cell_type,Anno_cell_type,Anno_layer_marker,Note,Probesets,Anno_cell_type_obselete,dx_deg,Literature_GWAS_based_hits,BDNF_signaling,Cell_Type_Reference
+ENSG00000118407,FILIP1,L6.CT,Ex,NA,"annoated_L6 CT_in_10x_probe_panel; expressed in cortical excitatory neurons, especially in layer 6 (Nat Neuro 2021)",8,Ex,NA,NA,NA,10x_Probe_Panel
+ENSG00000165023,DIRAS2,L6.CT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000251226,LINC02714,L6.CT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000134138,MEIS2,L6.CT,In,NA,LAMP5-interneuron; could be its own subtype (Ling et al),8,In,NA,NA,NA,https://www.nature.com/articles/s41586-024-07109-5
+ENSG00000103316,CRYM,L6.CT,Ex,NA,"not really a canonical marker for excitatory neurons, but useful pan-excitatory marker alternative (LIBD-PEC); annoated_L5/6 NP_in_10x_probe_panel",8,Ex,NA,NA,NA,10x_Probe_Panel; LIBD-PEC
+ENSG00000171246,NPTX1,L6.CT,Ex,Layer marker,"not really a canonical marker for excitatory neurons, but useful pan-excitatory marker alternative (LIBD-PEC)",8,NA,NA,NA,NA,LIBD_PEC
+ENSG00000128422,KRT17,L6.CT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000143013,LMO4,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000133048,CHI3L1,L6.IT,NA,NA,NA,8,NA,Dx_DEG_Up,NA,NA,NA
+ENSG00000186854,TRABD2A,L6.IT,Ex,Layer marker,"expressed in layer 5 pyramidal excitatory neurons; subclass-selective (LIBD-PEC, Nat Neuro 2021)",8,Ex,NA,NA,NA,LIBD_PEC
+ENSG00000187094,CCK,L6.IT,In,NA,VIP-interneuron,8,In,NA,NA,NA,https://pmc.ncbi.nlm.nih.gov/articles/PMC10183954/
+ENSG00000164326,CARTPT,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000171617,ENC1,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000053108,FSTL4,L6.IT,Ex,NA,annoated_L4 IT_in_10x_probe_panel,8,Ex,NA,NA,NA,10x_Probe_Panel
+ENSG00000271824,SMIM32,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000146360,GPR6,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000172673,THEMIS,L6.IT,Ex,Layer marker,expressed in layer 5/6 pyramidal excitatory neurons; subclass-selective (LIBD-PEC),8,NA,NA,NA,NA,LIBD_PEC; https://www.sciencedirect.com/science/article/pii/S2666979X2400332X ; https://www.science.org/doi/10.1126/sciadv.abn8367?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed
+ENSG00000106236,NPTX2,L6.IT,In,NA,PVALB-interneuron,8,In (EI balance),Dx_DEG_Down,NA,NA,https://pmc.ncbi.nlm.nih.gov/articles/PMC8612534
+ENSG00000128564,VGF,L6.IT,NA,NA,NA,8,NA,Dx_DEG_Down,NA,NA,NA
+ENSG00000179388,EGR3,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000104722,NEFM,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000277586,NEFL,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000176697,BDNF,L6.IT,NA,NA,BDNF_signaling,8,NA,Dx_DEG_Down,NA,BDNF,NA
+ENSG00000170290,SLN,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000251226,LINC02714,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000157782,CABP1,L6.IT,Ex,NA,"not really a canonical marker for excitatory neurons, but useful pan-excitatory marker alternative (LIBD-PEC)",8,Ex,NA,NA,NA,LIBD-PEC; https://pmc.ncbi.nlm.nih.gov/articles/PMC4060604/
+ENSG00000183828,NUDT14,L6.IT,NA,NA,NA,5,NA,Dx_DEG_Down,NA,NA,NA
+ENSG00000128989,ARPP19,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000129009,ISLR,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000206172,HBA1,L6.IT,NA,Layer marker,NA,4,NA,NA,NA,NA,NA
+ENSG00000103316,CRYM,L6.IT,Ex,NA,"not really a canonical marker for excitatory neurons, but useful pan-excitatory marker alternative (LIBD-PEC); annoated_L5/6 NP_in_10x_probe_panel",8,Ex,NA,NA,NA,10x_Probe_Panel; LIBD-PEC
+ENSG00000108551,RASD1,L6.IT,NA,NA,NA,8,NA,Dx_DEG_Up,NA,NA,NA
+ENSG00000171246,NPTX1,L6.IT,Ex,Layer marker,"not really a canonical marker for excitatory neurons, but useful pan-excitatory marker alternative (LIBD-PEC)",8,NA,NA,NA,NA,LIBD_PEC
+ENSG00000141433,ADCYAP1,L6.IT,NA,Layer marker,BDNF_signaling,8,BDNF,NA,NA,BDNF,NA
+ENSG00000174521,TTC9B,L6.IT,NA,Layer marker,NA,5,NA,NA,NA,NA,NA
+ENSG00000229425,AJ009632.2,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000100285,NEFH,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000128245,YWHAH,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000091482,SMPX,L6.IT,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000153234,NR4A2,L6.IT.Car3,Ex,NA,annotated_Immune_in_10x_Probe_Panel;  expressed in layer 6 pyramidal excitatory neurons (Nat Neuro 2021),8,Ex,NA,NA,NA,LIBD_PEC
+ENSG00000170396,ZNF804A,L6.IT.Car3,NA,NA,NA,8,NA,NA,PGC-GWAS,NA,NA
+ENSG00000271824,SMIM32,L6.IT.Car3,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000172673,THEMIS,L6.IT.Car3,Ex,Layer marker,expressed in layer 5/6 pyramidal excitatory neurons; subclass-selective (LIBD-PEC),8,NA,NA,NA,NA,LIBD_PEC; https://www.sciencedirect.com/science/article/pii/S2666979X2400332X ; https://www.science.org/doi/10.1126/sciadv.abn8367?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed
+ENSG00000157168,NRG1,L6.IT.Car3,NA,NA,NA,8,NA,NA,Literature,NA,NA
+ENSG00000198408,OGA,L6.IT.Car3,NA,NA,NA,8,NA,Dx_DEG_Up,NA,NA,NA
+ENSG00000176697,BDNF,L6.IT.Car3,NA,NA,BDNF_signaling,8,NA,Dx_DEG_Down,NA,BDNF,NA
+ENSG00000276644,DACH1,L6.IT.Car3,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000169032,MAP2K1,L6.IT.Car3,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000091482,SMPX,L6.IT.Car3,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000128422,KRT17,L6.IT.Car3,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000115756,HPCAL1,L6b,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000186854,TRABD2A,L6b,Ex,Layer marker,"expressed in layer 5 pyramidal excitatory neurons; subclass-selective (LIBD-PEC, Nat Neuro 2021)",8,Ex,NA,NA,NA,LIBD_PEC
+ENSG00000178602,OTOS,L6b,NA,NA,NA,5,NA,Dx_DEG_Up,NA,NA,NA
+ENSG00000118407,FILIP1,L6b,Ex,NA,"annoated_L6 CT_in_10x_probe_panel; expressed in cortical excitatory neurons, especially in layer 6 (Nat Neuro 2021)",8,Ex,NA,NA,NA,10x_Probe_Panel
+ENSG00000106236,NPTX2,L6b,In,NA,PVALB-interneuron,8,In (EI balance),Dx_DEG_Down,NA,NA,https://pmc.ncbi.nlm.nih.gov/articles/PMC8612534
+ENSG00000165023,DIRAS2,L6b,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000182379,NXPH4,L6b,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000276644,DACH1,L6b,NA,Layer marker,NA,8,NA,NA,NA,NA,NA
+ENSG00000134138,MEIS2,L6b,In,NA,LAMP5-interneuron; could be its own subtype (Ling et al),8,In,NA,NA,NA,https://www.nature.com/articles/s41586-024-07109-5
+ENSG00000007516,BAIAP3,L6b,NA,NA,NA,8,NA,Dx_DEG_Up,NA,NA,NA
+ENSG00000171246,NPTX1,L6b,Ex,Layer marker,"not really a canonical marker for excitatory neurons, but useful pan-excitatory marker alternative (LIBD-PEC)",8,NA,NA,NA,NA,LIBD_PEC
+ENSG00000141433,ADCYAP1,L6b,NA,Layer marker,BDNF_signaling,8,BDNF,NA,NA,BDNF,NA
+ENSG00000128422,KRT17,L6b,NA,Layer marker,NA,8,NA,NA,NA,NA,NA

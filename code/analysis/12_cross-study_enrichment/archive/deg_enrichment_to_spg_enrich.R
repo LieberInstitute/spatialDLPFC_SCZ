@@ -175,7 +175,7 @@ enrichment_dot_plot_heatmap <- function(
 
   # Reorder the matrix based on the order of spd_anno_df
   # spd_order <- c(
-  #   "SpD07-L1",
+  #   "SpD07-L1/M",
   #   "SpD06-L2/3",
   #   "SpD02-L3/4",
   #   "SpD05-L5",

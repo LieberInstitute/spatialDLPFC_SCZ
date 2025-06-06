@@ -48,6 +48,12 @@ ruzicka_deg_list <- ruzicka_sheets |>
       )
   )
 
+# Error prevention
+# Check that genes maps to some 'ensembl' id
+stopifnot(
+  any(ruzicka_deg_list |> map_lgl(~ any(is.na(.x$ensembl)))) == FALSE
+)
+
 # Save data as RDS ----
 saveRDS(
   ruzicka_deg_list,
