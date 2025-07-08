@@ -73,7 +73,7 @@ reducedTerms <- reduceSimMatrix(
 pdf(
   file = here(
     "plots/10_dx_deg_adjust_spd",
-    "treemap_GO_layer_restrict.pdf"
+    "treemap_GO_layer_adj.pdf"
   )
 )
 treemapPlot(reducedTerms)
@@ -107,7 +107,7 @@ reducedTerms_up <- reduceSimMatrix(
 pdf(
   file = here(
     "plots/10_dx_deg_adjust_spd/archived",
-    "treemap_GO_layer_restrict.pdf"
+    "treemap_GO_layer_adj_up_reg.pdf"
   )
 )
 treemapPlot(reducedTerms_up)
@@ -139,7 +139,7 @@ reducedTerms_down <- reduceSimMatrix(
 pdf(
   file = here(
     "plots/10_dx_deg_adjust_spd/archived",
-    "treemap_GO_layer_restrict.pdf"
+    "treemap_GO_layer_adj_down_reg.pdf"
   )
 )
 treemapPlot(reducedTerms_down)
