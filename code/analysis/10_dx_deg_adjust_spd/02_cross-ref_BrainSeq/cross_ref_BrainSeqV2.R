@@ -49,6 +49,12 @@ hist(brainseq_v2_df$P.Value, breaks = 100)
 sum(brainseq_v2_df$adj.P.Val < 0.1, na.rm = TRUE)
 # [1] 632
 
+### BrainSeq V2 statistics ----
+tmp <- brainseq_v2_df |>
+filter(adj.P.Val < 0.1)
+# Number of down-reg sig genes.
+sum(tmp$t < 0, na.rm = TRUE)
+
 
 ## Create merged data set ----
 # Inner join data as experiment
