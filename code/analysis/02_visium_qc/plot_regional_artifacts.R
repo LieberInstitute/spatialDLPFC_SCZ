@@ -291,7 +291,7 @@ p_artifact_list <- sub_spe$sample_label |>
     # organize legends
     ret_plot <- ret_plot +
       scale_fill_manual(
-        name = "Regional Artifect",
+        name = "Regional Artifact",
         limits = c("TRUE", "FALSE"), # Show discard first
         values = c(
           "TRUE" = "deeppink",
