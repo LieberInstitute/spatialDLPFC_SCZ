@@ -38,10 +38,10 @@ All data, including raw FASTQ files and SpaceRanger processed data outputs, can 
 Zenodo Archive for this project can be found at [zenodo_archive_link]().
 
 ## Background:  
-https://www.sciencedirect.com/science/article/pii/S092099641500002X?via%3Dihub  
-https://www.frontiersin.org/articles/10.3389/fnmol.2018.00270/full  
-https://www.nature.com/articles/s41583-019-0196-3  
-https://pubmed.ncbi.nlm.nih.gov/34072323/  
+[https://www.sciencedirect.com/science/article/pii/S092099641500002X?via%3Dihub](https://www.sciencedirect.com/science/article/pii/S092099641500002X?via%3Dihub)  
+[https://www.frontiersin.org/articles/10.3389/fnmol.2018.00270/full](https://www.frontiersin.org/articles/10.3389/fnmol.2018.00270/full)  
+[https://www.nature.com/articles/s41583-019-0196-3](https://www.nature.com/articles/s41583-019-0196-3)  
+[https://pubmed.ncbi.nlm.nih.gov/34072323/](https://pubmed.ncbi.nlm.nih.gov/34072323/)  
 
 ## Contact
 
