@@ -51,7 +51,7 @@ sum(brainseq_v2_df$adj.P.Val < 0.1, na.rm = TRUE)
 
 ### BrainSeq V2 statistics ----
 tmp <- brainseq_v2_df |>
-filter(adj.P.Val < 0.1)
+  filter(adj.P.Val < 0.1)
 # Number of down-reg sig genes.
 sum(tmp$t < 0, na.rm = TRUE)
 
@@ -89,22 +89,30 @@ hl_genes <- merged_df |>
 
 # Make scatter plots ----
 ## Scatter plot of sig genes ----
-ggplot(merged_df, aes(x = t_stat_scz, y = t, color = study_sig)) +
+ggplot(
+  merged_df,
+  aes(
+    x = t_stat_scz, y = t,
+    color = study_sig
+  )
+) +
   # Prepare grid
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey") +
   geom_vline(xintercept = 0, linetype = "dashed", color = "grey") +
   geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dotted") +
   # Add genes
-  geom_point(alpha = 0.7) +
+  geom_point(size = 0.2, alpha = 0.7) +
   geom_label_repel(
     data = hl_genes,
     aes(label = Symbol),
+    label.padding = 0.05,
+    label.size = 0.2, # slightly thicker box border
     box.padding = 0.5,
     point.padding = 0.5,
     segment.color = "grey50",
     segment.size = 0.5,
     segment.alpha = 0.5,
-    size = 3
+    size = 2
   ) +
   # Format plot
   scale_color_manual(
@@ -116,16 +124,12 @@ ggplot(merged_df, aes(x = t_stat_scz, y = t, color = study_sig)) +
     )
   ) +
   labs(
-    x = "SCZ-DEG T-statistic",
-    y = "BrainSeq V2 T-statistic",
-    title = sprintf("Scatter plot of T-statistics (N= %d genes)", nrow(merged_df)),
+    x = "Layer-adjusted SCZ-DEG",
+    y = "bulk SCZ-DEGs",
+    title = # sprintf(
+      "Scatter plot of t-statistics", # (N= %d genes)",
+    #  nrow(merged_df)),
     color = "Study Significance"
-  ) +
-  theme_minimal(base_size = 14) +
-  theme(
-    legend.position = "bottom",
-    panel.border = element_rect(color = "black", fill = NA),
-    plot.title = element_text(hjust = 0.5, face = "bold")
   ) +
   annotate("text",
     x = -Inf, y = Inf,
@@ -138,7 +142,13 @@ ggplot(merged_df, aes(x = t_stat_scz, y = t, color = study_sig)) +
         use = "pairwise.complete.obs"
       )
     ),
-    hjust = -0.1, vjust = 2, size = 5, color = "black"
+    hjust = -0.1, vjust = 2, size = 2, color = "black"
+  ) +
+  theme_classic(base_size = 6) +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 8, face = "bold"),
+    legend.position = "none" # ,
+    # panel.border = element_rect(color = "black", fill = NA),
   )
 
 ggsave(
@@ -146,7 +156,7 @@ ggsave(
     "plots/10_dx_deg_adjust_spd",
     "scatter_plot_t_stat_brain_seq_v2.pdf"
   ),
-  width = 8, height = 6
+  width = 1.93, height = 1.3, units = "in"
 )
 
 
@@ -210,24 +220,24 @@ merged_df <- merged_df |>
 # Prob that 172 DEG is a synGO
 merged_df |>
   filter(fdr_scz < 0.10) |>
-  pull(synGO) |> 
+  pull(synGO) |>
   mean()
 # [1] 0.127907
 
 # Prob that BrainSeqV2 is a synGO
 merged_df |>
   filter(adj.P.Val < 0.10) |>
-  pull(synGO) |> 
+  pull(synGO) |>
   mean()
 # [1] 0.1585624
 
-# Odds ratio that 
-(0.1586/(1-0.1586))/(0.1279/(1-0.1279))
+# Odds ratio that
+(0.1586 / (1 - 0.1586)) / (0.1279 / (1 - 0.1279))
 # [1] 1.285276
 
 
 merged_df |>
-  filter(adj.P.Val > 0.1 & fdr_scz < 0.10) |> 
+  filter(adj.P.Val > 0.1 & fdr_scz < 0.10) |>
   write_csv(
     here(
       "code/analysis/10_dx_deg_adjust_spd",
@@ -236,7 +246,7 @@ merged_df |>
   )
 
 merged_df |>
-  filter(adj.P.Val < 0.1 & fdr_scz > 0.10) |> 
+  filter(adj.P.Val < 0.1 & fdr_scz > 0.10) |>
   write_csv(
     here(
       "code/analysis/10_dx_deg_adjust_spd",
