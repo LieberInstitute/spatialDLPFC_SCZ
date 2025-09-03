@@ -53,15 +53,18 @@ ggplot(
   # Plot all genes
   geom_point(
     aes(color = gene_cat),
-    size = 2
+    size = 0.2
   ) +
   # Add interested gene labels
   geom_label_repel(
     data = sig_gene_df, # Add labels last to appear as the top layer
     aes(x = logFC_scz, y = -log10(p_value_scz), label = gene, color = gene_cat),
-    force = 2,
+    force = 0.5,
     nudge_y = 0.1,
-    size = 3
+    size = 2, # 6pt font ≈ size 2 in ggplot2
+    label.padding = 0.05,
+    label.size  = 0.2, # slightly thicker box border
+    arrow = arrow(length = unit(0.01, "inches"), type = "closed")
   ) +
   # Format the legends
   scale_color_identity(
@@ -73,32 +76,33 @@ ggplot(
     )
   ) +
   labs(
-    title = "SCZ-Differentially Expressed Genes",
+    title = "Layer-adjusted DEGs",
     y = "-log10(p-value)",
     x = "log2(Fold Change)",
     color = "Significance"
   ) +
   # Format the plot
-  theme_minimal() +
+  theme_classic(base_size = 6) +
   theme(
-    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
-    axis.title = element_text(size = 12),
-    axis.text = element_text(size = 10),
-    legend.position = "top",
-    panel.border = element_rect(
-      color = "black", fill = NA, size = 1
-    )
+    plot.title = element_text(hjust = 0.5, size = 8, face = "bold"),
+  #   axis.title = element_text(size = 6),
+  #   axis.text = element_text(size = 6),
+  #   legend.position = "top",
+  #   panel.border = element_rect(
+  #     color = "black", fill = NA, size = 1
+  #   )
   )
-
-
+# 
+# 
 # Save the plot ----
 ggsave(
-  here(
+  filename = here(
     "plots/10_dx_deg_adjust_spd",
     "volcano_PRECAST_07.pdf"
   ),
-  width = 8,
-  height = 6,
+  width = 1.72,
+  height = 1.3,
+  units = "in",
   dpi = 300
 )
 
