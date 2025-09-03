@@ -54,9 +54,9 @@ pnn_df <- read_csv(
 ## Neuropil ----
 neuropil_enrich <- spatialLIBD::gene_set_enrichment(
   gene_list = list(
-    `172 degs` = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
-    `upreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
-    `downreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
+    All = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
+    Up = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
+    Down = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
   ),
   modeling_results = list("enrichment" = neuropil_df),
   model_type = "enrichment",
@@ -73,9 +73,9 @@ neuropil_enrich <- spatialLIBD::gene_set_enrichment(
 ## Neun ----
 neun_enrich <- spatialLIBD::gene_set_enrichment(
   gene_list = list(
-    `172 degs` = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
-    `upreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
-    `downreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
+    All = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
+    Up = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
+    Down = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
   ),
   modeling_results = list("enrichment" = neun_df),
   model_type = "enrichment",
@@ -85,15 +85,15 @@ neun_enrich <- spatialLIBD::gene_set_enrichment(
     test == TRUE
   ) |>
   mutate(
-    test = "Neun"
+    test = "Neuronal"
   )
 
 ## Vasculature ----
 vasc_enrich <- spatialLIBD::gene_set_enrichment(
   gene_list = list(
-    `172 degs` = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
-    `upreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
-    `downreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
+    All = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
+    Up = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
+    Down = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
   ),
   modeling_results = list("enrichment" = vasc_df),
   model_type = "enrichment",
@@ -109,9 +109,9 @@ vasc_enrich <- spatialLIBD::gene_set_enrichment(
 ## PNN ----
 pnn_enrich <- spatialLIBD::gene_set_enrichment(
   gene_list = list(
-    `172 degs` = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
-    `upreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
-    `downreg genes` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
+    All = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
+    Up = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
+    Down = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
   ),
   modeling_results = list("enrichment" = pnn_df),
   model_type = "enrichment",
@@ -137,7 +137,7 @@ enrich_df <- dplyr::bind_rows(
 ## Make the dot plot ----
 # TODO: copy the code here
 enrichment_dot_plot_heatmap <- function(
-    res # , PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
+    res, show_heatmap_legend = FALSE # , PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
     ) {
   # Prepare data for ComplexHeatmap
   mat <- res |>
@@ -209,8 +209,8 @@ enrichment_dot_plot_heatmap <- function(
     col = col_fun,
     cluster_columns = FALSE,
     cluster_rows = FALSE,
-    # Keep cell boundaries with black lines but hide the heatmap elements
     rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
+    show_heatmap_legend = show_heatmap_legend,
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid.circle(
         x = x, y = y,
@@ -218,29 +218,26 @@ enrichment_dot_plot_heatmap <- function(
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
-    row_names_gp = gpar(fontsize = 12),
-    column_names_gp = gpar(fontsize = 12, rot = 45, just = "right") # ,
-    # heatmap_legend_param = list(
-    #   title = "Odds Ratio",
-    #   title_gp = gpar(fontsize = 14),
-    #   labels_gp = gpar(fontsize = 12),
-    #   at = c(1, 3, 6)
-    # )
+    row_names_gp = gpar(fontsize = 6),
+    column_names_gp = gpar(fontsize = 6, rot = 45, just = "right")
   )
 
-  # browser()
-  lgd_list <- list(
-    # dot size for p-value
-    Legend(
-      labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
-      title = "Significance", type = "points",
-      pch = 16,
-      legend_gp = gpar(fill = "black"),
-      size = unit(1:3, "mm"),
+  if (!show_heatmap_legend) {
+    return(ht_list)
+  } else {
+    lgd_list <- list(
+      # dot size for p-value
+      Legend(
+        labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
+        title = "Significance", type = "points",
+        pch = 16,
+        legend_gp = gpar(fill = "black"),
+        size = unit(1:3, "mm"),
+      )
     )
-  )
 
-  draw(ht_list, annotation_legend_list = lgd_list)
+    draw(ht_list, annotation_legend_list = lgd_list)
+  }
 }
 
 pdf(
@@ -248,11 +245,26 @@ pdf(
     "plots/10_dx_deg_adjust_spd",
     "dotplot_layer_adj_DEG_enrich_PRECAST_markers.pdf"
   ),
-  width = 4.5,
-  height = 2
+  width = 1.27,
+  height = 1.31
 )
 enrich_df |> enrichment_dot_plot_heatmap()
 dev.off()
+
+
+
+## With legend ----
+pdf(
+  here(
+    "plots/10_dx_deg_adjust_spd",
+    "dotplot_layer_adj_DEG_enrich_PRECAST_markers_for_legend.pdf"
+  ),
+  width = 4,
+  height = 4
+)
+enrich_df |> enrichment_dot_plot_heatmap(show_heatmap_legend = TRUE)
+dev.off()
+
 
 # Session info ----
 session_info()
