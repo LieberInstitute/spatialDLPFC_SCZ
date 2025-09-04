@@ -155,13 +155,16 @@ pdf(
   ),
   width = 2.02,
   height = 1.31,
-  onefile=FALSE
+  onefile = FALSE
 )
 upset(
   fromList(nom_p_geneList),
   nsets = 7,
   nintersects = 7,
-  sets = names(spd_deg_list) |> rev(),
+  sets = c(
+    "SpD07-L1/M", "SpD06-L2/3", "SpD02-L3/4", "SpD05-L5", "SpD03-L6",
+    "SpD01-WMtz", "SpD04-WM"
+  ) |> rev(),
   keep.order = TRUE,
   order.by = c("degree"),
   decreasing = FALSE,
