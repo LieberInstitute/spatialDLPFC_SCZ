@@ -3,6 +3,7 @@ suppressPackageStartupMessages({
   library(here)
   library(tidyverse)
   library(ggrepel)
+  library(UpSetR)
 })
 
 # Load data ----
@@ -152,24 +153,36 @@ pdf(
     "plots/11_dx_deg_interaction",
     "upset_layer_gene_nominal_p_value.pdf"
   ),
-  width = 10,
-  height = 8
+  width = 2.02,
+  height = 1.31,
+  onefile=FALSE
 )
 upset(
   fromList(nom_p_geneList),
   nsets = 7,
-  # sets = sort(
-  #   names(enrich_list),
-  #   decreasing = TRUE
-  # ),
+  nintersects = 7,
+  sets = names(spd_deg_list) |> rev(),
   keep.order = TRUE,
-  nintersects = NA,
-  order.by = c("freq"),
-  # main.bar.color = "blue",
-  # sets.bar.color = "red",
-  # mainbar.y.label = "Enriched Genes",
-  sets.x.label = "Spatial Domains"
-)
+  order.by = c("degree"),
+  decreasing = FALSE,
+  sets.x.label = "# of Layer-restricted DEGs",
+  mainbar.y.label = "# of Layer-specific DEGs",
+  scale.sets = "identity",
+  text.scale = c(0.3),
+  point.size = 0.5,
+  line.size = 0.2,
+  mb.ratio = c(0.5, 0.5),
+  scale.intersections = "identity"
+) #|> ggsave(
+#   filename = here(
+#     "plots/11_dx_deg_interaction",
+#     "upset_layer_gene_nominal_p_value.pdf"
+#   ),
+#   plot = ggplotify::as.ggplot(_),
+#   width = 2.02,
+#   height = 1.31,
+#   unit = "in"
+# )
 dev.off()
 
 ## FDR p-value < 0.10 ----
@@ -204,6 +217,3 @@ upset(
   sets.x.label = "Spatial Domains"
 )
 dev.off()
-
-
-
