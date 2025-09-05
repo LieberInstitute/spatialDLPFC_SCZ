@@ -76,7 +76,10 @@ unique_genes_nom <- read_csv(
     "processed-data/rds/11_dx_deg_interaction",
     "layer_uniquely_specific_genes_nom_p.csv"
   )
-)
+) |>
+  mutate(
+    spd = ifelse(spd == "SpD07-L1", "SpD07-L1/M", spd)
+  )
 
 unique_genes_list <- unique_genes_nom |>
   group_split(spd) |>
@@ -143,79 +146,7 @@ gene_ensembl <- select_layer_specific_gene_df_logFC |> pull(gene_id)
 gene_symbol <- select_layer_specific_gene_df_logFC |> pull(gene)
 
 
-# Create heatmap ----
-## Layer-adjusted heatmap ----
-adj_deg_df <- adj_deg_df_raw |>
-  # subset to gene_name
-  filter(ensembl %in% gene_ensembl) |>
-  mutate(
-    spd = "SpD Adjusted",
-    sig_cat = case_when(
-      p_value_scz > 0.05 ~ "nonsig",
-      p_value_scz < 0.05 & fdr_scz >= 0.05 ~ "Nominal p < 0.05",
-      p_value_scz < 0.05 & fdr_scz < 0.05 ~ "FDR < 0.05",
-    ),
-    size = case_when(
-      sig_cat == "nonsig" ~ 0.5,
-      sig_cat == "Nominal p < 0.05" ~ 1,
-      sig_cat == "FDR < 0.05" ~ 1.5
-    )
-  )
-
-# Prepare color and size matrix for heatmap
-adj_ht_color <- adj_deg_df |>
-  select(
-    gene,
-    `Adjusted` = logFC_scz
-  ) |>
-  column_to_rownames(var = "gene") |>
-  as.matrix()
-
-adj_ht_size <- adj_deg_df |>
-  select(
-    gene, size
-  ) |>
-  column_to_rownames(var = "gene") |>
-  as.matrix()
-
-stopifnot(identical(dim(adj_ht_color), dim(adj_ht_size)))
-
-# Adjust orientation
-adj_ht_color <- adj_ht_color[gene_symbol, , drop = FALSE] |> t()
-adj_ht_size <- adj_ht_size[gene_symbol, , drop = FALSE] |> t()
-
-### Create heatmap (gene-by-1-row) ----
-col_fun <- colorRamp2(
-  c(min(spc_heatmap_color), 0, max(spc_heatmap_color)),
-  c("blue", "white", "red")
-)
-
-adj_ht <- Heatmap(
-  adj_ht_color,
-  name = "logFC",
-  col = col_fun,
-  cluster_columns = FALSE,
-  cluster_rows = FALSE,
-  # Keep cell boundaries with black lines but hide the heatmap elements
-  rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
-  cell_fun = function(j, i, x, y, width, height, fill) {
-    grid.circle(
-      x = x, y = y,
-      r = unit(1.5 * adj_ht_size[i, j], "mm"),
-      gp = gpar(fill = col_fun(adj_ht_color[i, j]), col = NA)
-    )
-  },
-  row_names_gp = gpar(fontsize = 12),
-  column_names_gp = gpar(fontsize = 12, rot = 45, just = "right"),
-  heatmap_legend_param = list(
-    title = "logFC",
-    title_gp = gpar(fontsize = 14),
-    labels_gp = gpar(fontsize = 12)
-  )
-)
-
-
-
+# Plot heatmap ----
 ## Layer-restricted logFC heatmap ----
 ## subseting the unique_genes_list to include the only genes
 specific_logFC_df <- spd_deg_list |>
@@ -237,8 +168,6 @@ spc_heatmap_color <- specific_logFC_df |>
   ) |>
   column_to_rownames(var = "gene") |>
   as.matrix()
-
-
 
 spc_heatmap_size <- specific_logFC_df |>
   mutate(
@@ -295,31 +224,84 @@ spc_ht <- Heatmap(
   cell_fun = function(j, i, x, y, width, height, fill) {
     grid.circle(
       x = x, y = y,
-      r = unit(1.5 * spc_heatmap_size[i, j], "mm"),
+      r = unit(1 * spc_heatmap_size[i, j], "mm"),
       gp = gpar(fill = col_fun(spc_heatmap_color[i, j]), col = NA)
     )
   },
-  row_names_gp = gpar(fontsize = 12),
-  column_names_gp = gpar(fontsize = 12, rot = 45, just = "right"),
+  row_names_gp = gpar(fontsize = 6),
+  column_names_gp = gpar(fontsize = 6, rot = 45, just = "right"),
   heatmap_legend_param = list(
     title = "logFC",
-    title_gp = gpar(fontsize = 14),
-    labels_gp = gpar(fontsize = 12)
-  )
+    title_gp = gpar(fontsize = 6),
+    labels_gp = gpar(fontsize = 6)
+  ),
+  show_heatmap_legend = FALSE
 )
 
-lgd_list <- list(
-  # dot size for p-value
-  Legend(
-    labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
-    title = "Significance", type = "points",
-    pch = 16,
-    legend_gp = gpar(fill = "black"),
-    size = unit(1:3, "mm"),
+## Layer-adjusted heatmap ----
+adj_deg_df <- adj_deg_df_raw |>
+  # subset to gene_name
+  filter(ensembl %in% gene_ensembl) |>
+  mutate(
+    spd = "SpD Adjusted",
+    sig_cat = case_when(
+      p_value_scz > 0.05 ~ "nonsig",
+      p_value_scz < 0.05 & fdr_scz >= 0.05 ~ "Nominal p < 0.05",
+      p_value_scz < 0.05 & fdr_scz < 0.05 ~ "FDR < 0.05",
+    ),
+    size = case_when(
+      sig_cat == "nonsig" ~ 0.5,
+      sig_cat == "Nominal p < 0.05" ~ 1,
+      sig_cat == "FDR < 0.05" ~ 1.5
+    )
   )
+
+# Prepare color and size matrix for heatmap
+adj_ht_color <- adj_deg_df |>
+  select(
+    gene,
+    `Adjusted` = logFC_scz
+  ) |>
+  column_to_rownames(var = "gene") |>
+  as.matrix()
+
+adj_ht_size <- adj_deg_df |>
+  select(
+    gene, size
+  ) |>
+  column_to_rownames(var = "gene") |>
+  as.matrix()
+
+stopifnot(identical(dim(adj_ht_color), dim(adj_ht_size)))
+
+# Adjust orientation
+adj_ht_color <- adj_ht_color[gene_symbol, , drop = FALSE] |> t()
+adj_ht_size <- adj_ht_size[gene_symbol, , drop = FALSE] |> t()
+
+### Create heatmap (gene-by-1-row) ----
+col_fun <- colorRamp2(
+  c(min(spc_heatmap_color), 0, max(spc_heatmap_color)),
+  c("blue", "white", "red")
 )
 
-
+adj_ht <- Heatmap(
+  adj_ht_color,
+  name = "logFC",
+  col = col_fun,
+  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    grid.circle(
+      x = x, y = y,
+      r = unit(1 * adj_ht_size[i, j], "mm"),
+      gp = gpar(fill = col_fun(adj_ht_color[i, j]), col = NA)
+    )
+  },
+  row_names_gp = gpar(fontsize = 6),
+  column_names_gp = gpar(fontsize = 6, rot = 45, just = "right"),
+  show_heatmap_legend = FALSE
+)
 
 # Save the plot ----
 pdf(
@@ -327,7 +309,85 @@ pdf(
     "plots/11_dx_deg_interaction",
     "dot_plot_logFC_layer_adjusted_N_specific.pdf"
   ),
-  width = 7.5, height = 4
+  width = 6.38, height = 2
 )
-draw(adj_ht %v% spc_ht, annotation_legend_list = lgd_list)
+draw(adj_ht %v% spc_ht)
+# , annotation_legend_list = lgd_list)
+dev.off()
+
+
+## With legends ----
+
+
+spc_ht_legend <- Heatmap(
+  spc_heatmap_color,
+  name = "logFC",
+  col = col_fun,
+  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  # Keep cell boundaries with black lines but hide the heatmap elements
+  rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    grid.circle(
+      x = x, y = y,
+      r = unit(1 * spc_heatmap_size[i, j], "mm"),
+      gp = gpar(fill = col_fun(spc_heatmap_color[i, j]), col = NA)
+    )
+  },
+  row_names_gp = gpar(fontsize = 6),
+  column_names_gp = gpar(fontsize = 6, rot = 45, just = "right"),
+  heatmap_legend_param = list(
+    title = "logFC",
+    title_gp = gpar(fontsize = 6, fontface = "bold"),
+    labels_gp = gpar(fontsize = 6)
+  ),
+  show_heatmap_legend = TRUE
+)
+
+adj_ht_legend <- Heatmap(
+  adj_ht_color,
+  name = "logFC",
+  col = col_fun,
+  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    grid.circle(
+      x = x, y = y,
+      r = unit(1 * adj_ht_size[i, j], "mm"),
+      gp = gpar(fill = col_fun(adj_ht_color[i, j]), col = NA)
+    )
+  },
+  row_names_gp = gpar(fontsize = 6),
+  column_names_gp = gpar(fontsize = 6, rot = 45, just = "right"),
+  show_heatmap_legend = TRUE,
+    heatmap_legend_param = list(
+    title = "logFC",
+    title_gp = gpar(fontsize = 6, fontface = "bold"),
+    labels_gp = gpar(fontsize = 6)
+  )
+)
+
+lgd_list <- list(
+  # dot size for p-value
+  Legend(
+    labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
+    title = "Significance",
+    title_gp = gpar(fontsize = 6, fontface = "bold"),
+    type = "points",
+    pch = 16,
+    legend_gp = gpar(fill = "black", fontsize = 6),
+    size = unit(1:3, "mm"),
+    labels_gp = gpar(fontsize = 6)
+  )
+)
+
+pdf(
+  here(
+    "plots/11_dx_deg_interaction",
+    "dot_plot_logFC_layer_adjusted_N_specific_legends.pdf"
+  ),
+  width = 8, height = 2
+)
+draw(adj_ht_legend %v% spc_ht_legend, annotation_legend_list = lgd_list)
 dev.off()
