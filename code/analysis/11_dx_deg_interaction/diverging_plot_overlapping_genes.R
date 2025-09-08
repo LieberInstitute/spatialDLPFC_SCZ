@@ -113,22 +113,22 @@ long_df <- n_sig_gene_per_spd |>
     )
   )
 
-ggplot(long_df) +
+div_p <- ggplot(long_df) +
   aes(y = spd, fill = direction, weight = n_genes) +
   geom_diverging() +
   # geom_diverging_text() +
   labs(
-    title = "Diverging Bar Plot of Significant Genes by Direction",
-    x = "Number of Genes",
+    # title = "Diverging Bar Plot of Significant Genes by Direction",
+    x = "# of DEGs",
     y = "SpD Annotation",
     fill = "Direction"
   ) +
   scale_fill_manual(
     labels = c(
-      "up_novel" = "Upregulated (Novel)",
-      "up_overlapping" = "Upregulated (Overlapping)",
-      "down_overlapping" = "Downregulated (Overlapping)",
-      "down_novel" = "Downregulated (Novel)"
+      "up_novel" = "Up (Novel)",
+      "up_overlapping" = "Up (Overlap)",
+      "down_overlapping" = "Down (Overlap)",
+      "down_novel" = "Down (Novel)"
     ),
     breaks = c(
       "down_novel",
@@ -141,27 +141,50 @@ ggplot(long_df) +
       "down_overlapping" = "blue",
       "up_overlapping" = "red",
       "up_novel" = "#ef8080"
-    )
+    )#,
+    # guide = "none"
   ) +
-  theme_minimal() +
+  theme_classic() +
   theme(
-    axis.text = element_text(size = 12),
-    axis.title = element_text(size = 14, face = "bold"),
-    legend.title = element_text(size = 12),
-    legend.text = element_text(size = 10),
-    plot.title = element_text(size = 16, face = "bold", hjust = 0.5)
+    axis.text = element_text(size = 6),
+    axis.title = element_text(size = 6, face = "bold"),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    plot.title = element_text(size = 6, face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+    axis.title.y = element_blank(),
+    legend.position = "none"
   ) +
   scale_x_continuous(
-    labels = label_number_abs(),
-    limits = symmetric_limits,
-    breaks = seq(-1700, 1700, 300)
+    labels = label_number_abs(big.mark = ""),
+    # limits = symmetric_limits,
+    # breaks = seq(-1800, 1000, 200)
+    breaks = c(-1800, -1600, -1200, -800, -400, 0, 400, 800)
   ) +
   scale_y_discrete(limits = rev(levels(long_df$spd)))
 
 ggsave(
   here("plots/11_dx_deg_interaction", "diverging_barplot_genes_nomial_p05.pdf"),
-  width = 8,
-  height = 6,
+  width = 1.73,
+  height = 1.31,
+  dpi = 300
+)
+
+# Plot only the legend
+library(cowplot)
+
+# Extract and plot only the legend
+legend <- ggpubr::get_legend(
+  div_p + theme(legend.position = "right")
+)
+
+cowplot::ggdraw(legend)
+
+ggsave(
+  here("plots/11_dx_deg_interaction", "diverging_barplot_genes_legend_only.pdf"),
+  legend,
+  width = 1.5,
+  height = 1.5,
   dpi = 300
 )
 
