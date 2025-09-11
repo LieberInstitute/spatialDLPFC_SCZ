@@ -224,7 +224,7 @@ spc_ht <- Heatmap(
   cell_fun = function(j, i, x, y, width, height, fill) {
     grid.circle(
       x = x, y = y,
-      r = unit(1 * spc_heatmap_size[i, j], "mm"),
+      r = unit(0.65 * spc_heatmap_size[i, j], "mm"),
       gp = gpar(fill = col_fun(spc_heatmap_color[i, j]), col = NA)
     )
   },
@@ -260,7 +260,7 @@ adj_deg_df <- adj_deg_df_raw |>
 adj_ht_color <- adj_deg_df |>
   select(
     gene,
-    `Adjusted` = logFC_scz
+    `Layer-adjusted` = logFC_scz
   ) |>
   column_to_rownames(var = "gene") |>
   as.matrix()
@@ -294,7 +294,7 @@ adj_ht <- Heatmap(
   cell_fun = function(j, i, x, y, width, height, fill) {
     grid.circle(
       x = x, y = y,
-      r = unit(1 * adj_ht_size[i, j], "mm"),
+      r = unit(0.65 * adj_ht_size[i, j], "mm"),
       gp = gpar(fill = col_fun(adj_ht_color[i, j]), col = NA)
     )
   },
@@ -309,7 +309,7 @@ pdf(
     "plots/11_dx_deg_interaction",
     "dot_plot_logFC_layer_adjusted_N_specific.pdf"
   ),
-  width = 6.38, height = 2
+  width = 6.8, height = 1.8
 )
 draw(adj_ht %v% spc_ht)
 # , annotation_legend_list = lgd_list)
@@ -330,7 +330,7 @@ spc_ht_legend <- Heatmap(
   cell_fun = function(j, i, x, y, width, height, fill) {
     grid.circle(
       x = x, y = y,
-      r = unit(1 * spc_heatmap_size[i, j], "mm"),
+      r = unit(0.65 * spc_heatmap_size[i, j], "mm"),
       gp = gpar(fill = col_fun(spc_heatmap_color[i, j]), col = NA)
     )
   },
@@ -354,7 +354,7 @@ adj_ht_legend <- Heatmap(
   cell_fun = function(j, i, x, y, width, height, fill) {
     grid.circle(
       x = x, y = y,
-      r = unit(1 * adj_ht_size[i, j], "mm"),
+      r = unit(0.65 * adj_ht_size[i, j], "mm"),
       gp = gpar(fill = col_fun(adj_ht_color[i, j]), col = NA)
     )
   },
@@ -387,7 +387,7 @@ pdf(
     "plots/11_dx_deg_interaction",
     "dot_plot_logFC_layer_adjusted_N_specific_legends.pdf"
   ),
-  width = 8, height = 2
+  width = 8, height = 1.8
 )
 draw(adj_ht_legend %v% spc_ht_legend, annotation_legend_list = lgd_list)
 dev.off()
