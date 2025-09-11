@@ -109,7 +109,7 @@ long_df <- n_sig_gene_per_spd |>
         "up_overlapping",
         "down_overlapping",
         "down_novel"
-      )
+      ) |> rev()
     )
   )
 
@@ -125,10 +125,10 @@ div_p <- ggplot(long_df) +
   ) +
   scale_fill_manual(
     labels = c(
-      "up_novel" = "Up (Novel)",
+      "up_novel" = "Up (Unique)",
       "up_overlapping" = "Up (Overlap)",
       "down_overlapping" = "Down (Overlap)",
-      "down_novel" = "Down (Novel)"
+      "down_novel" = "Down (Unique)"
     ),
     breaks = c(
       "down_novel",
@@ -141,7 +141,7 @@ div_p <- ggplot(long_df) +
       "down_overlapping" = "blue",
       "up_overlapping" = "red",
       "up_novel" = "#ef8080"
-    )#,
+    ) # ,
     # guide = "none"
   ) +
   theme_classic() +
@@ -157,9 +157,10 @@ div_p <- ggplot(long_df) +
   ) +
   scale_x_continuous(
     labels = label_number_abs(big.mark = ""),
+    # transform = "reverse",
     # limits = symmetric_limits,
     # breaks = seq(-1800, 1000, 200)
-    breaks = c(-1800, -1600, -1200, -800, -400, 0, 400, 800)
+    breaks = c(-800, -400, 0, 400, 800, 1200, 1600, 1800)
   ) +
   scale_y_discrete(limits = rev(levels(long_df$spd)))
 
