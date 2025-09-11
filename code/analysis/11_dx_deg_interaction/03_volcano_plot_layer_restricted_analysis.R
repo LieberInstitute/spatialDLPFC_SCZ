@@ -119,7 +119,7 @@ ggsave(
     "plots/11_dx_deg_interaction",
     "volcano_plot_layer_restricted_spd01_WMtz.pdf"
   ),
-  plot = p_spd07_L1,
+  plot = p_spd01,
   width = 1.13, height = 1.31,
   units = "in"
 )
