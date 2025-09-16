@@ -37,11 +37,15 @@ gene_names <- readxl::read_excel(
 ) |> unlist()
 names(gene_names) <- "gene"
 
-sig_gene_df <- gene_df |> filter(gene %in% gene_names)
+# Code for exploratory plot making
+# sig_gene_df <- gene_df |> filter(gene %in% gene_names)
+
+# Gene curated by Sang Ho
+sig_gene_df <- gene_df |> filter(gene %in% c("BDNF", "FKBP5", "SST", "GFAP", "MT2A"))
 
 # Make volcano plot ----
 ggplot(
-  data = gene_df,
+  data = gene_df |> arrange(desc(p_value_scz)),
   aes(x = logFC_scz, y = -log10(p_value_scz))
 ) +
   # Add line for nominal threshold 0.05
@@ -53,18 +57,25 @@ ggplot(
   # Plot all genes
   geom_point(
     aes(color = gene_cat),
-    size = 0.2
+    size = 0.001
   ) +
   # Add interested gene labels
-  geom_label_repel(
+  geom_text_repel(
     data = sig_gene_df, # Add labels last to appear as the top layer
-    aes(x = logFC_scz, y = -log10(p_value_scz), label = gene, color = gene_cat),
+    aes(
+      x = logFC_scz, y = -log10(p_value_scz), label = gene # , color = gene_cat
+    ),
+    color = "black",
     force = 0.5,
-    nudge_y = 0.1,
-    size = 2, # 6pt font ≈ size 2 in ggplot2
-    label.padding = 0.05,
-    label.size  = 0.2, # slightly thicker box border
-    arrow = arrow(length = unit(0.01, "inches"), type = "closed")
+    # nudge_y = 0.1,
+    # All labels not overlapping
+    max.overlaps = Inf,
+    # Have arrows
+    min.segment.length = 0,
+    size = 1.5, # 6pt label font ≈ size 2 in ggplot2
+    arrow = arrow(length = unit(0.5, "points"), type = "closed"),
+    segment.size = 0.2,
+    segment.color = "black"
   ) +
   # Format the legends
   scale_color_identity(
@@ -78,22 +89,22 @@ ggplot(
   labs(
     title = "Layer-adjusted DEGs",
     y = "-log10(p-value)",
-    x = "log2(Fold Change)",
+    x = "log2(FC in SCZ)",
     color = "Significance"
   ) +
   # Format the plot
   theme_classic(base_size = 6) +
   theme(
     plot.title = element_text(hjust = 0.5, size = 8, face = "bold"),
-  #   axis.title = element_text(size = 6),
-  #   axis.text = element_text(size = 6),
-  #   legend.position = "top",
-  #   panel.border = element_rect(
-  #     color = "black", fill = NA, size = 1
-  #   )
+    #   axis.title = element_text(size = 6),
+    #   axis.text = element_text(size = 6),
+    #   legend.position = "top",
+    #   panel.border = element_rect(
+    #     color = "black", fill = NA, size = 1
+    #   )
   )
-# 
-# 
+#
+#
 # Save the plot ----
 ggsave(
   filename = here(
