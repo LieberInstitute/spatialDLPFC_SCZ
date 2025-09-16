@@ -6,6 +6,16 @@ suppressPackageStartupMessages({
 })
 
 # Load data ----
+
+## Load gene_ensembl & gene_symbol data ----
+gene_df <- read_csv(
+  here(
+    "processed-data/rds/10_dx_deg_adjust_spd/preliminary",
+    "test_PRECAST_07.csv"
+  )
+) |> select(gene_id = ensembl, gene)
+
+## Load layer-restricted data ----
 spd_files <- list.files(
   "processed-data/rds/11_dx_deg_interaction", ,
   pattern = "layer_specific_logFC_.*\\.csv",
@@ -21,7 +31,10 @@ spd_deg_list <-
     )
   ) |>
   map(
-    ~ read_csv(.x)
+    ~ read_csv(.x) |> left_join(
+      gene_df,
+      by = c("gene_id")
+    )
   )
 
 # Make volcano plot ----
@@ -56,6 +69,8 @@ p_volca_list <- spd_deg_list |>
     # browser()
     df <- df |> mutate(
       gene_cat = case_when(
+        sig_10 == FALSE & P.Value < 0.05 & logFC >= 0 ~ "#ef8080",
+        sig_10 == FALSE & P.Value < 0.05 & logFC < 0 ~ "#808ef8",
         sig_10 == FALSE ~ "grey",
         sig_10 == TRUE & logFC >= 0 ~ "red",
         sig_10 == TRUE & logFC < 0 ~ "blue"
@@ -63,7 +78,7 @@ p_volca_list <- spd_deg_list |>
     )
 
     ggplot(
-      data = df,
+      data = df |> arrange(desc(P.Value)),
       aes(x = logFC, y = -log10(P.Value), color = gene_cat)
     ) +
       geom_hline(
@@ -71,7 +86,7 @@ p_volca_list <- spd_deg_list |>
         linetype = "dashed",
         color = "grey"
       ) +
-      geom_point(size = 0.2) +
+      geom_point(size = 0.001) +
       # TODO:
       # Add labels on genes to higlight
       # geom_label_repel(
@@ -101,12 +116,38 @@ p_volca_list <- spd_deg_list |>
 ## Save volcano plots ----
 p_spd07_L1 <- p_volca_list[["SpD07-L1/M"]]
 
+
+p_spd07_L1_fnl <- p_spd07_L1 +
+  geom_text_repel(
+    data = p_spd07_L1$data |>
+      filter(gene %in% c("C3", "GAD1", "SST", "CORT", "BDNF")),
+    aes(label = gene),
+    color = "black",
+    force = 0.5,
+    # All labels not overlapping
+    max.overlaps = Inf,
+    # Have arrows
+    min.segment.length = 0,
+    size = 1.5, # 6pt label font ≈ size 2 in ggplot2
+    arrow = arrow(length = unit(0.5, "points"), type = "closed"),
+    segment.size = 0.2,
+    segment.color = "black"
+  ) +
+  geom_point(
+    data = p_spd07_L1$data |>
+      filter(gene %in% c("C3", "GAD1", "SST", "CORT", "BDNF")),
+    shape = 1,
+    color = "black",
+    size = 0.005#,
+    # stroke = 0.05
+  )
+
 ggsave(
   filename = here(
     "plots/11_dx_deg_interaction",
     "volcano_plot_layer_restricted_spd07_L1_M.pdf"
   ),
-  plot = p_spd07_L1,
+  plot = p_spd07_L1_fnl,
   width = 1.13, height = 1.31,
   units = "in"
 )
@@ -114,12 +155,36 @@ ggsave(
 
 p_spd01 <- p_volca_list[["SpD01-WMtz"]]
 
+p_spd01_fnl <- p_spd01 + geom_text_repel(
+  data = p_spd01$data |>
+    filter(gene %in% c("DISC1", "DCC", "GRIN2C", "SHANK2", "HTR5A")),
+  aes(label = gene),
+  color = "black",
+  force = 0.5,
+  # All labels not overlapping
+  max.overlaps = Inf,
+  # Have arrows
+  min.segment.length = 0,
+  size = 1.5, # 6pt label font ≈ size 2 in ggplot2
+  arrow = arrow(length = unit(0.5, "points"), type = "closed"),
+  segment.size = 0.2,
+  segment.color = "black"
+) +
+geom_point(
+  data = p_spd01$data |>
+    filter(gene %in% c("DISC1", "DCC", "GRIN2C", "SHANK2", "HTR5A")),
+  shape = 1,
+  color = "black",
+  size = 0.005#,
+  # stroke = 0.05
+)
+
 ggsave(
   filename = here(
     "plots/11_dx_deg_interaction",
     "volcano_plot_layer_restricted_spd01_WMtz.pdf"
   ),
-  plot = p_spd01,
+  plot = p_spd01_fnl,
   width = 1.13, height = 1.31,
   units = "in"
 )
