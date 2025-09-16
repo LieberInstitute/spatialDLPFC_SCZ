@@ -79,18 +79,18 @@ merged_df <- left_join(
       fdr_scz < 0.1 & adj.P.Val > 0.1 ~ "SCZ-DEG",
       fdr_scz < 0.1 & adj.P.Val < 0.1 ~ "Both",
       TRUE ~ "Neither"
-    )
+    ) |> factor(levels = c("Neither", "SCZ-DEG", "BrainSeq V2", "Both"))
   )
 
 
 hl_genes <- merged_df |>
-  filter(Symbol %in% c("MAPK3", "ATP2B4", "KCNK1"))
+  filter(Symbol %in% c("MAPK3", "C3", "AIF1", "SERPINA3", "A2M"))
 
 
 # Make scatter plots ----
 ## Scatter plot of sig genes ----
-ggplot(
-  merged_df,
+ret_plot <- ggplot(
+  merged_df |> arrange(study_sig),
   aes(
     x = t_stat_scz, y = t,
     color = study_sig
@@ -101,18 +101,20 @@ ggplot(
   geom_vline(xintercept = 0, linetype = "dashed", color = "grey") +
   geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dotted") +
   # Add genes
-  geom_point(size = 0.2, alpha = 0.7) +
-  geom_label_repel(
+  geom_point(size = 0.02) +
+  geom_text_repel(
     data = hl_genes,
     aes(label = Symbol),
-    label.padding = 0.05,
-    label.size = 0.2, # slightly thicker box border
-    box.padding = 0.5,
-    point.padding = 0.5,
-    segment.color = "grey50",
-    segment.size = 0.5,
-    segment.alpha = 0.5,
-    size = 2
+    color = "black",
+    force = 0.5,
+    # All labels not overlapping
+    max.overlaps = Inf,
+    # Have arrows
+    min.segment.length = 0,
+    size = 1.5, # 6pt label font ≈ size 2 in ggplot2
+    arrow = arrow(length = unit(0.5, "points"), type = "closed"),
+    segment.size = 0.2,
+    segment.color = "black"
   ) +
   # Format plot
   scale_color_manual(
@@ -151,16 +153,27 @@ ggplot(
     # panel.border = element_rect(color = "black", fill = NA),
   )
 
+# Save plots ----
+## W.O. legend ----
 ggsave(
   here(
     "plots/10_dx_deg_adjust_spd",
     "scatter_plot_t_stat_brain_seq_v2.pdf"
   ),
+  plot = ret_plot,
   width = 1.93, height = 1.3, units = "in"
 )
 
+## With legend ----
+ggsave(
+  here(
+    "plots/10_dx_deg_adjust_spd",
+    "scatter_plot_t_stat_brain_seq_v2_legend.pdf"
+  ),
+  plot = ret_plot + theme(legend.position = "bottom"),
+  width = 3, height = 1.3, units = "in"
+)
 
-# Save plots ----
 
 
 # Gene significant in both studies
