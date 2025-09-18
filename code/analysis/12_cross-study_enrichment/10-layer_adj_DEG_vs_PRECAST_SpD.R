@@ -61,7 +61,7 @@ spd_anno_df <- read_csv(
 
 # Enrichment test ----
 layer_adj_DEG_list <- list(
-  `Overall` = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
+  # `Overall` = gene_df |> filter(fdr_scz < 0.10) |> pull(ensembl),
   `Up` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz > 0) |> pull(ensembl),
   `Down` = gene_df |> filter(fdr_scz < 0.10 & logFC_scz < 0) |> pull(ensembl)
 )
@@ -90,170 +90,165 @@ names(n_layer_marker_annotated) <- spd_anno_df$anno_lab[match(names(n_layer_mark
 
 ## Visaulize via dot plot -----
 # Wrapper function for the dot plot
-enrichment_dot_plot_heatmap <- function(
-    res # , PThresh = 12, ORcut = 3, enrichOnly = FALSE, cex = 0.5
-    ) {
-  # Prepare data for ComplexHeatmap
-  # browser()
-  mat <- res |>
-    mutate(
-      OR = ifelse(OR < 1, 1, OR),
-    ) |>
-    select(
-      ID, test, OR
-    ) |>
-    pivot_wider(names_from = test, values_from = OR, values_fill = 0) |>
-    column_to_rownames("ID") |>
-    as.matrix()
 
-  # Scale the size based on -log10(Pval)
-  size_mat <- res |>
-    mutate(
-      fdr_p = Pval |> p.adjust(method = "fdr"),
-      sig_cat = case_when(
-        Pval >= 0.05 ~ "nonsig",
-        Pval < 0.05 & fdr_p >= 0.05 ~ "Nominal p < 0.05",
-        fdr_p < 0.05 ~ "FDR < 0.05"
-      ),
-      size = case_when(
-        sig_cat == "nonsig" ~ 0.5,
-        sig_cat == "Nominal p < 0.05" ~ 1,
-        sig_cat == "FDR < 0.05" ~ 1.5
-      )
-    ) |>
-    select(
-      ID, test, size
-    ) |>
-    pivot_wider(names_from = test, values_from = size, values_fill = 0) |>
-    column_to_rownames("ID") |>
-    as.matrix()
+res <- annotated_res
 
-  # Reorder the matrix based on the order of spd_anno_df
-  spd_order <- c(
-    "SpD07-L1/M",
-    "SpD06-L2/3",
-    "SpD02-L3/4",
-    "SpD05-L5",
-    "SpD03-L6",
-    "SpD01-WMtz",
-    "SpD04-WM"
-  )
+mat <- res |>
+  mutate(
+    OR = ifelse(OR < 1, 1, OR),
+  ) |>
+  select(
+    ID, test, OR
+  ) |>
+  pivot_wider(names_from = test, values_from = OR, values_fill = 0) |>
+  column_to_rownames("ID") |>
+  as.matrix()
 
-  cell_type_order <- res$ID |> unique()
-
-  mat <- mat[cell_type_order, spd_order]
-  size_mat <- size_mat[cell_type_order, spd_order]
-
-  # Change matrix orientation
-  # Change to layer-by-DEGs
-  mat <- t(mat)
-  size_mat <- t(size_mat)
-
-  # browser()
-
-  n_degs <- res |>
-    select(ID, SetSize) |>
-    distinct(ID, SetSize) |>
-    deframe()
-
-  deg_ha <- HeatmapAnnotation(
-    # Create a named list for the annotation
-    DEGs = anno_barplot(
-      n_degs,
-      border = TRUE,
-      axis = TRUE,
-      gp = gpar(fill = "black"),
-      height = unit(1, "cm"),
-      axis_param = list(
-        # direction = "reverse",
-        at = seq(0, max(n_degs), by = 50),
-        labels = seq(0, max(n_degs), by = 50)
-      )
+# Scale the size based on -log10(Pval)
+size_mat <- res |>
+  mutate(
+    fdr_p = Pval |> p.adjust(method = "fdr"),
+    sig_cat = case_when(
+      Pval >= 0.05 ~ "nonsig",
+      Pval < 0.05 & fdr_p >= 0.05 ~ "Nominal p < 0.05",
+      fdr_p < 0.05 ~ "FDR < 0.05"
     ),
-    annotation_name_gp = gpar(fontsize = 8) # set annotation title font size
-  )
-
-  layer_marker_ha <- rowAnnotation(
-    # Create a named list for the annotation
-    n_layer_marker = anno_barplot(
-      n_layer_marker_annotated[spd_order],
-      border = TRUE,
-      axis = TRUE,
-      gp = gpar(fill = "black"),
-      height = unit(1, "cm"),
-      axis_param = list(
-        direction = "reverse",
-        at = seq(0, max(n_layer_marker_annotated), by = 2000),
-        labels = seq(0, max(n_layer_marker_annotated), by = 2000)
-      )
-    ),
-    annotation_name_gp = gpar(fontsize = 8) # set annotation title font size
-  )
-
-
-
-  # Define color function for Odds Ratio
-  col_fun <- colorRamp2(
-    # TODO: change the color scale
-    c(min(mat), median(mat), max(mat)),
-    c("grey", "yellow", "blue")
-  )
-
-  # browser()
-
-  # Create the dot plot using ComplexHeatmap
-  ht_list <- Heatmap(
-    mat,
-    name = "Odds Ratio",
-    col = col_fun,
-    cluster_columns = FALSE,
-    cluster_rows = FALSE,
-    # Keep cell boundaries with black lines but hide the heatmap elements
-    rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
-    cell_fun = function(j, i, x, y, width, height, fill) {
-      grid.circle(
-        x = x, y = y,
-        r = unit(size_mat[i, j], "mm"),
-        gp = gpar(fill = col_fun(mat[i, j]), col = NA)
-      )
-    },
-    # Annotation Bar plot
-    top_annotation = deg_ha,
-    left_annotation = layer_marker_ha,
-
-    # Aesthetics
-    row_names_gp = gpar(fontsize = 8),
-    column_names_gp = gpar(fontsize = 8, rot = 45, just = "right"),
-    heatmap_legend_param = list(
-      title = "Odds Ratio",
-      title_gp = gpar(fontsize = 8),
-      labels_gp = gpar(fontsize = 6),
-      at = c(1, 3, 6)
+    size = case_when(
+      sig_cat == "nonsig" ~ 0.5,
+      sig_cat == "Nominal p < 0.05" ~ 1,
+      sig_cat == "FDR < 0.05" ~ 1.5
     )
+  ) |>
+  select(
+    ID, test, size
+  ) |>
+  pivot_wider(names_from = test, values_from = size, values_fill = 0) |>
+  column_to_rownames("ID") |>
+  as.matrix()
+
+# Reorder the matrix based on the order of spd_anno_df
+spd_order <- c(
+  "SpD07-L1/M",
+  "SpD06-L2/3",
+  "SpD02-L3/4",
+  "SpD05-L5",
+  "SpD03-L6",
+  "SpD01-WMtz",
+  "SpD04-WM"
+)
+
+cell_type_order <- res$ID |> unique()
+
+mat <- mat[cell_type_order, spd_order]
+size_mat <- size_mat[cell_type_order, spd_order]
+
+# Change matrix orientation: DEG by layer
+# mat <- mat
+# size_mat <- size_mat
+
+# browser()
+
+n_degs <- res |>
+  select(ID, SetSize) |>
+  distinct(ID, SetSize) |>
+  deframe()
+
+# deg_ha <- HeatmapAnnotation(
+#   # Create a named list for the annotation
+#   DEGs = anno_barplot(
+#     n_degs,
+#     border = TRUE,
+#     axis = TRUE,
+#     gp = gpar(fill = "black"),
+#     height = unit(1, "cm"),
+#     axis_param = list(
+#       # direction = "reverse",
+#       at = seq(0, max(n_degs), by = 50),
+#       labels = seq(0, max(n_degs), by = 50)
+#     )
+#   ),
+#   annotation_name_gp = gpar(fontsize = 8) # set annotation title font size
+# )
+
+layer_marker_ha <- HeatmapAnnotation(
+  # Create a named list for the annotation
+  n_layer_marker = anno_barplot(
+    n_layer_marker_annotated[spd_order],
+    border = FALSE,
+    axis = TRUE,
+    gp = gpar(fill = "black"),
+    height = unit(2, "cm"),
+    axis_param = list(
+      side = "left",
+      at = seq(0, max(n_layer_marker_annotated), by = 2000),
+      labels = seq(0, max(n_layer_marker_annotated), by = 2000)
+    )
+  ),
+  annotation_name_gp = gpar(fontsize = 8), # set annotation title font size
+  show_annotation_name = FALSE
+)
+
+# Define color function for Odds Ratio
+col_fun <- colorRamp2(
+  # TODO: change the color scale
+  c(min(mat), median(mat), max(mat)),
+  c("grey", "yellow", "blue")
+)
+
+# browser()
+
+# Create the dot plot using ComplexHeatmap
+ht_list <- Heatmap(
+  mat,
+  name = "Odds Ratio",
+  col = col_fun,
+  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  # Keep cell boundaries with black lines but hide the heatmap elements
+  rect_gp = gpar(col = "lightgrey", lwd = 0.5, fill = NA),
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    grid.circle(
+      x = x, y = y,
+      r = unit(size_mat[i, j], "mm"),
+      gp = gpar(fill = col_fun(mat[i, j]), col = NA)
+    )
+  },
+  # Annotation Bar plot
+  top_annotation = layer_marker_ha,
+  # left_annotation = ,
+
+  # Aesthetics
+  row_names_gp = gpar(fontsize = 8),
+  column_names_gp = gpar(fontsize = 8, rot = 45, just = "right"),
+  heatmap_legend_param = list(
+    title = "Odds Ratio",
+    title_gp = gpar(fontsize = 8),
+    labels_gp = gpar(fontsize = 6),
+    at = c(1, 3, 6)
   )
+)
 
-  # browser()
-  # lgd_list <- list(
-  #   # dot size for p-value
-  #   Legend(
-  #     labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
-  #     title = "Significance", type = "points",
-  #     pch = 16,
-  #     legend_gp = gpar(fill = "black"),
-  #     size = unit(1:3, "mm"),
-  #   )
-  # )
+# browser()
+# lgd_list <- list(
+#   # dot size for p-value
+#   Legend(
+#     labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
+#     title = "Significance", type = "points",
+#     pch = 16,
+#     legend_gp = gpar(fill = "black"),
+#     size = unit(1:3, "mm"),
+#   )
+# )
 
-  # draw(ht_list, annotation_legend_list = lgd_list)
+# draw(ht_list, annotation_legend_list = lgd_list)
 
-  ht_list
-}
+
 
 
 # Create complexHeatmap
-ret_htmap <- enrichment_dot_plot_heatmap(
-  res = annotated_res
-)
+# ret_htmap <- enrichment_dot_plot_heatmap(
+#   res = annotated_res
+# )
 
 
 # Save plot
@@ -262,9 +257,9 @@ pdf(
     "plots/12_cross_study_enrichment",
     "dotplot_layer_adj_DEG_vs_PRECAST_SpD.pdf"
   ),
-  width = 3, height = 2.5
+  width = 2, height = 2.1
 )
-ret_htmap
+ht_list |> draw(show_heatmap_legend = FALSE)
 dev.off()
 
 
