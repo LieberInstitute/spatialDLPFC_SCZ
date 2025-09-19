@@ -168,18 +168,20 @@ enrichment_dot_plot_heatmap <- function(
   DEG_ha <- rowAnnotation(
     n_DEG = anno_barplot(
       n_DEG[spd_order],
-      border = TRUE,
+      border = FALSE,
       axis = TRUE,
-      gp = gpar(fill = "black"),
-      height = unit(2, "cm"),
+      gp = gpar(fill = ifelse(str_detect(title, "up"), "red", "blue")),
+      height = unit(1, "cm"),
       axis_param = list(
         direction = "reverse",
         at = seq(0, max(n_DEG), by = 500),
-        labels = seq(0, max(n_DEG), by = 500)
+        labels = seq(0, max(n_DEG), by = 500),
+          labels_rot = 0
       )
-    ) # ,
+    ),
+    show_annotation_name = FALSE
     # annotation_name_side = "left",
-    # annotation_name_gp = gpar(fontsize = 12)
+    # annotation_name_gp = gpar(fontsize = 8)
   )
 
   # Change matrix orientation
@@ -201,11 +203,11 @@ enrichment_dot_plot_heatmap <- function(
     cluster_columns = FALSE,
     cluster_rows = FALSE,
     # Keep cell boundaries with black lines but hide the heatmap elements
-    rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
+    rect_gp = gpar(col = "lightgrey", lwd = 0.5, fill = NA),
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid.circle(
         x = x, y = y,
-        r = unit(1.5 * size_mat[i, j], "mm"),
+        r = unit(size_mat[i, j], "mm"),
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
@@ -214,58 +216,38 @@ enrichment_dot_plot_heatmap <- function(
     left_annotation = DEG_ha,
 
     # Aesthetics
-    row_names_gp = gpar(fontsize = 12),
-    column_names_gp = gpar(fontsize = 12, rot = 45, just = "right"),
+    row_names_gp = gpar(fontsize = 8),
+    column_names_gp = gpar(fontsize = 8, rot = 45, just = "right"),
     heatmap_legend_param = list(
       title = "Odds Ratio",
-      title_gp = gpar(fontsize = 14),
-      labels_gp = gpar(fontsize = 12) # ,
+      title_gp = gpar(fontsize = 8),
+      labels_gp = gpar(fontsize = 8) # ,
       # at = c(min(mat), max(mat))
     )
   )
 
-  lgd_list <- list(
-    # dot size for p-value
-    Legend(
-      labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
-      title = "Significance", type = "points",
-      pch = 16,
-      legend_gp = gpar(fill = "black"),
-      size = unit(1:3, "mm"),
-    )
-  )
+  return(ht_list)
 
-  draw(ht_list,
-    annotation_legend_list = lgd_list,
-    column_title = title,
-    column_title_gp = grid::gpar(fontsize = 16)
-  )
+  # lgd_list <- list(
+  #   # dot size for p-value
+  #   Legend(
+  #     labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
+  #     title = "Significance", type = "points",
+  #     pch = 16,
+  #     legend_gp = gpar(fill = "black"),
+  #     size = unit(1:3, "mm"),
+  #   )
+  # )
+
+  # draw(ht_list,
+  #   annotation_legend_list = lgd_list,
+  #   column_title = title,
+  #   column_title_gp = grid::gpar(fontsize = 16)
+  # )
 }
 
 
-## Overall enrichment ----
-overall_enrich_res <- spatialLIBD::gene_set_enrichment(
-  gene_list = overall_deg_list |> map(~ .x |> pull(gene_id)),
-  modeling_results = list(
-    "enrichment" = cell_type_enrich_df
-  ),
-  model_type = "enrichment",
-  fdr_cut = 0.05
-)
 
-### Make dot plot ----
-pdf(
-  here(
-    "plots/12_cross_study_enrichment",
-    "layer_restricted_DEG_vs_PEC_cell_type_marker_overall.pdf"
-  ),
-  height = 4, width = 9.5
-)
-overall_enrich_res |>
-  enrichment_dot_plot_heatmap(
-    title = "Overall Layer-restricted SCZ-DEGs"
-  )
-dev.off()
 
 # Up-reg enrichment ----
 up_reg_enrich_res <- spatialLIBD::gene_set_enrichment(
@@ -282,12 +264,12 @@ pdf(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_PEC_cell_type_marker_up_reg.pdf"
   ),
-  height = 4, width = 9.5
+  height = 2.7, width = 5
 )
 up_reg_enrich_res |>
   enrichment_dot_plot_heatmap(
     title = "up-regulated Layer-restricted SCZ-DEGs"
-  )
+  ) |> draw(show_heatmap_legend = FALSE)
 dev.off()
 
 # Down-reg enrichment ----
@@ -306,12 +288,12 @@ pdf(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_PEC_cell_type_marker_down_reg.pdf"
   ),
-  height = 4, width = 9.5
+  height = 2.7, width = 5
 )
 down_reg_enrich_res |>
   enrichment_dot_plot_heatmap(
     title = "Down-regulated Layer-restricted SCZ-DEGs"
-  )
+  ) |> draw(show_heatmap_legend = FALSE)
 dev.off()
 
 ## (Deprecated) Heatmap Visualization ----
@@ -322,6 +304,30 @@ dev.off()
 #   enrichOnly = FALSE,
 #   cex = 1.5 # control the size of the text
 # )
+
+## Overall enrichment ----
+# overall_enrich_res <- spatialLIBD::gene_set_enrichment(
+#   gene_list = overall_deg_list |> map(~ .x |> pull(gene_id)),
+#   modeling_results = list(
+#     "enrichment" = cell_type_enrich_df
+#   ),
+#   model_type = "enrichment",
+#   fdr_cut = 0.05
+# )
+
+# ### Make dot plot ----
+# pdf(
+#   here(
+#     "plots/12_cross_study_enrichment",
+#     "layer_restricted_DEG_vs_PEC_cell_type_marker_overall.pdf"
+#   ),
+#   height = 2.8, width = 5
+# )
+# overall_enrich_res |>
+#   enrichment_dot_plot_heatmap(
+#     title = "Overall Layer-restricted SCZ-DEGs"
+#   )
+# dev.off()
 
 # Session Info ----
 session_info()
