@@ -141,7 +141,7 @@ enrich_df_overall <- dplyr::bind_rows(
   neun_enrich_overall,
   vasc_enrich_overall,
   pnn_enrich_overall
-)
+) |> mutate(ID = gsub("SpD07-L1", "SpD07-L1/M", ID))
 
 ## Up-regulated DEGs ----
 ### Neuropil ----
@@ -207,7 +207,7 @@ enrich_df_up <- dplyr::bind_rows(
   neun_enrich_up,
   vasc_enrich_up,
   pnn_enrich_up
-)
+) |> mutate(ID = gsub("SpD07-L1", "SpD07-L1/M", ID))
 
 ## Down-regulated DEGs ----
 ### Neuropil ----
@@ -273,7 +273,7 @@ enrich_df_down <- dplyr::bind_rows(
   neun_enrich_down,
   vasc_enrich_down,
   pnn_enrich_down
-)
+) |> mutate(ID = gsub("SpD07-L1", "SpD07-L1/M", ID))
 
 # Make dot plots ----
 ## Wrapper Function ----
@@ -328,23 +328,33 @@ enrichment_dot_plot_heatmap <- function(
   )
 
   if_order <- res$test |> unique()
-
+  # browser()
   mat <- mat[spd_order, if_order]
   size_mat <- size_mat[spd_order, if_order]
 
-  spg_ha <- HeatmapAnnotation(
-    spg = anno_barplot(
-      n_spg_marker[if_order],
-      axis = TRUE,
-      axis_name = "# of SPG",
-      border = TRUE,
-      gp = gpar(fill = "black"),
-      axis_param = list(
-        at = seq(0, max(n_spg_marker[if_order]), by = 1000),
-        labels = seq(0, max(n_spg_marker[if_order]), by = 1000)
-      )
+  # browser()
+
+  # spg_ha <- NULL
+  # if (stringr::str_detect(title, "Down")) {
+    spg_ha <- HeatmapAnnotation(
+      spg = anno_barplot(
+        n_spg_marker[if_order],
+        axis = TRUE,
+        axis_name = "# of SPG",
+        border = FALSE,
+        gp = gpar(fill = "black"),
+        axis_param = list(
+          at = seq(0, max(n_spg_marker[if_order]), by = 2000),
+          labels = seq(0, max(n_spg_marker[if_order]), by = 2000),
+          # gp = gpar(fontsize = 8),
+          direction = "reverse",
+          side = "right"
+        ),
+        Height = unit(2, "cm"),
+      ),
+      show_annotation_name = FALSE
     )
-  )
+  # }
 
   # Change matrix orientation
   # mat <- t(mat)
@@ -368,27 +378,28 @@ enrichment_dot_plot_heatmap <- function(
     cluster_columns = FALSE,
     cluster_rows = FALSE,
     # Keep cell boundaries with black lines but hide the heatmap elements
-    rect_gp = gpar(col = "black", lwd = 0.5, fill = NA),
+    rect_gp = gpar(col = "lightgrey", lwd = 0.5, fill = NA),
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid.circle(
         x = x, y = y,
-        r = unit(1.5 * size_mat[i, j], "mm"),
+        r = unit(size_mat[i, j], "mm"),
         gp = gpar(fill = col_fun(mat[i, j]), col = NA)
       )
     },
     # Add the SPG annotation
-    top_annotation = spg_ha,
+    bottom_annotation = spg_ha,
     # Aethetics
-    row_names_gp = gpar(fontsize = 6),
-    column_names_gp = gpar(fontsize = 6, rot = 45, just = "right"),
+    row_names_gp = gpar(fontsize = 8),
+    column_names_gp = gpar(fontsize = 8, rot = 45, just = "right"),
     heatmap_legend_param = list(
       title = "Odds Ratio",
       title_gp = gpar(fontsize = 8),
-      labels_gp = gpar(fontsize = 6) # ,
+      labels_gp = gpar(fontsize = 8) # ,
       # at = c(min(mat), max(mat))
     )
   )
 
+  return(ht_list)
   # browser()
   # lgd_list <- list(
   #   # dot size for p-value
@@ -401,26 +412,19 @@ enrichment_dot_plot_heatmap <- function(
   #   )
   # )
 
-  draw(ht_list,
-    # annotation_legend_list = lgd_list,
-    column_title = title,
-    column_title_gp = grid::gpar(fontsize = 6)
-  )
+  # draw(ht_list,
+  #   # annotation_legend_list = lgd_list,
+  #   column_title = title,
+  #   column_title_gp = grid::gpar(fontsize = 8)
+  # )
 }
 
-## Overall DEGs ----
-pdf(
-  here(
-    "plots/12_cross_study_enrichment",
-    "layer_restricted_DEG_vs_SPG_marker_overall.pdf"
-  ),
-  height = 3, width = 2.5
-)
-enrichment_dot_plot_heatmap(
-  res = enrich_df_overall,
-  title = "Overall DEGs"
-)
-dev.off()
+replace_Layer1_label <- function(x) {
+  # browser()
+  x <- gsub("SpD07-L1", "SpD07-L1/M", x)
+  return(x)
+}
+
 
 ## Up-regulated DEGs ----
 pdf(
@@ -428,12 +432,12 @@ pdf(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_SPG_marker_upregulated.pdf"
   ),
-  height = 3, width = 2.5
+  height = 2.3, width = 1.5
 )
 enrichment_dot_plot_heatmap(
   res = enrich_df_up,
   title = "Up-regulated DEGs"
-)
+) |> draw(show_heatmap_legend = FALSE)
 dev.off()
 
 ## Down-regulated DEGs ----
@@ -442,13 +446,28 @@ pdf(
     "plots/12_cross_study_enrichment",
     "layer_restricted_DEG_vs_SPG_marker_downregulated.pdf"
   ),
-  height = 3, width = 2.5
+  height = 2.3, width = 1.5
 )
 enrichment_dot_plot_heatmap(
   res = enrich_df_down,
   title = "Down-regulated DEGs"
-)
+) |> draw(show_heatmap_legend = FALSE)
 dev.off()
 
 # Session info ----
 session_info()
+
+# Deprecated code ----
+## Overall DEGs ----
+# pdf(
+#   here(
+#     "plots/12_cross_study_enrichment",
+#     "layer_restricted_DEG_vs_SPG_marker_overall.pdf"
+#   ),
+#   height = 2.7, width = 2
+# )
+# enrichment_dot_plot_heatmap(
+#   res = enrich_df_overall,
+#   title = "Overall DEGs"
+# )
+# dev.off()
