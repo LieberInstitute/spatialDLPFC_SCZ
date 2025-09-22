@@ -40,6 +40,18 @@ stopifnot(
   n_tf_total == nrow(down_chea_df_wide)
 )
 
+spd_name_df <-
+  data.frame(
+    raw = c(
+      "SpD07_L1", "SpD06_L2_3", "SpD02_L3_4",
+      "SpD05_L5", "SpD03_L6", "SpD01_WMtz", "SpD04_WM"
+    ),
+    final = c(
+      "SpD07-L1/M", "SpD06-L2/3", "SpD02-L3/4",
+      "SpD05-L5", "SpD03-L6", "SpD01-WMtz", "SpD04-WM"
+    )
+  )
+
 # Identify overlap -----
 ## GWAS genes (trubetskoy et al) ----
 # NOTE: supp table 12 from Trubetskoy
@@ -69,19 +81,22 @@ org_up_trub_tf_wide <- up_chea_df_wide |>
   as.matrix()
 org_up_trub_tf_wide <- org_up_trub_tf_wide / n_tf_total
 
+colnames(org_up_trub_tf_wide) <- spd_name_df$final[match(colnames(org_up_trub_tf_wide), spd_name_df$raw)]
+
+
 p_trub_tf_up <- Heatmap(
-  matrix = org_up_trub_tf_wide, # Normalize by total number of TFs
+  matrix = org_up_trub_tf_wide |> t(), # Normalize by total number of TFs
   name = "Up-reg ",
   col = colorRamp2(
     c(0, 0.5, 1), # Reverse the scale: low rank = black, high rank = white
     c("red", "white", "blue")
   ),
-  cluster_rows = TRUE,
-  cluster_columns = FALSE,
+  cluster_rows = FALSE, # Same SpD orders
+  cluster_columns = TRUE, # Cluster the TFs
   show_row_names = TRUE,
   show_column_names = TRUE,
-  column_title = "SPDs",
-  row_title = "TFs",
+  row_title = NULL, # Do not show row data titles
+  column_title = NULL, # Do not show row
   heatmap_legend_param = list(
     title = "Rank Percentile",
     at = c(0, 0.5, 1),
@@ -89,15 +104,27 @@ p_trub_tf_up <- Heatmap(
       "highly ranked (relavent)",
       "Median",
       "lowly ranked (not relevant)"
-    )
-  )
+    ),
+    title_gp = gpar(fontsize = 8),
+    labels_gp = gpar(fontsize = 8)
+  ),
+  row_names_gp = gpar(fontsize = 8, col = "red"),
+  column_names_gp = gpar(fontsize = 8),
+  show_row_dend = FALSE,
+  show_column_dend = FALSE # Hide  # Hide dendrogram but still cluster rows
 )
 
+pdf(
+  here("plots/13_TF_enrichment/Trubetskoy_TF_enrichment_upregulated_DEGs.pdf"),
+  height = 1.5, width = 2
+)
 # Add a title using draw()
 draw(p_trub_tf_up,
-  column_title = "Enrichment of Upregulated layer-restricted DEGs",
-  column_title_gp = gpar(fontsize = 8)
+  # column_title = "Enrichment of Upregulated layer-restricted DEGs",
+  # column_title_gp = gpar(fontsize = 8)
+  show_heatmap_legend = FALSE
 )
+dev.off()
 
 
 # Trubetskoy Overlap with downregulated TFs ----
@@ -110,19 +137,22 @@ org_down_trub_tf_wide <- down_chea_df_wide |>
   as.matrix()
 org_down_trub_tf_wide <- org_down_trub_tf_wide / n_tf_total
 
+colnames(org_down_trub_tf_wide) <- spd_name_df$final[match(colnames(org_down_trub_tf_wide), spd_name_df$raw)]
+
+
 p_trub_tf_down <- Heatmap(
-  matrix = org_down_trub_tf_wide, # Normalize by total number of TFs
+  matrix = org_down_trub_tf_wide |> t(), # Normalize by total number of TFs
   name = "Down-reg ",
   col = colorRamp2(
     c(0, 0.5, 1), # Reverse the scale: low rank = black, high rank = white
     c("red", "white", "blue")
   ),
-  cluster_rows = TRUE,
-  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  cluster_columns = TRUE,
   show_row_names = TRUE,
   show_column_names = TRUE,
-  column_title = "SPDs",
-  row_title = "TFs",
+  column_title = NULL,
+  row_title = NULL,
   heatmap_legend_param = list(
     title = "Rank Percentile",
     at = c(0, 0.5, 1),
@@ -131,13 +161,25 @@ p_trub_tf_down <- Heatmap(
       "Median",
       "lowly ranked (not relevant)"
     )
-  )
+  ),
+  row_names_gp = gpar(fontsize = 8, col = "blue"),
+  column_names_gp = gpar(fontsize = 8),
+  show_row_dend = FALSE,
+  show_column_dend = FALSE # Hide  # Hide dendrogram but still cluster rows
 )
 
-draw(p_trub_tf_down,
-  column_title = "Enrichment of Downregulated layer-restricted DEGs",
-  column_title_gp = gpar(fontsize = 8)
+pdf(
+  here("plots/13_TF_enrichment/Trubetskoy_TF_enrichment_downregulated_DEGs.pdf"),
+  height = 1.5, width = 2
 )
+
+draw(
+  p_trub_tf_down,
+  show_heatmap_legend = FALSE
+  # column_title = "Enrichment of Downregulated layer-restricted DEGs",
+  # column_title_gp = gpar(fontsize = 8)
+)
+dev.off()
 
 # Top ranking TF per domains -----
 
@@ -159,19 +201,21 @@ org_up_top_tf_wide <- up_chea_df_wide |>
   as.matrix()
 org_up_top_tf_wide <- org_up_top_tf_wide / n_tf_total
 
+colnames(org_up_top_tf_wide) <- spd_name_df$final[match(colnames(org_up_top_tf_wide), spd_name_df$raw)]
+
 p_top_up_tf <- Heatmap(
-  matrix = org_up_top_tf_wide, # Normalize by total number of TFs
+  matrix = org_up_top_tf_wide |> t(), # Normalize by total number of TFs
   name = "Up-reg ",
   col = colorRamp2(
     c(0, 0.5, 1), # Reverse the scale: low rank = black, high rank = white
     c("red", "white", "blue")
   ),
-  cluster_rows = TRUE,
-  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  cluster_columns = TRUE,
   show_row_names = TRUE,
   show_column_names = TRUE,
-  column_title = "SPDs",
-  row_title = "TFs",
+  column_title = NULL,
+  row_title = NULL,
   heatmap_legend_param = list(
     title = "Rank Percentile",
     at = c(0, 0.5, 1),
@@ -180,13 +224,23 @@ p_top_up_tf <- Heatmap(
       "Median",
       "lowly ranked (not relevant)"
     )
-  )
+  ),
+  row_names_gp = gpar(fontsize = 8, col = "red"),
+  column_names_gp = gpar(fontsize = 8),
+  show_row_dend = FALSE,
+  show_column_dend = FALSE # Hide  # Hide dendrogram but still cluster rows
 )
 
-draw(p_top_up_tf,
-  column_title = "Enrichment of Top Upregulated layer-restricted DEGs",
-  column_title_gp = gpar(fontsize = 8)
+pdf(
+  here("plots/13_TF_enrichment/Top_TF_enrichment_upregulated_DEGs.pdf"),
+  height = 1.5, width = 4.5
 )
+draw(p_top_up_tf,
+  # column_title = "Enrichment of Top Upregulated layer-restricted DEGs",
+  # column_title_gp = gpar(fontsize = 8)
+  show_heatmap_legend = FALSE
+)
+dev.off()
 
 ## TF from down-reg DEGs -----
 subset_down_tf <- down_chea_df |>
@@ -206,19 +260,21 @@ org_down_top_tf_wide <- down_chea_df_wide |>
   as.matrix()
 org_down_top_tf_wide <- org_down_top_tf_wide / n_tf_total
 
+colnames(org_down_top_tf_wide) <- spd_name_df$final[match(colnames(org_down_top_tf_wide), spd_name_df$raw)]
+
 p_top_down_tf <- Heatmap(
-  matrix = org_down_top_tf_wide, # Normalize by total number of TFs
+  matrix = org_down_top_tf_wide |> t(), # Normalize by total number of TFs
   name = "Down-reg ",
   col = colorRamp2(
     c(0, 0.5, 1), # Reverse the scale: low rank = black, high rank = white
     c("red", "white", "blue")
   ),
-  cluster_rows = TRUE,
-  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  cluster_columns = TRUE,
   show_row_names = TRUE,
   show_column_names = TRUE,
-  column_title = "SPDs",
-  row_title = "TFs",
+  column_title = NULL,
+  row_title = NULL,
   heatmap_legend_param = list(
     title = "Rank Percentile",
     at = c(0, 0.5, 1),
@@ -227,13 +283,23 @@ p_top_down_tf <- Heatmap(
       "Median",
       "lowly ranked (not relevant)"
     )
-  )
-) 
-
-draw(p_top_down_tf,
-  column_title = "Enrichment of Top Downregulated layer-restricted DEGs",
-  column_title_gp = gpar(fontsize = 8)
+  ),
+  row_names_gp = gpar(fontsize = 8, col = "blue"),
+  column_names_gp = gpar(fontsize = 8),
+  show_row_dend = FALSE,
+  show_column_dend = FALSE # Hide  # Hide dendrogram but still cluster rows
 )
+
+pdf(
+  here("plots/13_TF_enrichment/Top_TF_enrichment_downregulated_DEGs.pdf"),
+    height = 1.5, width = 4.5
+)
+draw(p_top_down_tf,
+  # column_title = "Enrichment of Top Downregulated layer-restricted DEGs",
+  # column_title_gp = gpar(fontsize = 8)
+  show_heatmap_legend = FALSE
+)
+dev.off()
 
 
 # Session info ----
