@@ -72,7 +72,8 @@ ggplot(
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     legend.position = "bottom"
-  ) + scale_color_identity(
+  ) +
+  scale_color_identity(
     # name = "Significance",
     # labels = c(
     #   "FDR > 0.10",
@@ -80,16 +81,21 @@ ggplot(
     #   "Down-regulated"
     # ),
     # guide = "legend"
-  ) 
-
-ggsave(
-  filename = here(
-    "plots/14_prs_deg",
-    "PRS_DEG_volcano_plot_PRECAST07_donor_spd.pdf"
-  ),
-  plot = last_plot(),
-  width = 2.5, height = 2.5, units = "in"
-)
+  ) +
+  labs(
+    # title = "PRS-associated DEGs",
+    # y = "-log10(p-value)",
+    x = "log2(FC in PRS)"
+  )
+  
+  ggsave(
+    filename = here(
+      "plots/14_prs_deg",
+      "PRS_DEG_volcano_plot_PRECAST07_donor_spd.pdf"
+    ),
+    plot = last_plot(),
+    width = 2.5, height = 2.5, units = "in"
+  )
 
 # Session Info ----
 session_info()
