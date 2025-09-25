@@ -93,7 +93,7 @@ ggplot(
     hjust = -0.1, vjust = 2, size = 4, color = "black"
   ) +
   labs(
-    x = "t-statistics (SCZ-DEGs)",
+    x = "t-statistics (DX-DEGs)",
     y = "t-statistics (PRS-DEGs)"
   ) +
   scale_x_continuous(limits = c(-7, 7), breaks = seq(-6, 6, by = 2)) +
@@ -101,7 +101,7 @@ ggplot(
   scale_color_manual(
     values = c(
       "Neither" = "lightgrey",
-      "SCZ-DEG only" = "#009E73",
+      "DX-DEG only" = "#009E73",
       "PRS-DEG only" = "#0072B2",
       "Both" = "#D55E00"
     )
