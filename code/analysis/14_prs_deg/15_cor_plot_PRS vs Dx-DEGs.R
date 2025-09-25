@@ -40,10 +40,10 @@ merged_df <- dx_deg_df |>
   mutate(
     study_sig = case_when(
       fdr_scz > 0.1 & fdr_prs < 0.1 ~ "PRS-DEG only",
-      fdr_scz < 0.1 & fdr_prs > 0.1 ~ "SCZ-DEG only",
+      fdr_scz < 0.1 & fdr_prs > 0.1 ~ "DX-DEG only",
       fdr_scz < 0.1 & fdr_prs < 0.1 ~ "Both",
       TRUE ~ "Neither"
-    ) |> factor(levels = c("Neither", "SCZ-DEG only", "PRS-DEG only", "Both"))
+    ) |> factor(levels = c("Neither", "DX-DEG only", "PRS-DEG only", "Both"))
   )
 
 
