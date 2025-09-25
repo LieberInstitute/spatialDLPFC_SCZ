@@ -70,13 +70,13 @@ ggplot(
       )),
     aes(label = gene),
     color = "black",
-    force = 0.5,
+    force = 4,
     # All labels not overlapping
     max.overlaps = Inf,
     # Have arrows
     min.segment.length = 0,
     size = 4, # 6pt label font ≈ size 2 in ggplot2
-    arrow = arrow(length = unit(0.5, "points"), type = "closed"),
+    arrow = arrow(length = unit(2, "points"), type = "closed"),
     segment.size = 0.2,
     segment.color = "black"
   ) +
@@ -96,6 +96,8 @@ ggplot(
     x = "t-statistics (SCZ-DEGs)",
     y = "t-statistics (PRS-DEGs)"
   ) +
+  scale_x_continuous(limits = c(-7, 7), breaks = seq(-6, 6, by = 2)) +
+  scale_y_continuous(limits = c(-7, 7), breaks = seq(-6, 6, by = 2)) +
   scale_color_manual(
     values = c(
       "Neither" = "lightgrey",
@@ -112,7 +114,7 @@ ggsave(
     "plots/14_prs_deg",
     "cor_plot_PRS_vs_Dx-DEGs_PRECAST07_donor_spd.pdf"
   ),
-  width = 6, height = 5, units = "in"
+  width = 7, height = 5, units = "in"
 )
 
 # Session info ----
