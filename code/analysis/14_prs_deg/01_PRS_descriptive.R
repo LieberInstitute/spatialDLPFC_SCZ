@@ -2,6 +2,7 @@
 suppressPackageStartupMessages({
   library(here)
   library(tidyverse)
+  library(SingleCellExperiment)
 })
 
 

@@ -53,7 +53,7 @@ cor(merged_df$t_stat_scz, merged_df$t_prs)
 
 
 # Scatter plot ----
-ggplot(
+ret_p <- ggplot(
   merged_df |> arrange(study_sig),
   aes(x = t_stat_scz, y = t_prs)
 ) +
@@ -75,7 +75,7 @@ ggplot(
     max.overlaps = Inf,
     # Have arrows
     min.segment.length = 0,
-    size = 4, # 6pt label font ≈ size 2 in ggplot2
+    size = 2, # 6pt label font ≈ size 2 in ggplot2
     arrow = arrow(length = unit(2, "points"), type = "closed"),
     segment.size = 0.2,
     segment.color = "black"
@@ -90,7 +90,7 @@ ggplot(
         use = "pairwise.complete.obs"
       )
     ),
-    hjust = -0.1, vjust = 2, size = 4, color = "black"
+    hjust = -0.1, vjust = 2, size = 3, color = "black"
   ) +
   labs(
     x = "t-statistics (DX-DEGs)",
@@ -106,7 +106,17 @@ ggplot(
       "Both" = "#D55E00"
     )
   ) +
-  theme_classic(base_size = 12)
+  theme_classic(base_size = 6) +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    legend.spacing.x = unit(0, "cm"),
+    legend.spacing.y = unit(0, "cm"),
+    legend.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "cm"),
+    legend.text = element_text(size = 6)
+  ) +
+  guides(color = guide_legend(nrow = 2, byrow = TRUE, label.position = "right", label.hjust = 0))
+
 
 
 ggsave(
@@ -114,7 +124,8 @@ ggsave(
     "plots/14_prs_deg",
     "cor_plot_PRS_vs_Dx-DEGs_PRECAST07_donor_spd.pdf"
   ),
-  width = 7, height = 5, units = "in"
+  plot = ret_p,
+  width = 2.5, height = 2.7, units = "in"
 )
 
 # Session info ----
