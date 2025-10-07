@@ -43,6 +43,15 @@ spd_deg_df <- spd_deg_df %>%
       "SpD03-L6",
       "SpD01-WMtz",
       "SpD04-WM"
+    ) |> rev(),
+    labels = c(
+      "SpD07-L1/M",
+      "SpD06-L2/3",
+      "SpD02-L3/4",
+      "SpD05-L5",
+      "SpD03-L6",
+      "SpD01-WMtz",
+      "SpD04-WM"
     ) |> rev()
   ))
 
@@ -55,10 +64,24 @@ p_layer_restr <- ggplot(
   geom_density_ridges(alpha = 0.7, scale = 1.2, color = "white") +
   labs(
     title = "Layer-restricted DEGs",
-    x = "Effect Size",
-    y = "PRECAST_spd"
+    x = "|log2(FC in SCZ)|",
+    y = "PRECAST\n Spatial Domain"
   ) +
-  theme_minimal() +
+  scale_fill_manual(
+    values = setNames(
+      Polychrome::palette36.colors(13)[seq.int(7)],
+      c(
+        "SpD07-L1",
+        "SpD06-L2/3",
+        "SpD02-L3/4",
+        "SpD05-L5",
+        "SpD03-L6",
+        "SpD01-WMtz",
+        "SpD04-WM"
+      )
+    )
+  ) +
+  theme_classic() +
   theme(legend.position = "none")
 
 
@@ -72,10 +95,10 @@ p_ruzicka_DE <- ggplot(
   geom_density_ridges(alpha = 0.7, scale = 1.2, color = "white") +
   labs(
     title = "Ruzicka et al.",
-    x = "Effect Size (truncated at 0.5)",
+    x = "|log2(FC in SCZ)|\n (truncated at 0.5)",
     y = "Cell Type"
   ) +
-  theme_minimal() +
+  theme_classic() +
   theme(legend.position = "none") +
   coord_cartesian(xlim = c(0, 0.5))
 
@@ -92,6 +115,19 @@ ggarrange(
     filename = here(
       "plots/discussion",
       "ridge_plot_effect_size_comparison.pdf"
+    )
+  )
+
+ggarrange(
+  p_layer_restr,
+  p_ruzicka_DE,
+  ncol = 2,
+  labels = c("A", "B")
+) |>
+  ggsave(
+    filename = here(
+      "plots/discussion",
+      "ridge_plot_effect_size_comparison.png"
     )
   )
 
