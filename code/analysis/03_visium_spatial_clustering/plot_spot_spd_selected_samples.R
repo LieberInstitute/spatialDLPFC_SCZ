@@ -13,9 +13,10 @@ suppressPackageStartupMessages({
 ## Load Spe ----
 raw_spe <- readRDS(
   here(
-    "processed-data/rds/spatial_cluster",
-    "PRECAST",
-    "spe_wo_spg_N63_PRECAST.rds"
+    # "processed-data/rds/spatial_cluster",
+    # "PRECAST",
+    # "spe_wo_spg_N63_PRECAST.rds"
+    "processed-data/rds/01_build_spe/fnl_spe_kept_spots_only.rds"
   )
 )
 
@@ -28,33 +29,34 @@ raw_spe$sample_label <- paste0(
 )
 
 # ## Load PRECAST df ----
-PRECAST_df <- readRDS(
-  here(
-    "processed-data/rds/spatial_cluster",
-    "PRECAST",
-    "test_clus_label_df_semi_inform_k_2-16.rds"
-  )
-)
+# PRECAST_df <- readRDS(
+#   here(
+#     "processed-data/rds/spatial_cluster",
+#     "PRECAST",
+#     "test_clus_label_df_semi_inform_k_2-16.rds"
+#   )
+# )
 
 ## Merge PRECAST df ----
-precast_vars <- grep(
-  "^PRECAST_", colnames(PRECAST_df),
-  value = TRUE
-)
+# precast_vars <- grep(
+#   "^PRECAST_", colnames(PRECAST_df),
+#   value = TRUE
+# )
 
-spe <- raw_spe[, raw_spe$key %in% PRECAST_df$key]
+spe <- raw_spe#[, raw_spe$key %in% PRECAST_df$key]
 # raw_spe[, precast_vars] <- PRECAST_df[raw_spe$key, precast_vars]
-col_data_df <- PRECAST_df |>
-  right_join(
-    colData(spe) |> data.frame(),
-    by = c("key"),
-    relationship = "one-to-one"
-  )
-rownames(col_data_df) <- colnames(spe)
-colData(spe) <- DataFrame(col_data_df)
+# col_data_df <- PRECAST_df |>
+#   right_join(
+#     colData(spe) |> data.frame(),
+#     by = c("key"),
+#     relationship = "one-to-one"
+#   )
+# rownames(col_data_df) <- colnames(spe)
+# colData(spe) <- DataFrame(col_data_df)
 
+spe$PRECAST_07 <- spe$spd_label |> as.character() |> str_sub(start = 1, end = 5) |> factor()
 # error prevention
-stopifnot(is.character(spe$PRECAST_07))
+# stopifnot(is.character(spe$PRECAST_07))
 
 # Subset to 24 Xenium Samples ----
 ## Find Xenium Samples ----
