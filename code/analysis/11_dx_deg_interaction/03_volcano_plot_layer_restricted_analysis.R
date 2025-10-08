@@ -3,6 +3,8 @@ suppressPackageStartupMessages({
   library(here)
   library(tidyverse)
   library(ggrepel)
+  library(ggpubr)
+  library(sessioninfo)
 })
 
 # Load data ----
@@ -38,8 +40,8 @@ spd_deg_list <-
   )
 
 # Make volcano plot ----
-## Make a list of volcano plots ----
 
+# Priming data ----
 spd_lookup_tab <- data.frame(
   spd_labels = c(
     "SpD07-L1/M",
@@ -56,17 +58,14 @@ spd_lookup_tab <- data.frame(
   ) |> tolower()
 )
 
-
 names(spd_deg_list) <- spd_lookup_tab$spd_labels[match(
   names(spd_deg_list), spd_lookup_tab$spd_raw
 )]
 
-
-
+## Make a list of volcano plots ----
 p_volca_list <- spd_deg_list |>
   imap(.f = function(df, spd_it) {
     # Create color categories for the volcano plot
-    # browser()
     df <- df |> mutate(
       gene_cat = case_when(
         sig_10 == FALSE & P.Value < 0.05 & logFC >= 0 ~ "#ef8080",
@@ -103,19 +102,29 @@ p_volca_list <- spd_deg_list |>
       ) +
       scale_color_identity(
         name = "Significance",
+        guide = "legend",
         labels = c(
-          "FDR > 0.10",
-          "Up-regulated",
-          "Down-regulated"
+          "red" = "FDR p < 0.05",
+          "blue" = "FDR p < 0.05",
+          "#ef8080" = "Nominal p < 0.05",
+          "#808ef8" = "Nominal p < 0.05",
+          "grey" = "N.S. (p >= 0.05)"
         )
       ) +
       theme_classic(base_size = 6) +
-      theme(plot.title = element_text(hjust = 0.5, size = 6, face = "bold"))
+      theme(
+        legend.position = "bottom",
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 6),
+        plot.title = element_text(
+          hjust = 0.5, size = 6, face = "bold"
+        )
+      )
   })
 
 ## Save volcano plots ----
+### SpD07-L1/M ----
 p_spd07_L1 <- p_volca_list[["SpD07-L1/M"]]
-
 
 p_spd07_L1_fnl <- p_spd07_L1 +
   geom_text_repel(
@@ -138,7 +147,7 @@ p_spd07_L1_fnl <- p_spd07_L1 +
       filter(gene %in% c("C3", "GAD1", "SST", "CORT", "BDNF")),
     shape = 1,
     color = "black",
-    size = 0.005#,
+    size = 0.005 # ,
     # stroke = 0.05
   )
 
@@ -147,12 +156,13 @@ ggsave(
     "plots/11_dx_deg_interaction",
     "volcano_plot_layer_restricted_spd07_L1_M.pdf"
   ),
-  plot = p_spd07_L1_fnl,
+  plot = p_spd07_L1_fnl +
+    theme(legend.position = "none"),
   width = 1.13, height = 1.31,
   units = "in"
 )
 
-
+### SpD01-WMtz ----
 p_spd01 <- p_volca_list[["SpD01-WMtz"]]
 
 p_spd01_fnl <- p_spd01 + geom_text_repel(
@@ -170,23 +180,45 @@ p_spd01_fnl <- p_spd01 + geom_text_repel(
   segment.size = 0.2,
   segment.color = "black"
 ) +
-geom_point(
-  data = p_spd01$data |>
-    filter(gene %in% c("DISC1", "DCC", "GRIN2C", "SHANK2", "HTR5A")),
-  shape = 1,
-  color = "black",
-  size = 0.005#,
-  # stroke = 0.05
-)
+  geom_point(
+    data = p_spd01$data |>
+      filter(gene %in% c("DISC1", "DCC", "GRIN2C", "SHANK2", "HTR5A")),
+    shape = 1,
+    color = "black",
+    size = 0.005 # ,
+    # stroke = 0.05
+  )
 
 ggsave(
   filename = here(
     "plots/11_dx_deg_interaction",
     "volcano_plot_layer_restricted_spd01_WMtz.pdf"
   ),
-  plot = p_spd01_fnl,
+  plot = p_spd01_fnl +
+    theme(legend.position = "none"),
   width = 1.13, height = 1.31,
   units = "in"
+)
+
+
+## Plot Legend ----
+# Extract and plot only the legend of p_spd01_fnl
+tmp_p <- p_volca_list[[1]] +
+  theme(
+    legend.key.spacing.x = unit(0.05, "cm"),
+    legend.key.spacing.y = unit(0.05, "cm")
+  ) + guides(
+    color = guide_legend(override.aes = list(size = 3))
+  )
+
+legend <- ggpubr::get_legend(tmp_p)
+ggplot2::ggsave(
+  filename = here(
+    "plots/11_dx_deg_interaction",
+    "volcano_plot_layer_restricted_legend_raw.pdf"
+  ),
+  plot = ggpubr::as_ggplot(legend),
+  width = 8, height = 0.5
 )
 
 
