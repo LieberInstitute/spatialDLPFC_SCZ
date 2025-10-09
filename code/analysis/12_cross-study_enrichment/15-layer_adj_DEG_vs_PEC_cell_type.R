@@ -4,6 +4,7 @@ suppressPackageStartupMessages({
   library(spatialLIBD)
   library(ComplexHeatmap)
   library(circlize)
+  library(latex2exp)
   library(sessioninfo)
 })
 
@@ -199,8 +200,9 @@ ht_list <- Heatmap(
   heatmap_legend_param = list(
     title = "Odds Ratio",
     title_gp = gpar(fontsize = 8),
-    labels_gp = gpar(fontsize = 6) # ,
-    # at = c(min(mat), max(mat))
+    labels_gp = gpar(fontsize = 6),
+    at = c(1, 3, 6, 10),
+    labels = TeX(c("$\\leq$1", 3, 6, 10))
   )
 )
 
@@ -230,7 +232,8 @@ ht_list <- Heatmap(
 #   ht_list
 # }
 
-
+# Save plots -----
+## Save heatmap only -----
 pdf(
   here(
     "plots/12_cross_study_enrichment",
@@ -239,6 +242,17 @@ pdf(
   height = 2, width = 5
 )
 ht_list |> draw(show_heatmap_legend = FALSE)
+dev.off()
+
+## Save legend ------
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "layer_adj_DEG_vs_PEC_cell_type_legend_raw.pdf"
+  ),
+  height = 2, width = 6
+)
+ht_list 
 dev.off()
 
 # Session Info ----
