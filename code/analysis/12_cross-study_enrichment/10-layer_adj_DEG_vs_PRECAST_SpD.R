@@ -5,6 +5,7 @@ suppressPackageStartupMessages({
   library(spatialLIBD)
   library(ComplexHeatmap)
   library(circlize)
+  library(latex2exp)
   library(sessioninfo)
 })
 
@@ -37,7 +38,6 @@ n_layer_marker <- colnames(tstats) |>
     # NOTE: the fdr threshold should be consistent with the enrichrment test parameters
     ~ sum(tstats[, .x] > 0 & fdrs[, .x] < 0.05)
   )
-
 
 ## Load SpD annotation ----
 spd_anno_df <- read_csv(
@@ -86,11 +86,7 @@ annotated_res <- res |>
 n_layer_marker_annotated <- n_layer_marker
 names(n_layer_marker_annotated) <- spd_anno_df$anno_lab[match(names(n_layer_marker), spd_anno_df$spd)]
 
-
-
-## Visaulize via dot plot -----
-# Wrapper function for the dot plot
-
+## Make dot plot using complexHeatmap-----
 res <- annotated_res
 
 mat <- res |>
@@ -146,8 +142,6 @@ size_mat <- size_mat[cell_type_order, spd_order]
 # mat <- mat
 # size_mat <- size_mat
 
-# browser()
-
 n_degs <- res |>
   select(ID, SetSize) |>
   distinct(ID, SetSize) |>
@@ -195,8 +189,6 @@ col_fun <- colorRamp2(
   c("grey", "yellow", "blue")
 )
 
-# browser()
-
 # Create the dot plot using ComplexHeatmap
 ht_list <- Heatmap(
   mat,
@@ -223,24 +215,13 @@ ht_list <- Heatmap(
   heatmap_legend_param = list(
     title = "Odds Ratio",
     title_gp = gpar(fontsize = 8),
-    labels_gp = gpar(fontsize = 6),
-    at = c(1, 3, 6)
+    labels_gp = gpar(fontsize = 8),
+    at = c(1, 3, 6),
+    labels = TeX(c("$\\leq$1", "3", "6"))
   )
 )
 
 # browser()
-# lgd_list <- list(
-#   # dot size for p-value
-#   Legend(
-#     labels = c("Not sig.", "Nominal p < 0.05", "FDR < 0.05"),
-#     title = "Significance", type = "points",
-#     pch = 16,
-#     legend_gp = gpar(fill = "black"),
-#     size = unit(1:3, "mm"),
-#   )
-# )
-
-# draw(ht_list, annotation_legend_list = lgd_list)
 
 
 
@@ -251,7 +232,8 @@ ht_list <- Heatmap(
 # )
 
 
-# Save plot
+# Save plots -----
+## Save heatmap only -----
 pdf(
   file = here(
     "plots/12_cross_study_enrichment",
@@ -260,6 +242,37 @@ pdf(
   width = 2, height = 2.1
 )
 ht_list |> draw(show_heatmap_legend = FALSE)
+dev.off()
+
+## Save legend ------
+### Save legend - dot_size -----
+lgd_list <- list(
+  # dot size for p-value
+  Legend(
+    labels = c("N.S.", "Nominal p < 0.05", "FDR p < 0.05"),
+    title = "Significance", type = "points",
+    # pch = 16,
+    legend_gp = gpar(fill = "white", col = "black"), # remove border and background
+    size = unit(1:3, "mm"),
+    title_gp = gpar(fontsize = 8),
+    labels_gp = gpar(fontsize = 8),
+    background = "transparent",
+    nrow = 1
+  )
+)
+
+pdf(
+  file = here(
+    "plots/12_cross_study_enrichment",
+    "dotplot_layer_adj_DEG_vs_PRECAST_SpD_legend_raw.pdf"
+  ),
+  width = 4, height = 3
+)
+draw(
+  ht_list,
+  annotation_legend_list = lgd_list,
+  annotation_legend_side = "bottom"
+)
 dev.off()
 
 
