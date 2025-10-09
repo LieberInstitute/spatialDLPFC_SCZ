@@ -5,6 +5,7 @@ suppressPackageStartupMessages({
   library(spatialLIBD)
   library(ComplexHeatmap)
   library(circlize)
+  library(latex2exp)
   library(sessioninfo)
 })
 
@@ -140,11 +141,11 @@ enrichment_dot_plot_heatmap <- function(
     "Astro", "Endo", "Immune", "Micro", "OPC", "Oligo",
     "PC", "SMC", "VLMC"
   )
+  # browser()
 
   mat <- mat[spd_order, cell_type_order]
   size_mat <- size_mat[spd_order, cell_type_order]
 
-  # browser()
   celltype_ha <- HeatmapAnnotation(
     n_celltype = anno_barplot(
       n_cell_type_marker[cell_type_order],
@@ -176,7 +177,7 @@ enrichment_dot_plot_heatmap <- function(
         direction = "reverse",
         at = seq(0, max(n_DEG), by = 500),
         labels = seq(0, max(n_DEG), by = 500),
-          labels_rot = 0
+        labels_rot = 0
       )
     ),
     show_annotation_name = FALSE
@@ -191,7 +192,7 @@ enrichment_dot_plot_heatmap <- function(
   # Define color function for Odds Ratio
   col_fun <- colorRamp2(
     # TODO: change the color scale
-    c(min(mat), median(mat), max(mat)),
+    c(min(mat), median(mat), 6),
     c("grey", "yellow", "blue")
   )
 
@@ -221,8 +222,9 @@ enrichment_dot_plot_heatmap <- function(
     heatmap_legend_param = list(
       title = "Odds Ratio",
       title_gp = gpar(fontsize = 8),
-      labels_gp = gpar(fontsize = 8) # ,
-      # at = c(min(mat), max(mat))
+      labels_gp = gpar(fontsize = 8),
+      at = c(1, 3, 6),
+      labels = TeX(c("$\\leq$1", "3", "6"))
     )
   )
 
@@ -247,8 +249,6 @@ enrichment_dot_plot_heatmap <- function(
 }
 
 
-
-
 # Up-reg enrichment ----
 up_reg_enrich_res <- spatialLIBD::gene_set_enrichment(
   gene_list = up_reg_deg_list |> map(~ .x |> pull(gene_id)),
@@ -257,8 +257,8 @@ up_reg_enrich_res <- spatialLIBD::gene_set_enrichment(
   ),
   model_type = "enrichment",
   fdr_cut = 0.05
-)
-### Make dot plot ----
+) |> mutate(ID = gsub("SpD07-L1", "SpD07-L1/M", ID))
+### Make dot plot only----
 pdf(
   here(
     "plots/12_cross_study_enrichment",
@@ -269,8 +269,25 @@ pdf(
 up_reg_enrich_res |>
   enrichment_dot_plot_heatmap(
     title = "up-regulated Layer-restricted SCZ-DEGs"
-  ) |> draw(show_heatmap_legend = FALSE)
+  ) |>
+  draw(show_heatmap_legend = FALSE)
 dev.off()
+
+### Make dot plot legend ----
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "layer_restricted_DEG_vs_PEC_cell_type_marker_up_reg_legend_raw.pdf"
+  ),
+  height = 2.7, width = 6
+)
+up_reg_enrich_res |>
+  enrichment_dot_plot_heatmap(
+    title = "up-regulated Layer-restricted SCZ-DEGs"
+  ) |>
+  draw()
+dev.off()
+
 
 # Down-reg enrichment ----
 down_reg_enrich_res <- spatialLIBD::gene_set_enrichment(
@@ -280,7 +297,7 @@ down_reg_enrich_res <- spatialLIBD::gene_set_enrichment(
   ),
   model_type = "enrichment",
   fdr_cut = 0.05
-)
+) |> mutate(ID = gsub("SpD07-L1", "SpD07-L1/M", ID))
 
 ### Make dot plot ----
 pdf(
@@ -293,8 +310,25 @@ pdf(
 down_reg_enrich_res |>
   enrichment_dot_plot_heatmap(
     title = "Down-regulated Layer-restricted SCZ-DEGs"
-  ) |> draw(show_heatmap_legend = FALSE)
+  ) |>
+  draw(show_heatmap_legend = FALSE)
 dev.off()
+
+#### Make dot plot legend ----
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "layer_restricted_DEG_vs_PEC_cell_type_marker_down_reg_legend_raw.pdf"
+  ),
+  height = 2.7, width = 6
+)
+down_reg_enrich_res |>
+  enrichment_dot_plot_heatmap(
+    title = "Down-regulated Layer-restricted SCZ-DEGs"
+  ) |>
+  draw()
+dev.off()
+
 
 ## (Deprecated) Heatmap Visualization ----
 # gene_set_enrichment_plot(
