@@ -74,6 +74,7 @@ tissue_positions_path = Path(here("processed-data", "spaceranger", unique_sample
 tissue_positions = pd.read_csv(tissue_positions_path ,index_col = 0).rename({'pxl_row_in_fullres': 'y', 'pxl_col_in_fullres': 'x'},axis = 1)
 tissue_positions.index.name = None
 tissue_positions = tissue_positions[['x', 'y']].astype(int)
+tp_sub = tissue_positions.reindex(gene_df.index).dropna(how="all")
 
 default_gene = 'SNAP25'
 assert default_gene in gene_df.columns, "Default gene not in AnnData"
@@ -81,7 +82,7 @@ assert default_gene in gene_df.columns, "Default gene not in AnnData"
 #notes_md_url = Url('/dcs04/lieber/lcolladotor/spatialHPC_LIBD4035/spatial_hpc/code/VSPG_image_stitching/feature_notes.md')
 #this_sample = Sample(name = samui_dir.name, path = samui_dir, notesMd = notes_md_url)
 this_sample = Sample(name = samui_dir.name, path = samui_dir)
-this_sample.add_coords(tissue_positions, name = "coords", mPerPx = m_per_px, size = spot_diameter_m)
+this_sample.add_coords(tp_sub, name = "coords", mPerPx = m_per_px, size = spot_diameter_m)
 this_sample.add_image(tiff = img_path,channels = img_channels,defaultChannels = default_channels, scale = m_per_px)
 
 this_sample.add_csv_feature(precast_df, name = "Domains", coordName = "coords", dataType = "categorical")
