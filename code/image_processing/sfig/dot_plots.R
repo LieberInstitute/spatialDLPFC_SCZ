@@ -387,7 +387,7 @@ summarize(proportion_pnn = mean(pnn_pos == TRUE),
 mutate(
     PRECAST_07 = factor(PRECAST_07, 
                         levels = c("spd07", "spd06", "spd02", "spd05", "spd03", "spd01", "spd04"),
-                        labels = c("spd07-L1", "spd06-L2/3", "spd02-L3/4", "spd05-L5", "spd03-L6", "spd01-L6/WM", "spd04-WM"))
+                        labels = c("SpD07-L1", "SpD06-L2/3", "SpD02-L3/4", "SpD05-L5", "SpD03-L6", "SpD01-L6/WMtz", "SpD04-WM"))
   )
 
 
@@ -423,6 +423,10 @@ prop_neuropil <- list()
 prop_neun <- list()
 prop_pnn <- list()
 prop_vasc <- list()
+mean_neuropil <- list()
+mean_neun <- list()
+mean_pnn <- list()
+mean_vasc <- list()
 
 # Loop through each unique PRECAST_07 value and calculate the proportion
 for (spd in unique_spd_values) {
@@ -447,37 +451,51 @@ for (spd in unique_spd_values) {
 # Combine the results into a data frame
 prop_df1 <- data.frame(
   PRECAST_07 = unique_spd_values,
-  Neuropil = unlist(prop_neuropil),
-  NeuropilM = unlist(mean_neuropil),
+  DAPI = unlist(prop_neuropil),
+  DAPIM = unlist(mean_neuropil),
   NeuN = unlist(prop_neun),
   NeuNM = unlist(mean_neun),
   WFA = unlist(prop_pnn),
   WFAM = unlist(mean_pnn),
-  Claudin_5 = unlist(prop_vasc),
-  Claudin_5M = unlist(mean_vasc)
-)
+  Claudin5 = unlist(prop_vasc),
+  Claudin5M = unlist(mean_vasc)
+)%>%
+mutate(
+    PRECAST_07 = factor(PRECAST_07, 
+                        levels = c("spd07", "spd06", "spd02", "spd05", "spd03", "spd01", "spd04"),
+                        labels = c("SpD07-L1", "SpD06-L2/3", "SpD02-L3/4", "SpD05-L5", "SpD03-L6", "SpD01-L6/WMtz", "SpD04-WM"))
+  )
 
-properties <- c("WFA", "Neuropil", "NeuN", "Claudin_5")
-pdf(here("plots", "image_processing", "enrichment", "dot_plots1.pdf"), width = 8, height = 6)
+properties <- c("WFA", "DAPI", "NeuN", "Claudin5")
+pdf(here("plots", "image_processing", "enrichment", "dot_plots1.pdf"), width = 8, height = 8)
 
 for (prop in properties) {
   p = ggplot(prop_df1, aes_string(
     x = "PRECAST_07", 
     y =  prop, 
-    fill = paste0("mean_", prop), 
-    size = paste0("proportion_", prop)
+    fill = paste0(prop,"M"), 
+    size = prop
   )) +
     geom_point(alpha = 0.7, shape = 21) +
     scale_fill_gradient(low = "white", high = "black") +
     labs(
-      title = paste("Dot Plot of", toupper(prop)),
-      x = "PRECAST_07",
-      y = paste("Proportion of matching spots"),
-      fill = "Mean Expression",
-      size = paste("Proportion", toupper(prop) , "+spots")
+      title = paste("% ", prop, "+ Spots Vs mean marker gene expression" ),
+      x = "",
+      y = paste("Proportion ", prop, "+ spots"),
+      fill = "Mean\nmarker gene\nexpression",
+      size = paste("%", prop , "\n+spots")
     ) +
-    theme_minimal()
-    print(p) # Print plot to the PDF
-}
+	theme_minimal() +
+	theme(
+	      axis.text = element_text(size = 18),
+	      axis.text.x = element_text(angle = 90, hjust = 1),
+	      axis.title = element_text(size = 18),
+	      legend.title = element_text(size = 18),
+	      legend.text = element_text(size = 18),
+	      plot.title = element_text(size = 18, hjust = 0.5, face = "bold")
+	    )
+    
+	  print(p)  # Print plot to the PDF
+	}
 
 dev.off()
