@@ -4,6 +4,7 @@ suppressPackageStartupMessages({
   library(spatialLIBD)
   library(circlize)
   library(ComplexHeatmap)
+  library(latex2exp)
   library(here)
   library(sessioninfo)
 })
@@ -336,24 +337,24 @@ enrichment_dot_plot_heatmap <- function(
 
   # spg_ha <- NULL
   # if (stringr::str_detect(title, "Down")) {
-    spg_ha <- HeatmapAnnotation(
-      spg = anno_barplot(
-        n_spg_marker[if_order],
-        axis = TRUE,
-        axis_name = "# of SPG",
-        border = FALSE,
-        gp = gpar(fill = "black"),
-        axis_param = list(
-          at = seq(0, max(n_spg_marker[if_order]), by = 2000),
-          labels = seq(0, max(n_spg_marker[if_order]), by = 2000),
-          # gp = gpar(fontsize = 8),
-          direction = "reverse",
-          side = "right"
-        ),
-        Height = unit(2, "cm"),
+  spg_ha <- HeatmapAnnotation(
+    spg = anno_barplot(
+      n_spg_marker[if_order],
+      axis = TRUE,
+      axis_name = "# of SPG",
+      border = FALSE,
+      gp = gpar(fill = "black"),
+      axis_param = list(
+        at = seq(0, max(n_spg_marker[if_order]), by = 2000),
+        labels = seq(0, max(n_spg_marker[if_order]), by = 2000),
+        # gp = gpar(fontsize = 8),
+        direction = "reverse",
+        side = "right"
       ),
-      show_annotation_name = FALSE
-    )
+      Height = unit(2, "cm"),
+    ),
+    show_annotation_name = FALSE
+  )
   # }
 
   # Change matrix orientation
@@ -362,8 +363,7 @@ enrichment_dot_plot_heatmap <- function(
 
   # Define color function for Odds Ratio
   col_fun <- colorRamp2(
-    # TODO: change the color scale
-    c(min(mat), median(mat), max(mat)),
+    c(1, 1.05, 4.1),
     c("grey", "yellow", "blue")
   )
 
@@ -394,8 +394,9 @@ enrichment_dot_plot_heatmap <- function(
     heatmap_legend_param = list(
       title = "Odds Ratio",
       title_gp = gpar(fontsize = 8),
-      labels_gp = gpar(fontsize = 8) # ,
-      # at = c(min(mat), max(mat))
+      labels_gp = gpar(fontsize = 8) ,
+      at = c(1, 2, 4),
+      labels = TeX(c("$\\leq$1", "2", "4"))
     )
   )
 
@@ -452,6 +453,33 @@ enrichment_dot_plot_heatmap(
   res = enrich_df_down,
   title = "Down-regulated DEGs"
 ) |> draw(show_heatmap_legend = FALSE)
+dev.off()
+
+## Plot scale bar legend ----
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "layer_restricted_DEG_vs_SPG_marker_upregulated_legend_raw.pdf"
+  ),
+  height = 2.3, width = 2.5
+)
+enrichment_dot_plot_heatmap(
+  res = enrich_df_up,
+  title = "Up-regulated DEGs"
+) |> draw()
+dev.off()
+
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "layer_restricted_DEG_vs_SPG_marker_downregulated_legend_raw.pdf"
+  ),
+  height = 2.3, width = 2.5
+)
+enrichment_dot_plot_heatmap(
+  res = enrich_df_down,
+  title = "Down-regulated DEGs"
+)|> draw()
 dev.off()
 
 # Session info ----

@@ -5,6 +5,7 @@ suppressPackageStartupMessages({
   library(ggplot2)
   library(ComplexHeatmap)
   library(circlize)
+  library(latex2exp)
   library(sessioninfo)
 })
 
@@ -307,8 +308,8 @@ enrichment_dot_plot_heatmap <- function(
 
   # Define color function for Odds Ratio
   col_fun <- colorRamp2(
-    c(min(mat, na.rm = TRUE), median(mat, na.rm = TRUE), max(mat, na.rm = TRUE)),
-    c("white", "yellow", "blue")
+    c(1, 1.5, 6),
+    c("grey", "yellow", "blue")
   )
 
 
@@ -381,7 +382,8 @@ enrichment_dot_plot_heatmap <- function(
       title = "Odds Ratio",
       title_gp = gpar(fontsize = 8),
       labels_gp = gpar(fontsize = 8),
-      at = c(1, 3, 6)
+      at = c(1, 1.5, 3, 6),
+      labels = TeX(c("$\\leq$1", "1.5", "3", "$\\geq$6"))
     )
   )
 
@@ -445,6 +447,18 @@ plot_up_enrich |>
   draw(show_heatmap_legend = FALSE)
 dev.off()
 
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "ruzicka_DEG_vs_layer_DEGs_up_legend_raw.pdf"
+  ),
+  height = 4, width = 3
+)
+plot_up_enrich |>
+  draw(show_heatmap_legend = TRUE)
+dev.off()
+
+
 # ggplot(aes(
 #   x = ruzicka_name,
 #   y = layer_name,
@@ -496,6 +510,7 @@ plot_down_enrich <- down_enrich_long |>
     title = "Ruzicka DEGs vs Layer-restricted DEGs (Down-regulated)"
   )
 
+## Save plots ----
 pdf(
   here(
     "plots/12_cross_study_enrichment",
@@ -506,7 +521,19 @@ pdf(
 plot_down_enrich |>
   draw(show_heatmap_legend = FALSE)
 dev.off()
-## Save plots ----
+
+pdf(
+  here(
+    "plots/12_cross_study_enrichment",
+    "ruzicka_DEG_vs_layer_DEGs_down_legend_raw.pdf"
+  ),
+  height = 4, width = 4
+)
+plot_down_enrich |>
+  draw()
+dev.off()
+
+
 # ggsave(
 #   filename = here(
 #     "plots/12_cross_study_enrichment",
