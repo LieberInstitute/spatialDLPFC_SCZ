@@ -57,7 +57,7 @@ spd_name_df <-
 # NOTE: supp table 12 from Trubetskoy
 trubetskoy_df <- read_excel(
   here(
-    "code/analysis/Layer_layer_communication/genetic_risk",
+    "code/analysis/13_TF_enrichment",
     "Supplementary Table 12.xlsx"
   ),
   sheet = "Prioritised"
@@ -68,9 +68,9 @@ symbols_gene <- trubetskoy_df |>
   pull(Symbol.ID)
 
 # Trubetskoy Overlap with upregulated TFs ----
-up_chea_df_wide |>
-  filter(TF %in% c(symbols_gene)) |>
-  View()
+# up_chea_df_wide |>
+#   filter(TF %in% c(symbols_gene)) |>
+#   View()
 
 
 
@@ -84,8 +84,10 @@ org_up_trub_tf_wide <- org_up_trub_tf_wide / n_tf_total
 colnames(org_up_trub_tf_wide) <- spd_name_df$final[match(colnames(org_up_trub_tf_wide), spd_name_df$raw)]
 
 
+org_up_trub_tf_wide_t <- org_up_trub_tf_wide |> t()
+
 p_trub_tf_up <- Heatmap(
-  matrix = org_up_trub_tf_wide |> t(), # Normalize by total number of TFs
+  matrix = org_up_trub_tf_wide_t, # Normalize by total number of TFs
   name = "Up-reg ",
   col = colorRamp2(
     c(0, 0.5, 1), # Reverse the scale: low rank = black, high rank = white
@@ -111,7 +113,16 @@ p_trub_tf_up <- Heatmap(
   row_names_gp = gpar(fontsize = 8, col = "red"),
   column_names_gp = gpar(fontsize = 8),
   show_row_dend = FALSE,
-  show_column_dend = FALSE # Hide  # Hide dendrogram but still cluster rows
+  show_column_dend = FALSE, # Hide  # Hide dendrogram but still cluster rows
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    if (org_up_trub_tf_wide_t[i, j] < 0.2) {
+      # grid.text("*", x, y, gp = gpar(fontsize = 6, col = "black"))
+      grid.points(x, y, pch = 8, gp = gpar(col = "black", fontsize = 4))
+    } else if (org_up_trub_tf_wide_t[i, j] < 0.4) {
+      # grid.text("x", x, y, gp = gpar(fontsize = 6, col = "black"))
+      grid.points(x, y, pch = 4, gp = gpar(col = "black", fontsize = 4))
+    }
+  }
 )
 
 pdf(
@@ -139,9 +150,10 @@ org_down_trub_tf_wide <- org_down_trub_tf_wide / n_tf_total
 
 colnames(org_down_trub_tf_wide) <- spd_name_df$final[match(colnames(org_down_trub_tf_wide), spd_name_df$raw)]
 
+org_down_trub_tf_wide_t <- org_down_trub_tf_wide |> t()
 
 p_trub_tf_down <- Heatmap(
-  matrix = org_down_trub_tf_wide |> t(), # Normalize by total number of TFs
+  matrix = org_down_trub_tf_wide_t, # Normalize by total number of TFs
   name = "Down-reg ",
   col = colorRamp2(
     c(0, 0.5, 1), # Reverse the scale: low rank = black, high rank = white
@@ -165,7 +177,16 @@ p_trub_tf_down <- Heatmap(
   row_names_gp = gpar(fontsize = 8, col = "blue"),
   column_names_gp = gpar(fontsize = 8),
   show_row_dend = FALSE,
-  show_column_dend = FALSE # Hide  # Hide dendrogram but still cluster rows
+  show_column_dend = FALSE, # Hide  # Hide dendrogram but still cluster rows
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    if (org_down_trub_tf_wide_t[i, j] < 0.2) {
+      # grid.text("*", x, y, gp = gpar(fontsize = 6, col = "black"))
+      grid.points(x, y, pch = 8, gp = gpar(col = "black", fontsize = 4))
+    } else if (org_down_trub_tf_wide_t[i, j] < 0.4) {
+      # grid.text("x", x, y, gp = gpar(fontsize = 6, col = "black"))
+      grid.points(x, y, pch = 4, gp = gpar(col = "black", fontsize = 4))
+    }
+  }
 )
 
 pdf(
@@ -203,8 +224,10 @@ org_up_top_tf_wide <- org_up_top_tf_wide / n_tf_total
 
 colnames(org_up_top_tf_wide) <- spd_name_df$final[match(colnames(org_up_top_tf_wide), spd_name_df$raw)]
 
+org_up_top_tf_wide_t <- org_up_top_tf_wide |> t()
+
 p_top_up_tf <- Heatmap(
-  matrix = org_up_top_tf_wide |> t(), # Normalize by total number of TFs
+  matrix = org_up_top_tf_wide_t, # Normalize by total number of TFs
   name = "Up-reg ",
   col = colorRamp2(
     c(0, 0.5, 1), # Reverse the scale: low rank = black, high rank = white
@@ -228,7 +251,16 @@ p_top_up_tf <- Heatmap(
   row_names_gp = gpar(fontsize = 8, col = "red"),
   column_names_gp = gpar(fontsize = 8),
   show_row_dend = FALSE,
-  show_column_dend = FALSE # Hide  # Hide dendrogram but still cluster rows
+  show_column_dend = FALSE, # Hide  # Hide dendrogram but still cluster rows
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    if (org_up_top_tf_wide_t[i, j] < 0.2) {
+      # grid.text("*", x, y, gp = gpar(fontsize = 6, col = "black"))
+      grid.points(x, y, pch = 8, gp = gpar(col = "black", fontsize = 4))
+    } else if (org_up_top_tf_wide_t[i, j] < 0.4) {
+      # grid.text("x", x, y, gp = gpar(fontsize = 6, col = "black"))
+      grid.points(x, y, pch = 4, gp = gpar(col = "black", fontsize = 4))
+    }
+  }
 )
 
 pdf(
@@ -262,8 +294,10 @@ org_down_top_tf_wide <- org_down_top_tf_wide / n_tf_total
 
 colnames(org_down_top_tf_wide) <- spd_name_df$final[match(colnames(org_down_top_tf_wide), spd_name_df$raw)]
 
+org_down_top_tf_wide_t <- org_down_top_tf_wide |> t()
+
 p_top_down_tf <- Heatmap(
-  matrix = org_down_top_tf_wide |> t(), # Normalize by total number of TFs
+  matrix = org_down_top_tf_wide_t, # Normalize by total number of TFs
   name = "Down-reg ",
   col = colorRamp2(
     c(0, 0.5, 1), # Reverse the scale: low rank = black, high rank = white
@@ -287,12 +321,21 @@ p_top_down_tf <- Heatmap(
   row_names_gp = gpar(fontsize = 8, col = "blue"),
   column_names_gp = gpar(fontsize = 8),
   show_row_dend = FALSE,
-  show_column_dend = FALSE # Hide  # Hide dendrogram but still cluster rows
+  show_column_dend = FALSE, # Hide  # Hide dendrogram but still cluster rows
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    if (org_down_top_tf_wide_t[i, j] < 0.2) {
+      # grid.text("*", x, y, gp = gpar(fontsize = 6, col = "black"))
+      grid.points(x, y, pch = 8, gp = gpar(col = "black", fontsize = 4))
+    } else if (org_down_top_tf_wide_t[i, j] < 0.4) {
+      # grid.text("x", x, y, gp = gpar(fontsize = 6, col = "black"))
+      grid.points(x, y, pch = 4, gp = gpar(col = "black", fontsize = 4))
+    }
+  }
 )
 
 pdf(
   here("plots/13_TF_enrichment/Top_TF_enrichment_downregulated_DEGs.pdf"),
-    height = 1.5, width = 4.5
+  height = 1.5, width = 4.5
 )
 draw(p_top_down_tf,
   # column_title = "Enrichment of Top Downregulated layer-restricted DEGs",
