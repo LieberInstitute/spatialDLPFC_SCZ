@@ -70,7 +70,7 @@ spd_deg_df |> filter(overlap_172 == "in 172 genes") |> pull(gene) |> unique() |>
 tmp <- read_csv(
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "layer_uniquely_specific_genes_fdr.csv"
+    "layer_specific_genes_fdr.csv"
   )
 ) |>
   mutate(
@@ -87,7 +87,7 @@ write_csv(
   tmp,
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "layer_uniquely_specific_genes_fdr_with_172_annotation.csv"
+    "layer_specific_genes_fdr_with_172_annotation.csv"
   )
 )
 

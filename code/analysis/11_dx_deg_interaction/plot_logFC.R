@@ -74,7 +74,7 @@ spd_deg_list <-
 unique_genes_nom <- read_csv(
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "layer_uniquely_specific_genes_nom_p.csv"
+    "layer_specific_genes_nom_p.csv"
   )
 ) |>
   mutate(

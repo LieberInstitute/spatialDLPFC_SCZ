@@ -107,7 +107,7 @@ write_csv(
   unique_genes_nom,
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "layer_uniquely_specific_genes_nom_p.csv"
+    "layer_specific_genes_nom_p.csv"
   )
 )
 
@@ -145,7 +145,7 @@ write_csv(
   unique_genes_fdr,
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "layer_uniquely_specific_genes_fdr.csv"
+    "layer_specific_genes_fdr.csv"
   )
 )
 
