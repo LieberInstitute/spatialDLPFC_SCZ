@@ -8,15 +8,93 @@ suppressPackageStartupMessages({
 
 # Load Data ----
 ## Load spd annotation ----
-spd_anno_df <- read_csv(
+# spd_anno_df <- read_csv(
+#   here(
+#     "processed-data/man_anno",
+#     "spd_labels_k7.csv"
+#   )
+# ) |>
+#   mutate(
+#     anno_lab = factor(
+#       paste0(gsub("spd", "SpD", spd), "-", label),
+#       levels = c(
+#         "SpD07-L1/M",
+#         "SpD06-L2/3",
+#         "SpD02-L3/4",
+#         "SpD05-L5",
+#         "SpD03-L6",
+#         "SpD01-WMtz",
+#         "SpD04-WM"
+#       )
+#     )
+# )
+
+
+## load Layer_specific DEGs ---
+layer_restricted_df_raw <- read_csv(
   here(
-    "processed-data/man_anno",
-    "spd_labels_k7.csv"
+    "processed-data/rds/11_dx_deg_interaction",
+    "layer_restricted_degs_all_spds.csv"
+  ),
+  col_types = cols()
+) |> mutate(
+  PRECAST_spd = sub("^SpD07-L1$", "SpD07-L1/M", PRECAST_spd) |>
+    factor(levels = c(
+      "SpD07-L1/M",
+      "SpD06-L2/3",
+      "SpD02-L3/4",
+      "SpD05-L5",
+      "SpD03-L6",
+      "SpD01-WMtz",
+      "SpD04-WM"
+    ))
+)
+
+layer_specific_df <- layer_restricted_df_raw |>
+  filter(
+    layer_specific == TRUE
   )
-) |>
+
+stopifnot(
+  nrow(layer_specific_df) == 4114
+)
+
+# specific_deg_list <- layer_specific_df |>
+grouped <- layer_specific_df |> group_by(PRECAST_spd)
+specific_deg_list <- grouped |> group_split()
+names(specific_deg_list) <- grouped |>
+  group_keys() |>
+  pull(PRECAST_spd)
+
+specific_deg_list |> map(~ .x |> nrow())
+
+# Based on directionality
+n_sig_gene_per_spd <- map_dfr(
+  specific_deg_list,
+  ~ .x |>
+    # group_by(gene) |>
+    summarise(
+      up = sum(logFC > 0),
+      down = sum(logFC < 0),
+    ),
+  .id = "spd"
+)
+
+# n_sig_gene_per_spd <- n_sig_gene_per_spd[rev(order(spd_anno_df$label)), ]
+
+long_df <- n_sig_gene_per_spd |>
+  pivot_longer(
+    cols = c("up", "down"),
+    names_to = "direction",
+    values_to = "n_genes"
+  ) |>
   mutate(
-    anno_lab = factor(
-      paste0(gsub("spd", "SpD", spd), "-", label),
+    direction = factor(
+      direction,
+      levels = c("up", "down") |> rev()
+    ),
+    spd = factor(
+      spd,
       levels = c(
         "SpD07-L1/M",
         "SpD06-L2/3",
@@ -29,108 +107,28 @@ spd_anno_df <- read_csv(
     )
   )
 
-
-## load Layer_specific DEGs ----
-spd_files <- list.files(
-  "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_specific_logFC_.*\\.csv",
-  full.names = TRUE
-)
-
-names(spd_files) <- str_extract(
-  spd_files,
-  "(?<=layer_specific_logFC_).*?(?=\\.csv)"
-)
-
-spd_deg_list <- map(
-  spd_files,
-  ~ read_csv(.x, col_types = cols()) |>
-    # mutate(gene = AnnotationDbi::mapIds(
-    #   org.Hs.eg.db::org.Hs.eg.db,
-    #   keys = gene_id,
-    #   column = "SYMBOL",
-    #   keytype = "ENSEMBL",
-    #   multiVals = "first"
-    # )) |>
-    filter(
-      P.Value < 0.05
-    ) |>
-    mutate(
-      dx_172 = ifelse(
-        gene_id %in% spd_deg_172$ensembl,
-        TRUE,
-        FALSE
-      )
-    )
-)
-
-spd_deg_list |> map(~ .x |> nrow())
-
-# Based on directionality
-n_sig_gene_per_spd <- map_dfr(
-  spd_deg_list,
-  ~ .x |>
-    # group_by(gene) |>
-    summarise(
-      up_novel = sum(logFC > 0 & dx_172 == FALSE),
-      up_overlapping = sum(logFC > 0 & dx_172 == TRUE),
-      down_novel = sum(logFC < 0 & dx_172 == FALSE),
-      down_overlapping = sum(logFC < 0 & dx_172 == TRUE)
-    ),
-  .id = "spd"
-)
-
-n_sig_gene_per_spd$spd <- spd_anno_df$anno_lab[match(n_sig_gene_per_spd$spd, spd_anno_df$spd)]
-
-
-n_sig_gene_per_spd <- n_sig_gene_per_spd[rev(order(spd_anno_df$label)), ]
-
-long_df <- n_sig_gene_per_spd |>
-  pivot_longer(
-    cols = c("up_novel", "up_overlapping", "down_novel", "down_overlapping"),
-    names_to = "direction",
-    values_to = "n_genes"
-  ) |>
-  mutate(
-    direction = factor(
-      direction,
-      levels = c(
-        "up_novel",
-        "up_overlapping",
-        "down_overlapping",
-        "down_novel"
-      ) |> rev()
-    )
-  )
-
 div_p <- ggplot(long_df) +
   aes(y = spd, fill = direction, weight = n_genes) +
   geom_diverging() +
   # geom_diverging_text() +
   labs(
     # title = "Diverging Bar Plot of Significant Genes by Direction",
-    x = "# of DEGs",
+    x = "# of Layer-specific DEGs",
     y = "SpD Annotation",
     fill = "Direction"
   ) +
   scale_fill_manual(
     labels = c(
-      "up_novel" = "Up (Unique)",
-      "up_overlapping" = "Up (Overlap)",
-      "down_overlapping" = "Down (Overlap)",
-      "down_novel" = "Down (Unique)"
+      "down" = "Down reg.",
+      "up" = "Up reg."
     ),
     breaks = c(
-      "down_novel",
-      "down_overlapping",
-      "up_overlapping",
-      "up_novel"
+      "down",
+      "up"
     ),
     values = c(
-      "down_novel" = "#6f6fff",
-      "down_overlapping" = "blue",
-      "up_overlapping" = "red",
-      "up_novel" = "#ef8080"
+      "down" = "blue",
+      "up" = "red"
     ) # ,
     # guide = "none"
   ) +
@@ -155,7 +153,7 @@ div_p <- ggplot(long_df) +
   scale_y_discrete(limits = rev(levels(long_df$spd)))
 
 ggsave(
-  here("plots/11_dx_deg_interaction", "diverging_barplot_genes_nomial_p05.pdf"),
+  here("plots/11_dx_deg_interaction", "diverging_barplot_layer_specific_genes_nomial_p05.pdf"),
   width = 1.73,
   height = 1.31,
   dpi = 300
