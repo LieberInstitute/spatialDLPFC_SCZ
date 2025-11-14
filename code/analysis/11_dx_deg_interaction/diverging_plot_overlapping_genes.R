@@ -119,7 +119,7 @@ div_p <- ggplot(long_df) +
   # geom_diverging_text() +
   labs(
     # title = "Diverging Bar Plot of Significant Genes by Direction",
-    x = "# of DEGs",
+    x = "# of Layer-restricted DEGs",
     y = "SpD Annotation",
     fill = "Direction"
   ) +
