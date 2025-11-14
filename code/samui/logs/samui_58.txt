@@ -1,33 +1,33 @@
 **** Job starts ****
-Wed May  7 05:49:11 PM EDT 2025
+Fri Oct 10 02:57:28 PM EDT 2025
 **** JHPCE info ****
 User: mtippani
-Job id: 16523299
+Job id: 23293250
 Job name: 03-create_samui
 Hostname: 
 Task id: 58
 Processing sample Br1214
-Wed May  7 05:49:11 PM EDT 2025
+Fri Oct 10 02:57:28 PM EDT 2025
 Loading LIBD SLURM module for samui/1.0.0-next.45
 /jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
 * 'allow_mutation' has been removed
   warnings.warn(message, UserWarning)
-[17:50:10] INFO     Transforming                                    logger.py:27
+[14:58:59] INFO     Transforming                                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1214_V13M06-344_C1/V1             
                     3M06-344_C1.tif to COG.                                     
            INFO     'Br1214_V13M06-344_C1' Executing queued         logger.py:27
                     functions                                                   
            INFO     Br1214_V13M06-344_C1 Adding coords 'coords'     logger.py:27
-           INFO     Writing uncompressed GeoTIFF                    logger.py:27
+[14:59:05] INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1214_V13M06-344_C1/V1             
                     3M06-344_C1_1.tif                                           
-[17:50:18] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+[14:59:49] INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1214_V13M06-344_C1/V1             
                     3M06-344_C1_2.tif                                           
-[17:50:25] INFO     Writing COG                                     logger.py:27
+[15:00:37] INFO     Writing COG                                     logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1214_V13M06-344_C1/V1             
                     3M06-344_C1_1.tif                                           
@@ -35,17 +35,19 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1214_V13M06-344_C1/V1             
                     3M06-344_C1_2.tif                                           
-[17:50:40] INFO     Br1214_V13M06-344_C1 Adding csv feature         logger.py:27
+[15:00:52] INFO     Br1214_V13M06-344_C1 Adding csv feature         logger.py:27
                     'Domains'                                                   
-[17:50:45] INFO     Br1214_V13M06-344_C1 Adding csv feature         logger.py:27
+           INFO     Br1214_V13M06-344_C1 Adding csv feature         logger.py:27
                     'Spot_Calling'                                              
-           INFO     Br1214_V13M06-344_C1 Adding chunked feature     logger.py:27
+           INFO     Br1214_V13M06-344_C1 Adding csv feature         logger.py:27
+                    'Spot_Calling_metrics'                                      
+[15:00:53] INFO     Br1214_V13M06-344_C1 Adding chunked feature     logger.py:27
                     'Genes'                                                     
-[17:58:22] INFO     Br1214_V13M06-344_C1 Concatenating and          logger.py:27
+[15:07:53] INFO     Br1214_V13M06-344_C1 Concatenating and          logger.py:27
                     compressing chunks                                          
-[17:59:09] INFO     Writing compressed chunks for Genes: 11601550   logger.py:27
+[15:08:38] INFO     Writing compressed chunks for Genes: 11031586   logger.py:27
                     bytes                                                       
-           INFO     'Br1214_V13M06-344_C1' written to               logger.py:27
+[15:09:03] INFO     'Br1214_V13M06-344_C1' written to               logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1214_V13M06-344_C1                
 -----
@@ -65,6 +67,6 @@ tifffile            2023.7.4
 Python 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
 Linux-5.14.0-427.13.1.el9_4.x86_64-x86_64-with-glibc2.34
 -----
-Session information updated at 2025-05-07 17:59
+Session information updated at 2025-10-10 15:09
 **** Job ends ****
-Wed May  7 05:59:12 PM EDT 2025
+Fri Oct 10 03:09:04 PM EDT 2025

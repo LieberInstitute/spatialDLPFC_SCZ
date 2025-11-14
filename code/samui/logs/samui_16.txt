@@ -1,18 +1,18 @@
 **** Job starts ****
-Wed May  7 03:47:41 PM EDT 2025
+Fri Oct 10 01:54:18 PM EDT 2025
 **** JHPCE info ****
 User: mtippani
-Job id: 16522708
+Job id: 23267719
 Job name: 03-create_samui
 Hostname: 
 Task id: 16
 Processing sample Br5590
-Wed May  7 03:47:41 PM EDT 2025
+Fri Oct 10 01:54:18 PM EDT 2025
 Loading LIBD SLURM module for samui/1.0.0-next.45
 /jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
 * 'allow_mutation' has been removed
   warnings.warn(message, UserWarning)
-[15:49:11] INFO     Transforming                                    logger.py:27
+[13:55:08] INFO     Transforming                                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5590_V13M06-280_A1/V1             
                     3M06-280_A1.tif to COG.                                     
@@ -23,11 +23,11 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5590_V13M06-280_A1/V1             
                     3M06-280_A1_1.tif                                           
-[15:49:23] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+[13:55:18] INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5590_V13M06-280_A1/V1             
                     3M06-280_A1_2.tif                                           
-[15:49:26] INFO     Writing COG                                     logger.py:27
+[13:55:21] INFO     Writing COG                                     logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5590_V13M06-280_A1/V1             
                     3M06-280_A1_1.tif                                           
@@ -35,15 +35,17 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5590_V13M06-280_A1/V1             
                     3M06-280_A1_2.tif                                           
-[15:49:37] INFO     Br5590_V13M06-280_A1 Adding csv feature         logger.py:27
+[13:55:32] INFO     Br5590_V13M06-280_A1 Adding csv feature         logger.py:27
                     'Domains'                                                   
            INFO     Br5590_V13M06-280_A1 Adding csv feature         logger.py:27
                     'Spot_Calling'                                              
+           INFO     Br5590_V13M06-280_A1 Adding csv feature         logger.py:27
+                    'Spot_Calling_metrics'                                      
            INFO     Br5590_V13M06-280_A1 Adding chunked feature     logger.py:27
                     'Genes'                                                     
-[15:56:52] INFO     Br5590_V13M06-280_A1 Concatenating and          logger.py:27
+[14:06:03] INFO     Br5590_V13M06-280_A1 Concatenating and          logger.py:27
                     compressing chunks                                          
-[15:57:41] INFO     Writing compressed chunks for Genes: 12147846   logger.py:27
+[14:06:52] INFO     Writing compressed chunks for Genes: 11767934   logger.py:27
                     bytes                                                       
            INFO     'Br5590_V13M06-280_A1' written to               logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
@@ -65,6 +67,6 @@ tifffile            2023.7.4
 Python 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
 Linux-5.14.0-427.13.1.el9_4.x86_64-x86_64-with-glibc2.34
 -----
-Session information updated at 2025-05-07 15:57
+Session information updated at 2025-10-10 14:06
 **** Job ends ****
-Wed May  7 03:57:44 PM EDT 2025
+Fri Oct 10 02:06:53 PM EDT 2025

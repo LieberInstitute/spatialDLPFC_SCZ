@@ -1,33 +1,33 @@
 **** Job starts ****
-Wed May  7 04:21:24 PM EDT 2025
+Fri Oct 10 02:13:45 PM EDT 2025
 **** JHPCE info ****
 User: mtippani
-Job id: 16522863
+Job id: 23270280
 Job name: 03-create_samui
 Hostname: 
 Task id: 30
 Processing sample Br5588
-Wed May  7 04:21:24 PM EDT 2025
+Fri Oct 10 02:13:45 PM EDT 2025
 Loading LIBD SLURM module for samui/1.0.0-next.45
 /jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
 * 'allow_mutation' has been removed
   warnings.warn(message, UserWarning)
-[16:22:26] INFO     Transforming                                    logger.py:27
+[14:14:39] INFO     Transforming                                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5588_V13F27-293_C1/V1             
                     3F27-293_C1.tif to COG.                                     
            INFO     'Br5588_V13F27-293_C1' Executing queued         logger.py:27
                     functions                                                   
            INFO     Br5588_V13F27-293_C1 Adding coords 'coords'     logger.py:27
-[16:22:27] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+           INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5588_V13F27-293_C1/V1             
                     3F27-293_C1_1.tif                                           
-[16:22:34] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+[14:14:48] INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5588_V13F27-293_C1/V1             
                     3F27-293_C1_2.tif                                           
-[16:22:42] INFO     Writing COG                                     logger.py:27
+[14:14:57] INFO     Writing COG                                     logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5588_V13F27-293_C1/V1             
                     3F27-293_C1_1.tif                                           
@@ -35,15 +35,17 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5588_V13F27-293_C1/V1             
                     3F27-293_C1_2.tif                                           
-[16:22:57] INFO     Br5588_V13F27-293_C1 Adding csv feature         logger.py:27
+[14:15:11] INFO     Br5588_V13F27-293_C1 Adding csv feature         logger.py:27
                     'Domains'                                                   
-[16:22:58] INFO     Br5588_V13F27-293_C1 Adding csv feature         logger.py:27
+           INFO     Br5588_V13F27-293_C1 Adding csv feature         logger.py:27
                     'Spot_Calling'                                              
+           INFO     Br5588_V13F27-293_C1 Adding csv feature         logger.py:27
+                    'Spot_Calling_metrics'                                      
            INFO     Br5588_V13F27-293_C1 Adding chunked feature     logger.py:27
                     'Genes'                                                     
-[16:29:20] INFO     Br5588_V13F27-293_C1 Concatenating and          logger.py:27
+[14:27:12] INFO     Br5588_V13F27-293_C1 Concatenating and          logger.py:27
                     compressing chunks                                          
-[16:29:57] INFO     Writing compressed chunks for Genes: 11145452   logger.py:27
+[14:28:07] INFO     Writing compressed chunks for Genes: 11083554   logger.py:27
                     bytes                                                       
            INFO     'Br5588_V13F27-293_C1' written to               logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
@@ -65,6 +67,6 @@ tifffile            2023.7.4
 Python 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
 Linux-5.14.0-427.13.1.el9_4.x86_64-x86_64-with-glibc2.34
 -----
-Session information updated at 2025-05-07 16:29
+Session information updated at 2025-10-10 14:28
 **** Job ends ****
-Wed May  7 04:30:01 PM EDT 2025
+Fri Oct 10 02:28:10 PM EDT 2025

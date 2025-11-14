@@ -1,18 +1,18 @@
 **** Job starts ****
-Wed May  7 04:00:15 PM EDT 2025
+Fri Oct 10 01:58:54 PM EDT 2025
 **** JHPCE info ****
 User: mtippani
-Job id: 16522738
+Job id: 23270227
 Job name: 03-create_samui
 Hostname: 
 Task id: 21
 Processing sample Br5395
-Wed May  7 04:00:15 PM EDT 2025
+Fri Oct 10 01:58:54 PM EDT 2025
 Loading LIBD SLURM module for samui/1.0.0-next.45
 /jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
 * 'allow_mutation' has been removed
   warnings.warn(message, UserWarning)
-[16:02:12] INFO     Transforming                                    logger.py:27
+[13:59:54] INFO     Transforming                                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5395_V13M06-281_B1/V1             
                     3M06-281_B1.tif to COG.                                     
@@ -23,11 +23,11 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5395_V13M06-281_B1/V1             
                     3M06-281_B1_1.tif                                           
-[16:02:25] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+[14:00:04] INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5395_V13M06-281_B1/V1             
                     3M06-281_B1_2.tif                                           
-[16:02:30] INFO     Writing COG                                     logger.py:27
+[14:00:10] INFO     Writing COG                                     logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5395_V13M06-281_B1/V1             
                     3M06-281_B1_1.tif                                           
@@ -35,17 +35,19 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5395_V13M06-281_B1/V1             
                     3M06-281_B1_2.tif                                           
-[16:02:46] INFO     Br5395_V13M06-281_B1 Adding csv feature         logger.py:27
+[14:00:24] INFO     Br5395_V13M06-281_B1 Adding csv feature         logger.py:27
                     'Domains'                                                   
            INFO     Br5395_V13M06-281_B1 Adding csv feature         logger.py:27
                     'Spot_Calling'                                              
+           INFO     Br5395_V13M06-281_B1 Adding csv feature         logger.py:27
+                    'Spot_Calling_metrics'                                      
            INFO     Br5395_V13M06-281_B1 Adding chunked feature     logger.py:27
                     'Genes'                                                     
-[16:09:45] INFO     Br5395_V13M06-281_B1 Concatenating and          logger.py:27
+[14:07:10] INFO     Br5395_V13M06-281_B1 Concatenating and          logger.py:27
                     compressing chunks                                          
-[16:10:34] INFO     Writing compressed chunks for Genes: 12282348   logger.py:27
+[14:07:45] INFO     Writing compressed chunks for Genes: 9732387    logger.py:27
                     bytes                                                       
-[16:10:35] INFO     'Br5395_V13M06-281_B1' written to               logger.py:27
+           INFO     'Br5395_V13M06-281_B1' written to               logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br5395_V13M06-281_B1                
 -----
@@ -65,6 +67,6 @@ tifffile            2023.7.4
 Python 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
 Linux-5.14.0-427.13.1.el9_4.x86_64-x86_64-with-glibc2.34
 -----
-Session information updated at 2025-05-07 16:10
+Session information updated at 2025-10-10 14:07
 **** Job ends ****
-Wed May  7 04:10:38 PM EDT 2025
+Fri Oct 10 02:07:46 PM EDT 2025

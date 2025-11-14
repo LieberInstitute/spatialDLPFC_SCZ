@@ -60,9 +60,9 @@ precast_df = pd.DataFrame(precast_columns)
 
 sample_df = spgP.obs[['sample_id']].copy()
 spotCalling_df = spgP.obs[['pnn_pos', 'neuropil_pos', 'neun_pos', 'vasc_pos']]
-#spotCalling_metrics = spgP.obs[['spg_NDAPI', 'spg_PDAPI', 'spg_IDAPI', 'spg_CNDAPI',
-#       'spg_NNeuN', 'spg_PNeuN', 'spg_INeuN', 'spg_CNNeuN', 'spg_NWFA', 'spg_PWFA', 'spg_IWFA', 'spg_CNWFA',
-#       'spg_NClaudin5', 'spg_PClaudin5', 'spg_IClaudin5']]
+spotCalling_metrics = spgP.obs[['spg_NDAPI', 'spg_PDAPI', 'spg_IDAPI', 'spg_CNDAPI',
+       'spg_NNeuN', 'spg_PNeuN', 'spg_INeuN', 'spg_CNNeuN', 'spg_NWFA', 'spg_PWFA', 'spg_IWFA', 'spg_CNWFA',
+       'spg_NClaudin5', 'spg_PClaudin5', 'spg_IClaudin5']]
 
 ################################################################################
 #   Use the Samui API to create the importable directory for this combined "sample"
@@ -87,7 +87,7 @@ this_sample.add_image(tiff = img_path,channels = img_channels,defaultChannels = 
 
 this_sample.add_csv_feature(precast_df, name = "Domains", coordName = "coords", dataType = "categorical")
 this_sample.add_csv_feature(spotCalling_df, name = "Spot_Calling", coordName = "coords", dataType = "categorical")
-#this_sample.add_csv_feature(spotCalling_metrics, name = "Spot_Calling_metrics", coordName = "coords", dataType = "quantitative")
+this_sample.add_csv_feature(spotCalling_metrics, name = "Spot_Calling_metrics", coordName = "coords", dataType = "quantitative")
 this_sample.add_chunked_feature(gene_df, name = "Genes", coordName = "coords", dataType = "quantitative")
 this_sample.set_default_feature(group = "Genes", feature = default_gene)
 

@@ -1,18 +1,18 @@
 **** Job starts ****
-Wed May  7 05:59:50 PM EDT 2025
+Fri Oct 10 03:05:22 PM EDT 2025
 **** JHPCE info ****
 User: mtippani
-Job id: 16523344
+Job id: 23300772
 Job name: 03-create_samui
 Hostname: 
 Task id: 62
 Processing sample Br1923
-Wed May  7 05:59:50 PM EDT 2025
+Fri Oct 10 03:05:23 PM EDT 2025
 Loading LIBD SLURM module for samui/1.0.0-next.45
 /jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
 * 'allow_mutation' has been removed
   warnings.warn(message, UserWarning)
-[18:01:15] INFO     Transforming                                    logger.py:27
+[15:07:55] INFO     Transforming                                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1923_V13F27-336_C1/V1             
                     3F27-336_C1.tif to COG.                                     
@@ -23,11 +23,11 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1923_V13F27-336_C1/V1             
                     3F27-336_C1_1.tif                                           
-[18:01:52] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+[15:08:28] INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1923_V13F27-336_C1/V1             
                     3F27-336_C1_2.tif                                           
-[18:02:27] INFO     Writing COG                                     logger.py:27
+[15:09:05] INFO     Writing COG                                     logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1923_V13F27-336_C1/V1             
                     3F27-336_C1_1.tif                                           
@@ -35,17 +35,19 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1923_V13F27-336_C1/V1             
                     3F27-336_C1_2.tif                                           
-[18:04:07] INFO     Br1923_V13F27-336_C1 Adding csv feature         logger.py:27
+[15:09:22] INFO     Br1923_V13F27-336_C1 Adding csv feature         logger.py:27
                     'Domains'                                                   
-[18:04:11] INFO     Br1923_V13F27-336_C1 Adding csv feature         logger.py:27
+           INFO     Br1923_V13F27-336_C1 Adding csv feature         logger.py:27
                     'Spot_Calling'                                              
-[18:04:12] INFO     Br1923_V13F27-336_C1 Adding chunked feature     logger.py:27
+           INFO     Br1923_V13F27-336_C1 Adding csv feature         logger.py:27
+                    'Spot_Calling_metrics'                                      
+           INFO     Br1923_V13F27-336_C1 Adding chunked feature     logger.py:27
                     'Genes'                                                     
-[18:46:16] INFO     Br1923_V13F27-336_C1 Concatenating and          logger.py:27
+[15:16:27] INFO     Br1923_V13F27-336_C1 Concatenating and          logger.py:27
                     compressing chunks                                          
-[18:47:38] INFO     Writing compressed chunks for Genes: 9624371    logger.py:27
+[15:16:52] INFO     Writing compressed chunks for Genes: 9209447    logger.py:27
                     bytes                                                       
-           INFO     'Br1923_V13F27-336_C1' written to               logger.py:27
+[15:16:53] INFO     'Br1923_V13F27-336_C1' written to               logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1923_V13F27-336_C1                
 -----
@@ -65,6 +67,6 @@ tifffile            2023.7.4
 Python 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
 Linux-5.14.0-427.13.1.el9_4.x86_64-x86_64-with-glibc2.34
 -----
-Session information updated at 2025-05-07 18:47
+Session information updated at 2025-10-10 15:16
 **** Job ends ****
-Wed May  7 06:47:51 PM EDT 2025
+Fri Oct 10 03:16:54 PM EDT 2025

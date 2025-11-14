@@ -1,18 +1,18 @@
 **** Job starts ****
-Wed May  7 03:37:07 PM EDT 2025
+Fri Oct 10 01:45:43 PM EDT 2025
 **** JHPCE info ****
 User: mtippani
-Job id: 16522671
+Job id: 23246740
 Job name: 03-create_samui
 Hostname: 
 Task id: 12
 Processing sample Br1113
-Wed May  7 03:37:07 PM EDT 2025
+Fri Oct 10 01:45:43 PM EDT 2025
 Loading LIBD SLURM module for samui/1.0.0-next.45
 /jhpce/shared/libd/core/samui/1.0.0-next.45/samui_env/lib/python3.10/site-packages/pydantic/_internal/_config.py:261: UserWarning: Valid config keys have changed in V2:
 * 'allow_mutation' has been removed
   warnings.warn(message, UserWarning)
-[15:38:46] INFO     Transforming                                    logger.py:27
+[13:46:32] INFO     Transforming                                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1113_V13M06-279_A1/V1             
                     3M06-279_A1.tif to COG.                                     
@@ -23,11 +23,11 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1113_V13M06-279_A1/V1             
                     3M06-279_A1_1.tif                                           
-[15:38:54] INFO     Writing uncompressed GeoTIFF                    logger.py:27
+[13:46:42] INFO     Writing uncompressed GeoTIFF                    logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1113_V13M06-279_A1/V1             
                     3M06-279_A1_2.tif                                           
-[15:39:01] INFO     Writing COG                                     logger.py:27
+[13:46:56] INFO     Writing COG                                     logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1113_V13M06-279_A1/V1             
                     3M06-279_A1_1.tif                                           
@@ -35,17 +35,19 @@ Loading LIBD SLURM module for samui/1.0.0-next.45
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1113_V13M06-279_A1/V1             
                     3M06-279_A1_2.tif                                           
-[15:39:17] INFO     Br1113_V13M06-279_A1 Adding csv feature         logger.py:27
+[13:47:14] INFO     Br1113_V13M06-279_A1 Adding csv feature         logger.py:27
                     'Domains'                                                   
-[15:39:18] INFO     Br1113_V13M06-279_A1 Adding csv feature         logger.py:27
+           INFO     Br1113_V13M06-279_A1 Adding csv feature         logger.py:27
                     'Spot_Calling'                                              
+           INFO     Br1113_V13M06-279_A1 Adding csv feature         logger.py:27
+                    'Spot_Calling_metrics'                                      
            INFO     Br1113_V13M06-279_A1 Adding chunked feature     logger.py:27
                     'Genes'                                                     
-[15:46:39] INFO     Br1113_V13M06-279_A1 Concatenating and          logger.py:27
+[13:57:58] INFO     Br1113_V13M06-279_A1 Concatenating and          logger.py:27
                     compressing chunks                                          
-[15:47:32] INFO     Writing compressed chunks for Genes: 13149185   logger.py:27
+[13:58:50] INFO     Writing compressed chunks for Genes: 11487451   logger.py:27
                     bytes                                                       
-[15:47:33] INFO     'Br1113_V13M06-279_A1' written to               logger.py:27
+[13:58:51] INFO     'Br1113_V13M06-279_A1' written to               logger.py:27
                     /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD41             
                     00/processed-data/samui/Br1113_V13M06-279_A1                
 -----
@@ -65,6 +67,6 @@ tifffile            2023.7.4
 Python 3.10.12 | packaged by conda-forge | (main, Jun 23 2023, 22:40:32) [GCC 12.3.0]
 Linux-5.14.0-427.13.1.el9_4.x86_64-x86_64-with-glibc2.34
 -----
-Session information updated at 2025-05-07 15:47
+Session information updated at 2025-10-10 13:58
 **** Job ends ****
-Wed May  7 03:47:36 PM EDT 2025
+Fri Oct 10 01:58:51 PM EDT 2025
