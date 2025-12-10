@@ -19,8 +19,9 @@ gene_df <- read_csv(
 
 ## Load layer-restricted data ----
 spd_files <- list.files(
-  "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_specific_logFC_.*\\.csv",
+  "processed-data/rds/11_dx_deg_interaction",
+  # pattern = "layer_specific_logFC_.*\\.csv",
+  pattern = "layer_restricted_logFC_.*\\.csv",
   full.names = TRUE
 )
 
@@ -29,7 +30,8 @@ spd_deg_list <-
   set_names(
     str_extract(
       spd_files,
-      "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+      # "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+      "(?<=layer_restricted_logFC_).*?(?=\\.csv)"
     )
   ) |>
   map(
@@ -104,8 +106,8 @@ p_volca_list <- spd_deg_list |>
         name = "Significance",
         guide = "legend",
         labels = c(
-          "red" = "FDR p < 0.05",
-          "blue" = "FDR p < 0.05",
+          "red" = "FDR p < 0.10",
+          "blue" = "FDR p < 0.10",
           "#ef8080" = "Nominal p < 0.05",
           "#808ef8" = "Nominal p < 0.05",
           "grey" = "N.S. (p >= 0.05)"
