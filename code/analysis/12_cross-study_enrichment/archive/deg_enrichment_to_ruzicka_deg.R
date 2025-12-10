@@ -61,13 +61,15 @@ ruzicka_deg_df <- ruzicka_deg_list |>
 ## DLPFC data -----
 spd_files <- list.files(
   "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_specific_logFC_.*\\.csv",
+  # pattern = "layer_specific_logFC_.*\\.csv",
+  pattern = "layer_restricted_logFC_.*\\.csv",
   full.names = TRUE
 )
 
 names(spd_files) <- str_extract(
   spd_files,
-  "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+  # "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+  "(?<=layer_restricted_logFC_).*?(?=\\.csv)"
 )
 
 spd_deg_list <- map(
