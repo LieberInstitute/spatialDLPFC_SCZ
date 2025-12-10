@@ -20,7 +20,8 @@ stopifnot(gsea_res_files |> length() == 7)
 # Load data ----
 spd_files <- list.files(
   "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_specific_logFC_.*\\.csv",
+  # pattern = "layer_specific_logFC_.*\\.csv",
+  pattern = "layer_restricted_logFC_.*\\.csv",
   full.names = TRUE
 )
 

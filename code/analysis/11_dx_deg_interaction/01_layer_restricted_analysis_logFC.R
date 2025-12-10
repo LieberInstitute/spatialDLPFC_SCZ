@@ -85,7 +85,8 @@ colnames(cont.mat) |>
       here(
         "processed-data/rds/11_dx_deg_interaction",
         paste0(
-          "layer_specific_logFC_",
+          # "layer_specific_logFC_",
+          "layer_restricted_logFC_",
           gsub("[^[:alnum:]_]", "_", idx),
           ".csv"
         )

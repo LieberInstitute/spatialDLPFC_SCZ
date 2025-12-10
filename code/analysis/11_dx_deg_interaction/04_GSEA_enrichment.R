@@ -11,8 +11,9 @@ suppressPackageStartupMessages({
 
 # Load Data ----
 spd_files <- list.files(
-  "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_specific_logFC_.*\\.csv",
+  "processed-data/rds/11_dx_deg_interaction",
+  # pattern = "layer_specific_logFC_.*\\.csv",
+  pattern = "layer_restricted_logFC_.*\\.csv",
   full.names = TRUE
 )
 
@@ -23,7 +24,8 @@ spd_deg_list <- map(
 
 names(spd_deg_list) <- str_extract(
   spd_files,
-  "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+  # "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+  "(?<=layer_restricted_logFC_).*?(?=\\.csv)"
 )
 
 
