@@ -7,9 +7,11 @@ suppressPackageStartupMessages({
 })
 
 # Load data ----
+# NOTE: These are layer-restricted DEG results
 spd_files <- list.files(
-  "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_specific_logFC_.*\\.csv",
+  "processed-data/rds/11_dx_deg_interaction",
+  # pattern = "layer_specific_logFC_.*\\.csv", # Previous file names
+  pattern = "layer_restricted_logFC_.*\\.csv",
   full.names = TRUE
 )
 
@@ -43,7 +45,7 @@ spd_deg_list <-
       match(
         str_extract(
           spd_files,
-          "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+          "(?<=layer_restricted_logFC_).*?(?=\\.csv)"
         ),
         spd_anno_df$spd
       ),
@@ -63,8 +65,10 @@ nom_p_vec <- spd_deg_list |>
     ~ sum(.x$P.Value < 0.05, na.rm = TRUE)
   )
 
+# All layer-restricted DEGs. including same genes in multiple SpDs
 sum(nom_p_vec)
 
+# Unique genes symbols amopng All layer-restricted DEGs
 spd_deg_list |>
   map(
     ~ .x |>
@@ -75,6 +79,7 @@ spd_deg_list |>
   unique() |>
   length()
 
+# Total number of up and down in these two domains. 
 spd_deg_list[c("SpD01-WMtz", "SpD04-WM")] |>
   imap_dfr(
     ~ .x |>
