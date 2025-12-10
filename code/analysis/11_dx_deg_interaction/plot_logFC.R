@@ -39,9 +39,11 @@ adj_deg_df_raw <- read_csv(here(
 ## Load layer-restricted logFC files ----
 spd_files <- list.files(
   "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_specific_logFC_.*\\.csv",
+  pattern = "layer_restricted_logFC_.*\\.csv",
   full.names = TRUE
 )
+
+stopifnot(length(spd_files) == nrow(spd_anno_df))
 
 spd_deg_list <-
   spd_files |>
@@ -51,7 +53,7 @@ spd_deg_list <-
       match(
         str_extract(
           spd_files,
-          "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+          "(?<=layer_restricted_logFC_).*?(?=\\.csv)"
         ),
         spd_anno_df$spd
       ),
@@ -67,6 +69,8 @@ spd_deg_list <-
         by = c("gene_id" = "ensembl")
       )
   )
+
+stopifnot(all(!is.na(spd_deg_list |> names())))
 
 # Idenityfy layer-specific DEGs to highlight ----
 # NOTE: Top 5 largest up-reg and down-reg genes of each SpD
@@ -361,7 +365,7 @@ adj_ht_legend <- Heatmap(
   row_names_gp = gpar(fontsize = 6),
   column_names_gp = gpar(fontsize = 6, rot = 45, just = "right"),
   show_heatmap_legend = TRUE,
-    heatmap_legend_param = list(
+  heatmap_legend_param = list(
     title = "logFC",
     title_gp = gpar(fontsize = 6, fontface = "bold"),
     labels_gp = gpar(fontsize = 6)
