@@ -39,7 +39,7 @@ adj_deg_df_raw <- read_csv(here(
 ## Load layer-specific DEGs files ----
 spd_files <- list.files(
   "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_specific_logFC_.*\\.csv",
+  pattern = "layer_restricted_logFC_.*\\.csv",
   full.names = TRUE
 )
 
@@ -51,7 +51,7 @@ spd_deg_df <-
       match(
         str_extract(
           spd_files,
-          "(?<=layer_specific_logFC_).*?(?=\\.csv)"
+          "(?<=layer_restricted_logFC_).*?(?=\\.csv)"
         ),
         spd_anno_df$spd
       ),
@@ -68,8 +68,12 @@ spd_deg_df <-
       mutate(PRECAST_spd = .y)
   )
 
+
 # Error prevention: genes doesn't have gene symbols
 stopifnot(spd_deg_df |> filter(is.na(gene)) == 0)
+
+
+
 
 # Annotate Layer-specific DEGs ----
 unique_genes_nom <- read_csv(
@@ -81,7 +85,7 @@ unique_genes_nom <- read_csv(
 
 spd_deg_df <- spd_deg_df |>
   left_join(
-    unique_genes_nom |> select(-SYMBOL) |> mutate(layer_specific = TRUE),
+    unique_genes_nom |> mutate(layer_specific = TRUE),
     by = c("gene_id" = "ENSEMBL", "PRECAST_spd" = "spd")
   ) |>
   mutate(layer_specific = if_else(is.na(layer_specific), FALSE, TRUE))
@@ -95,7 +99,8 @@ write_csv(
     "processed-data/rds/11_dx_deg_interaction",
     "layer_restricted_degs_all_spds.csv"
   ),
-  na = ""
+  na = "",
+  quote = "all"
 )
 
 # Session info ----
