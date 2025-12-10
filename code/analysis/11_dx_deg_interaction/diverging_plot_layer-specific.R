@@ -56,7 +56,7 @@ layer_specific_df <- layer_restricted_df_raw |>
   )
 
 stopifnot(
-  nrow(layer_specific_df) == 4114
+  nrow(layer_specific_df) == 4073
 )
 
 # specific_deg_list <- layer_specific_df |>
@@ -170,7 +170,7 @@ legend <- ggpubr::get_legend(
 cowplot::ggdraw(legend)
 
 ggsave(
-  here("plots/11_dx_deg_interaction", "diverging_barplot_genes_legend_only.pdf"),
+  here("plots/11_dx_deg_interaction", "diverging_barplot_layer_specific_genes_legend_only.pdf"),
   legend,
   width = 1.5,
   height = 1.5,
