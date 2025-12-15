@@ -2,7 +2,7 @@
 
 
 
-## Goal: Study spatial gene expression of perineuronal nets in DLPFC of neurotypical control and schizophrenia donors.
+## Goal: Mapping spatially organized molecular and genetic signatures of schizophrenia across multiple scales in the human prefrontal cortex.
 
 ![Experimental Overview](./img/overview.png)  
 
