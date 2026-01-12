@@ -83,10 +83,6 @@ Join eQTL/coloc results with Differential Expression (DEG) results to identify "
 ## 4. Requirements
 
 * **Software:** `tensorQTL` (Python), R (`SpatialExperiment`, `sva`, `coloc`).
-* **Genotype Data:** Access to the donor genotype PLINK files (European Ancestry subset).
+* **Genotype Data:** donor genotype PLINK files (European Ancestry subset).
 * **Donor Info:** 63 donors (mostly EA), SCZ and NTC diagnosis.
 
-## 5. Contributors
-
-* **Analysis Implementation:** Geo, Nick Eagles, Leonardo Collado-Torres.
-* **Data Generation/Processing:** Sang Ho, Maddy, Cindy.
