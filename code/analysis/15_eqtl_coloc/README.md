@@ -5,10 +5,12 @@ This directory contains the analysis pipeline for identifying expression quantit
 
 ## 1. Data Inputs
 
-The analysis utilizes **5 pseudobulked objects** (SpatialExperiment/SingleCellExperiment) located on JHPCE. 
+The analysis utilizes **5 pseudobulked objects** (SpatialExperiment/SingleCellExperiment) located on JHPCE.
 The path for the data is `/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/rds/`.
 
 ### A. Spatial Domain (SpD) data
+
+In this study we have the following spatial domains: SpD01_WMtz, SpD02_L3-4, SpD03_L6, SpD04_WM, SpD05_L5, SpD06_L2-3, SpD07_L1-M where WMtz=White_Matter_transition_zone, WM=White_Matter, L=Layer, M=Meninges
 
 * **File:** `07_dx_pseudobulk/sce_pseudo_PRECAST07_donor_spd.rds`
 * **Description:** Layer-level/Domain-level pseudobulk data.
@@ -85,4 +87,3 @@ Join eQTL/coloc results with Differential Expression (DEG) results to identify "
 * **Software:** `tensorQTL` (Python), R (`SpatialExperiment`, `sva`, `coloc`).
 * **Genotype Data:** donor genotype PLINK files (European Ancestry subset).
 * **Donor Info:** 63 donors (mostly EA), SCZ and NTC diagnosis.
-
