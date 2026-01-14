@@ -97,3 +97,19 @@ table(d$spd_label)
 [57] "PRECAST_11"              "PRECAST_12"              "PRECAST_13"              "PRECAST_14"              "PRECAST_15"              "PRECAST_16"              "fnl_spd"
 [64] "spd_label"               "pnn_pos"                 "neuropil_pos"            "neun_pos"                "vasc_pos"                "sizeFactor"              "registration_variable"
 [71] "registration_sample_id"  "ncells"
+
+
+```{r gene data}
+head(rowRanges(d))
+```
+
+> head(rowRanges(d))
+GRanges object with 6 ranges and 7 metadata columns:
+                  seqnames        ranges strand |   source     type         gene_id gene_version   gene_name      gene_type
+                     <Rle>     <IRanges>  <Rle> | <factor> <factor>     <character>  <character> <character>    <character>
+  ENSG00000241860     chr1 141474-173862      - |   HAVANA     gene ENSG00000241860            7  AL627309.5         lncRNA
+  ENSG00000237491     chr1 778747-810065      + |   HAVANA     gene ENSG00000237491           10   LINC01409         lncRNA
+  ENSG00000228794     chr1 825138-868202      + |   HAVANA     gene ENSG00000228794            9   LINC01128         lncRNA
+  ENSG00000187634     chr1 923928-944581      + |   HAVANA     gene ENSG00000187634           12      SAMD11 protein_coding
+  ENSG00000188976     chr1 944203-959309      - |   HAVANA     gene ENSG00000188976           11       NOC2L protein_coding
+  ENSG00000187961     chr1 960584-965719      + |   HAVANA     gene ENSG00000187961           14      KLHL17 protein_coding
