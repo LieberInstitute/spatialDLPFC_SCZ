@@ -1,0 +1,191 @@
+---
+title: "eqtl results exploration"
+##output: html_notebook
+---
+```{r}
+suppressMessages({
+    library(arrow)
+    library(data.table)
+    library(BiocParallel)
+    library(qs2)
+    library(SummarizedExperiment)
+    library(stringi)
+    library(GenomicRanges)
+    library(here)
+  })
+here::i_am('.git/HEAD')
+datadir=here("processed-data", "eQTL")
+rdsdir=here("processed-data", "rds")
+
+## refdata -> ref folder symlink to CHESS Brain ref data for now
+## GWAS data, GenomicRanges etc.
+refdir=here("processed-data", "ref")
+```
+
+
+```{r load GWAS and gene ranges}
+## load gene-symbol data
+granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd last chunk
+g2sym <- setNames(granges$gene_name, granges$gene_id)
+## load GWAS data
+fgwasflt <- file.path(refdir, 'SCZ_GWAS_flt_1e-6_R.8.tab.gz')
+gwas <- fread(fgwasflt)
+##
+gwas_set <- unique(gwas[p<5e-8]$variant_id) ## GWAS standard risk threshold
+gwas1e6_set <- unique(gwas$variant_id) ## loose p < 1e-6
+
+```
+
+
+
+```{r load DEGS}
+## WARNING: makes sure char not factor is passed to this char2char mapping!
+ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
+       "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
+
+## load degs adust SpD as SpD degs
+deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
+rownames(deg_spd_adj) <- deg_spd_adj$V1
+setnames(deg_spd_adj, 'V1', 'fid')
+spd_degs <- subset(deg_spd_adj, fdr_scz<=0.1) ## 10% FDR threshold was used
+spds <- grep('spd', names(ds2name), value=TRUE)
+ds2degs <- lapply(spds, \(x) spd_degs)
+names(ds2degs) <- spds
+## for the SpG contexts, separate DEGs per context:
+spgs <- grep('^[^s]', names(ds2name), value=TRUE)
+for (ds in spgs) {
+   if (ds=="vasc") {
+     fdegs <- here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
+   } else {
+     fdegs <- here("code/analysis/", paste0("dx_deg_spg_", ds), paste0(ds,"-dx_DEG-GM.csv"))
+   }
+   if (!file.exists(fdegs)) {
+     stop("file not found: ", fdegs)
+   }
+   dt <- fread(fdegs, data.table = FALSE)
+   rownames(dt) <- dt$ensembl
+   dt$fid <- rownames(dt)
+   setcolorder(dt, 'fid')
+   dt <- subset(dt, fdr_scz<=0.1)
+   ds2degs[[ds]] <- dt
+}
+# pnn has no degs for FDR<0.1 ?
+```
+
+```{r coloc utility functions}
+# Flatten one coloc-abf list into a data.table, no filtering
+flatten_coloc <- function(l, id_name = "gene_id") {
+  ids <- names(l)
+  out <- rbindlist(lapply(ids, function(id) {
+    x <- l[[id]]
+    if (is.null(x$summary) || is.null(x$results)) return(NULL)
+
+    s <- as.list(x$summary)
+    res <- as.data.table(x$results)
+    if (!"SNP.PP.H4" %in% names(res)) return(NULL)
+    lead <- res[which.max(SNP.PP.H4)][1]
+
+    dt <- data.table(
+      nsnps        = as.numeric(s[["nsnps"]]),
+      PP0          = as.numeric(s[["PP.H0.abf"]]),
+      PP1          = as.numeric(s[["PP.H1.abf"]]),
+      PP2          = as.numeric(s[["PP.H2.abf"]]),
+      PP3          = as.numeric(s[["PP.H3.abf"]]),
+      PP4          = as.numeric(s[["PP.H4.abf"]]),
+      lead_snp     = lead[["snp"]],
+      lead_snp_PP4 = as.numeric(lead[["SNP.PP.H4"]])
+    )
+    dt[, (id_name) := id]
+    setcolorder(dt, c(id_name, setdiff(names(dt), id_name)))
+    dt
+  }), fill = TRUE)
+  out[]
+}
+
+# Flatten one coloc-abf list into a filtered feature-level table
+## id_map can be gnmap for genes, tgnmap for transcripts
+flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80,
+                               add_priors=TRUE, id_map=NULL, do_filter=TRUE) {
+  ids <- names(l)
+  out <- rbindlist(lapply(ids, function(feature_id) {
+    x <- l[[feature_id]]
+    if (is.null(x$summary) || is.null(x$results)) return(NULL)
+    s <- as.list(x$summary)
+    res <- as.data.table(x$results)
+    if (!"SNP.PP.H4" %chin% names(res)) return(NULL)
+    setorderv(res, "SNP.PP.H4", -1L)
+    res[, cum_h4 := cumsum(SNP.PP.H4)]
+    cs_idx <- which(res$cum_h4 >= cs_level)[1L]
+    cs_n <- if (is.na(cs_idx)) nrow(res) else cs_idx
+    lead <- res[1]
+    dt <- data.table(
+      nsnps=as.numeric(s[["nsnps"]]), PP0=as.numeric(s[["PP.H0.abf"]]), PP1=as.numeric(s[["PP.H1.abf"]]),
+      PP2=as.numeric(s[["PP.H2.abf"]]), PP3=as.numeric(s[["PP.H3.abf"]]), PP4=as.numeric(s[["PP.H4.abf"]]),
+      lead_snp=as.character(lead[["snp"]]), lead_snp_PP4=as.numeric(lead[["SNP.PP.H4"]]), cs95_n_snp=as.integer(cs_n)
+    )
+    if (add_priors && !is.null(x$priors)) {
+      pr <- x$priors
+      dt[, `:=`(p1=as.numeric(pr["p1"]), p2=as.numeric(pr["p2"]), p12=as.numeric(pr["p12"]))]
+    }
+    dt[, fid := feature_id]
+    setcolorder(dt, c("fid", setdiff(names(dt), "fid")))
+    dt
+  }), fill=TRUE)
+  if (is.null(out) || nrow(out)==0L) return(out)
+  if (!is.null(id_map)) {
+    key <- out[["fid"]]
+    nm <- unname(id_map[key])
+    out[, fid := ifelse(!is.na(nm), paste0(nm, "|", key), key)]
+  }
+  if (isTRUE(do_filter)) out <- out[PP4 >= pp4_min | (PP3 + PP4) >= pp34_min]
+  out[]
+}
+
+saveFlattenedColoc <- function(l, out_path, ...) {
+  dt <- flattenFltColoc(l, ...)
+  if (is.null(dt) || nrow(dt)==0L) {
+    warning("No rows to write: ", out_path)
+    return(invisible(dt))
+  }
+  fwrite(dt, out_path, sep="\t", quote=FALSE)
+  invisible(dt)
+}
+
+## convenience to load, flatten, filter, and save one coloc list
+flattenColocAndSave <-function(path, ...) {
+  out_path <- sub("\\.qs2$", ".flat.tab.gz", path)
+  if (file.exists(out_path)) {
+    message("Output file exists, skipping: ", out_path)
+    return(invisible(NULL))
+  }
+  l <- qs_read(path)
+  b <- basename(path)
+  #proto <- ifelse(grepl("PolyA", b), "PolyA", ifelse(grepl("RiboZ", b), "RiboZ", NA_character_))
+  #feat <- ifelse(grepl("_tx", b), "tx", "gene")
+  stopifnot(out_path != path)
+  saveFlattenedColoc(l, out_path, ...)
+}
+
+```
+
+```{r only once to create the flattened files}
+cdts <- list()
+paths <- list()
+for (ds in names(ds2name)) {
+ fp <-file.path(datadir, "coloc", sprintf("coloc_%s_gene.qs2", ds))
+ if (!file.exists(fp)) stop("file not found: ", fp)
+ ff <- file.path(datadir, "coloc", sprintf("coloc_%s_gene.flat.tab.gz", ds))
+ if (file.exists(ff)) {
+   cdts[[ds]] <- fread(ff)
+ } else {
+   message("flattening: ", fp)
+   cdts[[ds]] <- flattenColocAndSave(fp)
+    if (!file.exists(ff)) stop("flattenColocAndSave failed: ", fp)
+ }
+ paths[[ds]] <- ff
+}
+
+#invisible(lapply(paths, flattenColocAndSave))
+
+
+```

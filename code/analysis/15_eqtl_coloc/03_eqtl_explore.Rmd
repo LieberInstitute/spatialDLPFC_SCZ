@@ -14,7 +14,7 @@ suppressMessages({
     library(here)
   })
 here::i_am('.git/HEAD')
-datadir=here("processed-data", "rds")
+rdsdir=here("processed-data", "rds")
 ## refdata -> ref folder symlink to CHESS Brain ref data for now
 refdir=here("processed-data", "ref")
 ```
@@ -24,10 +24,6 @@ refdir=here("processed-data", "ref")
 ## load all rowRanges
 granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd last chunk
 g2sym <- setNames(granges$gene_name, granges$gene_id)
-# load degs adust SPD
-deg_spd_adj <- fread(file.path(datadir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
-rownames(deg_spd_adj) <- deg_spd_adj$V1
-setnames(deg_spd_adj, 'V1', 'fid')
 
 fgwasflt <- file.path(refdir, 'SCZ_GWAS_flt_1e-6_R.8.tab.gz')
 if (file.exists(fgwasflt)) {
@@ -42,10 +38,24 @@ if (file.exists(fgwasflt)) {
 }
 gwas_set <- unique(gwas[p<5e-8]$variant_id) ## GWAS standard risk threshold
 gwas1e6_set <- unique(gwas$variant_id) ## loose p < 1e-6
-degs <- subset(deg_spd_adj, fdr_scz<=0.05)
+## silly ambiguity mismatch possible between GWAS IDs and genotype data, so add the swapped bases versions
+swap_alleles <- function(variant_id) {
+   parts <- strsplit(variant_id, ":")
+   sapply(parts, function(p) {
+     if (length(p) == 4) {
+       paste(p[1], p[2], p[4], p[3], sep=":")
+     } else {
+       variant_id
+     }
+   })
+ }
+# Create extended set with both original and swapped IDs
+gwas_set_swapped <- swap_alleles(gwas_set)
+gwas_set_ext <- unique(c(gwas_set, gwas_set_swapped))
+
 ```
 
-```{r}
+```{r load tensor QTL results except nominal}
 pats <- c('\\.map_cis\\.tab\\.gz$', '\\.map_independent\\.txt\\.gz$',
            '\\.DxINT\\.cis_qtl_top_assoc\\.txt\\.gz$')
 npats <- c('map', 'indep', 'dxint')
@@ -55,22 +65,55 @@ for (i in seq_along(pats)) {
   names(fcis) <- sub("/", "", stri_match_first_regex(fcis, '/(\\w+)\\.gene')[,2])
   cisres[[npats[i]]] <- lapply(fcis, fread)
 }
+```
+
+```{r load DEGS}
+## WARNING: makes sure char not factor is passed to this char2char mapping!
 ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
        "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
+
+## load degs adust SpD as SpD degs
+deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
+rownames(deg_spd_adj) <- deg_spd_adj$V1
+setnames(deg_spd_adj, 'V1', 'fid')
+spd_degs <- subset(deg_spd_adj, fdr_scz<=0.1) ## 10% FDR threshold was used
+spds <- grep('spd', names(ds2name), value=TRUE)
+ds2degs <- lapply(spds, \(x) spd_degs)
+names(ds2degs) <- spds
+## for the SpG contexts, separate DEGs per context:
+spgs <- grep('^[^s]', names(ds2name), value=TRUE)
+for (ds in spgs) {
+   if (ds=="vasc") {
+     fdegs <- here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
+   } else {
+     fdegs <- here("code/analysis/", paste0("dx_deg_spg_", ds), paste0(ds,"-dx_DEG-GM.csv"))
+   }
+   if (!file.exists(fdegs)) {
+     stop("file not found: ", fdegs)
+   }
+   dt <- fread(fdegs, data.table = FALSE)
+   rownames(dt) <- dt$ensembl
+   dt$fid <- rownames(dt)
+   setcolorder(dt, 'fid')
+   dt <- subset(dt, fdr_scz<=0.1)
+   ds2degs[[ds]] <- dt
+}
+# pnn has no degs for FDR<0.1 ?
 ```
 
 ```{r}
 ## tag dataset to each data.table before merging
 tag_ll <- function(dt_list) {
   rbindlist(lapply(names(dt_list), function(nm) {
+    ctx_degs <- ds2degs[[nm]]
     x <- copy(dt_list[[nm]])
     x[, ds:=nm]
     x[, gid := phenotype_id]
     ## add gtype and symbol
     x[, symbol :=g2sym[phenotype_id]]
     x[, ds := as.character(ds)]
-    x[, dge:=as.integer(phenotype_id %chin% degs$fid)]
-    x[, gwas := as.integer(variant_id %chin% gwas_set)]
+    x[, dge:=as.integer(phenotype_id %chin% ctx_degs$fid)]
+    x[, gwas := as.integer(variant_id %chin% gwas_set_ext)]
     x
   }))
 }
@@ -100,8 +143,14 @@ get_qmap  <- function(emap, q) {
 
 ## eGene cis_map counts at eQTL FDR < 5%
 mapsum05 <- get_qmap(map_all, 0.05)
+
+## reorder rows by matching ds to the order in names(ds2name)
+mapsum05 <- mapsum05[match(names(ds2name), mapsum05$ds), ]
+## Now replace with nicer names
 mapsum05$ds <- ds2name[mapsum05$ds]
+## show and save the table
 mapsum05
+fwrite(mapsum05, "map_cis_summary.csv")
 ```
 
             ds n_eGenes n_GWAS                           GWAS n_DEG                                                                       DEGS n_DEG_GWAS   DEG_GWAS
@@ -209,6 +258,11 @@ indep_summary <- indep_f[, .(
   n_DEG = uniqueN(gid[dge == 1]),
   n_DEG_GWAS = sum(dge == 1 & gwas == 1)
 ), by = ds][order(ds)]
+
+
+## reorder rows by matching ds to the order in names(ds2name)
+indep_summary <- indep_summary[match(names(ds2name), indep_summary$ds), ]
+
 
 indep_summary$ds <- ds2name[indep_summary$ds]
 
