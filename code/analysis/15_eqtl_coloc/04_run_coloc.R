@@ -67,24 +67,23 @@ if (file.exists(fgwas)) {
     a1 = a0,      # A1 (effect allele)
     beta, beta_se, N, p, ncas, ncon, impinfo, fcas, fcon, rsid
   )]
-
   gwas_m <- bigsnpr::snp_match(sumstats_for_match, info_snp, return_flip_and_rev = TRUE)
   # gwas_m now has alleles aligned to info_snp, and beta flipped if alleles swapped
   setDT(gwas_m)
   # Rebuild variant_id to match tensorQTL
   #gwas_m[, variant_id := sprintf("%s:%d:%s:%s", chr, pos, a0, a1)]
   gwas_m[, variant_id := info_snp$ID[`_NUM_ID_`]]
-  ## build the join key
-  gwas_fixed <- gwas_m[, .(
+  ## rebuild gwas_wide
+  gwas_wide <- gwas_m[, .(
     variant_id, beta, beta_se,
     N,  p,  ncas, ncon, impinfo,
     rsid, fcas, fcon
   )]
   # deduplicate defensively
-  setkey(gwas_fixed, variant_id)
-  gwas_fixed <- unique(gwas_fixed)
+  setkey(gwas_wide, variant_id)
+  gwas_wide <- unique(gwas_wide)
   ##
-  fwrite(gwas_fixed, fgwas, sep = "\t")
+  fwrite(gwas_wide, fgwas, sep = "\t")
 }
 
 ## prepare coloc input

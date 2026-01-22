@@ -74,13 +74,13 @@ Join eQTL/coloc results with Differential Expression (DEG) results to identify "
 * The eQTL SNP is a **GWAS risk SNP**.
 
 ## 3. Script Structure
-
-* `01_prep_inputs.R`: Loads RDS files, subsets by SpD or SPG, calculates expression PCs, and exports formatted BED/Covariate files for tensorQTL.
+* '00_explore_data.R': Initial exploration of pseudobulk data in SpE objects
+* `01_prep_inputs.R`: Loads RDS files, subsets by SpD or SPG, calculates expression PCs, and exports formatted BED/covariate files (which include SNP PCs) for tensorQTL
 * `eqtl_mapping.py`: python script running tensorQTL models and modes, used by all array jobs
-* `02_run_tensorqtl_spd.sh`: Array job script for running tensorQTL on SpD aggregated data
-* `03_run_tensorqtl_spg.sh`: Array job script for running tensorQTL on SPG aggregated data
-* `04_annotate_gwas_DE.R`: Checks overlap with PGC3 SCZ GWAS variants and DE results
-* `05_coloc.R`: Runs colocalization analysis on significant results.
+* `02_run_tensorQTL.sh`: run tensorQTL on the 11 prepared contexts (7 SpDs + 4 SPGs)
+* `03_eqtl_explore.Rmd`: notebook exploring tensorQTL results, generating summaries and plots
+* `04_run_coloc.R`: prepares GWAS summary stats, loads cis_nominal results and runs coloc.abf analysis
+* `04_explore_coloc.Rmd`: notebook exploring coloc results
 
 ## 4. Requirements
 
