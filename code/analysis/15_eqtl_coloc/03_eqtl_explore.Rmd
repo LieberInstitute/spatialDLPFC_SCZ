@@ -15,14 +15,14 @@ suppressMessages({
   })
 here::i_am('.git/HEAD')
 datadir=here("processed-data", "rds")
-## refdata folder/symlink to CHESS Brain data for now
+## refdata -> ref folder symlink to CHESS Brain ref data for now
 refdir=here("processed-data", "ref")
 ```
 
 
 ```{r}
-## load all rowRanges 
-granges <- qs_read("granges.qs2")
+## load all rowRanges
+granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd last chunk
 g2sym <- setNames(granges$gene_name, granges$gene_id)
 # load degs adust SPD
 deg_spd_adj <- fread(file.path(datadir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
@@ -55,7 +55,7 @@ for (i in seq_along(pats)) {
   names(fcis) <- sub("/", "", stri_match_first_regex(fcis, '/(\\w+)\\.gene')[,2])
   cisres[[npats[i]]] <- lapply(fcis, fread)
 }
-ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5", 
+ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
        "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
 ```
 
@@ -68,9 +68,8 @@ tag_ll <- function(dt_list) {
     x[, gid := phenotype_id]
     ## add gtype and symbol
     x[, symbol :=g2sym[phenotype_id]]
+    x[, ds := as.character(ds)]
     x[, dge:=as.integer(phenotype_id %chin% degs$fid)]
-    # convert dataset
-    x[, ds := as.factor(ds)]
     x[, gwas := as.integer(variant_id %chin% gwas_set)]
     x
   }))
@@ -86,7 +85,7 @@ dx_all    <- tag_ll(cisres$dxint)   # has pval_gi, b_g, b_gi, pval_adj_bh
 
 ```{r discovery and analysis}
 get_qmap  <- function(emap, q) {
-  emap[qval < q, .( 
+  emap[qval < q, .(
     n_eGenes = uniqueN(phenotype_id),                          # unique eGenes
     n_GWAS      = uniqueN(phenotype_id[gwas == 1]),          # eGenes whose lead is in GWAS (5e-8)
     GWAS = paste(sort(unique(symbol[gwas==1])), collapse=", "),
@@ -98,33 +97,33 @@ get_qmap  <- function(emap, q) {
   by = .(ds)
 ][order(ds)]
 }
-## eGene cis_map counts at eQTL FDR 5%
+
+## eGene cis_map counts at eQTL FDR < 5%
 mapsum05 <- get_qmap(map_all, 0.05)
 mapsum05$ds <- ds2name[mapsum05$ds]
 mapsum05
 ```
 
-> mapsum05
-            ds n_eGenes n_GWAS                           GWAS n_DEG n_DEG_GWAS   DEG_GWAS
-        <char>    <int>  <int>                         <char> <int>      <int>     <char>
- 1: SpD01-WMtz      134      2              LRRC37A2, ZSCAN31     7          0           
- 2: SpD02-L3/4      161      4 HLA-DMA, MAPK3, VARS2, ZSCAN31     9          1      MAPK3
- 3:   SpD03-L6        5      0                                    1          0           
- 4:   SpD04-WM       10      0                                    1          0           
- 5:   SpD05-L5      179      2              LRRC37A2, ZSCAN31     8          0           
- 6: SpD06-L2/3       48      2                HLA-C, LRRC37A2     7          0           
- 7:   SpD07-L1        2      0                                    1          0           
- 8:       Neun       61      1                       LRRC37A2     4          0           
- 9:       Vasc       61      2           KANSL1-AS1, LRRC37A2     6          1 KANSL1-AS1
-10:        PNN       12      1                     KANSL1-AS1     3          1 KANSL1-AS1
-11:   Neuropil        3      0                                    1          0           
+            ds n_eGenes n_GWAS                           GWAS n_DEG                                                                       DEGS n_DEG_GWAS   DEG_GWAS
+        <char>    <int>  <int>                         <char> <int>                                                                     <char>      <int>     <char>
+ 1:       Neun      134      2              LRRC37A2, ZSCAN31     7          GABPB1-AS1, GATD3A, KANSL1-AS1, LINC01535, NIPBL-DT, RPS26, XRRA1          0
+ 2:   Neuropil      161      4 HLA-DMA, MAPK3, VARS2, ZSCAN31     9 GATD3A, KANSL1-AS1, LINC01535, MAPK3, NIPBL-DT, NUDT14, RPS26, SVBP, XRRA1          1      MAPK3
+ 3:        PNN        5      0                                    1                                                                      RPS26          0
+ 4: SpD01-WMtz       10      0                                    1                                                                      RPS26          0
+ 5: SpD02-L3/4      179      2              LRRC37A2, ZSCAN31     8  GABPB1-AS1, GATD3A, KANSL1-AS1, LINC01535, NIPBL-DT, NUDT14, RPS26, XRRA1          0
+ 6:   SpD03-L6       48      2                HLA-C, LRRC37A2     7          GABPB1-AS1, GATD3A, KANSL1-AS1, LINC01535, NIPBL-DT, RPS26, XRRA1          0
+ 7:   SpD04-WM        2      0                                    1                                                                      RPS26          0
+ 8:   SpD05-L5       61      1                       LRRC37A2     4                                         GATD3A, LINC01535, NIPBL-DT, RPS26          0
+ 9: SpD06-L2/3       61      2           KANSL1-AS1, LRRC37A2     6                      GATD3A, KANSL1-AS1, LINC01535, NIPBL-DT, RPS26, XRRA1          1 KANSL1-AS1
+10:   SpD07-L1       12      1                     KANSL1-AS1     3                                                  GATD3A, KANSL1-AS1, RPS26          1 KANSL1-AS1
+11:       Vasc        3      0                                    1                                                                      RPS26          0
 
 
 ```{r plot barchart}
 library(ggplot2)
 
 eqtl_barchart  <- function(mapsum, indep=FALSE, fill=NULL) {
-  # pal_lib <- c(PolyA = "#82BEEE", RiboZ = "#FFBE6A") 
+  # pal_lib <- c(PolyA = "#82BEEE", RiboZ = "#FFBE6A")
   dt <- copy(mapsum)
   dt[, context  := as.factor(ds)] ## set levels explictly here
   dt[, lab_above := sprintf("GWAS: %d\nDEG: %d\nDEG∩GWAS: %d", n_GWAS, n_DEG, n_DEG_GWAS)]
@@ -153,7 +152,7 @@ eqtl_barchart  <- function(mapsum, indep=FALSE, fill=NULL) {
   } else {
      p <- ggplot(dt, aes(x=context, y=n_eGenes)) +
        geom_col(width=0.7, color="grey30", linewidth=0.2, fill=fill)
-  }   
+  }
   p <- p +
     #facet_grid(level ~ coding, scales="free_y") +
     # big total on top of each bar
@@ -179,9 +178,12 @@ print(eqtl_barchart(mapsum05[!grepl('^SpD', ds)], fill="#A0A0A0"))
 ```
 
 ```{r independent signals}
+## Add gwas1e6 column to indep_all ?
+#indep_all[, gwas1e6 := as.integer(variant_id %chin% gwas1e6_set)]
+
 ## independent signals per feature (rank is 1..k per phenotype)
 
-alpha <- 0.1  # primary FDR line for discovery - typically 0.05
+alpha <- 0.05  # primary FDR line for discovery - typically 0.05
 ## parent eFeature q-values from map_all
 parent_q <- map_all[, .(phenotype_id, ds, qval_parent = qval)]
 
@@ -190,50 +192,29 @@ parent_q <- map_all[, .(phenotype_id, ds, qval_parent = qval)]
 ### -- join and gate using pval_perm, which is slightly more conservative than pval_beta
 indep_f <- merge(indep_all, parent_q, by=c("phenotype_id","ds"))
 indep_f <- indep_f[qval_parent < alpha & pval_perm < 0.05]
+#indep_f[, gwas1e6 := as.integer(variant_id %chin% gwas1e6_set)]
 
-indep_var <- indep_f[, .(
-  n_eGenes    = .N,                             # total independent variants (despite the name)
-  n_GWAS      = sum(gwas),                      # variants in GWAS 5e-8
-  n_DEG  = uniqueN(gid[dge == 1]),
-), by = .(ds)]
+## Per-feature summary
+#indep_feat <- indep_f[, .(
+#  n_signals   = max(rank),
+#  any_gwas    = as.integer(any(gwas == 1)),
+#  any_gwas1e6 = as.integer(any(gwas1e6 == 1)),
+#  any_dge     = as.integer(any(dge == 1))
+#), by = .(ds, phenotype_id, gid, symbol)]
 
-# per-feature summary (avoids double counting signals)
-indep_feat <- indep_f[, .(n_signals   = max(rank),
-  any_gwas    = as.integer(any(gwas == 1)),
-  any_gwas1e6 = as.integer(any(gwas1e6 == 1)),
-  any_dge     = as.integer(any(dge == 1)),
-  any_dge10   = as.integer(any(dge10 == 1)),
-  any_dte     = as.integer(any(dte == 1)),
-  any_dtu     = as.integer(any(dtu == 1))
-), by = .(lib, level, coding, gid, phenotype_id)]
+## Summary for plotting (counting total independent signals)
+indep_summary <- indep_f[, .(
+  n_eGenes = .N,  # total independent signals
+  n_GWAS = sum(gwas),
+  n_DEG = uniqueN(gid[dge == 1]),
+  n_DEG_GWAS = sum(dge == 1 & gwas == 1)
+), by = ds][order(ds)]
 
-## overall signal architecture: how many independent cis-eQTL signals each feature has
-sig_arch <- indep_feat[, .(
-  median = as.numeric(median(n_signals)),
-  mean   = as.numeric(mean(n_signals)),
-  p95    = as.numeric(quantile(n_signals, 0.95, names = FALSE))
-), by = .(lib, level)]
+indep_summary$ds <- ds2name[indep_summary$ds]
 
-k95_tbl <- indep_feat[, .(p95_nsig = as.numeric(quantile(n_signals, 0.95)),
-                          n_DEG_GWAS = uniqueN(phenotype_id[any_dge==1 & any_gwas==1])
-                  ), by = .(ds)]
-plotdf <- merge(indep_var, k95_tbl, by = c(ds), all.x = TRUE)
+print(eqtl_barchart(indep_summary[grepl('^SpD', ds)], indep=TRUE))
+print(eqtl_barchart(indep_summary[!grepl('^SpD', ds)], fill="#A0A0A0", indep=TRUE))
 
-
-## summarize by lib, level, coding, with proper unique counting
-indep_summary <- indep_feat[, .( n_feat = as.integer(.N),  # unique eFeatures with ≥1 indep signal
-      med_nsig   = as.numeric(median(n_signals)),
-      # feature-level overlaps (no double counting across signals)
-      n_gwas     = as.integer(sum(any_gwas)),
-      # transcript-level overlaps: count unique transcripts
-      n_DEG   = as.integer(uniqueN(gid[any_dge   == 1])),
-      n_DEG_GWAS = uniqueN(phenotype_id[any_dge==1 & any_gwas==1])
-  ),
-  by = .(ds)
-][order(ds)]
-
-#print(eqtl_barchart(indep_summary, indep=TRUE))
-print(eqtl_barchart(plotdf, indep=TRUE))
 ```
 
 
@@ -262,4 +243,21 @@ summ_dx <- function(dt) dt[, .(
 
 dxsum10 <- summ_dx(dx_primary)
 
+```
+
+
+```{r collect parquet files}
+
+dsname="spd01"
+#parquet_dir = 'mdd_old/tensorQTL_lognorm/eqtl_out' ## expected there: amyg.gene.cis_qtl_pairs.chr1.parquet
+parquet_dir = 'tqtl_out' ## expected there: amyg.gene.cis_qtl_pairs.chr1.parquet
+#out_dir = 'tqtl_fdr05' # output directory to write FDR<0.05 eqtl mappings
+##############################
+
+pat=paste0(dsname,'\\.gene\\.cis_qtl_pairs\\.chr.+\\.parquet$')
+fls <- list.files(path=parquet_dir, pattern=pat, recursive = TRUE, full.names = TRUE)
+chrs <-  stri_match_first_regex(fls, "(chr[^.]+)")[,1]
+names(fls) <- chrs
+## read a parquet file:
+# pfchr1 <- arrow::read_parquet(fls[["chr1"]])
 ```

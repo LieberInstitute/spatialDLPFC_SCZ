@@ -3,10 +3,10 @@ title: "SpE data exploration"
 ##output: html_notebook
 ---
 
-
 ```{r}
 library("SpatialExperiment")
 library("here")
+library(qs2)
 here::i_am('.git/HEAD')
 datadir=here("processed-data", "rds")
 ```
@@ -113,3 +113,35 @@ GRanges object with 6 ranges and 7 metadata columns:
   ENSG00000187634     chr1 923928-944581      + |   HAVANA     gene ENSG00000187634           12      SAMD11 protein_coding
   ENSG00000188976     chr1 944203-959309      - |   HAVANA     gene ENSG00000188976           11       NOC2L protein_coding
   ENSG00000187961     chr1 960584-965719      + |   HAVANA     gene ENSG00000187961           14      KLHL17 protein_coding
+
+
+
+```{r merge rowRanges across all datasets}
+flist <- list(neuropil="pseudo_neuropil_pos_donor_spd.rds",
+                neun="pseudo_neun_pos_donor_spd.rds",
+                pnn="pseudo_pnn_pos_donor_spd.rds",
+                vasc="pseudo_vasc_pos_donor_spd.rds" ##-- missing slide_id
+              )
+dlist <- lapply(flist, function(x) {
+      spe <- readRDS(file.path(datadir, "PB_dx_spg", x))
+      agg <- scuttle::aggregateAcrossCells(spe, DataFrame(donor = spe$brnum), store_number = "n_SpDs")
+      ## colnames are lost during aggregation, restore them from donor
+      ncells_sum <- rowsum(
+        x = matrix(spe$ncells, ncol = 1),
+        group = spe$brnum,  na.rm = TRUE
+      )
+      donor_ids <- colData(agg)$donor
+      colData(agg)$ncells <- ncells_sum[donor_ids, 1]
+      agg
+  })
+dlist$spds <- d
+```
+
+```{r merge and save gene info}
+all_granges <- lapply(dlist, rowRanges)
+merged_granges <- do.call(c, unname(all_granges))
+merged_granges <- merged_granges[!duplicated(names(merged_granges))]
+if (!file.exists("granges.qs2")) {
+  qs_save(merged_granges, file="granges.qs2")
+}
+```
