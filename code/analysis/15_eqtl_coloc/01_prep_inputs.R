@@ -14,8 +14,12 @@ library(matrixStats)
 
 ## strategy: dsarg must be one of "spd" or "spg"
 ## use optargs to take this as the first argument of the script
-dsarg <- commandArgs(trailingOnly = TRUE)[1]
+args <- commandArgs(trailingOnly = TRUE)
+dsarg <- args[1]
 stopifnot(!is.null(dsarg) && nchar(dsarg)>1)
+writeSpE <- (tolower(args[2])=="spe")
+if (is.na(writeSpE)) writeSpE <- FALSE
+
 
 modelstr='~DX + sex + age + slide_id + snpPC1 + snpPC2 + snpPC3 + snpPC4 + snpPC5'
 
@@ -34,8 +38,8 @@ if (dsarg=='spd') {
   message("Preparing eQTL input files for spatial proteogenomics microenvironments")
   flist <- list(neuropil="pseudo_neuropil_pos_donor_spd.rds",
                 neun="pseudo_neun_pos_donor_spd.rds",
-                pnn="pseudo_pnn_pos_donor_spd.rds"
-                # vasc="pseudo_vasc_pos_donor_spd.rds" -- missing slide_id
+                pnn="pseudo_pnn_pos_donor_spd.rds",
+                vasc="pseudo_vasc_pos_donor_spd.rds" ##-- missing slide_id
               )
   dlist <- lapply(flist, function(x) {
       spe <- readRDS(file.path(datadir, "PB_dx_spg", x))
@@ -57,7 +61,17 @@ dlist <- lapply(dlist, function(spe) {
   colnames(spe) <- spe$brnum
   return(spe)
 })
+## fix  vasc to add DX and slide_id if missing
+if (!("DX" %in% colnames(colData(dlist$vasc)))) {
+  dlist$vasc$DX <- toupper(dlist$vasc$dx)
+}
 
+if (!("slide_id" %in% colnames(colData(dlist$vasc)))) {
+  # get the slide_id per brnum from dlist$neun
+  neun_pd <- as.data.frame(colData(dlist$neun))
+  slide_map <- setNames(neun_pd$slide_id, rownames(neun_pd))
+  colData(dlist$vasc)$slide_id <- slide_map[colnames(dlist$vasc)]
+}
 
 snpPCs <- NULL
 ## path to SNP PCs (eigenvec) prepared with get_SNP_PCs.sh
@@ -306,10 +320,13 @@ for (i in seq_len(length(dlist))) {
   fn  <- paste0(odir, '/', dsname, '.gene.exprPCs.qs2')
   fncovars <- sub('exprPCs.qs2', 'covars.txt', fn, fixed = TRUE)
   fbed  <- sub('exprPCs.qs2', 'expr.bed.gz', fn, fixed = TRUE)
+  fspe <- sub('exprPCs.qs2', 'spe.qs2', fn, fixed = TRUE)
   ## if all these files exist, skip
   if (file.exists(fn) && file.exists(fncovars) && file.exists(fbed)) {
-    cat(".. all files for", dsname, "already exist, skipping\n")
-    next
+    if (!writeSpE || (writeSpE && file.exists(fspe))) {
+      cat(".. all files for", dsname, "already exist, skipping\n")
+      next
+    }
   }
   cat("Processing dataset", dsname, " ..\n")
   ## add snpPCs to colData, matching by brnum / SAMPLE_ID
@@ -345,8 +362,6 @@ for (i in seq_len(length(dlist))) {
 
   ## calculate feature PCs (sva)
   ffPCs <- NULL
-  ## note: set this to FALSE if we want to use log(rpkm+1) instead of existing logcounts
-  #have_logcounts <- !is.null(assays(rse)$logcounts)
   have_zscore <- !is.null(assays(spe_pca)$zscore)
   stopifnot(have_zscore)
   if (file.exists(fn)) {
@@ -380,11 +395,20 @@ for (i in seq_len(length(dlist))) {
   stopifnot(identical(colnames(cpd), colnames(cpc)))
   covars <- rbind(cpd, cpc)
   #fn=paste0(odir, '/', dsname, '.', feature,'.featurePCs.qs')
-
-  fwrite(covars, file = fncovars,
-         sep = "\t", quote = FALSE, row.names = FALSE)
-  bed <- spe2bed(spe_bed)
-  fwrite(bed, file = fbed, sep = "\t", quote = FALSE, row.names = FALSE)
-  rm(bed)
-  cat("  ..exported to", fbed, "\n")
+  if (writeSpE) {
+    cat("  ..saving SPE object to", fspe, "\n")
+    qs_save(spe_bed, file=fspe)
+  }
+  if (!file.exists(fncovars)) {
+    cat("  ..saving covars to", fncovars, "\n")
+    fwrite(covars, file = fncovars,
+      sep = "\t", quote = FALSE, row.names = FALSE)
+  }
+  if (!file.exists(fbed)) {
+     cat("  ..preparing and saving BED expression file..\n")
+     bed <- spe2bed(spe_bed)
+     fwrite(bed, file = fbed, sep = "\t", quote = FALSE, row.names = FALSE)
+     rm(bed)
+     cat("  ..BED expression exported to", fbed, "\n")
+  }
 } ## for each spe object

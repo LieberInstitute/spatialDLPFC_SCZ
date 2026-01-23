@@ -73,38 +73,16 @@ for (ds in spgs) {
 ```
 
 ```{r coloc utility functions}
-# Flatten one coloc-abf list into a data.table, no filtering
-flatten_coloc <- function(l, id_name = "gene_id") {
-  ids <- names(l)
-  out <- rbindlist(lapply(ids, function(id) {
-    x <- l[[id]]
-    if (is.null(x$summary) || is.null(x$results)) return(NULL)
+## Flatten one coloc-abf list into a filtered feature-level table
+### Note: coloc.abf assumes at most one casual variant per gene/trait,
+### so PP3/PP4 can be distorted for large cis windows
 
-    s <- as.list(x$summary)
-    res <- as.data.table(x$results)
-    if (!"SNP.PP.H4" %in% names(res)) return(NULL)
-    lead <- res[which.max(SNP.PP.H4)][1]
+## if cis windows frequently have multiple independent eQTL signals (common in brain),
+## coloc.abf’s single-causal assumption can inflate PP3 or muddle PP4 unless we condition or use a
+## multi-signal method (e.g. SuSiE-based coloc). The flattening won't fix that, but downstream claims
+## should reflect the assumption.
 
-    dt <- data.table(
-      nsnps        = as.numeric(s[["nsnps"]]),
-      PP0          = as.numeric(s[["PP.H0.abf"]]),
-      PP1          = as.numeric(s[["PP.H1.abf"]]),
-      PP2          = as.numeric(s[["PP.H2.abf"]]),
-      PP3          = as.numeric(s[["PP.H3.abf"]]),
-      PP4          = as.numeric(s[["PP.H4.abf"]]),
-      lead_snp     = lead[["snp"]],
-      lead_snp_PP4 = as.numeric(lead[["SNP.PP.H4"]])
-    )
-    dt[, (id_name) := id]
-    setcolorder(dt, c(id_name, setdiff(names(dt), id_name)))
-    dt
-  }), fill = TRUE)
-  out[]
-}
-
-# Flatten one coloc-abf list into a filtered feature-level table
-## id_map can be gnmap for genes, tgnmap for transcripts
-flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80,
+flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80, rat_strong=0.9, rat_mod=0.8,
                                add_priors=TRUE, id_map=NULL, do_filter=TRUE) {
   ids <- names(l)
   out <- rbindlist(lapply(ids, function(feature_id) {
@@ -121,7 +99,11 @@ flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80,
     dt <- data.table(
       nsnps=as.numeric(s[["nsnps"]]), PP0=as.numeric(s[["PP.H0.abf"]]), PP1=as.numeric(s[["PP.H1.abf"]]),
       PP2=as.numeric(s[["PP.H2.abf"]]), PP3=as.numeric(s[["PP.H3.abf"]]), PP4=as.numeric(s[["PP.H4.abf"]]),
-      lead_snp=as.character(lead[["snp"]]), lead_snp_PP4=as.numeric(lead[["SNP.PP.H4"]]), cs95_n_snp=as.integer(cs_n)
+      PP34=as.numeric(s[["PP.H3.abf"]]) + as.numeric(s[["PP.H4.abf"]]),
+      PP4_over_PP34=as.numeric(s[["PP.H4.abf"]]) / (as.numeric(s[["PP.H3.abf"]]) + as.numeric(s[["PP.H4.abf"]])),
+      lead_snp=as.character(lead[["snp"]]), lead_snp_PPH4=as.numeric(lead[["SNP.PP.H4"]]),
+      lead_snp_PPsho=as.numeric(s[["PP.H4.abf"]]) * as.numeric(lead[["SNP.PP.H4"]]), ## shared overall
+      cs95_n_snp=as.integer(cs_n)
     )
     if (add_priors && !is.null(x$priors)) {
       pr <- x$priors
@@ -137,7 +119,29 @@ flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80,
     nm <- unname(id_map[key])
     out[, fid := ifelse(!is.na(nm), paste0(nm, "|", key), key)]
   }
-  if (isTRUE(do_filter)) out <- out[PP4 >= pp4_min | (PP3 + PP4) >= pp34_min]
+  if (do_filter) out <- out[PP4 >= pp4_min | (PP3 + PP4) >= pp34_min]
+  ## we keep either:
+  ## - high confidence (PP4) = strong colocalization or
+  ## - strong evidence both traits associate in the region but with different causal variants (PP3 high)
+  ## goal is "interesting loci for follow-up", not strictly a "colocalized set"
+  out[, kept_by := fcase(
+    PP4 >= pp4_min & PP34 >= pp34_min, "both",
+    PP4 >= pp4_min,                   "PP4",
+    PP34 >= pp34_min,                 "PP34",
+    default = "none"
+  )]
+  # `kept_by` tells us why it survived the OR filter (PP4 only, PP34 only, or both).
+
+  out[, cls := fcase(
+    PP34 < pp34_min,                  "kept_PP4_low_PP34",
+    PP4_over_PP34 >= rat_strong,      "strong_coloc",
+    PP4_over_PP34 >= rat_mod,         "moderate_coloc",
+    PP4_over_PP34 < 0.50,             "likely_distinct_causal",
+    default = "ambig_H3_H4"
+  )]
+  ## `cls` separates "kept because PP4 is high but overall shared-signal evidence (PP34) is weaker"
+  ## from true coloc-ish cases and H3-dominant cases.
+  setcolorder(out, c("fid", "cls", "kept_by", setdiff(names(out), c("fid","cls","kept_by"))))
   out[]
 }
 
@@ -184,8 +188,49 @@ for (ds in names(ds2name)) {
  }
  paths[[ds]] <- ff
 }
+## summary plots?
+## A scatter of PP4 vs PP4_over_PP34 (coloc strength vs dominance).
+## cs95_n_snp vs PP4 (credible set size tends to shrink with stronger signal, but multi-signal loci can behave oddly).
+## For reporting: always show PP0..PP4, PP4_over_PP34, lead SNP (and whether lead SNP is the same top SNP for both traits if you also compute that elsewhere), and priors.
 
-#invisible(lapply(paths, flattenColocAndSave))
+```
 
+
+```{r summaries}
+fc <- cdts[["spd01"]]
+
+sum_cls <- fc[, .N, by=.(cls, kept_by)][order(-N)]
+sum_kept <- fc[, .(N=.N), by=kept_by][order(-N)]
+sum_cls
+sum_kept
+
+sum_cls_frac <- fc[, .N, by=cls][, frac := N / sum(N)][order(-N)]
+sum_cls_frac
+
+
+```
+
+```{r}
+ggplot(fc[, .N, by=.(cls, kept_by)], aes(x=cls, y=N, fill=kept_by)) +
+  geom_col() +
+  coord_flip() +
+  theme_bw() +
+  labs(x=NULL, y="Number of features")
+```
+
+
+```{r}
+sum_stats <- fc[, .(
+  N=.N,
+  PP4_med=median(PP4, na.rm=TRUE),
+  PP4_q25=quantile(PP4, 0.25, na.rm=TRUE),
+  PP4_q75=quantile(PP4, 0.75, na.rm=TRUE),
+  PP34_med=median(PP34, na.rm=TRUE),
+  rat_med=median(PP4_over_PP34, na.rm=TRUE),
+  cs95_med=median(as.numeric(cs95_n_snp), na.rm=TRUE),
+  leadPPsho_med=median(lead_snp_PPsho, na.rm=TRUE)
+), by=cls][order(-N)]
+
+sum_stats
 
 ```

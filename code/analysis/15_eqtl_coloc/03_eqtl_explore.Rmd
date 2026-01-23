@@ -15,7 +15,7 @@ suppressMessages({
   })
 here::i_am('.git/HEAD')
 rdsdir=here("processed-data", "rds")
-## refdata -> ref folder symlink to CHESS Brain ref data for now
+## refdir-> ref folder symlink to CHESS Brain ref data for now
 refdir=here("processed-data", "ref")
 ```
 
@@ -297,21 +297,4 @@ summ_dx <- function(dt) dt[, .(
 
 dxsum10 <- summ_dx(dx_primary)
 
-```
-
-
-```{r collect parquet files}
-
-dsname="spd01"
-#parquet_dir = 'mdd_old/tensorQTL_lognorm/eqtl_out' ## expected there: amyg.gene.cis_qtl_pairs.chr1.parquet
-parquet_dir = 'tqtl_out' ## expected there: amyg.gene.cis_qtl_pairs.chr1.parquet
-#out_dir = 'tqtl_fdr05' # output directory to write FDR<0.05 eqtl mappings
-##############################
-
-pat=paste0(dsname,'\\.gene\\.cis_qtl_pairs\\.chr.+\\.parquet$')
-fls <- list.files(path=parquet_dir, pattern=pat, recursive = TRUE, full.names = TRUE)
-chrs <-  stri_match_first_regex(fls, "(chr[^.]+)")[,1]
-names(fls) <- chrs
-## read a parquet file:
-# pfchr1 <- arrow::read_parquet(fls[["chr1"]])
 ```
