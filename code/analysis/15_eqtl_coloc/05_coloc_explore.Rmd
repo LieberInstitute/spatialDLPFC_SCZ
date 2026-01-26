@@ -42,7 +42,7 @@ gwas1e6_set <- unique(gwas$variant_id) ## loose p < 1e-6
 ## WARNING: makes sure char not factor is passed to this char2char mapping!
 ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
        "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
-
+dss <- names(ds2name)
 ## load degs adust SpD as SpD degs
 deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
 rownames(deg_spd_adj) <- deg_spd_adj$V1
@@ -188,12 +188,37 @@ for (ds in names(ds2name)) {
  }
  paths[[ds]] <- ff
 }
+
+cdts <- cdts[names(ds2name)]
 ## summary plots?
 ## A scatter of PP4 vs PP4_over_PP34 (coloc strength vs dominance).
 ## cs95_n_snp vs PP4 (credible set size tends to shrink with stronger signal, but multi-signal loci can behave oddly).
 ## For reporting: always show PP0..PP4, PP4_over_PP34, lead SNP (and whether lead SNP is the same top SNP for both traits if you also compute that elsewhere), and priors.
 
 ```
+
+
+
+
+```{r}
+fc <- cdts[["spd01"]]
+sum_stats <- fc[, .(
+  N=.N,
+  PP4_med=median(PP4, na.rm=TRUE),
+  PP4_q25=quantile(PP4, 0.25, na.rm=TRUE),
+  PP4_q75=quantile(PP4, 0.75, na.rm=TRUE),
+  PP34_med=median(PP34, na.rm=TRUE),
+  rat_med=median(PP4_over_PP34, na.rm=TRUE),
+  cs95_med=median(as.numeric(cs95_n_snp), na.rm=TRUE),
+  leadPPsho_med=median(lead_snp_PPsho, na.rm=TRUE)
+), by=cls][order(-N)]
+
+sum_stats
+
+```
+
+
+
 
 
 ```{r summaries}
@@ -210,27 +235,92 @@ sum_cls_frac
 
 ```
 
+
 ```{r}
-ggplot(fc[, .N, by=.(cls, kept_by)], aes(x=cls, y=N, fill=kept_by)) +
-  geom_col() +
+fc_all <- rbindlist(cdts, idcol="ds")
+
+
+
+```
+
+
+```{r stacked bars}
+library(data.table)
+library(ggplot2)
+
+pp4_thr <- 0.80
+pp34_thr <- 0.80
+rat_thr <- 0.90
+
+# fc_all assumed to already have ds, PP4, PP34, PP4_over_PP34
+fc_all[, cat := fcase(
+  PP34 >= pp34_thr & PP4_over_PP34 >= rat_thr, "strong_coloc",
+  (PP34 >= pp34_thr) | (PP4 >= pp4_thr),       "follow_up",
+  default = NA_character_
+)]
+## get a quick summary/list in the console for now
+fc_all[PP34 >= pp34_thr & PP4_over_PP34 >= rat_thr, 
+  .(genes = paste(sort(unique(g2sym[fid])), collapse=", ")), 
+  by=.(ds)
+]
+
+pdt <- fc_all[!is.na(cat), .N, by=.(ds, cat)]
+tot <- pdt[, .(Ntot = sum(N)), by=ds]
+pdt <- tot[pdt, on="ds"]
+
+p <- ggplot(pdt, aes(x=ds, y=N, fill=cat)) +
+  geom_col(width=0.75) +
+  geom_text(
+    aes(label=ifelse(N > 0, N, "")),
+    position=position_stack(vjust=0.5),
+    size=3
+  ) +
+  geom_text(
+    data=tot,
+    aes(x=ds, y=Ntot, label=paste0("n=", Ntot)),
+    inherit.aes=FALSE,
+    hjust=-0.1,
+    size=3
+  ) +
   coord_flip() +
   theme_bw() +
-  labs(x=NULL, y="Number of features")
+  labs(
+    x=NULL, y="Number of kept features",
+    title="Kept coloc loci by dataset (2-category view)",
+    subtitle=paste0(
+      "strong_coloc: PP34 >= ", pp34_thr, " and PP4/(PP34) >= ", rat_thr,
+      " ; follow_up: PP34 >= ", pp34_thr, " OR PP4 >= ", pp4_thr, " (excluding strong_coloc)"
+    )
+  ) +
+  scale_y_continuous(expand=expansion(mult=c(0, 0.15)))
+print(p)
 ```
 
+```{r clean PP4 high only}
+library(data.table)
+library(ggplot2)
 
-```{r}
-sum_stats <- fc[, .(
-  N=.N,
-  PP4_med=median(PP4, na.rm=TRUE),
-  PP4_q25=quantile(PP4, 0.25, na.rm=TRUE),
-  PP4_q75=quantile(PP4, 0.75, na.rm=TRUE),
-  PP34_med=median(PP34, na.rm=TRUE),
-  rat_med=median(PP4_over_PP34, na.rm=TRUE),
-  cs95_med=median(as.numeric(cs95_n_snp), na.rm=TRUE),
-  leadPPsho_med=median(lead_snp_PPsho, na.rm=TRUE)
-), by=cls][order(-N)]
+pp4_thr <- 0.80
 
-sum_stats
+all_ds <- data.table(ds = names(cdts))
 
-```
+pdt <- fc_all[PP4 > pp4_thr, .N, by=ds]
+pdt <- all_ds[pdt, on="ds"]
+pdt[is.na(N), N := 0L]
+
+ds_lev <- names(cdts)
+
+ggplot(pdt, aes(x=factor(ds, levels = ds_lev), y=N)) +
+  geom_col(width=0.75) +
+  geom_text(aes(label=N), vjust=-0.4, size=3) +
+  theme_bw() +
+  labs(
+    x=NULL, y="Number of features",
+    title=paste0("High-confidence colocalization candidates (PP4 > ", pp4_thr, ")")
+  ) +
+  scale_y_continuous(expand=expansion(mult=c(0, 0.12))) +
+  theme(
+    axis.text.x = element_text(angle=45, hjust=1)
+  )
+
+```https://docs.google.com/presentation/d/1B2cB186G2p8XAtwsYxAUO3zCoF4518MPdaJU3zOYlBI/edit?usp=sharing

@@ -21,13 +21,30 @@ refdir=here("processed-data", "ref")
 
 ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
        "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
+dss <- names(ds2name)
 ```
+
+```{r load our gwas-matched data}
+gwas_vars <- fread(file.path(refdir, "scz_gwas_wide.scz.tqtl-matched.tab.gz"))
+
+```
+
 
 ```{r load all independent tensor QTL results}
 pat <- '\\.map_independent\\.txt\\.gz$'
 fcis <- list.files(path='tqtl_out', pattern=pat, recursive = TRUE, full.names = TRUE)
 names(fcis) <- sub("/", "", stri_match_first_regex(fcis, '/(\\w+)\\.gene')[,2])
-indres <- lapply(fcis, fread)
+## names(fcis) must match dss items and we have to sort it to be in the same order
+stopifnot("fcis/dss name mismatch" = setequal(names(fcis), dss))
+fcis <- fcis[dss] # sort in dss order
+
+indres <- lapply(names(fcis), \(x) { 
+    dt <- fread(fcis[[x]])
+    if (nrow(dt)==0) message("Dataset ", x, " has no rows!")
+    dt
+    })
+names(indres) <- dss
+
 ```
 
 
@@ -38,7 +55,8 @@ pgen_prefix <- here("processed-data", "genotypes", "plink2", "merged_maf05")
 #' @param pgen_prefix Path prefix to plink2 files (without .pgen/.pvar/.psam extension)
 #' @return List with: dosage (samples x variants matrix), labels (samples x variants character matrix),
 #'         pvar (data.table with variant info), samples (character vector of sample IDs)
-prepGenotypes <- function(pgen_prefix) {
+#' if gwas_vars is given, relevant GWAS info will be added to the pvar data.table, where available, columns: rsid, p, beta, beta_se, impinfo
+prepGenotypes <- function(pgen_prefix, gwas_vars = NULL) {
   # File paths
   pgen_file <- paste0(pgen_prefix, ".pgen")
   pvar_file <- paste0(pgen_prefix, ".pvar")
@@ -51,6 +69,23 @@ prepGenotypes <- function(pgen_prefix) {
   pvar <- fread(pvar_file, sep = "\t")
   setnames(pvar, "#CHROM", "CHROM")
   pvar[, var_idx := .I]  # 1-based index
+
+  # Attach GWAS info if provided
+  if (!is.null(gwas_vars)) {
+    required_cols <- c("variant_id", "rsid", "beta", "beta_se", "N", "p", "impinfo")
+    stopifnot("gwas_vars must include required columns" = all(required_cols %in% names(gwas_vars)))
+    gwas_sub <- as.data.table(gwas_vars)[, ..required_cols]
+    pvar <- merge(
+      pvar,
+      gwas_sub,
+      by.x = "ID",
+      by.y = "variant_id",
+      all.x = TRUE,
+      sort = FALSE
+    )
+  }
+  # Add a secondary index for fast ID lookups without reordering rows 
+  setindexv(pvar, "ID")
   # Load psam (sample info)
   psam <- fread(psam_file, sep = "\t")
   # psam typically has #IID column
@@ -101,41 +136,19 @@ prepGenotypes <- function(pgen_prefix) {
   )
 }
 # Load genotypes
-geno <- prepGenotypes(pgen_prefix)
+geno <- prepGenotypes(pgen_prefix, gwas_vars)
 ```
 
 
 ```{r test dataset}
 ## let's focus on 1 independent result for testing:
-indr <- indres[[1]]
-#      V1    phenotype_id num_var beta_shape1 beta_shape2  true_df pval_true_df         variant_id start_distance end_distance ma_samples ma_count         af pval_nominal     slope
-#   <int>          <char>   <int>       <num>       <num>    <num>        <num>             <char>          <int>        <int>      <int>    <int>      <num>        <num>     <num>
-#1:     0 ENSG00000159339    3839    1.048327    335.6378 25.93697 2.639593e-09  chr1:17346607:C:T          38411        38411         42       52 0.41269842 1.462546e-10  1.147336
-#2:     1 ENSG00000218510    4438    1.057207    355.8546 25.37442 5.765979e-07  chr1:22020759:C:T          -3800        -3800         20       23 0.18253969 5.238598e-08  1.324606
-#3:     2 ENSG00000117748    2292    1.027371    130.6743 25.78039 3.068787e-07  chr1:27914572:G:A           -175         -175          9        9 0.07142857 3.218513e-08  1.268317
-#4:     3 ENSG00000134690    3810    1.038049    318.2303 26.00598 1.265930e-06  chr1:38579916:A:C         887434       887434          9        9 0.07142857 1.889060e-07 -1.860726
-#5:     4 ENSG00000280670    3188    1.041969    122.6586 24.95545 4.113737e-07 chr1:46088315:AC:A         588235       588235         30       34 0.26984128 2.691792e-08  1.156558
-#    slope_se  pval_perm    pval_beta  rank
-#       <num>      <num>        <num> <int>
-#1: 0.1206732 0.00009999 4.423238e-07     1
-#2: 0.1840939 0.00039996 1.230865e-04     1
-#3: 0.1719210 0.00009999 3.004143e-05     1
-#4: 0.2768010 0.00009999 2.942595e-04     1
-#5: 0.1553580 0.00009999 3.271190e-05     1
-
-spe <- qs_read(file.path('tqtl_in', 'spd01.gene.spe.qs2'))
+ds <- 'spd01'
+dsname <- unname(ds2name[ds])
+spe <- qs_read(file.path('tqtl_in', sprintf('%s.gene.spe.qs2',ds)))
 ## use assays(spe)$tmm for expression data, TMM normalized log(CPM+1)
-
-pvar <- fread(here("processed-data/genotypes/plink2", "merged_maf05.pvar"), sep = "\t")
-setnames(pvar, '#CHROM', 'CHROM')
-## plink pvar data (for REF/ALT clarification)
-#    CHROM    POS              ID    REF    ALT
-#   <char>  <int>          <char> <char> <char>
-#1:   chr1 798969 chr1:798969:T:C      T      C
-#2:   chr1 816376 chr1:816376:T:C      T      C
-#3:   chr1 817341 chr1:817341:A:G      G      A
-#4:   chr1 823913 chr1:823913:T:A      T      A
-#5:   chr1 828811 chr1:828811:T:G      T      G
+covar_file <- file.path("tqtl_in", sprintf("%s.gene.covars.txt", ds))
+indr <- indres[[ds]]
+stopifnot(!is.null(indr))
 ```
 
 
@@ -146,78 +159,62 @@ setnames(pvar, '#CHROM', 'CHROM')
 #' @param covar_file Path to tensorQTL covariates file
 #' @return List with residualized/raw expression matrices, gene/sample info, and genotype reference
 prep_eQTLPlotData <- function(spe, geno, covar_file) {
-
   # ---- Validate inputs ----
   stopifnot("spe must be a SummarizedExperiment" = is(spe, "SummarizedExperiment"))
   stopifnot("geno must be a list with dosage, labels, pvar, samples" =
               all(c("dosage", "labels", "pvar", "samples") %in% names(geno)))
   stopifnot("covar_file must exist" = file.exists(covar_file))
   stopifnot("spe must have 'tmm' assay" = "tmm" %in% assayNames(spe))
-
   # ---- Load covariates ----
   message("Loading covariates from: ", covar_file)
   covars_raw <- fread(covar_file, sep = "\t")
   covar_names <- covars_raw$id
   covar_samples <- setdiff(names(covars_raw), "id")
-
   # Transpose: samples as rows, covariates as columns
   covar_mat <- t(as.matrix(covars_raw[, -1, with = FALSE]))
   colnames(covar_mat) <- covar_names
   rownames(covar_mat) <- covar_samples
-
   # Remove intercept if present (cleaningY doesn't need it)
   if ("(Intercept)" %in% colnames(covar_mat)) {
     covar_mat <- covar_mat[, colnames(covar_mat) != "(Intercept)", drop = FALSE]
   }
-
   # ---- Align samples across all sources ----
   spe_samples <- colnames(spe)
   geno_samples <- geno$samples
-
   message(sprintf("Sample counts: SPE=%d, Genotypes=%d, Covariates=%d",
                   length(spe_samples), length(geno_samples), length(covar_samples)))
-
   # Find common samples
   common_samples <- Reduce(intersect, list(spe_samples, geno_samples, covar_samples))
-
   if (length(common_samples) == 0) {
     stop("No common samples found across SPE, genotypes, and covariates!")
   }
-
   n_dropped <- length(spe_samples) - length(common_samples)
   if (n_dropped > 0) {
     warning(sprintf("Dropped %d samples not present in all data sources. Using %d samples.",
                     n_dropped, length(common_samples)))
   }
   message(sprintf("Using %d common samples", length(common_samples)))
-
   # Reorder all data to common sample order
   spe_idx <- match(common_samples, spe_samples)
   geno_idx <- match(common_samples, geno_samples)
   covar_idx <- match(common_samples, covar_samples)
-
   # Subset and reorder covariate matrix
   covar_mat <- covar_mat[covar_idx, , drop = FALSE]
-
   # ---- Extract expression data ----
   message("Extracting expression data...")
   raw_expr <- assays(spe)$tmm[, spe_idx, drop = FALSE]
   colnames(raw_expr) <- common_samples
-
   # ---- Residualize expression ----
   # cleaningY: P = number of columns to PROTECT (keep) from left of model matrix
   # We want to regress out all covariates to show pure genotype effect
   # P=0 means regress out everything; but cleaningY needs at least the intercept
   # Since we removed intercept, we need to add it back for cleaningY to work properly
   message("Residualizing expression with jaffelab::cleaningY...")
-
   # Add intercept column as first column (cleaningY needs it)
   mod_mat <- cbind("(Intercept)" = 1, covar_mat)
-
   # P=1 protects only intercept, regresses out all other covariates
   resid_expr <- jaffelab::cleaningY(raw_expr, mod = mod_mat, P = 1)
   colnames(resid_expr) <- common_samples
-
   # ---- Build gene info ----
   rr <- rowRanges(spe)
   gene_info <- data.table(
@@ -227,7 +224,6 @@ prep_eQTLPlotData <- function(spe, geno, covar_file) {
     start = start(rr),
     end = end(rr)
   )
-
   # ---- Build sample info ----
   cd <- colData(spe)[spe_idx, ]
   sample_info <- data.table(
@@ -237,10 +233,8 @@ prep_eQTLPlotData <- function(spe, geno, covar_file) {
   # Add any other useful columns if present
   if ("sex" %in% names(cd)) sample_info[, sex := cd$sex]
   if ("age" %in% names(cd)) sample_info[, age := cd$age]
-
   # ---- Store sample indices for genotype subsetting ----
   message("Done preparing eQTL plot data.")
-
   list(
     resid_expr = resid_expr,
     raw_expr = raw_expr,
@@ -251,17 +245,13 @@ prep_eQTLPlotData <- function(spe, geno, covar_file) {
   )
 }
 
-# ---- Test with loaded objects ----
-# Load neun spe to match the neun eQTL results (indr is from neun)
-spe <- qs_read(file.path('tqtl_in', 'neun.gene.spe.qs2'))
-covar_file <- file.path("tqtl_in", "neun.gene.covars.txt")
-
-# Run prep function
+# test prep function -- assumes spe, covar_file were previously loaded
 plotdata <- prep_eQTLPlotData(spe, geno, covar_file)
 ```
 
-```{r test prep_eQTLPlotData}
+```{r test/validate prep_eQTLPlotData}
 # Verify output structure
+## 
 cat("\n=== prep_eQTLPlotData output ===\n")
 cat("resid_expr:", class(plotdata$resid_expr), "dim:", paste(dim(plotdata$resid_expr), collapse=" x "), "\n")
 cat("raw_expr:", class(plotdata$raw_expr), "dim:", paste(dim(plotdata$raw_expr), collapse=" x "), "\n")
@@ -329,19 +319,37 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NU
   expr_mat <- if (use_raw) plotdata$raw_expr else plotdata$resid_expr
   sample_info <- plotdata$sample_info
   sample_idx <- plotdata$sample_idx
+  # Build variant -> rsID map if available
+  pvar <- plotdata$geno$pvar
+  rsid_col <- if ("rsID" %in% names(pvar)) "rsID" else if ("rsid" %in% names(pvar)) "rsid" else NULL
+  rsid_map <- NULL
+  if (!is.null(rsid_col) && "ID" %in% names(pvar)) {
+    rsid_map <- pvar[, .(variant_id = ID, rsid = get(rsid_col))]
+  }
   # Collect data for all pairs
   plot_list <- lapply(seq_len(nrow(eqtl_pairs)), function(i) {
     gene_id <- eqtl_pairs$phenotype_id[i]
     var_id <- eqtl_pairs$variant_id[i]
     gene_name <- eqtl_pairs$gene_name[i]
+    # Get rsID if available
+    rsid_val <- NA_character_
+    if (!is.null(rsid_map)) {
+      rsid_val <- rsid_map$rsid[match(var_id, rsid_map$variant_id)]
+    }
     # Get expression and genotypes
     expr_vals <- expr_mat[gene_id, ]
     geno_labels <- plotdata$geno$labels[sample_idx, var_id]
     geno_dosage <- plotdata$geno$dosage[sample_idx, var_id]
+    
     # Order genotypes by dosage within this variant
     geno_order <- unique(geno_labels[order(geno_dosage)])
     # Build facet label
-    facet_label <- sprintf("%s\n%s", var_id, gene_name)
+    var_label <- if (!is.na(rsid_val) && nzchar(rsid_val)) {
+      sprintf("%s (%s)", var_id, rsid_val)
+    } else {
+      var_id
+    }
+    facet_label <- sprintf("%s\n%s", var_label, gene_name)
     # Get beta and p-value if available
     beta_val <- if ("slope" %in% names(eqtl_pairs)) eqtl_pairs$slope[i] else NA
     pval_val <- if ("pval_nominal" %in% names(eqtl_pairs)) eqtl_pairs$pval_nominal[i] else NA
@@ -401,17 +409,36 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NU
   p
 }
 
-# ---- Test with neun data ----
+# ---- Test with neun data ---- assumes indr already loaded for the currently prepared spe data
 # Find 3 eQTLs with high significance and large effect size
-indr_neun <- indres[["neun"]]
-indr_neun[, abs_slope := abs(slope)]
-
+#indr_neun <- indres[["neun"]]
+indr[, abs_slope := abs(slope)]
 # Filter for high significance and effect, ensure 3 genotype classes visible (reasonable MAF)
-top_eqtls <- indr_neun[pval_nominal < 1e-8 & abs_slope > 1.0 & af > 0.15 & af < 0.85][order(-abs_slope)][1:3]
+top_eqtls <- indr[pval_nominal < 1e-8 & abs_slope > 1.0 & af > 0.15 & af < 0.85][order(-abs_slope)][c(2,3)]
 cat("Selected eQTLs for plotting:\n")
-top_eqtls[, .(phenotype_id, variant_id, slope, pval_nominal, af)]
+top_eqtls[, .(phenotype_id, variant_id, slope, pval_nominal, pval_perm, af)]
 
 # Create plot
-p <- plot_eQTL_boxplots(plotdata, top_eqtls, title = "Top neun eQTLs")
+## this might have to be customized further
+p <- plot_eQTL_boxplots(plotdata, top_eqtls) #, title = sprintf("%s eQTL examop", dsname))
 p
+```
+
+
+```{r neuropil example}
+ds <- 'neuropil'
+dsname <- unname(ds2name[ds])
+spe <- qs_read(file.path('tqtl_in', sprintf('%s.gene.spe.qs2',ds)))
+## use assays(spe)$tmm for expression data, TMM normalized log(CPM+1)
+covar_file <- file.path("tqtl_in", sprintf("%s.gene.covars.txt", ds))
+indr <- indres[[ds]]
+stopifnot(!is.null(indr))
+plotdata <- prep_eQTLPlotData(spe, geno, covar_file)
+```
+
+```{r}
+top_eqtls <- indr[phenotype_id=="ENSG00000102882"]
+cat("Selected eQTLs for plotting:\n")
+top_eqtls[, .(phenotype_id, variant_id, slope, pval_nominal, pval_perm, af)]
+print(plot_eQTL_boxplots(plotdata, top_eqtls))
 ```

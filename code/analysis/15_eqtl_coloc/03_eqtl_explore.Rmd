@@ -73,13 +73,28 @@ ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD
        "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
 
 ## load degs adust SpD as SpD degs
-deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
-rownames(deg_spd_adj) <- deg_spd_adj$V1
-setnames(deg_spd_adj, 'V1', 'fid')
-spd_degs <- subset(deg_spd_adj, fdr_scz<=0.1) ## 10% FDR threshold was used
-spds <- grep('spd', names(ds2name), value=TRUE)
-ds2degs <- lapply(spds, \(x) spd_degs)
-names(ds2degs) <- spds
+useLayerAdjusted=FALSE
+ds2degs <- list()
+if (useLayerAdjusted) {
+  deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
+  rownames(deg_spd_adj) <- deg_spd_adj$V1
+  setnames(deg_spd_adj, 'V1', 'fid')
+  spd_degs <- subset(deg_spd_adj, fdr_scz<=0.1) ## 10% FDR threshold was used
+  spds <- grep('spd', names(ds2name), value=TRUE)
+  ds2degs <- lapply(spds, \(x) spd_degs)
+  names(ds2degs) <- spds
+} else { # use layer-restricted
+  for (ds in grep("^spd", names(ds2name), value=TRUE)) {
+    degspd <- fread(file.path(rdsdir, "11_dx_deg_interaction", sprintf("layer_restricted_logFC_%s.csv", ds)),
+                     data.table = FALSE)
+    degspd <- subset(degspd, adj.P.Val<0.1)
+    degspd$fid <- degspd$gene_id
+    rownames(degspd) <- degspd$gene_id
+    setcolorder(degspd, 'fid')
+    ds2degs[[ds]] <- degspd
+  }
+}
+
 ## for the SpG contexts, separate DEGs per context:
 spgs <- grep('^[^s]', names(ds2name), value=TRUE)
 for (ds in spgs) {
