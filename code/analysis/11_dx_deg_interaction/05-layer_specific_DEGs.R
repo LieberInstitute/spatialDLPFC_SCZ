@@ -8,8 +8,8 @@ suppressPackageStartupMessages({
 
 # Load data ----
 spd_files <- list.files(
-  "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_restricted_logFC_.*\\.csv",
+  here("processed-data/rds/11_dx_deg_interaction"),
+  pattern = "layer_restricted_logFC_redo_.*\\.csv",
   full.names = TRUE
 )
 
@@ -43,7 +43,7 @@ spd_deg_list <-
       match(
         str_extract(
           spd_files,
-          "(?<=layer_restricted_logFC_).*?(?=\\.csv)"
+          "(?<=layer_restricted_logFC_redo_).*?(?=\\.csv)"
         ),
         spd_anno_df$spd
       ),
@@ -103,7 +103,7 @@ write_csv(
   unique_genes_nom,
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "layer_specific_genes_nom_p.csv"
+    "layer_specific_genes_nom_p_redo.csv"
   ),
   quote = "all"
 )

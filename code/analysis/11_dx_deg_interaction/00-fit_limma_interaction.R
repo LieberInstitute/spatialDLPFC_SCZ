@@ -46,7 +46,7 @@ saveRDS(
   fit,
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "limma_obj_int_PRECAST_07.rds"
+    "limma_obj_int_PRECAST_07_redo.rds"
   )
 )
 

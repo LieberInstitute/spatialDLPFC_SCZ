@@ -38,8 +38,8 @@ adj_deg_df_raw <- read_csv(here(
 
 ## Load layer-specific DEGs files ----
 spd_files <- list.files(
-  "processed-data/rds/11_dx_deg_interaction", ,
-  pattern = "layer_restricted_logFC_.*\\.csv",
+  here("processed-data/rds/11_dx_deg_interaction"), ,
+  pattern = "layer_restricted_logFC_redo_.*\\.csv",
   full.names = TRUE
 )
 
@@ -51,7 +51,7 @@ spd_deg_df <-
       match(
         str_extract(
           spd_files,
-          "(?<=layer_restricted_logFC_).*?(?=\\.csv)"
+          "(?<=layer_restricted_logFC_redo_).*?(?=\\.csv)"
         ),
         spd_anno_df$spd
       ),
@@ -73,13 +73,11 @@ spd_deg_df <-
 stopifnot(spd_deg_df |> filter(is.na(gene)) == 0)
 
 
-
-
 # Annotate Layer-specific DEGs ----
 unique_genes_nom <- read_csv(
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "layer_specific_genes_nom_p.csv"
+    "layer_specific_genes_nom_p_redo.csv"
   )
 )
 
@@ -97,11 +95,20 @@ write_csv(
   spd_deg_df,
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "layer_restricted_degs_all_spds.csv"
+    "layer_restricted_degs_all_spds_redo.csv"
   ),
   na = "",
   quote = "all"
 )
+## compare with previous file
+old_spd_deg_df <- read_csv(
+  here(
+    "processed-data/rds/11_dx_deg_interaction",
+    "layer_restricted_degs_all_spds.csv"
+  )
+)
+all.equal(as.data.frame(old_spd_deg_df), as.data.frame(spd_deg_df))
+# [1] TRUE
 
 # Session info ----
 session_info()

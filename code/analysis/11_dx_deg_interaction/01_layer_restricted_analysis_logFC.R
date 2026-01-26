@@ -13,17 +13,25 @@ suppressPackageStartupMessages({
 fit <- readRDS(
   here(
     "processed-data/rds/11_dx_deg_interaction",
-    "limma_obj_int_PRECAST_07.rds"
+    "limma_obj_int_PRECAST_07_redo.rds"
   )
 )
 
 
-# Create contrast matrix of SpDs ----
+## Create contrast matrix of SpDs, for layer-restricted effects
+## fit$coefficents columns: dxntc, dxscz, fnl_spdspd02, fnl_spdspd03, fnl_spdspd04, fnl_spdspd05, fnl_spdspd06, fnl_spdspd07,  age,  sexM,  slide_idV12F14-053...
+##                            1      2        3               4              5            6          7                  8       9    10        11  ...
 cont.mat <- rbind(
-  rep(-1, 7),
-  rep(1, 7),
-  matrix(0, nrow = 23, ncol = 7),
-  cbind(rep(0, 6), diag(nrow = 6, ncol = 6))
+  rep(-1, 7), ## baseline Control (dxntc): subtract dxntc for all 7 layers
+  rep(1, 7), ## baseline SCZ (dxscz): add this to all 7 layers (1)
+             ## so far:   dxscz - dxntc
+  matrix(0, nrow = 23, ncol = 7), ## nuisance terms (23 rows): set to 0 to ignore
+                ##  6 rows: main effects of SpDs (SpD02-07); these cancel out
+                ## 17 rows: covariates (Age, Sex, Slide_IDs)
+  cbind(rep(0, 6), diag(nrow = 6, ncol = 6)) ## interaction terms (6 rows): dxscz:SpD02 through dxscz:SpD07
+                ## - col 1 (SpD01): Reference layer, so interaction is 0.
+                ## - cols 2-7 (SpD02-07): Add the specific interaction term (1) for that layer.
+      ## for each spd 02..07 we have:  (dxscz - dxntc) + dxscz:SpDxx  (only 02-07, as 01 is the reference layer)
 )
 colnames(cont.mat) <- sprintf("spd%02d", 1:7)
 
@@ -65,6 +73,11 @@ colnames(cont.mat) <- sprintf("spd%02d", 1:7)
 # Design matrix is conformable with the contrast matrix
 stopifnot(nrow(cont.mat) == ncol(fit$design))
 
+## apply the new contrast matrix to the fit object
+## NOTE:the statistics has to be reset here for the new contrast matrix
+contrast_fit <- contrasts.fit(fit, cont.mat)
+contrast_fit <- eBayes(contrast_fit)
+
 # Layer specific logFC and hypo test ----
 
 colnames(cont.mat) |>
@@ -86,7 +99,7 @@ colnames(cont.mat) |>
         "processed-data/rds/11_dx_deg_interaction",
         paste0(
           # "layer_specific_logFC_",
-          "layer_restricted_logFC_",
+          "layer_restricted_logFC_redo_",
           gsub("[^[:alnum:]_]", "_", idx),
           ".csv"
         )
@@ -94,8 +107,38 @@ colnames(cont.mat) |>
     )
   })
 
-
-
+  ## compare with previous results:
+for (spd in colnames(cont.mat)) {
+  df_new <- read_csv(
+    here(
+      "processed-data/rds/11_dx_deg_interaction",
+      paste0(
+        "layer_restricted_logFC_redo_",
+        gsub("[^[:alnum:]_]", "_", spd),
+        ".csv"
+      )
+    ),
+    show_col_types = FALSE
+  )
+  df_old <- read_csv(
+    here(
+      "processed-data/rds/11_dx_deg_interaction",
+      paste0(
+        "layer_restricted_logFC_",
+        gsub("[^[:alnum:]_]", "_", spd),
+        ".csv"
+      )
+    ),
+    show_col_types = FALSE
+  )
+  ## compare
+  cat(sprintf("Comparing results for %s:\n", spd))
+  all.equal(
+    df_new |> arrange(gene_id),
+    df_old |> arrange(gene_id)
+  ) |> print()
+}
+## all TRUE !
 
 # Session Info ----
 # sessioninfo::session_info()
