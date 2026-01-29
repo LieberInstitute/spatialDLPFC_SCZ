@@ -17,7 +17,9 @@ suppressMessages({
 here::i_am('.git/HEAD')
 rdsdir=here("processed-data", "rds")
 ## refdata -> ref folder symlink to CHESS Brain ref data for now
-refdir=here("processed-data", "ref")
+refdir=here("processed-data", "ref") ## some general reference files prepared for our data
+tqtl_out=here("processed-data", "eQTL/tqtl_out")
+tqtl_in=here("processed-data", "eQTL/tqtl_in")
 
 ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
        "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
@@ -25,14 +27,18 @@ dss <- names(ds2name)
 ```
 
 ```{r load our gwas-matched data}
+
 gwas_vars <- fread(file.path(refdir, "scz_gwas_wide.scz.tqtl-matched.tab.gz"))
+## load gene info
+granges <- qs_read(file.path(refdir,"granges.qs2")) ## gene info file created by 00_explore_data.Rmd last chunk
+g2sym <- setNames(granges$gene_name, granges$gene_id)
 
 ```
 
 
 ```{r load all independent tensor QTL results}
 pat <- '\\.map_independent\\.txt\\.gz$'
-fcis <- list.files(path='tqtl_out', pattern=pat, recursive = TRUE, full.names = TRUE)
+fcis <- list.files(path=tqtl_out, pattern=pat, recursive = TRUE, full.names = TRUE)
 names(fcis) <- sub("/", "", stri_match_first_regex(fcis, '/(\\w+)\\.gene')[,2])
 ## names(fcis) must match dss items and we have to sort it to be in the same order
 stopifnot("fcis/dss name mismatch" = setequal(names(fcis), dss))
@@ -41,10 +47,9 @@ fcis <- fcis[dss] # sort in dss order
 indres <- lapply(names(fcis), \(x) { 
     dt <- fread(fcis[[x]])
     if (nrow(dt)==0) message("Dataset ", x, " has no rows!")
-    dt
+    dt[, gene_name:=g2sym[phenotype_id]]
     })
 names(indres) <- dss
-
 ```
 
 
@@ -135,18 +140,28 @@ prepGenotypes <- function(pgen_prefix, gwas_vars = NULL) {
     samples = samples
   )
 }
-# Load genotypes
-geno <- prepGenotypes(pgen_prefix, gwas_vars)
+## Load genotypes (8GB RAM needed just for this)
+## this prep takes a long time, might be easier to save it in refdir after preparing it once
+fprepgeno <- file.path(refdir, "plink_pgen_data_objects.qs2")
+if (!file.exists(fprepgeno)) {
+  geno <- prepGenotypes(pgen_prefix, gwas_vars)
+  qs_save(geno, file=fprepgeno)
+} else {
+  message("loading prepared genotype data.. please wait")
+  ## even loading is slow here
+  geno <- qs_read(fprepgeno)
+}
 ```
 
 
-```{r test dataset}
+```{r MAKP3 eQTL data only in neuropil}
 ## let's focus on 1 independent result for testing:
-ds <- 'spd01'
+ds <- 'neuropil'
 dsname <- unname(ds2name[ds])
-spe <- qs_read(file.path('tqtl_in', sprintf('%s.gene.spe.qs2',ds)))
+## load data for the specified dataset
+spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
 ## use assays(spe)$tmm for expression data, TMM normalized log(CPM+1)
-covar_file <- file.path("tqtl_in", sprintf("%s.gene.covars.txt", ds))
+covar_file <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
 indr <- indres[[ds]]
 stopifnot(!is.null(indr))
 ```
@@ -245,11 +260,9 @@ prep_eQTLPlotData <- function(spe, geno, covar_file) {
   )
 }
 
-# test prep function -- assumes spe, covar_file were previously loaded
-plotdata <- prep_eQTLPlotData(spe, geno, covar_file)
 ```
 
-```{r test/validate prep_eQTLPlotData}
+```{r SKIP test/validate prep_eQTLPlotData}
 # Verify output structure
 ## 
 cat("\n=== prep_eQTLPlotData output ===\n")
@@ -309,7 +322,7 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NU
     eqtl_pairs <- eqtl_pairs[!phenotype_id %in% missing_genes]
   }
   if (nrow(eqtl_pairs) == 0) stop("No valid eQTL pairs remain after filtering")
-  # ---- Add gene names if not present ----
+  # ---- Add gene names if not present ----MAPK3 eQTL in Neuropil (FDR (p_perm) = 0.0006
   if (!"gene_name" %in% names(eqtl_pairs)) {
     gene_map <- plotdata$gene_info[, .(gene_id, gene_name)]
     eqtl_pairs <- merge(eqtl_pairs, gene_map, by.x = "phenotype_id", by.y = "gene_id", all.x = TRUE)
@@ -320,6 +333,7 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NU
   sample_info <- plotdata$sample_info
   sample_idx <- plotdata$sample_idx
   # Build variant -> rsID map if available
+  ## TODO: rsID mapping data here is very poor, should use another source
   pvar <- plotdata$geno$pvar
   rsid_col <- if ("rsID" %in% names(pvar)) "rsID" else if ("rsid" %in% names(pvar)) "rsid" else NULL
   rsid_map <- NULL
@@ -400,8 +414,8 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NU
   # Add beta/p-value annotations
   if (all(!is.na(annot_dt$beta))) {
     p <- p + geom_text(data = annot_dt,
-                       aes(x = x, y = y, label = label),
-                       hjust = 1, vjust = 0, size = 3, inherit.aes = FALSE)
+                       aes(x = x+0.8, y = y, label = label),
+                       hjust = 1.1, vjust = 0.9, size = 3, inherit.aes = FALSE)
   }
   if (!is.null(title)) {
     p <- p + ggtitle(title)
@@ -409,28 +423,43 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NU
   p
 }
 
-# ---- Test with neun data ---- assumes indr already loaded for the currently prepared spe data
-# Find 3 eQTLs with high significance and large effect size
-#indr_neun <- indres[["neun"]]
-indr[, abs_slope := abs(slope)]
-# Filter for high significance and effect, ensure 3 genotype classes visible (reasonable MAF)
-top_eqtls <- indr[pval_nominal < 1e-8 & abs_slope > 1.0 & af > 0.15 & af < 0.85][order(-abs_slope)][c(2,3)]
-cat("Selected eQTLs for plotting:\n")
-top_eqtls[, .(phenotype_id, variant_id, slope, pval_nominal, pval_perm, af)]
+```
+
+
+```{r check for MAPK3 in vasc, pnn and neun}
+##ds <- 'pnn' ## actually none of the other datasets have it
+## apply(indres, \(x) x[gene_name=="MAPK3"]) --> only shows it in neuropil
+ds <- 'neuropil'
+dsname <- unname(ds2name[ds])
+## load data for the specified dataset
+spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
+## use assays(spe)$tmm for expression data, TMM normalized log(CPM+1)
+covar_file <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
+indr <- indres[[ds]]
+stopifnot(!is.null(indr))
+plotdata <- prep_eQTLPlotData(spe, geno, covar_file)
+
+eqtls <- indr[gene_name=="MAPK3"]
+stopifnot(nrow(eqtls)>0)
+#top_eqtls[, .(phenotype_id, variant_id, slope, pval_nominal, pval_perm, af)]
 
 # Create plot
 ## this might have to be customized further
-p <- plot_eQTL_boxplots(plotdata, top_eqtls) #, title = sprintf("%s eQTL examop", dsname))
-p
+p <- plot_eQTL_boxplots(plotdata, eqtls) #, title = sprintf("%s eQTL examop", dsname))
+print(p)
+
+
 ```
+
+
 
 
 ```{r neuropil example}
 ds <- 'neuropil'
 dsname <- unname(ds2name[ds])
-spe <- qs_read(file.path('tqtl_in', sprintf('%s.gene.spe.qs2',ds)))
+spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
 ## use assays(spe)$tmm for expression data, TMM normalized log(CPM+1)
-covar_file <- file.path("tqtl_in", sprintf("%s.gene.covars.txt", ds))
+covar_file <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
 indr <- indres[[ds]]
 stopifnot(!is.null(indr))
 plotdata <- prep_eQTLPlotData(spe, geno, covar_file)

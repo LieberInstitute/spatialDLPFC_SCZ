@@ -9,6 +9,7 @@ library("here")
 library(qs2)
 here::i_am('.git/HEAD')
 datadir=here("processed-data", "rds")
+refdir=here("processed-data", "ref")
 ```
 
 ```{r}
@@ -141,7 +142,8 @@ dlist$spds <- d
 all_granges <- lapply(dlist, rowRanges)
 merged_granges <- do.call(c, unname(all_granges))
 merged_granges <- merged_granges[!duplicated(names(merged_granges))]
-if (!file.exists("granges.qs2")) {
-  qs_save(merged_granges, file="granges.qs2")
+fpath <- file.path(refdir, "granges.qs2")
+if (!file.exists(fpath)) {
+  qs_save(merged_granges, file=fpath)
 }
 ```

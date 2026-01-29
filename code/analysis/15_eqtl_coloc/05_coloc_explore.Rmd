@@ -200,7 +200,7 @@ cdts <- cdts[names(ds2name)]
 
 
 
-```{r}
+```{r example stats per domain}
 fc <- cdts[["spd01"]]
 sum_stats <- fc[, .(
   N=.N,
@@ -220,31 +220,19 @@ sum_stats
 
 
 
-
-```{r summaries}
-fc <- cdts[["spd01"]]
-
-sum_cls <- fc[, .N, by=.(cls, kept_by)][order(-N)]
-sum_kept <- fc[, .(N=.N), by=kept_by][order(-N)]
-sum_cls
-sum_kept
-
-sum_cls_frac <- fc[, .N, by=cls][, frac := N / sum(N)][order(-N)]
-sum_cls_frac
-
-
-```
-
-
-```{r}
+```{r aggregate data and save table}
 fc_all <- rbindlist(cdts, idcol="ds")
+fc_all[, gene_name:=g2sym[fid]]
+setcolorder(fc_all, c("ds", "fid", "gene_name", "lead_snp", "cls", "nsnps"))
+fcoloc <- file.path(datadir, "coloc", "coloc_abf_results.tsv.gz")
 
-
-
+if (!file.exists(fcoloc)) {
+   fwrite(fc_all, file=fcoloc, sep="\t")
+}
 ```
 
 
-```{r stacked bars}
+```{r plot prep}
 library(data.table)
 library(ggplot2)
 
@@ -254,45 +242,77 @@ rat_thr <- 0.90
 
 # fc_all assumed to already have ds, PP4, PP34, PP4_over_PP34
 fc_all[, cat := fcase(
-  PP34 >= pp34_thr & PP4_over_PP34 >= rat_thr, "strong_coloc",
-  (PP34 >= pp34_thr) | (PP4 >= pp4_thr),       "follow_up",
+  PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "strong_coloc",
+  PP34 >= 0.8 & PP4_over_PP34 < 0.5,  "distinct_causal",
+  (PP34 >= 0.8) | (PP4 >= 0.8),       "follow_up", ## we already have PP4>0.5
   default = NA_character_
 )]
 ## get a quick summary/list in the console for now
-fc_all[PP34 >= pp34_thr & PP4_over_PP34 >= rat_thr, 
-  .(genes = paste(sort(unique(g2sym[fid])), collapse=", ")), 
-  by=.(ds)
+#fc_all[cat=="strong_coloc", .(strong_coloc_genes = paste(sort(unique(gene_name)), collapse=", ")), by=.(ds)]
+#fc_all[cat=="follow_up", .(followup_genes = paste(sort(unique(gene_name)), collapse=", ")), by=.(ds)]
+
+all_ds <- data.table(ds = names(ds2name))
+all_cat <- data.table(cat = c("strong_coloc", "follow_up"))
+all_grid <- CJ(ds = all_ds$ds, cat = all_cat$cat, unique = TRUE)
+
+pdt <- fc_all[cat %chin% c("strong_coloc", "follow_up"),
+  .( N = .N,
+    genes =  paste(sort(unique(gene_name)), collapse = ", ")
+  ),  by = .(ds, cat)
 ]
 
-pdt <- fc_all[!is.na(cat), .N, by=.(ds, cat)]
-tot <- pdt[, .(Ntot = sum(N)), by=ds]
-pdt <- tot[pdt, on="ds"]
+pdt <- pdt[all_grid, on = .(ds, cat)]
+pdt[is.na(N), `:=`(N = 0L, genes = NA_character_)]
 
-p <- ggplot(pdt, aes(x=ds, y=N, fill=cat)) +
-  geom_col(width=0.75) +
+tot <- pdt[, .(Ntot = sum(N)), by = ds]
+pdt <- tot[pdt, on = "ds"]
+```
+## ---
+
+```{r stacked bars plot}
+pdt[, ds := as.character(ds)]
+ds_levels <- names(ds2name)
+ds_labels <- unname(ds2name)
+p <- ggplot(
+  pdt,
+  aes(
+    x = factor(ds, levels = ds_levels, labels = ds_labels),
+    y = N,
+    fill = cat
+  )
+) +
+  geom_col(width = 0.75) +
   geom_text(
-    aes(label=ifelse(N > 0, N, "")),
-    position=position_stack(vjust=0.5),
-    size=3
+    aes(label = ifelse(N > 0, N, "")),
+    position = position_stack(vjust = 0.5),
+    size = 3
   ) +
   geom_text(
-    data=tot,
-    aes(x=ds, y=Ntot, label=paste0("n=", Ntot)),
-    inherit.aes=FALSE,
-    hjust=-0.1,
-    size=3
+    data = tot,
+    aes(x = factor(ds, levels = ds_levels, labels = ds_labels), y = Ntot, label = paste0("n=", Ntot)),
+    inherit.aes = FALSE,
+    hjust = -0.1,
+    size = 3
   ) +
   coord_flip() +
   theme_bw() +
   labs(
-    x=NULL, y="Number of kept features",
-    title="Kept coloc loci by dataset (2-category view)",
-    subtitle=paste0(
-      "strong_coloc: PP34 >= ", pp34_thr, " and PP4/(PP34) >= ", rat_thr,
-      " ; follow_up: PP34 >= ", pp34_thr, " OR PP4 >= ", pp4_thr, " (excluding strong_coloc)"
+    x = NULL, y = "Number of genes",
+    title = "Potential colocalization loci by dataset",
+    subtitle = paste0(
+      "strong_coloc: PP34 >= 0.8 & PP4/(PP34) >= 0.9; ",
+      "distinct_causal: PP34 >= 0.8 & PP4/(PP34) < 0.5; ",
+      "follow_up: PP34 >= 0.8 | PP4 >= 0.8"
     )
   ) +
-  scale_y_continuous(expand=expansion(mult=c(0, 0.15)))
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  scale_fill_manual(
+    values = c(
+      strong_coloc = "#7ebae0",
+      follow_up = "#c6dbf8"
+    ),
+    breaks = c("strong_coloc", "follow_up")
+  )
 print(p)
 ```
 
@@ -323,4 +343,5 @@ ggplot(pdt, aes(x=factor(ds, levels = ds_lev), y=N)) +
     axis.text.x = element_text(angle=45, hjust=1)
   )
 
-```https://docs.google.com/presentation/d/1B2cB186G2p8XAtwsYxAUO3zCoF4518MPdaJU3zOYlBI/edit?usp=sharing
+```
+

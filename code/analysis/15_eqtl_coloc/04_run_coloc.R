@@ -21,44 +21,52 @@ out_dir  <- 'coloc'
 info_snp <- pvar[, .(chr = as.character(CHROM),
   pos = as.integer(POS),
   a0  = REF, a1  = ALT, ID)]
-
+## MAPK3 eQTL: "chr16:30114519:G:C" = rs7542
 fgwas <- file.path(refdir, 'scz_gwas_wide.scz.tqtl-matched.tab.gz') ## rebuild if not found
-liftOver <- Sys.which("liftOver")
-stopifnot(file.exists(liftOver))
 if (file.exists(fgwas)) {
-  gwas_wide <- fread(fgwas)
+  gwas_tqtl <- fread(fgwas)
 } else {
-  fhg19gwas <- file.path(refdir, 'PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz')
-  #data/PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz'
-  stopifnot(file.exists(fhg19gwas))
-  gwas_wide <- fread2(fhg19gwas)
-  colnames(gwas_wide) <- tolower(colnames(gwas_wide))
-  setnames(gwas_wide, old = c("chrom","id","a1","a2","se",    "neff","pval"),
-                      new = c("chr","rsid","a0","a1","beta_se","N",  "p"))
-  setcolorder(gwas_wide, c("rsid","chr","pos","a0","a1","beta","beta_se","N","p"))
-  gwas_wide$chr <- as.character(gwas_wide$chr)
+  fgwas38 <- file.path(refdir, 'scz_gwas_wide_hg38.qs2')
+  if (file.exists(fgwas38)) {
+    gwas_wide <- qs_read(fgwas38)
+  } else {
+    fhg19gwas <- file.path(refdir, 'PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz')
+    #data/PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz'
+    stopifnot(file.exists(fhg19gwas))
+    liftOver <- Sys.which("liftOver")
+    stopifnot(file.exists(liftOver))
 
-  gwas_wide <- snp_modifyBuild(gwas_wide, liftOver, from = 'hg19', to = 'hg38')
-  ## 4967 variants have not been mapped.
-  library(SNPlocs.Hsapiens.dbSNP155.GRCh38)
-  dbsnps <- SNPlocs.Hsapiens.dbSNP155.GRCh38
-  setDT(gwas_wide)
-  gwas_wide$chr <- as.character(gwas_wide$chr)
-  ## only pull the unmapped unique rsids:
-  ids_unmapped <- unique(gwas_wide[is.na(pos) & grepl("^rs\\d+$", rsid), rsid])
-  ## annoyingly slow:
-  rehg38 <- snpsById(dbsnps, ids=ids_unmapped, ifnotfound="drop")
-  ## rescued 4360 variants
-  ## Normalize the SNPlocs result to chr/pos and join-update only rows with missing pos
-  hdt <- as.data.table(rehg38)
-  setnames(hdt, c('seqnames'), c('chr'))
-  hdt$chr <- as.character(hdt$chr)
-  setkey(hdt, RefSNP_id)
-  setkey(gwas_wide, rsid)
-  gwas_wide[hdt$RefSNP_id, `:=`(chr=hdt$chr, pos=hdt$pos)]
-   ## only 607 variants are not mapped
-  gwas_wide[, variant_id := sprintf("chr%s:%s:%s:%s", chr, pos, a0, a1)]
-  gwas_wide[, chr := paste0("chr", chr)]
+    gwas_wide <- fread2(fhg19gwas)
+    colnames(gwas_wide) <- tolower(colnames(gwas_wide))
+    setnames(gwas_wide, old = c("chrom","id","a1","a2","se",    "neff","pval"),
+                        new = c("chr","rsid","a0","a1","beta_se","N",  "p"))
+    setcolorder(gwas_wide, c("rsid","chr","pos","a0","a1","beta","beta_se","N","p"))
+    gwas_wide$chr <- as.character(gwas_wide$chr)
+
+    gwas_wide <- snp_modifyBuild(gwas_wide, liftOver, from = 'hg19', to = 'hg38')
+    ## 4967 variants have not been mapped.
+    library(SNPlocs.Hsapiens.dbSNP155.GRCh38)
+    dbsnps <- SNPlocs.Hsapiens.dbSNP155.GRCh38
+    setDT(gwas_wide)
+    gwas_wide$chr <- as.character(gwas_wide$chr)
+    ## only pull the unmapped unique rsids:
+    ids_unmapped <- unique(gwas_wide[is.na(pos) & grepl("^rs\\d+$", rsid), rsid])
+    ### 4899 ids to map
+    ## annoyingly slow:
+    rehg38 <- snpsById(dbsnps, ids=ids_unmapped, ifnotfound="drop")
+    ## rescued 4360 variants
+    ## Normalize the SNPlocs result to chr/pos and join-update only rows with missing pos
+    hdt <- as.data.table(rehg38)
+    setnames(hdt, c('seqnames'), c('chr'))
+    hdt$chr <- as.character(hdt$chr)
+    setkey(hdt, RefSNP_id)
+    setkey(gwas_wide, rsid)
+    gwas_wide[hdt$RefSNP_id, `:=`(chr=hdt$chr, pos=hdt$pos)]
+     ## only 607 variants are not mapped
+    gwas_wide[, variant_id := sprintf("chr%s:%s:%s:%s", chr, pos, a0, a1)]
+    gwas_wide[, chr := paste0("chr", chr)]
+    qs_save(gwas_wide, fgwas38)
+  }
   ## harmonize with tensorqtl variant universe
   ## prepare GWAS for matching
   sumstats_for_match <- gwas_wide[, .(
@@ -71,19 +79,18 @@ if (file.exists(fgwas)) {
   # gwas_m now has alleles aligned to info_snp, and beta flipped if alleles swapped
   setDT(gwas_m)
   # Rebuild variant_id to match tensorQTL
-  #gwas_m[, variant_id := sprintf("%s:%d:%s:%s", chr, pos, a0, a1)]
-  gwas_m[, variant_id := info_snp$ID[`_NUM_ID_`]]
-  ## rebuild gwas_wide
-  gwas_wide <- gwas_m[, .(
+  gwas_m[, variant_id := info_snp$ID[`_NUM_ID_`]]  
+  ## FIXME: something doesn't add up here? is  chr16:30114519:G:C (rs7542) lost?
+  gwas_tqtl <- gwas_m[, .(
     variant_id, beta, beta_se,
     N,  p,  ncas, ncon, impinfo,
     rsid, fcas, fcon
   )]
   # deduplicate defensively
-  setkey(gwas_wide, variant_id)
-  gwas_wide <- unique(gwas_wide)
+  setkey(gwas_tqtl, variant_id)
+  gwas_tqtl <- unique(gwas_tqtl)
   ##
-  fwrite(gwas_wide, fgwas, sep = "\t")
+  fwrite(gwas_tqtl, fgwas, sep = "\t")
 }
 
 ## prepare coloc input
@@ -99,19 +106,19 @@ library(BiocParallel)
 if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)
 
 ## case fraction s for GWAS
-if (all(c("ncas","ncon") %chin% names(gwas_wide))) {
-  s_vec <- gwas_wide[, ncas/(ncas+ncon)]
+if (all(c("ncas","ncon") %chin% names(gwas_tqtl))) {
+  s_vec <- gwas_tqtl[, ncas/(ncas+ncon)]
   s <- stats::median(s_vec, na.rm = TRUE)
   stopifnot(stats::sd(s_vec, na.rm = TRUE) < 1e-2)
-} else if ("s" %chin% names(gwas_wide)) {
-  s <- unique(gwas_wide[!is.na(s), s])[1L]
+} else if ("s" %chin% names(gwas_tqtl)) {
+  s <- unique(gwas_tqtl[!is.na(s), s])[1L]
 } else {
-  stop("Need ncas/ncon or a scalar column 's' in gwas_wide to set case fraction.")
+  stop("Need ncas/ncon or a scalar column 's' in gwgwas_tqtl as_wide to set case fraction.")
 }
 
 ## GWAS slice used for joins
-stopifnot(all(c("variant_id","beta","beta_se") %chin% names(gwas_wide)))
-gwas_idx <- gwas_wide[, .(snp = variant_id, beta_gwas = beta, varbeta_gwas = beta_se^2)]
+stopifnot(all(c("variant_id","beta","beta_se") %chin% names(gwas_tqtl)))
+gwas_idx <- gwas_tqtl[, .(snp = variant_id, beta_gwas = beta, varbeta_gwas = beta_se^2)]
 setkey(gwas_idx, snp)
 
 ## helper: read all parquet for a prefix (e.g., "spd01.gene", "vasc.gene"), keep only needed cols
