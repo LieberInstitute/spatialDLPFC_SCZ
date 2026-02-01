@@ -81,16 +81,59 @@ unique_genes_nom <- read_csv(
     "processed-data/rds/11_dx_deg_interaction",
     "layer_specific_genes_nom_p.csv"
   )
-)
+) |> mutate(layer_specific_nom_p_005 = TRUE)
+
+unique_genes_fdr <- read_csv(
+  here(
+    "processed-data/rds/11_dx_deg_interaction",
+    "layer_specific_genes_fdr_010.csv"
+  )
+) |> mutate(layer_specific_fdr_010 = TRUE)
 
 spd_deg_df <- spd_deg_df |>
   left_join(
-    unique_genes_nom |> mutate(layer_specific = TRUE),
+    unique_genes_nom,
     by = c("gene_id" = "ENSEMBL", "PRECAST_spd" = "spd")
   ) |>
-  mutate(layer_specific = if_else(is.na(layer_specific), FALSE, TRUE))
+  left_join(
+    unique_genes_fdr,
+    by = c("gene_id" = "ENSEMBL", "PRECAST_spd" = "spd")
+  )
 
-sum(spd_deg_df$layer_specific)
+#|>
+spd_deg_df[
+  which(is.na(spd_deg_df$layer_specific_nom_p_005)),
+  "layer_specific_nom_p_005"
+] <- FALSE
+spd_deg_df[
+  which(is.na(spd_deg_df$layer_specific_fdr_010)),
+  "layer_specific_fdr_010"
+] <- FALSE
+# mutate(
+#   layer_specific_nom_p_005 = if_else(is.na(layer_specific), FALSE, TRUE)
+# )
+
+sum(spd_deg_df$layer_specific_nom_p_005)
+# Suppose to be 4073
+sum(spd_deg_df$layer_specific_fdr_010)
+# Suppose to be 913
+
+sum(!(spd_deg_df$layer_specific_nom_p_005) &
+  spd_deg_df$layer_specific_fdr_010)
+
+
+# TO NOTE:
+# It's possibel that the layer-specific DEG by FDR is not a layer-specific DEG by nom p.
+# THis is because there could be a gene that are sig at nom-p for all the layers, but fdr sig only in one layer.
+# Taking MAPK3 as an example, see code below:
+
+# spd_deg_df |> filter(
+#   spd_deg_df$layer_specific_fdr_010,
+#   !(spd_deg_df$layer_specific_nom_p_005)
+# ) |> View()
+# spd_deg_df |> filter(gene == "MAPK3") |> View()
+
+
 
 ## Save to csv ----
 write_csv(
