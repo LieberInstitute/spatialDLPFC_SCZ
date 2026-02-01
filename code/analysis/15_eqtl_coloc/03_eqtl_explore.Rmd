@@ -1,0 +1,315 @@
+---
+title: "eqtl results exploration"
+##output: html_notebook
+---
+```{r}
+suppressMessages({
+    library(arrow)
+    library(data.table)
+    library(BiocParallel)
+    library(qs2)
+    library(SummarizedExperiment)
+    library(stringi)
+    library(GenomicRanges)
+    library(here)
+  })
+here::i_am('.git/HEAD')
+rdsdir=here("processed-data", "rds")
+## refdir-> ref folder symlink to CHESS Brain ref data for now
+refdir=here("processed-data", "ref")
+```
+
+
+```{r}
+## load all rowRanges
+granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd last chunk
+g2sym <- setNames(granges$gene_name, granges$gene_id)
+
+fgwasflt <- file.path(refdir, 'SCZ_GWAS_flt_1e-6_R.8.tab.gz')
+if (file.exists(fgwasflt)) {
+    gwas <- fread(fgwasflt) # 30205 variants
+} else {
+  stop("file not found: ", fgwasflt) ## are you sure you want to rebuild this?
+  allgwas <- fread(file.path(refdir, 'SCZ_GWAS_hg38_euro.tab.gz')) # 7659767
+  ##GWAS human standard: < 5e-8
+  ##         suggestive: < 1e-6
+  gwas <- allgwas[p<1e-6 & !is.na(pos) & impinfo>=0.8] ## 30205 variants
+  fwrite(gwas, fgwasflt, sep='\t', quote=FALSE)
+}
+gwas_set <- unique(gwas[p<5e-8]$variant_id) ## GWAS standard risk threshold
+gwas1e6_set <- unique(gwas$variant_id) ## loose p < 1e-6
+## silly ambiguity mismatch possible between GWAS IDs and genotype data, so add the swapped bases versions
+swap_alleles <- function(variant_id) {
+   parts <- strsplit(variant_id, ":")
+   sapply(parts, function(p) {
+     if (length(p) == 4) {
+       paste(p[1], p[2], p[4], p[3], sep=":")
+     } else {
+       variant_id
+     }
+   })
+ }
+# Create extended set with both original and swapped IDs
+gwas_set_swapped <- swap_alleles(gwas_set)
+gwas_set_ext <- unique(c(gwas_set, gwas_set_swapped))
+
+```
+
+```{r load tensor QTL results except nominal}
+pats <- c('\\.map_cis\\.tab\\.gz$', '\\.map_independent\\.txt\\.gz$',
+           '\\.DxINT\\.cis_qtl_top_assoc\\.txt\\.gz$')
+npats <- c('map', 'indep', 'dxint')
+cisres <- list()
+for (i in seq_along(pats)) {
+  fcis <- list.files(path='tqtl_out', pattern=pats[i], recursive = TRUE, full.names = TRUE)
+  names(fcis) <- sub("/", "", stri_match_first_regex(fcis, '/(\\w+)\\.gene')[,2])
+  cisres[[npats[i]]] <- lapply(fcis, fread)
+}
+```
+
+```{r load DEGS}
+## WARNING: makes sure char not factor is passed to this char2char mapping!
+ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
+       "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
+
+## load degs adust SpD as SpD degs
+useLayerAdjusted=FALSE
+ds2degs <- list()
+if (useLayerAdjusted) {
+  deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
+  rownames(deg_spd_adj) <- deg_spd_adj$V1
+  setnames(deg_spd_adj, 'V1', 'fid')
+  spd_degs <- subset(deg_spd_adj, fdr_scz<=0.1) ## 10% FDR threshold was used
+  spds <- grep('spd', names(ds2name), value=TRUE)
+  ds2degs <- lapply(spds, \(x) spd_degs)
+  names(ds2degs) <- spds
+} else { # use layer-restricted
+  for (ds in grep("^spd", names(ds2name), value=TRUE)) {
+    degspd <- fread(file.path(rdsdir, "11_dx_deg_interaction", sprintf("layer_restricted_logFC_%s.csv", ds)),
+                     data.table = FALSE)
+    degspd <- subset(degspd, adj.P.Val<0.1)
+    degspd$fid <- degspd$gene_id
+    rownames(degspd) <- degspd$gene_id
+    setcolorder(degspd, 'fid')
+    ds2degs[[ds]] <- degspd
+  }
+}
+
+## for the SpG contexts, separate DEGs per context:
+spgs <- grep('^[^s]', names(ds2name), value=TRUE)
+for (ds in spgs) {
+   if (ds=="vasc") {
+     fdegs <- here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
+   } else {
+     fdegs <- here("code/analysis/", paste0("dx_deg_spg_", ds), paste0(ds,"-dx_DEG-GM.csv"))
+   }
+   if (!file.exists(fdegs)) {
+     stop("file not found: ", fdegs)
+   }
+   dt <- fread(fdegs, data.table = FALSE)
+   rownames(dt) <- dt$ensembl
+   dt$fid <- rownames(dt)
+   setcolorder(dt, 'fid')
+   dt <- subset(dt, fdr_scz<=0.1)
+   ds2degs[[ds]] <- dt
+}
+# pnn has no degs for FDR<0.1 ?
+```
+
+```{r}
+## tag dataset to each data.table before merging
+tag_ll <- function(dt_list) {
+  rbindlist(lapply(names(dt_list), function(nm) {
+    ctx_degs <- ds2degs[[nm]]
+    x <- copy(dt_list[[nm]])
+    x[, ds:=nm]
+    x[, gid := phenotype_id]
+    ## add gtype and symbol
+    x[, symbol :=g2sym[phenotype_id]]
+    x[, ds := as.character(ds)]
+    x[, dge:=as.integer(phenotype_id %chin% ctx_degs$fid)]
+    x[, gwas := as.integer(variant_id %chin% gwas_set_ext)]
+    x
+  }))
+}
+
+map_all   <- tag_ll(cisres$map)     # has qval
+indep_all <- tag_ll(cisres$indep)   # has rank
+dx_all    <- tag_ll(cisres$dxint)   # has pval_gi, b_g, b_gi, pval_adj_bh
+
+#dedup_by_ds <- function(dt) unique(dt, by = c("ds","phenotype_id"))
+
+```
+
+```{r discovery and analysis}
+get_qmap  <- function(emap, q) {
+  emap[qval < q, .(
+    n_eGenes = uniqueN(phenotype_id),                          # unique eGenes
+    n_GWAS      = uniqueN(phenotype_id[gwas == 1]),          # eGenes whose lead is in GWAS (5e-8)
+    GWAS = paste(sort(unique(symbol[gwas==1])), collapse=", "),
+    n_DEG   = uniqueN(gid[dge   == 1]),
+    DEGS = paste(sort(unique(symbol[dge==1])), collapse=", "),
+    n_DEG_GWAS =  uniqueN(phenotype_id[dge==1 & gwas==1]),
+    DEG_GWAS = paste(sort(unique(symbol[dge==1 & gwas==1])), collapse=", ")
+  ),
+  by = .(ds)
+][order(ds)]
+}
+
+## eGene cis_map counts at eQTL FDR < 5%
+mapsum05 <- get_qmap(map_all, 0.05)
+
+## reorder rows by matching ds to the order in names(ds2name)
+mapsum05 <- mapsum05[match(names(ds2name), mapsum05$ds), ]
+## Now replace with nicer names
+mapsum05$ds <- ds2name[mapsum05$ds]
+## show and save the table
+mapsum05
+fwrite(mapsum05, "map_cis_summary.csv")
+```
+
+            ds n_eGenes n_GWAS                           GWAS n_DEG                                                                       DEGS n_DEG_GWAS   DEG_GWAS
+        <char>    <int>  <int>                         <char> <int>                                                                     <char>      <int>     <char>
+ 1:       Neun      134      2              LRRC37A2, ZSCAN31     7          GABPB1-AS1, GATD3A, KANSL1-AS1, LINC01535, NIPBL-DT, RPS26, XRRA1          0
+ 2:   Neuropil      161      4 HLA-DMA, MAPK3, VARS2, ZSCAN31     9 GATD3A, KANSL1-AS1, LINC01535, MAPK3, NIPBL-DT, NUDT14, RPS26, SVBP, XRRA1          1      MAPK3
+ 3:        PNN        5      0                                    1                                                                      RPS26          0
+ 4: SpD01-WMtz       10      0                                    1                                                                      RPS26          0
+ 5: SpD02-L3/4      179      2              LRRC37A2, ZSCAN31     8  GABPB1-AS1, GATD3A, KANSL1-AS1, LINC01535, NIPBL-DT, NUDT14, RPS26, XRRA1          0
+ 6:   SpD03-L6       48      2                HLA-C, LRRC37A2     7          GABPB1-AS1, GATD3A, KANSL1-AS1, LINC01535, NIPBL-DT, RPS26, XRRA1          0
+ 7:   SpD04-WM        2      0                                    1                                                                      RPS26          0
+ 8:   SpD05-L5       61      1                       LRRC37A2     4                                         GATD3A, LINC01535, NIPBL-DT, RPS26          0
+ 9: SpD06-L2/3       61      2           KANSL1-AS1, LRRC37A2     6                      GATD3A, KANSL1-AS1, LINC01535, NIPBL-DT, RPS26, XRRA1          1 KANSL1-AS1
+10:   SpD07-L1       12      1                     KANSL1-AS1     3                                                  GATD3A, KANSL1-AS1, RPS26          1 KANSL1-AS1
+11:       Vasc        3      0                                    1                                                                      RPS26          0
+
+
+```{r plot barchart}
+library(ggplot2)
+
+eqtl_barchart  <- function(mapsum, indep=FALSE, fill=NULL) {
+  # pal_lib <- c(PolyA = "#82BEEE", RiboZ = "#FFBE6A")
+  dt <- copy(mapsum)
+  dt[, context  := as.factor(ds)] ## set levels explictly here
+  dt[, lab_above := sprintf("GWAS: %d\nDEG: %d\nDEG∩GWAS: %d", n_GWAS, n_DEG, n_DEG_GWAS)]
+  if (indep) {
+    ytitle <- "Total independent cis-eQTL signals (p_perm < 0.05)"
+    title  <- "Independent cis-eQTLs by context"
+  } else {
+    ytitle <- "eGenes discovered (lead cis-eQTLs, q < 0.05)"
+    title  <- "Lead cis-eQTLs per eGene by context"
+  }
+  #mapsum[, lab_count := sprintf("%d", n_eGenes)]
+  min_count <- min(dt[n_eGenes>0]$n_eGenes)
+  # label positions inside each bar (relative to its own height)
+  dt[, y_top  := n_eGenes]                    # top-of-bar (for the big count)
+  dt[, y_gwas := n_eGenes - min_count * 0.08]             # just below the top
+  dt[, y_de   := n_eGenes - min_count * 0.08]             # a bit further down, top-aligned
+
+  # two rows per bar: GWAS and Other; stack within each bar
+  bar_df <- rbindlist(list(
+    dt[, .(context, category="GWAS (p<5e-8)", count=n_GWAS)],
+    dt[, .(context, category="Other",         count=n_eGenes - n_GWAS)]
+  ))
+  if (is.null(fill)) {
+     p <- ggplot(dt, aes(x=context, y=n_eGenes, fill=context)) +
+       geom_col(width=0.7, color="grey30", linewidth=0.2)
+  } else {
+     p <- ggplot(dt, aes(x=context, y=n_eGenes)) +
+       geom_col(width=0.7, color="grey30", linewidth=0.2, fill=fill)
+  }
+  p <- p +
+    #facet_grid(level ~ coding, scales="free_y") +
+    # big total on top of each bar
+    geom_text(aes(y = y_top, label = n_eGenes), vjust = -0.3,
+              fontface = "bold", size = 3.3, color = "black") +
+    # inside-bar annotations
+    geom_text(aes(y = y_top, label = lab_above), vjust = -0.5,
+              color = "black", size = 3) +
+    # scale_fill_manual(values = pal_lib, guide = "none") +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.20))) +
+    coord_cartesian(clip = "off") +
+    labs(x = NULL, y = ytitle, title = title) +
+    theme_bw(base_size = 14) +
+    theme(
+      panel.grid.minor = element_blank(),
+      axis.ticks.x     = element_blank(),
+      strip.background = element_rect(fill = "grey95", color = "grey80")
+    )
+ p
+}
+print(eqtl_barchart(mapsum05[grepl('^SpD', ds)]))
+print(eqtl_barchart(mapsum05[!grepl('^SpD', ds)], fill="#A0A0A0"))
+```
+
+```{r independent signals}
+## Add gwas1e6 column to indep_all ?
+#indep_all[, gwas1e6 := as.integer(variant_id %chin% gwas1e6_set)]
+
+## independent signals per feature (rank is 1..k per phenotype)
+
+alpha <- 0.05  # primary FDR line for discovery - typically 0.05
+## parent eFeature q-values from map_all
+parent_q <- map_all[, .(phenotype_id, ds, qval_parent = qval)]
+
+## Note that independent signals are already filtered by pval_beta<=0.05 in the parent eFeature
+## since cis.map_independent() only tests features with pval_beta<=0.05 from cis.map_cis
+### -- join and gate using pval_perm, which is slightly more conservative than pval_beta
+indep_f <- merge(indep_all, parent_q, by=c("phenotype_id","ds"))
+indep_f <- indep_f[qval_parent < alpha & pval_perm < 0.05]
+#indep_f[, gwas1e6 := as.integer(variant_id %chin% gwas1e6_set)]
+
+## Per-feature summary
+#indep_feat <- indep_f[, .(
+#  n_signals   = max(rank),
+#  any_gwas    = as.integer(any(gwas == 1)),
+#  any_gwas1e6 = as.integer(any(gwas1e6 == 1)),
+#  any_dge     = as.integer(any(dge == 1))
+#), by = .(ds, phenotype_id, gid, symbol)]
+
+## Summary for plotting (counting total independent signals)
+indep_summary <- indep_f[, .(
+  n_eGenes = .N,  # total independent signals
+  n_GWAS = sum(gwas),
+  n_DEG = uniqueN(gid[dge == 1]),
+  n_DEG_GWAS = sum(dge == 1 & gwas == 1)
+), by = ds][order(ds)]
+
+
+## reorder rows by matching ds to the order in names(ds2name)
+indep_summary <- indep_summary[match(names(ds2name), indep_summary$ds), ]
+
+
+indep_summary$ds <- ds2name[indep_summary$ds]
+
+print(eqtl_barchart(indep_summary[grepl('^SpD', ds)], indep=TRUE))
+print(eqtl_barchart(indep_summary[!grepl('^SpD', ds)], fill="#A0A0A0", indep=TRUE))
+
+```
+
+
+```{r interaction summary}
+## choose thresholds
+#thr_primary <- 0.10  # primary significance threshold
+thr_primary <- 0.25  # exploratory
+dx_dups <- dx_all[, .N, by=.(ds, phenotype_id)][N > 1]
+if (nrow(dx_dups) > 0) {
+  ## there are duplicate entries in dx_all for some features; keeping the first only
+  #print(dx_dups)
+  dx_all <- dx_all[order(pval_gi)][, .SD[1], by=.(ds, phenotype_id)]
+}
+dx_best_qc <- dx_all[af >= 0.05 & af <= 0.95 & ma_count >= 20]
+## primary and exploratory thresholds
+dx_primary  <- dx_best_qc[pval_adj_bh <= thr_primary]
+#dx_explore  <- dx_best_qc[pval_adj_bh <= 0.25]
+
+summ_dx <- function(dt) dt[, .(
+  n_feat        = .N,
+  prop_pos_bgi  = mean(b_gi > 0),
+  med_abs_bgi   = median(abs(b_gi)),
+  n_GWAS        = sum(gwas),
+  n_DEG    = uniqueN(gid[dge == 1]),
+), by=.(ds)][order(ds)]
+
+dxsum10 <- summ_dx(dx_primary)
+
+```

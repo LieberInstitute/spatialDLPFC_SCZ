@@ -1,0 +1,149 @@
+---
+title: "SpE data exploration"
+##output: html_notebook
+---
+
+```{r}
+library("SpatialExperiment")
+library("here")
+library(qs2)
+here::i_am('.git/HEAD')
+datadir=here("processed-data", "rds")
+refdir=here("processed-data", "ref")
+```
+
+```{r}
+x <- readRDS(file.path(datadir, "PB_dx_spg", "pseudo_neun_pos_donor_spd.rds"))
+## Neuronal SPG (microenvironment) context, pseudobulked by Spatial Domain (SpD)
+dim(x)
+names(colData(x))
+#head(colData(x)[, c("age", "sex", "brnum", "slide_id")])
+##
+```
+
+> dim(x)
+[1] 16768   308
+> names(colData(x))
+ [1] "sample_id"               "in_tissue"               "array_row"               "array_col"               "X10x_graphclust"         "X10x_kmeans_10_clusters"
+ [7] "X10x_kmeans_2_clusters"  "X10x_kmeans_3_clusters"  "X10x_kmeans_4_clusters"  "X10x_kmeans_5_clusters"  "X10x_kmeans_6_clusters"  "X10x_kmeans_7_clusters"
+[13] "X10x_kmeans_8_clusters"  "X10x_kmeans_9_clusters"  "key"                     "sum_umi"                 "sum_gene"                "expr_chrM"
+[19] "expr_chrM_ratio"         "spg_NDAPI"               "spg_PDAPI"               "spg_IDAPI"               "spg_CNDAPI"              "spg_NNeuN"
+[25] "spg_PNeuN"               "spg_INeuN"               "spg_CNNeuN"              "spg_NWFA"                "spg_PWFA"                "spg_IWFA"
+[31] "spg_CNWFA"               "spg_NClaudin5"           "spg_PClaudin5"           "spg_IClaudin5"           "spg_CNClaudin5"          "BrNumbr"
+[37] "dx"                      "DX"                      "sex"                     "age"                     "rin"                     "slide_id"
+[43] "lot_num"                 "brnum"                   "sample_label"            "outlier_cat"             "removed_spots"           "PRECAST_02"
+[49] "PRECAST_03"              "PRECAST_04"              "PRECAST_05"              "PRECAST_06"              "PRECAST_07"              "PRECAST_08"
+[55] "PRECAST_09"              "PRECAST_10"              "PRECAST_11"              "PRECAST_12"              "PRECAST_13"              "PRECAST_14"
+[61] "PRECAST_15"              "PRECAST_16"              "fnl_spd"                 "spd_label"               "pnn_pos"                 "neuropil_pos"
+[67] "neun_pos"                "vasc_pos"                "sizeFactor"              "registration_variable"   "registration_sample_id"  "ncells"
+
+
+
+```{r}
+## breakdown of Domains present for each Donor
+table(x$brnum, x$spd_label)
+#         SpD07-L1 SpD06-L2/3 SpD02-L3/4 SpD05-L5 SpD03-L6 SpD01-WMtz SpD04-WM
+#  Br1092        1          1          1        1        1          1        0
+#  Br1113        0          1          1        1        1          1        0
+#  Br1139        0          0          1        1        1          0        0
+#  Br1204        1          1          1        1        1          1        0
+#  Br1214        0          1          1        1        1          1        1
+#  Br1526        0          1          1        1        1          0        0
+#  Br1578        0          1          1        1        1          1        0
+#  ...
+## simple count of how many domains each donor has:
+table(x$brnum)
+# Br1092 Br1113 Br1139 Br1204 Br1214 Br1526 Br1578 Br1682 Br1753 Br1923 Br1958 Br2039 Br2242 Br2378 Br2421 Br2470 Br2627 Br2719 Br2720 Br5182 Br5224 Br5228 Br5276 Br5314
+#     6      5      3      6      6      4      5      5      5      5      5      5      5      5      5      4      6      5      4      5      6      5      5      5
+# Br5367 Br5373 Br5395 Br5400 Br5436 Br5472 Br5573 Br5588 Br5590 Br5599 Br5622 Br5636 Br5639 Br5746 Br5789 Br5888 Br5928 Br5931 Br5973 Br6032 Br6257 Br6297 Br6369 Br6389
+#     4      4      5      5      4      5      5      5      4      5      5      4      6      5      3      5      4      5      5      5      5      5      6      4
+# Br6432 Br6437 Br6496 Br6560 Br8042 Br8207 Br8218 Br8325 Br8406 Br8433 Br8492 Br8514 Br8537 Br8667 Br8772
+#      4      5      5      5      5      5      6      4      6      6      5      4      5      5      5
+
+## which domains are generally present in this object:
+sort(table(x$spd_label), decreasing=TRUE)
+
+# SpD02-L3/4   SpD05-L5   SpD03-L6 SpD06-L2/3 SpD01-WMtz   SpD07-L1   SpD04-WM
+#        63         63         62         61         47         10          2
+## transition zone (47) likely has spill-over neurons from Layer 6 ?
+## only 5 viable layers
+```
+
+
+```{r all data aggregated by domain}
+d <- readRDS(file.path(datadir, "07_dx_pseudobulk", "sce_pseudo_PRECAST07_donor_spd.rds"))
+dim(d) # [1] 13977   431
+colnames(colData(d))
+
+table(d$registration_variable)
+# spd01 spd02 spd03 spd04 spd05 spd06 spd07
+#    63    63    63    53    63    63    63
+
+table(d$spd_label)
+#  SpD07-L1 SpD06-L2/3 SpD02-L3/4   SpD05-L5   SpD03-L6 SpD01-WMtz   SpD04-WM
+#        63         63         63         63         63         63         53
+
+## white matter data only has 53 samples, but that was not unexpected given the focus on cortical layers
+```
+
+> colnames(colData(d))
+ [1] "sample_id"               "in_tissue"               "array_row"               "array_col"               "X10x_graphclust"         "X10x_kmeans_10_clusters" "X10x_kmeans_2_clusters"
+ [8] "X10x_kmeans_3_clusters"  "X10x_kmeans_4_clusters"  "X10x_kmeans_5_clusters"  "X10x_kmeans_6_clusters"  "X10x_kmeans_7_clusters"  "X10x_kmeans_8_clusters"  "X10x_kmeans_9_clusters"
+[15] "key"                     "sum_umi"                 "sum_gene"                "expr_chrM"               "expr_chrM_ratio"         "spg_NDAPI"               "spg_PDAPI"
+[22] "spg_IDAPI"               "spg_CNDAPI"              "spg_NNeuN"               "spg_PNeuN"               "spg_INeuN"               "spg_CNNeuN"              "spg_NWFA"
+[29] "spg_PWFA"                "spg_IWFA"                "spg_CNWFA"               "spg_NClaudin5"           "spg_PClaudin5"           "spg_IClaudin5"           "spg_CNClaudin5"
+[36] "BrNumbr"                 "dx"                      "DX"                      "sex"                     "age"                     "rin"                     "slide_id"
+[43] "lot_num"                 "brnum"                   "sample_label"            "outlier_cat"             "removed_spots"           "PRECAST_02"              "PRECAST_03"
+[50] "PRECAST_04"              "PRECAST_05"              "PRECAST_06"              "PRECAST_07"              "PRECAST_08"              "PRECAST_09"              "PRECAST_10"
+[57] "PRECAST_11"              "PRECAST_12"              "PRECAST_13"              "PRECAST_14"              "PRECAST_15"              "PRECAST_16"              "fnl_spd"
+[64] "spd_label"               "pnn_pos"                 "neuropil_pos"            "neun_pos"                "vasc_pos"                "sizeFactor"              "registration_variable"
+[71] "registration_sample_id"  "ncells"
+
+
+```{r gene data}
+head(rowRanges(d))
+```
+
+> head(rowRanges(d))
+GRanges object with 6 ranges and 7 metadata columns:
+                  seqnames        ranges strand |   source     type         gene_id gene_version   gene_name      gene_type
+                     <Rle>     <IRanges>  <Rle> | <factor> <factor>     <character>  <character> <character>    <character>
+  ENSG00000241860     chr1 141474-173862      - |   HAVANA     gene ENSG00000241860            7  AL627309.5         lncRNA
+  ENSG00000237491     chr1 778747-810065      + |   HAVANA     gene ENSG00000237491           10   LINC01409         lncRNA
+  ENSG00000228794     chr1 825138-868202      + |   HAVANA     gene ENSG00000228794            9   LINC01128         lncRNA
+  ENSG00000187634     chr1 923928-944581      + |   HAVANA     gene ENSG00000187634           12      SAMD11 protein_coding
+  ENSG00000188976     chr1 944203-959309      - |   HAVANA     gene ENSG00000188976           11       NOC2L protein_coding
+  ENSG00000187961     chr1 960584-965719      + |   HAVANA     gene ENSG00000187961           14      KLHL17 protein_coding
+
+
+
+```{r merge rowRanges across all datasets}
+flist <- list(neuropil="pseudo_neuropil_pos_donor_spd.rds",
+                neun="pseudo_neun_pos_donor_spd.rds",
+                pnn="pseudo_pnn_pos_donor_spd.rds",
+                vasc="pseudo_vasc_pos_donor_spd.rds" ##-- missing slide_id
+              )
+dlist <- lapply(flist, function(x) {
+      spe <- readRDS(file.path(datadir, "PB_dx_spg", x))
+      agg <- scuttle::aggregateAcrossCells(spe, DataFrame(donor = spe$brnum), store_number = "n_SpDs")
+      ## colnames are lost during aggregation, restore them from donor
+      ncells_sum <- rowsum(
+        x = matrix(spe$ncells, ncol = 1),
+        group = spe$brnum,  na.rm = TRUE
+      )
+      donor_ids <- colData(agg)$donor
+      colData(agg)$ncells <- ncells_sum[donor_ids, 1]
+      agg
+  })
+dlist$spds <- d
+```
+
+```{r merge and save gene info}
+all_granges <- lapply(dlist, rowRanges)
+merged_granges <- do.call(c, unname(all_granges))
+merged_granges <- merged_granges[!duplicated(names(merged_granges))]
+fpath <- file.path(refdir, "granges.qs2")
+if (!file.exists(fpath)) {
+  qs_save(merged_granges, file=fpath)
+}
+```

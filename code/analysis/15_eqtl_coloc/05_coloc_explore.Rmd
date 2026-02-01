@@ -1,0 +1,347 @@
+---
+title: "eqtl results exploration"
+##output: html_notebook
+---
+```{r}
+suppressMessages({
+    library(arrow)
+    library(data.table)
+    library(BiocParallel)
+    library(qs2)
+    library(SummarizedExperiment)
+    library(stringi)
+    library(GenomicRanges)
+    library(here)
+  })
+here::i_am('.git/HEAD')
+datadir=here("processed-data", "eQTL")
+rdsdir=here("processed-data", "rds")
+
+## refdata -> ref folder symlink to CHESS Brain ref data for now
+## GWAS data, GenomicRanges etc.
+refdir=here("processed-data", "ref")
+```
+
+
+```{r load GWAS and gene ranges}
+## load gene-symbol data
+granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd last chunk
+g2sym <- setNames(granges$gene_name, granges$gene_id)
+## load GWAS data
+fgwasflt <- file.path(refdir, 'SCZ_GWAS_flt_1e-6_R.8.tab.gz')
+gwas <- fread(fgwasflt)
+##
+gwas_set <- unique(gwas[p<5e-8]$variant_id) ## GWAS standard risk threshold
+gwas1e6_set <- unique(gwas$variant_id) ## loose p < 1e-6
+
+```
+
+
+
+```{r load DEGS}
+## WARNING: makes sure char not factor is passed to this char2char mapping!
+ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
+       "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
+dss <- names(ds2name)
+## load degs adust SpD as SpD degs
+deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
+rownames(deg_spd_adj) <- deg_spd_adj$V1
+setnames(deg_spd_adj, 'V1', 'fid')
+spd_degs <- subset(deg_spd_adj, fdr_scz<=0.1) ## 10% FDR threshold was used
+spds <- grep('spd', names(ds2name), value=TRUE)
+ds2degs <- lapply(spds, \(x) spd_degs)
+names(ds2degs) <- spds
+## for the SpG contexts, separate DEGs per context:
+spgs <- grep('^[^s]', names(ds2name), value=TRUE)
+for (ds in spgs) {
+   if (ds=="vasc") {
+     fdegs <- here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
+   } else {
+     fdegs <- here("code/analysis/", paste0("dx_deg_spg_", ds), paste0(ds,"-dx_DEG-GM.csv"))
+   }
+   if (!file.exists(fdegs)) {
+     stop("file not found: ", fdegs)
+   }
+   dt <- fread(fdegs, data.table = FALSE)
+   rownames(dt) <- dt$ensembl
+   dt$fid <- rownames(dt)
+   setcolorder(dt, 'fid')
+   dt <- subset(dt, fdr_scz<=0.1)
+   ds2degs[[ds]] <- dt
+}
+# pnn has no degs for FDR<0.1 ?
+```
+
+```{r coloc utility functions}
+## Flatten one coloc-abf list into a filtered feature-level table
+### Note: coloc.abf assumes at most one casual variant per gene/trait,
+### so PP3/PP4 can be distorted for large cis windows
+
+## if cis windows frequently have multiple independent eQTL signals (common in brain),
+## coloc.abf’s single-causal assumption can inflate PP3 or muddle PP4 unless we condition or use a
+## multi-signal method (e.g. SuSiE-based coloc). The flattening won't fix that, but downstream claims
+## should reflect the assumption.
+
+flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80, rat_strong=0.9, rat_mod=0.8,
+                               add_priors=TRUE, id_map=NULL, do_filter=TRUE) {
+  ids <- names(l)
+  out <- rbindlist(lapply(ids, function(feature_id) {
+    x <- l[[feature_id]]
+    if (is.null(x$summary) || is.null(x$results)) return(NULL)
+    s <- as.list(x$summary)
+    res <- as.data.table(x$results)
+    if (!"SNP.PP.H4" %chin% names(res)) return(NULL)
+    setorderv(res, "SNP.PP.H4", -1L)
+    res[, cum_h4 := cumsum(SNP.PP.H4)]
+    cs_idx <- which(res$cum_h4 >= cs_level)[1L]
+    cs_n <- if (is.na(cs_idx)) nrow(res) else cs_idx
+    lead <- res[1]
+    dt <- data.table(
+      nsnps=as.numeric(s[["nsnps"]]), PP0=as.numeric(s[["PP.H0.abf"]]), PP1=as.numeric(s[["PP.H1.abf"]]),
+      PP2=as.numeric(s[["PP.H2.abf"]]), PP3=as.numeric(s[["PP.H3.abf"]]), PP4=as.numeric(s[["PP.H4.abf"]]),
+      PP34=as.numeric(s[["PP.H3.abf"]]) + as.numeric(s[["PP.H4.abf"]]),
+      PP4_over_PP34=as.numeric(s[["PP.H4.abf"]]) / (as.numeric(s[["PP.H3.abf"]]) + as.numeric(s[["PP.H4.abf"]])),
+      lead_snp=as.character(lead[["snp"]]), lead_snp_PPH4=as.numeric(lead[["SNP.PP.H4"]]),
+      lead_snp_PPsho=as.numeric(s[["PP.H4.abf"]]) * as.numeric(lead[["SNP.PP.H4"]]), ## shared overall
+      cs95_n_snp=as.integer(cs_n)
+    )
+    if (add_priors && !is.null(x$priors)) {
+      pr <- x$priors
+      dt[, `:=`(p1=as.numeric(pr["p1"]), p2=as.numeric(pr["p2"]), p12=as.numeric(pr["p12"]))]
+    }
+    dt[, fid := feature_id]
+    setcolorder(dt, c("fid", setdiff(names(dt), "fid")))
+    dt
+  }), fill=TRUE)
+  if (is.null(out) || nrow(out)==0L) return(out)
+  if (!is.null(id_map)) {
+    key <- out[["fid"]]
+    nm <- unname(id_map[key])
+    out[, fid := ifelse(!is.na(nm), paste0(nm, "|", key), key)]
+  }
+  if (do_filter) out <- out[PP4 >= pp4_min | (PP3 + PP4) >= pp34_min]
+  ## we keep either:
+  ## - high confidence (PP4) = strong colocalization or
+  ## - strong evidence both traits associate in the region but with different causal variants (PP3 high)
+  ## goal is "interesting loci for follow-up", not strictly a "colocalized set"
+  out[, kept_by := fcase(
+    PP4 >= pp4_min & PP34 >= pp34_min, "both",
+    PP4 >= pp4_min,                   "PP4",
+    PP34 >= pp34_min,                 "PP34",
+    default = "none"
+  )]
+  # `kept_by` tells us why it survived the OR filter (PP4 only, PP34 only, or both).
+
+  out[, cls := fcase(
+    PP34 < pp34_min,                  "kept_PP4_low_PP34",
+    PP4_over_PP34 >= rat_strong,      "strong_coloc",
+    PP4_over_PP34 >= rat_mod,         "moderate_coloc",
+    PP4_over_PP34 < 0.50,             "likely_distinct_causal",
+    default = "ambig_H3_H4"
+  )]
+  ## `cls` separates "kept because PP4 is high but overall shared-signal evidence (PP34) is weaker"
+  ## from true coloc-ish cases and H3-dominant cases.
+  setcolorder(out, c("fid", "cls", "kept_by", setdiff(names(out), c("fid","cls","kept_by"))))
+  out[]
+}
+
+saveFlattenedColoc <- function(l, out_path, ...) {
+  dt <- flattenFltColoc(l, ...)
+  if (is.null(dt) || nrow(dt)==0L) {
+    warning("No rows to write: ", out_path)
+    return(invisible(dt))
+  }
+  fwrite(dt, out_path, sep="\t", quote=FALSE)
+  invisible(dt)
+}
+
+## convenience to load, flatten, filter, and save one coloc list
+flattenColocAndSave <-function(path, ...) {
+  out_path <- sub("\\.qs2$", ".flat.tab.gz", path)
+  if (file.exists(out_path)) {
+    message("Output file exists, skipping: ", out_path)
+    return(invisible(NULL))
+  }
+  l <- qs_read(path)
+  b <- basename(path)
+  #proto <- ifelse(grepl("PolyA", b), "PolyA", ifelse(grepl("RiboZ", b), "RiboZ", NA_character_))
+  #feat <- ifelse(grepl("_tx", b), "tx", "gene")
+  stopifnot(out_path != path)
+  saveFlattenedColoc(l, out_path, ...)
+}
+
+```
+
+```{r only once to create the flattened files}
+cdts <- list()
+paths <- list()
+for (ds in names(ds2name)) {
+ fp <-file.path(datadir, "coloc", sprintf("coloc_%s_gene.qs2", ds))
+ if (!file.exists(fp)) stop("file not found: ", fp)
+ ff <- file.path(datadir, "coloc", sprintf("coloc_%s_gene.flat.tab.gz", ds))
+ if (file.exists(ff)) {
+   cdts[[ds]] <- fread(ff)
+ } else {
+   message("flattening: ", fp)
+   cdts[[ds]] <- flattenColocAndSave(fp)
+    if (!file.exists(ff)) stop("flattenColocAndSave failed: ", fp)
+ }
+ paths[[ds]] <- ff
+}
+
+cdts <- cdts[names(ds2name)]
+## summary plots?
+## A scatter of PP4 vs PP4_over_PP34 (coloc strength vs dominance).
+## cs95_n_snp vs PP4 (credible set size tends to shrink with stronger signal, but multi-signal loci can behave oddly).
+## For reporting: always show PP0..PP4, PP4_over_PP34, lead SNP (and whether lead SNP is the same top SNP for both traits if you also compute that elsewhere), and priors.
+
+```
+
+
+
+
+```{r example stats per domain}
+fc <- cdts[["spd01"]]
+sum_stats <- fc[, .(
+  N=.N,
+  PP4_med=median(PP4, na.rm=TRUE),
+  PP4_q25=quantile(PP4, 0.25, na.rm=TRUE),
+  PP4_q75=quantile(PP4, 0.75, na.rm=TRUE),
+  PP34_med=median(PP34, na.rm=TRUE),
+  rat_med=median(PP4_over_PP34, na.rm=TRUE),
+  cs95_med=median(as.numeric(cs95_n_snp), na.rm=TRUE),
+  leadPPsho_med=median(lead_snp_PPsho, na.rm=TRUE)
+), by=cls][order(-N)]
+
+sum_stats
+
+```
+
+
+
+
+```{r aggregate data and save table}
+fc_all <- rbindlist(cdts, idcol="ds")
+fc_all[, gene_name:=g2sym[fid]]
+setcolorder(fc_all, c("ds", "fid", "gene_name", "lead_snp", "cls", "nsnps"))
+fcoloc <- file.path(datadir, "coloc", "coloc_abf_results.tsv.gz")
+
+if (!file.exists(fcoloc)) {
+   fwrite(fc_all, file=fcoloc, sep="\t")
+}
+```
+
+
+```{r plot prep}
+library(data.table)
+library(ggplot2)
+
+pp4_thr <- 0.80
+pp34_thr <- 0.80
+rat_thr <- 0.90
+
+# fc_all assumed to already have ds, PP4, PP34, PP4_over_PP34
+fc_all[, cat := fcase(
+  PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "strong_coloc",
+  PP34 >= 0.8 & PP4_over_PP34 < 0.5,  "distinct_causal",
+  (PP34 >= 0.8) | (PP4 >= 0.8),       "follow_up", ## we already have PP4>0.5
+  default = NA_character_
+)]
+## get a quick summary/list in the console for now
+#fc_all[cat=="strong_coloc", .(strong_coloc_genes = paste(sort(unique(gene_name)), collapse=", ")), by=.(ds)]
+#fc_all[cat=="follow_up", .(followup_genes = paste(sort(unique(gene_name)), collapse=", ")), by=.(ds)]
+
+all_ds <- data.table(ds = names(ds2name))
+all_cat <- data.table(cat = c("strong_coloc", "follow_up"))
+all_grid <- CJ(ds = all_ds$ds, cat = all_cat$cat, unique = TRUE)
+
+pdt <- fc_all[cat %chin% c("strong_coloc", "follow_up"),
+  .( N = .N,
+    genes =  paste(sort(unique(gene_name)), collapse = ", ")
+  ),  by = .(ds, cat)
+]
+
+pdt <- pdt[all_grid, on = .(ds, cat)]
+pdt[is.na(N), `:=`(N = 0L, genes = NA_character_)]
+
+tot <- pdt[, .(Ntot = sum(N)), by = ds]
+pdt <- tot[pdt, on = "ds"]
+```
+## ---
+
+```{r stacked bars plot}
+pdt[, ds := as.character(ds)]
+ds_levels <- names(ds2name)
+ds_labels <- unname(ds2name)
+p <- ggplot(
+  pdt,
+  aes(
+    x = factor(ds, levels = ds_levels, labels = ds_labels),
+    y = N,
+    fill = cat
+  )
+) +
+  geom_col(width = 0.75) +
+  geom_text(
+    aes(label = ifelse(N > 0, N, "")),
+    position = position_stack(vjust = 0.5),
+    size = 3
+  ) +
+  geom_text(
+    data = tot,
+    aes(x = factor(ds, levels = ds_levels, labels = ds_labels), y = Ntot, label = paste0("n=", Ntot)),
+    inherit.aes = FALSE,
+    hjust = -0.1,
+    size = 3
+  ) +
+  coord_flip() +
+  theme_bw() +
+  labs(
+    x = NULL, y = "Number of genes",
+    title = "Potential colocalization loci by dataset",
+    subtitle = paste0(
+      "strong_coloc: PP34 >= 0.8 & PP4/(PP34) >= 0.9; ",
+      "distinct_causal: PP34 >= 0.8 & PP4/(PP34) < 0.5; ",
+      "follow_up: PP34 >= 0.8 | PP4 >= 0.8"
+    )
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  scale_fill_manual(
+    values = c(
+      strong_coloc = "#7ebae0",
+      follow_up = "#c6dbf8"
+    ),
+    breaks = c("strong_coloc", "follow_up")
+  )
+print(p)
+```
+
+```{r clean PP4 high only}
+library(data.table)
+library(ggplot2)
+
+pp4_thr <- 0.80
+
+all_ds <- data.table(ds = names(cdts))
+
+pdt <- fc_all[PP4 > pp4_thr, .N, by=ds]
+pdt <- all_ds[pdt, on="ds"]
+pdt[is.na(N), N := 0L]
+
+ds_lev <- names(cdts)
+
+ggplot(pdt, aes(x=factor(ds, levels = ds_lev), y=N)) +
+  geom_col(width=0.75) +
+  geom_text(aes(label=N), vjust=-0.4, size=3) +
+  theme_bw() +
+  labs(
+    x=NULL, y="Number of features",
+    title=paste0("High-confidence colocalization candidates (PP4 > ", pp4_thr, ")")
+  ) +
+  scale_y_continuous(expand=expansion(mult=c(0, 0.12))) +
+  theme(
+    axis.text.x = element_text(angle=45, hjust=1)
+  )
+
+```
+
