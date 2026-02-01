@@ -109,6 +109,62 @@ write_csv(
 )
 
 ## FDR p-value 10 ----
+fdr_p_geneList <- spd_deg_list |>
+  map(
+    ~ .x$gene_id[.x$adj.P.Val < 0.10]
+  )
+
+unique_genes_fdr <- map(
+  names(fdr_p_geneList),
+  ~ setdiff(
+    fdr_p_geneList[[.x]],
+    # Reduce(union, nom_p_geneList[names(nom_p_geneList) != .x])
+    unlist(fdr_p_geneList[names(fdr_p_geneList) != .x]) |> unique()
+  )
+) |>
+  set_names(names(fdr_p_geneList))
+
+unique_genes_fdr <- imap_dfr(
+  unique_genes_fdr,
+  .f = function(.x, idx) {
+    # browser()
+    # Convert genes from ensembl to symbol
+    # NOTE: some ensembl ID may not be converted.
+    # clusterProfiler::bitr(
+    #   .x,
+    #   fromType = "ENSEMBL", toType = "SYMBOL",
+    #   OrgDb = "org.Hs.eg.db",
+    #   drop = FALSE
+    # ) |>
+    if (length(.x) != 0) {
+      data.frame(
+        ENSEMBL = .x,
+        spd = idx
+      )
+    } else {
+      data.frame(
+        ENSEMBL = character(),
+        spd = character()
+      )
+    }
+  }
+)
+
+length(unique_genes_fdr$ENSEMBL)
+# [1] 913
+
+stopifnot(length(unique(unique_genes_fdr$ENSEMBL)) == nrow(unique_genes_fdr))
+stopifnot(all(!duplicated(unique_genes_fdr$ENSEMBL)))
+
+write_csv(
+  unique_genes_fdr,
+  here(
+    "processed-data/rds/11_dx_deg_interaction",
+    "layer_specific_genes_fdr_010.csv"
+  ),
+  quote = "all"
+)
+
 
 # unique_genes_fdr <- map(
 #   names(fdr_10_geneList),
