@@ -3,6 +3,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(SingleCellExperiment)
   library(here)
+  library(ggbeeswarm)
 })
 
 # Load data ----
@@ -10,31 +11,31 @@ suppressPackageStartupMessages({
 prs_data <- read_csv(
   here(
     "processed-data/donor_prs",
-    "Spatial_DLPFC_SCZ_PRS.csv"
+    # "mock_SCZ_PRS_with_dx_and_genetic_PCs.csv"
+    "SCZ_PRS_with_dx_and_genetic_PCs.csv"
   )
 )
 
-## Load diag data ----
-diag_data <- metadata(
-  readRDS(
-    here(
-      "processed-data/rds/07_dx_pseudobulk",
-      "sce_pseudo_PRECAST07_donor_spd.rds"
-    )
-  )
-)$dx_df
+# ## Load diag data ----
+# diag_data <- metadata(
+#   readRDS(
+#     here(
+#       "processed-data/rds/07_dx_pseudobulk",
+#       "sce_pseudo_PRECAST07_donor_spd.rds"
+#     )
+#   )
+# )$dx_df
 
-## Merged data ----
-ful_dat <- prs_data |>
-  right_join(
-    diag_data |> select(subject, dx),
-    by = c("IID" = "subject")
-  )
+# ## Merged data ----
+# ful_dat <- prs_data |>
+#   right_join(
+#     diag_data |> select(subject, dx),
+#     by = c("IID" = "subject")
+#   )
 
-library(ggbeeswarm)
-
+# Make plot ----
 ggplot(
-  ful_dat,
+  prs_data,
   aes(x = dx, y = PRS, color = dx)
 ) +
   geom_boxplot(
@@ -43,7 +44,8 @@ ggplot(
   geom_beeswarm(size = 2, alpha = 0.8) +
   labs(
     x = "Diagnosis Group",
-    y = "PRS Score (Normalized)"
+    # y = "PRS Score (Normalized)"
+    y = "PRS Score"
     # title = "Swarm Plot of Scaled PRS Scores by Diagnosis Group"
   ) +
   scale_x_discrete(
