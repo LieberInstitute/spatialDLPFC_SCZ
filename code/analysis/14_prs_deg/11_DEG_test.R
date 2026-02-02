@@ -20,14 +20,16 @@ sce_pseudo <- readRDS(
 prs_data <- read_csv(
   here(
     "processed-data/donor_prs",
-    "Spatial_DLPFC_SCZ_PRS.csv"
+    # "mock_SCZ_PRS_with_dx_and_genetic_PCs.csv"
+    "SCZ_PRS_with_dx_and_genetic_PCs.csv"
   )
 ) |>
   rename_with(
     ~ paste0("genotype_", .x), starts_with("PC")
   ) |>
   select(
-    brnum = IID,
+    # brnum = IID,
+    brnum = subject
     PRS,
     starts_with("genotype_")
   )
@@ -40,7 +42,7 @@ colData(sce_pseudo) <- as.data.frame(colData(sce_pseudo)) |>
 # limma test ----
 ## Create desgin matrix ----
 dx_mod <- model.matrix(
-  ~ 0 + PRS + fnl_spd + age + sex + slide_id + genotype_PC1 + genotype_PC2,
+  ~ 0 + PRS + fnl_spd + age + sex + slide_id + genotype_PC1 + genotype_PC2 + genotype_PC3,
   colData(sce_pseudo)
 )
 
