@@ -22,7 +22,7 @@ refdir=here("processed-data", "ref")
 
 ```{r}
 ## load all rowRanges
-granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd last chunk
+granges <- qs_read(file.path(refdir, "granges.qs2")) ## gene info file created by 00_explore_data.Rmd last chunk
 g2sym <- setNames(granges$gene_name, granges$gene_id)
 
 fgwasflt <- file.path(refdir, 'SCZ_GWAS_flt_1e-6_R.8.tab.gz')
@@ -54,6 +54,125 @@ gwas_set_swapped <- swap_alleles(gwas_set)
 gwas_set_ext <- unique(c(gwas_set, gwas_set_swapped))
 
 ```
+
+```{r gwas-tqtl overlap prep}
+## not directly used below, but in the 03b_eQTL_boxplots.Rmd
+## tensorqtl variant universe:
+pvar <- fread(here("processed-data/genotypes/plink2", "merged_maf05.pvar"), sep = "\t")
+setnames(pvar, '#CHROM', 'CHROM')
+
+## tensorqtl used PLINK2 .pvar ID for variants: chr:pos:REF:ALT
+pvar_info <- pvar[, .(chr = as.character(CHROM),
+  pos = as.integer(POS),
+  a0  = REF, a1  = ALT, ID)]
+## MAPK3 eQTL: "chr16:30114519:G:C" = rs7542
+fgwas <- file.path(refdir, 'GWAS_SCZ_tqtl-matched.tab.gz') ## rebuild if not found
+if (file.exists(fgwas)) {
+  gwas_tqtl <- fread(fgwas)
+} else {
+  library(bigsnpr) # remotes::install_github("privefl/bigsnpr")
+  library(bigreadr) ## for fread2
+  fgwas38 <- file.path(refdir, 'scz_gwas_wide_hg38.qs2')
+  if (file.exists(fgwas38)) {
+    gwas_wide <- qs_read(fgwas38)
+  } else {
+    fhg19gwas <- file.path(refdir, 'PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz')
+    ## NOTE: A1 as the allele for frequency/beta so BETA is "of A1".
+    ##    A1/A2 are not guaranteed to be genome REF/ALT. They're effect-allele oriented (A1) and the "other" allele (A2)
+
+    #data/PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz'
+    stopifnot(file.exists(fhg19gwas))
+    liftOver <- Sys.which("liftOver")
+    stopifnot(file.exists(liftOver))
+
+    gwas_wide <- fread2(fhg19gwas)
+    colnames(gwas_wide) <- tolower(colnames(gwas_wide))
+    setnames(gwas_wide, old = c("chrom","id","a1","a2","se",    "neff","pval"),
+                        new = c("chr","rsid","a0","a1","beta_se","N",  "p"))
+    ## in this notation, a0 is the EFFECT allele (former A1) and a1 is the other allele (former A2)
+    setcolorder(gwas_wide, c("rsid","chr","pos","a0","a1","beta","beta_se","N","p"))
+    gwas_wide$chr <- as.character(gwas_wide$chr)
+
+    gwas_wide <- snp_modifyBuild(gwas_wide, liftOver, from = 'hg19', to = 'hg38')
+    ## 4967 variants have not been mapped.
+    library(SNPlocs.Hsapiens.dbSNP155.GRCh38)
+    dbsnps <- SNPlocs.Hsapiens.dbSNP155.GRCh38
+    setDT(gwas_wide)
+    gwas_wide$chr <- as.character(gwas_wide$chr)
+    ## only pull the unmapped unique rsids:
+    ids_unmapped <- unique(gwas_wide[is.na(pos) & grepl("^rs\\d+$", rsid), rsid])
+    ### 4899 ids to map
+    ## annoyingly slow:
+    rehg38 <- snpsById(dbsnps, ids=ids_unmapped, ifnotfound="drop")
+    ## rescued 4360 variants
+    ## Normalize the SNPlocs result to chr/pos and join-update only rows with missing pos
+    hdt <- as.data.table(rehg38)
+    setnames(hdt, c('seqnames'), c('chr'))
+    hdt$chr <- as.character(hdt$chr)
+    setkey(hdt, RefSNP_id)
+    setkey(gwas_wide, rsid)
+    gwas_wide[hdt$RefSNP_id, `:=`(chr=hdt$chr, pos=hdt$pos)]
+     ## only 607 variants are not mapped
+    gwas_wide[, variant_id := sprintf("chr%s:%s:%s:%s", chr, pos, a0, a1)]
+    gwas_wide[, chr := paste0("chr", chr)]
+    qs_save(gwas_wide, fgwas38)
+  }
+  ### NOTE: in gwas_wide, a0 = EFFECT allele (former A1), a1 = other allele (former A2)
+  ## harmonize with tensorqtl variant universe
+  ## prepare GWAS for matching
+  sumstats_for_match <- gwas_wide[, .(
+    chr, pos,
+    a0 = a1,      # swap alleles to match bigsnpr notation (a0 = former A2 = the OTHER allele)
+    a1 = a0,      # a1 = former A1 = the EFFECT allele
+    beta, beta_se, N, p, ncas, ncon, impinfo, fcas, fcon, rsid
+  )]
+  ## bigsnpr removes palindromic A/T and C/G when strand_flip=TRUE; match those separately
+  is_ambiguous <- with(sumstats_for_match, paste(a0, a1) %in% c("A T", "T A", "C G", "G C"))
+  sumstats_nonambig <- sumstats_for_match[!is_ambiguous]
+  sumstats_ambig    <- sumstats_for_match[is_ambiguous]
+  gwas_m_nonambig <- if (nrow(sumstats_nonambig)) {
+    bigsnpr::snp_match(
+      sumstats_nonambig, pvar_info,
+      strand_flip = TRUE, return_flip_and_rev = TRUE
+    )
+    # 6,500,465 variants to be matched.
+    # 0 ambiguous SNPs have been removed.
+    # 4,390,082 variants have been matched; 4,057 were flipped and 3,287,160 were reversed.
+  }
+  ## For palindromic SNPs, only allow same-strand matching (no strand flip)
+  gwas_m_ambig <- if (nrow(sumstats_ambig)) {
+    bigsnpr::snp_match(
+      sumstats_ambig, pvar_info,
+      strand_flip = FALSE, return_flip_and_rev = TRUE
+    )
+    # 1,159,302 variants to be matched.
+    # 780,884 variants have been matched; 0 were flipped and 585,387 were reversed.
+  }
+  gwas_m <- data.table::rbindlist(
+    list(gwas_m_nonambig, gwas_m_ambig),
+    use.names = TRUE, fill = TRUE
+  )
+  ## 5170966 rows total
+  # gwas_m now has alleles aligned to pvar_info, and beta flipped if alleles swapped
+  setDT(gwas_m)
+  # Rebuild variant_id to match tensorQTL
+  gwas_m[, variant_id := pvar_info$ID[`_NUM_ID_`]]
+
+  gwas_tqtl <- gwas_m[, .(
+    variant_id, A1=a1, A2=a0, ## A1 is the EFFECT allele!
+    beta, beta_se,
+    N,  p,  ncas, ncon, impinfo,
+    rsid, fcas, fcon
+  )]
+  ## deduplicate defensively
+  setkey(gwas_tqtl, variant_id)
+  gwas_tqtl <- unique(gwas_tqtl)
+  ##
+  fwrite(gwas_tqtl, fgwas, sep = "\t")
+}
+
+```
+
 
 ```{r load tensor QTL results except nominal}
 pats <- c('\\.map_cis\\.tab\\.gz$', '\\.map_independent\\.txt\\.gz$',

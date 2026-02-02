@@ -2,96 +2,22 @@
 library(here)
 library(arrow)
 library(data.table)
-library(bigsnpr) # remotes::install_github("privefl/bigsnpr")
-library(bigreadr) ## for fread2
 library(qs2)
 library(stringi)
 
 here::i_am('.git/HEAD')
 refdir=here("processed-data", "ref")
 
-## tensorqtl variant universe:
-
-pvar <- fread(here("processed-data/genotypes/plink2", "merged_maf05.pvar"), sep = "\t")
-setnames(pvar, '#CHROM', 'CHROM')
-
-## symlink the eqtl results from 06_eQTL
-eqtl_dir <- 'tqtl_out'
-out_dir  <- 'coloc'
-info_snp <- pvar[, .(chr = as.character(CHROM),
-  pos = as.integer(POS),
-  a0  = REF, a1  = ALT, ID)]
-## MAPK3 eQTL: "chr16:30114519:G:C" = rs7542
-fgwas <- file.path(refdir, 'scz_gwas_wide.scz.tqtl-matched.tab.gz') ## rebuild if not found
+fgwas <- file.path(refdir, 'GWAS_SCZ_tqtl-matched.tab.gz') ## rebuild if not found
 if (file.exists(fgwas)) {
   gwas_tqtl <- fread(fgwas)
 } else {
-  fgwas38 <- file.path(refdir, 'scz_gwas_wide_hg38.qs2')
-  if (file.exists(fgwas38)) {
-    gwas_wide <- qs_read(fgwas38)
-  } else {
-    fhg19gwas <- file.path(refdir, 'PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz')
-    #data/PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz'
-    stopifnot(file.exists(fhg19gwas))
-    liftOver <- Sys.which("liftOver")
-    stopifnot(file.exists(liftOver))
-
-    gwas_wide <- fread2(fhg19gwas)
-    colnames(gwas_wide) <- tolower(colnames(gwas_wide))
-    setnames(gwas_wide, old = c("chrom","id","a1","a2","se",    "neff","pval"),
-                        new = c("chr","rsid","a0","a1","beta_se","N",  "p"))
-    setcolorder(gwas_wide, c("rsid","chr","pos","a0","a1","beta","beta_se","N","p"))
-    gwas_wide$chr <- as.character(gwas_wide$chr)
-
-    gwas_wide <- snp_modifyBuild(gwas_wide, liftOver, from = 'hg19', to = 'hg38')
-    ## 4967 variants have not been mapped.
-    library(SNPlocs.Hsapiens.dbSNP155.GRCh38)
-    dbsnps <- SNPlocs.Hsapiens.dbSNP155.GRCh38
-    setDT(gwas_wide)
-    gwas_wide$chr <- as.character(gwas_wide$chr)
-    ## only pull the unmapped unique rsids:
-    ids_unmapped <- unique(gwas_wide[is.na(pos) & grepl("^rs\\d+$", rsid), rsid])
-    ### 4899 ids to map
-    ## annoyingly slow:
-    rehg38 <- snpsById(dbsnps, ids=ids_unmapped, ifnotfound="drop")
-    ## rescued 4360 variants
-    ## Normalize the SNPlocs result to chr/pos and join-update only rows with missing pos
-    hdt <- as.data.table(rehg38)
-    setnames(hdt, c('seqnames'), c('chr'))
-    hdt$chr <- as.character(hdt$chr)
-    setkey(hdt, RefSNP_id)
-    setkey(gwas_wide, rsid)
-    gwas_wide[hdt$RefSNP_id, `:=`(chr=hdt$chr, pos=hdt$pos)]
-     ## only 607 variants are not mapped
-    gwas_wide[, variant_id := sprintf("chr%s:%s:%s:%s", chr, pos, a0, a1)]
-    gwas_wide[, chr := paste0("chr", chr)]
-    qs_save(gwas_wide, fgwas38)
-  }
-  ## harmonize with tensorqtl variant universe
-  ## prepare GWAS for matching
-  sumstats_for_match <- gwas_wide[, .(
-    chr, pos,
-    a0 = a1,      # A2
-    a1 = a0,      # A1 (effect allele)
-    beta, beta_se, N, p, ncas, ncon, impinfo, fcas, fcon, rsid
-  )]
-  gwas_m <- bigsnpr::snp_match(sumstats_for_match, info_snp, return_flip_and_rev = TRUE)
-  # gwas_m now has alleles aligned to info_snp, and beta flipped if alleles swapped
-  setDT(gwas_m)
-  # Rebuild variant_id to match tensorQTL
-  gwas_m[, variant_id := info_snp$ID[`_NUM_ID_`]]  
-  ## FIXME: something doesn't add up here? is  chr16:30114519:G:C (rs7542) lost?
-  gwas_tqtl <- gwas_m[, .(
-    variant_id, beta, beta_se,
-    N,  p,  ncas, ncon, impinfo,
-    rsid, fcas, fcon
-  )]
-  # deduplicate defensively
-  setkey(gwas_tqtl, variant_id)
-  gwas_tqtl <- unique(gwas_tqtl)
-  ##
-  fwrite(gwas_tqtl, fgwas, sep = "\t")
+  stop("GWAS-tensorQTL variant-harmonized file not found: ", fgwas, "\nRun 03_eqtl_explore.Rmd to create it.")
 }
+
+## symlink the eqtl results from
+eqtl_dir <- 'tqtl_out'
+out_dir  <- 'coloc'
 
 ## prepare coloc input
 
@@ -99,7 +25,8 @@ library(coloc)
 library(BiocParallel)
 
 ## inputs
-## - gwas_wide: data.table with columns variant_id, BETA, SE, and NCAS/NCON (or s)
+## - gwas_tqtl: data.table with columns variant_id, BETA, SE, and NCAS/NCON (or s)
+##    this must have GWAS SCZ variants harmonized to tensorQTL variant IDs
 ## - eqtl_dir: directory containing parquet files like:
 ##             PolyA.gene.chr1.parquet, PolyA.tx.chr1.parquet, RiboZ.gene.chr1.parquet, RiboZ.tx.chr1.parquet
 ## - out_dir: where to save coloc RDS per run
@@ -113,7 +40,7 @@ if (all(c("ncas","ncon") %chin% names(gwas_tqtl))) {
 } else if ("s" %chin% names(gwas_tqtl)) {
   s <- unique(gwas_tqtl[!is.na(s), s])[1L]
 } else {
-  stop("Need ncas/ncon or a scalar column 's' in gwgwas_tqtl as_wide to set case fraction.")
+  stop("Need ncas/ncon or a scalar column 's' in gwas_tqtl as_wide to set case fraction.")
 }
 
 ## GWAS slice used for joins
@@ -195,7 +122,7 @@ run_coloc1_safe <- function(g, coloc_dt, s, ...) {
            error = function(e) structure(list(.error = conditionMessage(e)), class = "coloc_err"))
 }
 
-n_cores = 6
+n_cores = 8
 bpparams <- MulticoreParam(n_cores, stop.on.error = FALSE, progressbar = FALSE)
 #BiocParallel::bpstart(bpparams)
 #on.exit(BiocParallel::bpstop(param_ps), add = TRUE)
