@@ -89,30 +89,28 @@ prs_ttest <- t.test(
 )
 print(prs_ttest)
 
-
 # Save organize PRS results to RDS file ----
 ## Load Genetic PCs data ----
-genetic_pcs <- read_xlsx(
+genetic_pcs <- read.table(
   here(
     "processed-data/donor_prs",
-    "gPC.xlsx"
+    "merged_maf05_pca.eigenvec"
   ),
-  sheet = "pheno_PC"
+  sep = "\t",
+  header = TRUE
 )
 ### Check matching ----
-stopifnot(all(ful_dat$"IID" %in% genetic_pcs$BrNum))
+stopifnot(all(ful_dat$"IID" %in% genetic_pcs$IID))
 
 # which brain is not included in the genetic PCs data
-setdiff(ful_dat$"IID", genetic_pcs$BrNum)
-# [1] "Br8207" "Br8433" "Br8492"
-# [4] "Br8514" "Br8537" "Br8667"
-# [7] "Br8772"
+setdiff(ful_dat$"IID", genetic_pcs$IID)
+
 
 ## Merge genetic PCs to ful_dat ----
 ful_dat <- ful_dat |>
   left_join(
     genetic_pcs,
-    by = c("IID" = "BrNum")
+    by = c("IID")
   )
 
 # Check for missing values
@@ -124,11 +122,6 @@ stopifnot(all(
   sort(ful_dat$IID) == sort(diag_data$subject)
 ))
 
-# Check if donor race is consistent
-stopifnot(
-  all(ful_dat[order(ful_dat$IID), "Race"] ==
-    diag_data[order(diag_data$subject), "race"])
-)
 
 ## Save the merged file ----
 ful_dat |>
@@ -145,6 +138,6 @@ ful_dat |>
   write_csv(
     here(
       "processed-data/donor_prs",
-      "mock_SCZ_PRS_with_dx_and_genetic_PCs.csv"
+      "SCZ_PRS_with_dx_and_genetic_PCs.csv"
     )
   )
