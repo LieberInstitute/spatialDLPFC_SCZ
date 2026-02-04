@@ -29,7 +29,7 @@ prs_data <- read_csv(
   ) |>
   select(
     # brnum = IID,
-    brnum = subject
+    brnum = subject,
     PRS,
     starts_with("genotype_")
   )
@@ -52,6 +52,7 @@ corfit <- duplicateCorrelation(
   design = dx_mod,
   block = colData(sce_pseudo)$sample_id
 )
+
 ## Run limma fit ----
 fit <- lmFit(
   logcounts(sce_pseudo),
