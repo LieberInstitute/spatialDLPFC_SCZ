@@ -9,8 +9,12 @@ suppressPackageStartupMessages({
 ## Load PRS DEGs results ----
 test_res <- read_csv(
   file = here(
-    "processed-data/rds/14_prs_deg",
-    "PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+    # "processed-data/rds/14_prs_deg",
+    # "PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+    # "processed-data/rds/14_prs_deg",
+    # "norm_PRS_deg/norm_PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+
+    "processed-data/rds/14_prs_deg/norm_PRS_DEG_test_res_PRECAST07_donor_spd.csv"
   )
 )
 
@@ -19,8 +23,8 @@ test_res <- read_csv(
 hist(
   test_res$P.Value,
   breaks = 20, # bin width = 0.05
-  main = "Histogram of -log10(p-value) for PRS DEGs",
-  xlab = "-log10(p-value)",
+  main = "Histogram of p-value for PRS DEGs",
+  xlab = "p-value",
   col = "lightblue",
   border = "black"
 )

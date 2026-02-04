@@ -20,8 +20,10 @@ dx_deg_df <- read_csv(
 ## Load layer-adjusted PRS-DEGs ----
 prs_deg_df <- read_csv(
   file = here(
+    # "processed-data/rds/14_prs_deg",
+    # "PRS_DEG_test_res_PRECAST07_donor_spd.csv"
     "processed-data/rds/14_prs_deg",
-    "PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+    "norm_PRS_DEG_test_res_PRECAST07_donor_spd.csv"
   )
 )
 
@@ -122,7 +124,7 @@ ret_p <- ggplot(
 ggsave(
   filename = here(
     "plots/14_prs_deg",
-    "cor_plot_PRS_vs_Dx-DEGs_PRECAST07_donor_spd.pdf"
+    "cor_plot_norm_PRS_vs_Dx-DEGs_PRECAST07_donor_spd.pdf"
   ),
   plot = ret_p,
   width = 2.5, height = 2.7, units = "in"

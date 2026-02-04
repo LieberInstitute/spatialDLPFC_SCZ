@@ -9,8 +9,10 @@ suppressPackageStartupMessages({
 # Load data ----
 test_res <- read_csv(
   file = here(
-    "processed-data/rds/14_prs_deg",
-    "PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+    # "processed-data/rds/14_prs_deg",
+    # "PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+    "processed-data/rds/14_prs_deg/norm_PRS_deg",
+    "norm_PRS_DEG_test_res_PRECAST07_donor_spd.csv"
   )
 ) |>
   mutate(
@@ -87,15 +89,17 @@ ggplot(
     # y = "-log10(p-value)",
     x = "log2(FC in PRS)"
   )
-  
-  ggsave(
-    filename = here(
-      "plots/14_prs_deg",
-      "PRS_DEG_volcano_plot_PRECAST07_donor_spd.pdf"
-    ),
-    plot = last_plot(),
-    width = 2.5, height = 2.5, units = "in"
-  )
+
+ggsave(
+  filename = here(
+    # "plots/14_prs_deg",
+    # "PRS_DEG_volcano_plot_PRECAST07_donor_spd.pdf"
+    "plots/14_prs_deg",
+    "norm_PRS_DEG_volcano_plot_PRECAST07_donor_spd.pdf"
+  ),
+  plot = last_plot(),
+  width = 2.5, height = 2.5, units = "in"
+)
 
 # Session Info ----
 session_info()
