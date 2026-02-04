@@ -36,7 +36,11 @@ prs_data <- read_csv(
 # Make plot ----
 ggplot(
   prs_data,
-  aes(x = dx, y = PRS, color = dx)
+  aes(
+    x = dx,
+    y = scale(PRS, center = TRUE, scale = TRUE),
+    color = dx
+  )
 ) +
   geom_boxplot(
     outlier.shape = NA, alpha = 0.5, width = 0.3
@@ -77,7 +81,7 @@ ggplot(
 ggsave(
   here(
     "plots/14_prs_deg",
-    "PRS_boxplot_spd.pdf"
+    "norm_PRS_boxplot_spd.pdf"
   ),
   width = 1.5, height = 2.5, units = "in"
 )
