@@ -58,6 +58,21 @@ indres <- lapply(names(fcis), \(x) {
 names(indres) <- dss
 ```
 
+```{r load all nominal eQTL results}
+pat <- '\\.eqtl-nominal_FDR05\\.tab\\.gz$'
+fnom <- list.files(path=tqtl_out, pattern=pat, recursive = TRUE, full.names = TRUE)
+names(fnom) <- sub("/", "", stri_match_first_regex(fnom, '/(\\w+)\\.')[,2])
+stopifnot("fnom/dss name mismatch" = setequal(names(fnom), dss))
+fnom <- fnom[dss] # sort in dss order
+
+nomres <- lapply(names(fnom), \(x) {
+    dt <- fread(fnom[[x]])
+    if (nrow(dt)==0) message("Dataset ", x, " has no rows!")
+    dt[, gene_name:=g2sym[phenotype_id]]
+    })
+names(nomres) <- dss
+```
+
 
 ```{r load genotypes}
 pgen_prefix <- here("processed-data", "genotypes", "plink2", "merged_maf05")
@@ -452,32 +467,58 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NU
 ```
 
 
-```{r check for MAPK3 in vasc, pnn and neun}
+```{r show MAPK3 in neuropil}
 ##ds <- 'pnn' ## actually none of the other datasets have it
 ## apply(indres, \(x) x[gene_name=="MAPK3"]) --> only shows it in neuropil
-ds <- 'neuropil'
-dsname <- unname(ds2name[ds])
+#dsname <- unname(ds2name[ds])
 ## load data for the specified dataset
-spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
+ds <- 'neuropil'
+npil_spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
 ## use assays(spe)$tmm for expression data, TMM normalized log(CPM+1)
-covar_file <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
+npil_fcovars <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
+npil_plotdata <- prep_eQTLPlotData(npil_spe, geno, npil_fcovars)
+
 indr <- indres[[ds]]
 stopifnot(!is.null(indr))
-plotdata <- prep_eQTLPlotData(spe, geno, covar_file)
 
-eqtls <- indr[gene_name=="MAPK3"]
-stopifnot(nrow(eqtls)>0)
+ieqtls <- indr[gene_name=="MAPK3"]
+stopifnot(nrow(ieqtls)>0)
 #top_eqtls[, .(phenotype_id, variant_id, slope, pval_nominal, pval_perm, af)]
 
 # Create plot
 ## this might have to be customized further
-p <- plot_eQTL_boxplots(plotdata, eqtls) #, title = sprintf("%s eQTL examop", dsname))
+p <- plot_eQTL_boxplots(npil_plotdata, ieqtls) #, title = sprintf("%s eQTL examop", dsname))
 print(p)
-
-
 ```
 
+```{r plot from nominal results in neun dataset}
+ds <- 'neun'
+neun_spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
+## use assays(spe)$tmm for expression data, TMM normalized log(CPM+1)
+neun_fcovars <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
+neun_plotdata <- prep_eQTLPlotData(neun_spe, geno, neun_fcovars)
 
+eqtls <- nomres[["neun"]][gene_name=="MAPK3" & variant_id == "chr16:30114519:G:C"]
+pnom <- plot_eQTL_boxplots(neun_plotdata, eqtls)
+print(pnom)
+```
+
+```{r plot KANSL1-AS1 gene}
+## which indep results have KANSL1-AS1?
+nvec <- sapply(indres, \(x) nrow(x[gene_name=="KANSL1-AS1"]))
+ctxs <- names(nvec[nvec>0])
+message("Contexts with KANSL1-AS1 independent eQTLs: ", paste(ctxs, collapse=", "))
+for (ds in ctxs) {
+  dsname <- unname(ds2name[ds])
+  spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
+  covar_file <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
+  plotdata <- prep_eQTLPlotData(spe, geno, covar_file)
+  indr <- indres[[ds]]
+  ieqtls <- indr[gene_name=="KANSL1-AS1"]
+  p <- plot_eQTL_boxplots(plotdata, ieqtls, title = sprintf("%s KANSL1-AS1 eQTL", dsname))
+  print(p)
+}
+```
 
 
 ```{r neuropil example}
