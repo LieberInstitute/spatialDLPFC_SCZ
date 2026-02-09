@@ -9,9 +9,9 @@ suppressPackageStartupMessages({
 # Load data ----
 test_res <- read_csv(
   file = here(
-    # "processed-data/rds/14_prs_deg",
+    "processed-data/rds/14_prs_deg",
     # "PRS_DEG_test_res_PRECAST07_donor_spd.csv"
-    "processed-data/rds/14_prs_deg/norm_PRS_deg",
+    # "processed-data/rds/14_prs_deg/norm_PRS_deg",
     "norm_PRS_DEG_test_res_PRECAST07_donor_spd.csv"
   )
 ) |>
@@ -27,6 +27,14 @@ test_res <- read_csv(
   )
 
 ## Create a volcano plot ----
+hl_genes <- c(
+  "EIF2A", "COX7A2", "MCL1", "AIF1", "TREM2",
+  "VEGFA", "A2M", "FOSB", "JUN", "SYT1", "KANSL1-AS1",
+  "MAP2", "GAP43", "MAPK3", "MSI2", "R3HDM2", "THOC7",
+  "C1QA", "C1QB", "C3", "CX3CR1", "TYROBP", "CD74"
+)
+length(hl_genes)
+
 ggplot(
   test_res |> arrange(desc(P.Value)),
   aes(x = logFC, y = -log10(P.Value))
@@ -41,7 +49,7 @@ ggplot(
   ) +
   geom_text_repel(
     data = test_res |>
-      filter(gene_name %in% c("XRRA1", "C2orf74", "AC004556.3", "MTRNR2L8")),
+      filter(gene_name %in% hl_genes),
     aes(label = gene_name),
     color = "black",
     force = 0.5,

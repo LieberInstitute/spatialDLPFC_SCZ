@@ -51,10 +51,20 @@ merged_df <- dx_deg_df |>
 
 ### Descriptive statistics ----
 cor(merged_df$t_stat_scz, merged_df$t_prs)
-# [1] 0.4192539
+# [1] 0.5551971
 
 
 # Scatter plot ----
+hl_genes <- c(
+  # "EIF2A", "COX7A2", "MCL1", "AIF1", "TREM2",
+  # "VEGFA", "A2M", "FOSB", "JUN", "SYT1", "KANSL1-AS1",
+  # "MAP2", "GAP43", "MAPK3", "MSI2", "R3HDM2", "THOC7",
+  # "C1QA", "C1QB", "C3", "CX3CR1", "TYROBP", "CD74"
+  "MAPK3",
+  "AIF1", "TREM2", "C1QA", "C1QB",
+   "C3", "CX3CR1", "TYROBP", "CD74"
+)
+
 ret_p <- ggplot(
   merged_df |> arrange(study_sig),
   aes(x = t_stat_scz, y = t_prs)
@@ -65,11 +75,7 @@ ret_p <- ggplot(
   geom_point(aes(color = study_sig)) +
   geom_text_repel(
     data = merged_df |>
-      filter(gene %in% c(
-        "XRRA1", "C2orf74", "AC004556.3", "MTRNR2L8", # PRS-DEG,
-        "MAPK3", "C3", "AIF1", "SERPINA3", "A2M", # BrainseV2 & dx-DEG
-        "BDNF", "FKBP5", "SST", "GFAP", "MT2A" # dx-DEG
-      )),
+      filter(gene %in% hl_genes),
     aes(label = gene),
     color = "black",
     force = 4,
