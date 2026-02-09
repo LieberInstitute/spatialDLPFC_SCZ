@@ -33,6 +33,29 @@ prs_data <- read_csv(
 #     by = c("IID" = "subject")
 #   )
 
+# Differential test of PRS by diagnosis group ----
+## Nonparametric test ----
+prs_wilcox <- wilcox.test(
+  PRS ~ dx,
+  data = prs_data
+)
+# data:  PRS by dx
+# W = 215, p-value =
+# 6.777e-05
+# alternative hypothesis: true location shift is not equal to 0
+
+## T-test ----
+prs_ttest <- t.test(
+  PRS ~ dx,
+  data = prs_data
+)
+print(prs_ttest)
+# data:  PRS by dx
+# t = -4.1498, df = 60.5,
+# p-value = 0.0001057
+
+
+
 # Make plot ----
 ggplot(
   prs_data,
