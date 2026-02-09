@@ -24,6 +24,7 @@ refdir=here("processed-data", "ref")
 ## load all rowRanges
 granges <- qs_read(file.path(refdir, "granges.qs2")) ## gene info file created by 00_explore_data.Rmd last chunk
 g2sym <- setNames(granges$gene_name, granges$gene_id)
+sym2ensg <- setNames(granges$gene_id, granges$gene_name)
 
 fgwasflt <- file.path(refdir, 'SCZ_GWAS_flt_1e-6_R.8.tab.gz')
 if (file.exists(fgwasflt)) {

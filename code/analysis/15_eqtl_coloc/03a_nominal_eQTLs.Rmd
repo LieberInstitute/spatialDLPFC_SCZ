@@ -1,0 +1,218 @@
+---
+title: "nominal eQTLs gathering and exploration"
+##output: html_notebook
+---
+```{r}
+suppressMessages({
+    library(data.table)
+    library(BiocParallel)
+    library(qs2)
+    library(SummarizedExperiment)
+    library(stringi)
+    library(GenomicRanges)
+    library(ggplot2)
+    library(pgenlibr)
+    library(here)
+  })
+here::i_am('.git/HEAD')
+rdsdir=here("processed-data", "rds")
+## refdata -> ref folder symlink to CHESS Brain ref data for now
+refdir=here("processed-data", "ref") ## some general reference files prepared for our data
+eqtl_dir=here("processed-data", "eQTL/tqtl_out")
+
+ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
+       "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
+dss <- names(ds2name)
+
+granges <- qs_read(file.path(refdir, "granges.qs2")) ## gene info file created by 00_explore_data.Rmd last chunk
+g2sym <- setNames(granges$gene_name, granges$gene_id)
+sym2ensg <- setNames(granges$gene_id, granges$gene_name)
+## also load GWAS-tensorQTL harmonized variant file (5.12 million variants)
+fgwas <- file.path(refdir, 'GWAS_SCZ_tqtl-matched.tab.gz') ## this was created in 03_eqtl_explore.Rmd
+if (file.exists(fgwas)) {
+  gwas_vars <- fread(fgwas)
+} else {
+  stop("GWAS-tensorQTL variant-harmonized file not found: ", fgwas, "\nRun 03_eqtl_explore.Rmd to create it.")
+}
+```
+
+```{r}
+## read all parquet for a prefix (e.g., "spd01.gene", "vasc.gene")
+## keep only min_pval<0.001, add FDR
+read_eqtl_nominal <- function(eqtl_dir, prefix, min_pval=0.001) {
+  files <- list.files(eqtl_dir, pattern = paste0("^", gsub("\\.", "\\\\.", prefix), ".*\\.parquet$"),
+                      full.names = TRUE)
+  if (length(files) == 0L) stop("No parquet files found for prefix: ", prefix)
+  dt_list <- lapply(
+    files,
+    function(f) {
+      message(sprintf("    reading %s/%s", basename(dirname(f)), basename(f)))
+      as.data.table(arrow::read_parquet(f))
+    }
+  )
+  eqtl_dt <- rbindlist(dt_list, use.names = TRUE, fill = TRUE)
+  ## ensure character to avoid factor surprises
+  message(sprintf("       adding FDR to %s data... ", prefix))
+  eqtl_dt[, `:=`(phenotype_id = as.character(phenotype_id),
+                 variant_id   = as.character(variant_id),
+                 fdr = p.adjust(pval_nominal, method = "fdr"))]
+  return(eqtl_dt[pval_nominal <= min_pval])
+}
+
+```
+
+
+```{r gather nominal eqtls for all datasets}
+runs <- paste0(c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"), ".gene")
+
+neqtls <- list() ## loading all nominal eQTLs with pval_nominal<=0.001, with FDR added as a column
+for (prefix in runs) {
+  fnom001 <- file.path(eqtl_dir, paste0(prefix, ".eqtl-nominal_p001.tab.gz"))
+  if (file.exists(fnom001)) {
+    message(Sys.time(), " | ", prefix, " | nominal eQTL pval<=0.001 already gathered at ", fnom001)
+    neqtls[[prefix]] <- fread(fnom001)
+    next
+  }
+  ## determine output path first so we can skip completed runs
+  message(Sys.time(), " | ", prefix, " | reading eQTL parquet...")
+  eqdt <- read_eqtl_nominal(eqtl_dir, prefix)
+  fwrite(eqdt, fnom001, sep="\t", quote=FALSE)
+  ## also write FDR<0.05 subset
+  fnomfdr05 <- file.path(eqtl_dir, paste0(prefix, ".eqtl-nominal_FDR05.tab.gz"))
+  eqdt_fdr05 <- eqdt[fdr<0.05]
+  fwrite(eqdt_fdr05, fnomfdr05, sep="\t", quote=FALSE)
+  message(Sys.time(), " | ", prefix, " | written nominal eQTL pval<=0.001 (", nrow(eqdt), " rows) and FDR<0.05 (", nrow(eqdt_fdr05), " rows).")
+  neqtls[[prefix]] <- eqdt
+}
+names(neqtls) <- sub("\\.gene$", "", names(neqtls))
+## for neun: search for MAPK3 eQTL: "chr16:30114519:G:C" = rs7542
+#ensg <- sym2ensg["MAPK3"] ## "ENSG00000102882"
+#eqdt[fdr<0.05][phenotype_id==ensg]
+```
+## neun context findings:
+> eqtdt[fdr<0.05][phenotype_id==ensg]
+      phenotype_id         variant_id start_distance        af ma_samples ma_count pval_nominal      slope   slope_se         fdr
+            <char>             <char>          <int>     <num>      <int>    <int>        <num>      <num>      <num>       <num>
+1: ENSG00000102882 chr16:30114519:G:C          -8988 0.4761905         47       60 7.032354e-06 -0.5852965 0.10790497 0.026972547
+2: ENSG00000102882 chr16:30119172:C:A          -4335 0.4761905         47       60 7.032354e-06 -0.5852965 0.10790497 0.026972547
+3: ENSG00000102882 chr16:30135944:C:T          12437 0.4682540         46       59 1.926548e-06 -0.6149577 0.10450523 0.009890641
+4: ENSG00000102882 chr16:30183519:A:G          60012 0.4047619         38       51 8.410917e-06 -0.4607696 0.08595245 0.030953732
+5: ENSG00000102882 chr16:30186830:A:G          63323 0.4047619         38       51 8.410917e-06 -0.4607696 0.08595245 0.030953732
+
+```{r check MAPK3 eQTL in results}
+## search for MAPK3 eQTL: "chr16:30114519:G:C" = rs7542
+ensg <- sym2ensg["MAPK3"] ## "ENSG00000102882"
+rstgt <- "chr16:30114519:G:C"
+
+mapk3_fdr_counts <- data.table::rbindlist(
+  lapply(names(neqtls), function(ctx) {
+    dt <- neqtls[[ctx]]
+    data.table::data.table(
+      context = ctx,
+      n_fdr05 = dt[phenotype_id == ensg & fdr < 0.05, .N]
+    )
+  }),
+  use.names = TRUE
+)
+mapk3_fdr_counts[n_fdr05>0]
+#    context n_fdr05
+#     <char>   <int>
+#1:     neun       5
+#2: neuropil      32
+
+## are all these rs7542 ?
+mapk3_rs7542_counts <- data.table::rbindlist(
+  lapply(names(neqtls), function(ctx) {
+    dt <- neqtls[[ctx]]
+    data.table::data.table(
+      context = ctx,
+      n_fdr05_rs7542 = dt[phenotype_id == ensg & fdr < 0.05 & variant_id == rstgt, .N]
+    )
+  }),
+  use.names = TRUE
+)
+mapk3_rs7542_counts[n_fdr05_rs7542>0]
+#    context n_fdr05_rs7542
+#     <char>          <int>
+#1:     neun              1
+#2: neuropil              1
+
+```
+
+
+```{r}
+ensg_kansl1 <- sym2ensg["KANSL1-AS1"] ## "ENSG00000214401"
+kansl1_fdr_counts <- data.table::rbindlist(
+   lapply(names(neqtls), function(ctx) {
+     dt <- neqtls[[ctx]]
+     data.table::data.table(
+       context = ctx,
+       n_fdr05 = dt[phenotype_id == ensg_kansl1 & fdr < 0.05, .N]
+     )
+   }),
+   use.names = TRUE
+ )
+kansl1_fdr_counts[n_fdr05>0]
+#    context n_fdr05 n_GWAS
+#     <char>   <int>  <int>
+#1:    spd01    2340    1944
+#2:    spd02    2631    1995
+#3:    spd03    2587    1989
+#4:    spd05    2342    1924
+#5:    spd06    2601    1989
+#6:    spd07    2603    1995
+#7:     neun    2446    1989
+#8: neuropil    2607    1993
+```
+
+```{r}
+eqtl_gwas_overlap <- function(neqtls, gene, gwas_vars, sym2ensg, p_thresh = 5e-8, max_fdr = 0.05) {
+  ensg <- sym2ensg[gene]
+  if (is.na(ensg) || length(ensg) == 0L) stop("Gene not found in sym2ensg: ", gene)
+
+  eqtls <- data.table::rbindlist(
+    lapply(names(neqtls), function(ctx) {
+      dt <- neqtls[[ctx]]
+      dt[
+        phenotype_id == ensg & fdr < max_fdr,
+        .(context = ctx, variant_id, pval_nominal, fdr, slope, slope_se, start_distance)
+      ]
+    }),
+    use.names = TRUE
+  )
+
+  hits <- merge(
+    eqtls,
+    gwas_vars[, .(
+      variant_id,
+      gwas_p = p,
+      gwas_A1 = A1,
+      gwas_rsid = rsid,
+      gwas_beta = beta,
+      gwas_impinfo = impinfo
+    )],
+    by = "variant_id",
+    all = FALSE
+  )[gwas_p <= p_thresh]
+
+  fdr_counts <- eqtls[, .(fdr_pass = .N), by = context]
+  gwas_counts <- hits[, .(fdr_gwas_pass = .N), by = context]
+  counts <- merge(fdr_counts, gwas_counts, by = "context", all = TRUE)
+  counts[is.na(fdr_pass), fdr_pass := 0L]
+  counts[is.na(fdr_gwas_pass), fdr_gwas_pass := 0L]
+  counts <- counts[order(-fdr_gwas_pass)]
+
+  list(
+    gene = gene,
+    ensg = ensg,
+    p_thresh = p_thresh,
+    max_fdr = max_fdr,
+    counts = counts,
+    hits = hits
+  )
+}
+
+## test with
+r <- eqtl_gwas_overlap(neqtls, "KANSL1-AS1", gwas_vars, sym2ensg)
+rmapk3 <- eqtl_gwas_overlap(neqtls, "MAPK3", gwas_vars, sym2ensg)
+```
