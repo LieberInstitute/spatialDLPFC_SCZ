@@ -30,8 +30,7 @@ test_res <- read_csv(
 hl_genes <- c(
   "EIF2A", "COX7A2", "MCL1", "AIF1", "TREM2",
   "VEGFA", "A2M", "FOSB", "JUN", "SYT1", "KANSL1-AS1",
-  "MAP2", "GAP43", "MAPK3", "MSI2", "R3HDM2", "THOC7",
-  "C1QA", "C1QB", "C3", "CX3CR1", "TYROBP", "CD74"
+  "MAP2", "GAP43", "MAPK3", "MSI2", "R3HDM2", "THOC7"
 )
 length(hl_genes)
 

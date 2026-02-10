@@ -62,7 +62,7 @@ hl_genes <- c(
   # "C1QA", "C1QB", "C3", "CX3CR1", "TYROBP", "CD74"
   "MAPK3",
   "AIF1", "TREM2", "C1QA", "C1QB",
-   "C3", "CX3CR1", "TYROBP", "CD74"
+   "C3", "CX3CR1", "TYROBP", "CD74", "KANSL1-AS1"
 )
 
 ret_p <- ggplot(
