@@ -147,3 +147,65 @@ if (!file.exists(fpath)) {
   qs_save(merged_granges, file=fpath)
 }
 ```
+
+```{r donor metadata}
+
+## SpD donor metadata (split by registration_variable)
+spd_dt <- as.data.table(as.data.frame(colData(d)))
+spd_dt[, ds := tolower(registration_variable)]
+spd_list <- split(spd_dt, spd_dt$ds)
+spd_list <- lapply(spd_list, function(dt) {
+  dt[, ds := NULL]
+  dt
+})
+
+## SPG donor metadata (already aggregated in dlist)
+spg_names <- intersect(c("neuropil", "neun", "pnn", "vasc"), names(dlist))
+spg_list <- lapply(spg_names, function(nm) {
+  as.data.table(as.data.frame(colData(dlist[[nm]])))
+})
+names(spg_list) <- spg_names
+
+donor_meta_raw <- rbindlist(c(spd_list, spg_list), idcol = "ds", fill = TRUE)
+if ("BrNumbr" %in% names(donor_meta_raw)) {
+  setnames(donor_meta_raw, "BrNumbr", "BrNum")
+}
+
+## unify donor ID and keep donor-level columns only
+if (!"BrNum" %in% names(donor_meta_raw) && "brnum" %in% names(donor_meta_raw)) {
+  donor_meta_raw[, BrNum := brnum]
+}
+if (!"BrNum" %in% names(donor_meta_raw) && "donor" %in% names(donor_meta_raw)) {
+  donor_meta_raw[, BrNum := donor]
+}
+
+donor_cols <- c(
+  "BrNum", "brnum", "donor_id",
+  "DX", "dx", "sex", "age", "rin",
+  "slide_id", "lot_num"
+)
+donor_cols <- intersect(donor_cols, names(donor_meta_raw))
+donor_meta_raw <- donor_meta_raw[, ..donor_cols]
+
+donor_meta <- donor_meta_raw[
+  , lapply(.SD, function(x) {
+    ux <- unique(na.omit(x))
+    if (length(ux) == 0L) NA
+    else if (length(ux) == 1L) ux
+    else ux[1]
+  }),
+  by = .(BrNum)
+]
+donor_meta[, `:=`(brnum = BrNum, donor_id = BrNum)]
+
+## drop columns that are all-NA or constant (same non-NA value)
+keep_cols <- names(donor_meta)[vapply(donor_meta, function(x) {
+  non_na <- x[!is.na(x)]
+  if (length(non_na) == 0L) return(FALSE)
+  length(unique(non_na)) > 1L
+}, logical(1))]
+donor_meta <- donor_meta[, ..keep_cols]
+
+fmeta <- file.path(refdir, "donor_meta.tsv.gz")
+fwrite(donor_meta, fmeta, sep = "\t")
+```

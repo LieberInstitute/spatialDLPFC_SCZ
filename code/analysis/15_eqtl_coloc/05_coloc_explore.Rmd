@@ -34,11 +34,31 @@ gwas <- fread(fgwasflt)
 gwas_set <- unique(gwas[p<5e-8]$variant_id) ## GWAS standard risk threshold
 gwas1e6_set <- unique(gwas$variant_id) ## loose p < 1e-6
 
+## genotype-gwas harmonized variant file
+fgtgwas <- file.path(refdir, 'GWAS_SCZ_tqtl-matched.tab.gz') ## this was created in 03_eqtl_explore.Rmd
+if (file.exists(fgtgwas)) {
+  gwas_vars <- fread(fgtgwas) ## 5.17million variants
+}
+
 ```
 
-
+```{r-console-output}
+> head(gwas_vars)
+            variant_id     A1     A2         beta beta_se        N      p  ncas  ncon impinfo       rsid  fcas  fcon
+                <char> <char> <char>        <num>   <num>    <num>  <num> <int> <int>   <num>     <char> <num> <num>
+1: chr10:100000235:C:T      T      C -0.009098483  0.0094 58749.13 0.3310 53386 77258   0.983 rs11596870 0.692 0.692
+2: chr10:100000943:G:A      A      G  0.017695649  0.0139 58749.13 0.2015 53386 77258   0.986 rs11190359 0.890 0.893
+3: chr10:100000979:T:C      C      T  0.020804929  0.0183 58749.13 0.2559 53386 77258   0.995 rs11190360 0.941 0.942
+4: chr10:100002628:A:C      C      A -0.006200736  0.0087 58749.13 0.4760 53386 77258   0.991 rs11190363 0.541 0.546
+5: chr10:100002875:A:G      G      A  0.014900463  0.0161 58749.13 0.3574 53386 77258   0.995  rs7894103 0.921 0.924
+6: chr10:100004256:T:A      A      T -0.007402534  0.0090 58749.13 0.4113 53386 77258   0.983  rs7915731 0.631 0.633
+```
 
 ```{r load DEGS}
+## also load donor metadata for later use
+fmeta <- file.path(refdir, "donor_meta.tsv.gz")
+donor_meta <- fread(fmeta) # brnum, dx, sex, age, rin
+
 ## WARNING: makes sure char not factor is passed to this char2char mapping!
 ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
        "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
@@ -222,6 +242,10 @@ sum_stats
 fc_all <- rbindlist(cdts, idcol="ds")
 fc_all[, gene_name:=g2sym[fid]]
 setcolorder(fc_all, c("ds", "fid", "gene_name", "lead_snp", "cls", "nsnps"))
+## add rsid for lead SNPs where available, for easier reporting and follow-up lookup
+fc_all[gwas_vars, rsid := i.rsid, on = .(lead_snp = variant_id)]
+
+
 fcoloc <- file.path(datadir, "coloc", "coloc_abf_results.tsv.gz")
 
 if (!file.exists(fcoloc)) {
@@ -257,20 +281,29 @@ rat_thr <- 0.90
 
 # fc_all assumed to already have ds, PP4, PP34, PP4_over_PP34
 fc_all[, cat := fcase(
-  PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "strong_coloc",
+  PP4 >= 0.8, "strong_coloc",
+  PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "likely_coloc",
   PP34 >= 0.8 & PP4_over_PP34 < 0.5,  "distinct_causal",
-  (PP34 >= 0.8) | (PP4 >= 0.8),       "follow_up", ## we already have PP4>0.5
+  (PP34 >= 0.8) | (PP4_over_PP34 >= 0.8),       "follow_up", ## we already have PP4>0.5
   default = NA_character_
 )]
+
+
+#fc_all[, cat := fcase(
+#  PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "strong_coloc",
+#  PP34 >= 0.8 & PP4_over_PP34 < 0.5,  "distinct_causal",
+#  (PP34 >= 0.8) | (PP4 >= 0.8),       "follow_up", ## we already have PP4>0.5
+#  default = NA_character_
+#)]
 ## get a quick summary/list in the console for now
 #fc_all[cat=="strong_coloc", .(strong_coloc_genes = paste(sort(unique(gene_name)), collapse=", ")), by=.(ds)]
 #fc_all[cat=="follow_up", .(followup_genes = paste(sort(unique(gene_name)), collapse=", ")), by=.(ds)]
 
 all_ds <- data.table(ds = names(ds2name))
-all_cat <- data.table(cat = c("strong_coloc", "follow_up"))
+all_cat <- data.table(cat = c("strong_coloc", "likely_coloc"))
 all_grid <- CJ(ds = all_ds$ds, cat = all_cat$cat, unique = TRUE)
 
-pdt <- fc_all[cat %chin% c("strong_coloc", "follow_up"),
+pdt <- fc_all[cat %chin% c("strong_coloc", "likely_coloc"),
   .( N = .N,
     genes =  paste(sort(unique(gene_name)), collapse = ", ")
   ),  by = .(ds, cat)
@@ -281,8 +314,9 @@ pdt[is.na(N), `:=`(N = 0L, genes = NA_character_)]
 
 tot <- pdt[, .(Ntot = sum(N)), by = ds]
 pdt <- tot[pdt, on = "ds"]
+pdt
 ```
-## ---
+
 
 ```{r stacked bars plot}
 pdt[, ds := as.character(ds)]
