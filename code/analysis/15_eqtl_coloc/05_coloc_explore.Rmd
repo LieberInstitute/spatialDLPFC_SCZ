@@ -25,7 +25,7 @@ refdir=here("processed-data", "ref")
 
 ```{r load GWAS and gene ranges}
 ## load gene-symbol data
-granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd last chunk
+granges <- qs_read(file.path(refdir,"granges.qs2")) ## gene info file created by 00_explore_data.Rmd last chunk
 g2sym <- setNames(granges$gene_name, granges$gene_id)
 ## load GWAS data
 fgwasflt <- file.path(refdir, 'SCZ_GWAS_flt_1e-6_R.8.tab.gz')
@@ -257,19 +257,15 @@ if (!file.exists(fcoloc)) {
 
 ## MAPK3 eQTL: chr16:30114519:G:C = rs7542
 
-Not in the coloc results, other SNPs for MAPK3 have low PP4, high PP34 (likely distinct causal variants).
+Note in the coloc results, other SNPs for MAPK3 have low PP4, high PP34 (likely distinct causal variants).
 
-> fc_all[gene_name=="MAPK3"]
-         ds             fid gene_name           lead_snp                    cls nsnps kept_by          PP0          PP1        PP2       PP3        PP4      PP34
-     <char>          <char>    <char>             <char>                 <char> <num>  <char>        <num>        <num>      <num>     <num>      <num>     <num>
-1:     neun ENSG00000102882     MAPK3 chr16:29983601:C:T likely_distinct_causal   733    PP34 1.345527e-10 2.506781e-09 0.04776160 0.8897589 0.06247953 0.9522384
-2:     vasc ENSG00000102882     MAPK3 chr16:29943634:A:G likely_distinct_causal   732    PP34 4.983703e-10 1.197340e-09 0.17690437 0.4246164 0.39847925 0.8230956
-3: neuropil ENSG00000102882     MAPK3 chr16:29983601:C:T likely_distinct_causal   733    PP34 4.200967e-11 2.685790e-09 0.01491199 0.9533316 0.03175638 0.9850880
-   PP4_over_PP34 lead_snp_PPH4 lead_snp_PPsho cs95_n_snp    p1    p2   p12             cat
-           <num>         <num>          <num>      <int> <num> <num> <num>          <char>
-1:    0.06561333    0.07354177    0.004594855         45 1e-04 1e-04 1e-05 distinct_causal
-2:    0.48412267    0.30604491    0.121952546         45 1e-04 1e-04 1e-05 distinct_causal
-3:    0.03223710    0.13209777    0.004194948         44 1e-04 1e-04 1e-05 distinct_causal
+> fc_all[gene_name=="MAPK3", .(ds, gene_name, lead_snp, rsid, cat, PP2, PP3, PP4, PP34, PP4_over_PP34)]
+         ds gene_name           lead_snp      rsid             cat        PP2       PP3        PP4      PP34 PP4_over_PP34
+     <char>    <char>             <char>    <char>          <char>      <num>     <num>      <num>     <num>         <num>
+1:     neun     MAPK3 chr16:29983601:C:T rs3814883 distinct_causal 0.04776160 0.8897589 0.06247953 0.9522384    0.06561333
+2:     vasc     MAPK3 chr16:29943634:A:G rs3924855 distinct_causal 0.17690437 0.4246164 0.39847925 0.8230956    0.48412267
+3: neuropil     MAPK3 chr16:29983601:C:T rs3814883 distinct_causal 0.01491199 0.9533316 0.03175638 0.9850880    0.03223710
+
 
 ```{r plot prep}
 library(data.table)

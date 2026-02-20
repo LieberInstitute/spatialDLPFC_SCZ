@@ -42,6 +42,7 @@ g2sym <- setNames(granges$gene_name, granges$gene_id)
 ```
 
 
+
 ```{r load all independent tensor QTL results}
 pat <- '\\.map_independent\\.txt\\.gz$'
 fcis <- list.files(path=tqtl_out, pattern=pat, recursive = TRUE, full.names = TRUE)
@@ -65,10 +66,20 @@ names(fnom) <- sub("/", "", stri_match_first_regex(fnom, '/(\\w+)\\.')[,2])
 stopifnot("fnom/dss name mismatch" = setequal(names(fnom), dss))
 fnom <- fnom[dss] # sort in dss order
 
+rsid_lut <- unique(gwas_vars[, .(variant_id, rsid)])
+
 nomres <- lapply(names(fnom), \(x) {
     dt <- fread(fnom[[x]])
     if (nrow(dt)==0) message("Dataset ", x, " has no rows!")
     dt[, gene_name:=g2sym[phenotype_id]]
+    dt <- merge(
+      dt,
+      rsid_lut,
+      by = "variant_id",
+      all.x = TRUE,
+      sort = FALSE
+    )
+    dt
     })
 names(nomres) <- dss
 ```
@@ -168,6 +179,9 @@ spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
 covar_file <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
 indr <- indres[[ds]]
 stopifnot(!is.null(indr))
+## load Xenium donor list:
+fxenium <- here("processed-data", "eQTL", "xenium_brnums.keep")
+xdonors <- fread(fxenium, header=FALSE)$V1
 ```
 
 
@@ -312,9 +326,10 @@ cat("\nExpected beta from eQTL:", round(indr$slope[1], 3), "\n")
 #' @param eqtl_pairs data.table/data.frame with columns: phenotype_id, variant_id,
 #'        and optionally: slope (beta), pval_nominal, gene_name
 #' @param use_raw Logical; if TRUE use raw expression, otherwise use residualized (default FALSE)
+#' @param restrict_donors Optional vector of donor IDs to keep
 #' @param title Optional plot title
 #' @return ggplot object
-plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NULL) {
+plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_donors = NULL, title = NULL) {
   # ---- Validate inputs ----
   required_cols <- c("phenotype_id", "variant_id")
   stopifnot("eqtl_pairs must have phenotype_id and variant_id columns" =
@@ -348,6 +363,21 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, title = NU
   expr_mat <- if (use_raw) plotdata$raw_expr else plotdata$resid_expr
   sample_info <- plotdata$sample_info
   sample_idx <- plotdata$sample_idx
+  if (!is.null(restrict_donors)) {
+    if (!is.atomic(restrict_donors)) {
+      stop("restrict_donors must be a simple vector of donor IDs")
+    }
+    restrict_donors <- as.character(restrict_donors)
+    restrict_donors <- restrict_donors[!is.na(restrict_donors) & nzchar(restrict_donors)]
+    keep_samples <- colnames(expr_mat)
+    keep <- keep_samples %in% restrict_donors
+    if (!any(keep)) {
+      stop("No samples left after applying restrict_donors")
+    }
+    expr_mat <- expr_mat[, keep, drop = FALSE]
+    sample_info <- sample_info[sample_info$sample_id %in% keep_samples[keep], ]
+    sample_idx <- sample_idx[keep]
+  }
   # Build variant -> rsID map if available
   ## TODO: rsID mapping data here is very poor, should use another source
   pvar <- plotdata$geno$pvar
@@ -501,6 +531,21 @@ neun_plotdata <- prep_eQTLPlotData(neun_spe, geno, neun_fcovars)
 eqtls <- nomres[["neun"]][gene_name=="MAPK3" & variant_id == "chr16:30114519:G:C"]
 pnom <- plot_eQTL_boxplots(neun_plotdata, eqtls)
 print(pnom)
+```
+
+```{r plot KANSL1-AS1 rs1378358 in Neuropil}
+#nvec <- sapply(indres, \(x) nrow(x[gene_name=="KANSL1-AS1"]))
+ds="neuropil"
+spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
+fcovars <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
+plotdata <- prep_eQTLPlotData(spe, geno, fcovars)
+eqtls <- nomres[[ds]][gene_name=="KANSL1-AS1" & rsid== "rs1378358"]
+
+pl <- plot_eQTL_boxplots(plotdata, eqtls)
+print(pl)
+#plx <- plot_eQTL_boxplots(plotdata, eqtls, restrict_donors = xdonors)
+#print(plx)
+
 ```
 
 ```{r plot KANSL1-AS1 gene}
