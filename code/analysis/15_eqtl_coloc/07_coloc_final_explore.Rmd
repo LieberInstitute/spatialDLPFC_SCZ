@@ -1,0 +1,447 @@
+---
+title: "final coloc overlap exploration"
+output: html_notebook
+---
+
+```{r setup}
+suppressMessages({
+  library(data.table)
+  library(ggplot2)
+  library(VennDiagram)
+  library(grid)
+  library(here)
+})
+
+##  set project paths and key inputs for dlpfc and habenula coloc summaries.
+here::i_am(".git/HEAD")
+datadir <- here("processed-data", "eQTL")
+refdir <- here("processed-data", "ref")
+hb_root <- "/home/gpertea/work/R/Habenula_Pilot"
+
+f_dlpfc <- file.path(datadir, "coloc", "coloc_abf_results.tsv.gz")
+f_hb <- file.path(hb_root, "processed-data", "18_coloc", "supp_table.csv")
+f_dlpfc_donor <- file.path(refdir, "donor_meta.tsv.gz")
+f_hb_coldata <- file.path(hb_root, "processed-data", "17_eQTL", "tensorQTL_input", "colData.csv")
+f_sens_sum <- file.path(datadir, "coloc", "prior_sensitivity", "w500k_prior_sensitivity_summary.tsv.gz")
+f_sens_gene <- file.path(datadir, "coloc", "prior_sensitivity", "w500k_prior_sensitivity_per_gene.tsv.gz")
+
+##  select overlap modes here; default runs both ensg and symbol.
+overlap_modes <- c("ensg", "symbol")
+stopifnot(all(overlap_modes %chin% c("ensg", "symbol")))
+
+##  define output location for final comparison artifacts.
+final_dir <- file.path(datadir, "coloc", "final")
+if (!dir.exists(final_dir)) dir.create(final_dir, recursive = TRUE)
+```
+
+```{r concept-notes, eval=FALSE}
+##  prior-sensitivity in coloc.abf means checking how stable posterior conclusions are when priors vary, especially p12.
+##  this is recommended because posterior probabilities can shift under different prior beliefs about shared causality.
+##  our base coloc run for dlpfc used fixed priors p1=1e-4, p2=1e-4, p12=1e-5 and then sensitivity varied p12 over a grid.
+##  habenula used coloc.abf without explicit prior arguments, so coloc defaults were used (the same default values above).
+##  dlpfc strategy differs by adding dual-window evaluation (500kb primary plus 1mb sensitivity) and a separate prior-sensitivity report.
+##  habenula strategy centered on the primary coloc run and downstream strong filtering at pp.h4.abf >= 0.8.
+```
+
+```{r helpers}
+##  define small helper utilities for schema checks and robust aggregation.
+assert_file <- function(path) {
+  if (!file.exists(path)) stop("missing file: ", path)
+}
+
+assert_cols <- function(dt, cols, label) {
+  miss <- setdiff(cols, names(dt))
+  if (length(miss)) stop("missing columns in ", label, ": ", paste(miss, collapse = ", "))
+}
+
+first_non_missing <- function(x) {
+  x <- as.character(x)
+  x <- x[!is.na(x) & x != ""]
+  if (length(x)) x[[1]] else NA_character_
+}
+
+uniq_concat <- function(x) {
+  x <- as.character(x)
+  x <- sort(unique(x[!is.na(x) & x != ""]))
+  if (length(x)) paste(x, collapse = ";") else NA_character_
+}
+
+std_symbol_key <- function(x) {
+  y <- toupper(trimws(as.character(x)))
+  y[y == ""] <- NA_character_
+  y
+}
+
+normalize_gene_id <- function(x) sub("\\.\\d+$", "", as.character(x))
+
+##  collapse rows into one row per overlap key and source set while preserving annotation lists.
+collapse_set_rows <- function(dt, mode, key_col, set_name) {
+  d <- copy(dt)
+  d[, overlap_mode := mode]
+  d[, overlap_key := get(key_col)]
+  d <- d[!is.na(overlap_key) & overlap_key != ""]
+  d[, .(
+    gene_id_raw = first_non_missing(gene_id_raw),
+    gene_id_norm = first_non_missing(gene_id_norm),
+    gene_name = first_non_missing(gene_name),
+    variant_id = first_non_missing(variant_id),
+    rsid = first_non_missing(rsid),
+    source_set = set_name,
+    context_or_group = uniq_concat(context_or_group),
+    gene_id_raw_list = uniq_concat(gene_id_raw),
+    gene_id_norm_list = uniq_concat(gene_id_norm),
+    gene_name_list = uniq_concat(gene_name),
+    variant_id_list = uniq_concat(variant_id),
+    rsid_list = uniq_concat(rsid)
+  ), by = .(overlap_mode, overlap_key)]
+}
+
+##  aggregate annotations across all sets for venn and partition member tables.
+collapse_annotation_rows <- function(dt, mode, key_col) {
+  d <- copy(dt)
+  d[, overlap_mode := mode]
+  d[, overlap_key := get(key_col)]
+  d <- d[!is.na(overlap_key) & overlap_key != ""]
+  d[, .(
+    gene_id_raw = first_non_missing(gene_id_raw),
+    gene_id_norm = first_non_missing(gene_id_norm),
+    gene_name = first_non_missing(gene_name),
+    variant_id = first_non_missing(variant_id),
+    rsid = first_non_missing(rsid),
+    source_set = uniq_concat(source_set),
+    context_or_group = uniq_concat(context_or_group),
+    gene_id_raw_list = uniq_concat(gene_id_raw),
+    gene_id_norm_list = uniq_concat(gene_id_norm),
+    gene_name_list = uniq_concat(gene_name),
+    variant_id_list = uniq_concat(variant_id),
+    rsid_list = uniq_concat(rsid)
+  ), by = .(overlap_mode, overlap_key)]
+}
+
+##  check that gene/variant tables keep required annotation columns.
+req_gene_variant_cols <- c(
+  "gene_id_raw", "gene_id_norm", "gene_name", "variant_id", "rsid",
+  "source_set", "context_or_group"
+)
+
+##  draw a 3-way venn from set keys for the current overlap mode.
+draw_venn <- function(spd_keys, spg_keys, hb_keys, mode_label) {
+  n12 <- length(intersect(spd_keys, spg_keys))
+  n13 <- length(intersect(spd_keys, hb_keys))
+  n23 <- length(intersect(spg_keys, hb_keys))
+  n123 <- length(Reduce(intersect, list(spd_keys, spg_keys, hb_keys)))
+  grid.newpage()
+  vp <- VennDiagram::draw.triple.venn(
+    area1 = length(spd_keys), area2 = length(spg_keys), area3 = length(hb_keys),
+    n12 = n12, n13 = n13, n23 = n23, n123 = n123,
+    category = c("7 SpDs", "4 SPGs", "habenulaPilot"),
+    fill = c("#8cc0de", "#6e9dc0", "#c2d17d"),
+    cex = 1.1, cat.cex = 1.0, cat.pos = c(-20, 20, 180),
+    euler.d = FALSE, scaled = FALSE, ind = FALSE
+  )
+  grid.draw(vp)
+  grid.text(
+    label = paste0("strong coloc overlap (", mode_label, " mode; PP4 >= 0.8)"),
+    x = unit(0.5, "npc"), y = unit(0.98, "npc"),
+    gp = gpar(fontsize = 11, fontface = "bold")
+  )
+}
+```
+
+```{r load-inputs}
+##  load required dlpfc and habenula coloc tables and assert expected schema.
+assert_file(f_dlpfc)
+assert_file(f_hb)
+assert_file(f_dlpfc_donor)
+assert_file(f_hb_coldata)
+
+dlpfc <- fread(f_dlpfc)
+hb <- fread(f_hb)
+
+assert_cols(dlpfc, c("fid", "gene_name", "lead_snp", "rsid", "PP4", "ds"), "dlpfc coloc table")
+assert_cols(hb, c("gene", "gene_symbol", "snp", "snp_rs_id", "PP.H4.abf"), "habenula supp table")
+```
+
+```{r canonical-schema}
+##  build canonical per-row schema so all downstream outputs have consistent annotation fields.
+dlpfc_can <- dlpfc[, .(
+  source_project = "DLPFC",
+  source_set = fifelse(grepl("^spd", ds), "spd_union_input", "spg_union_input"),
+  context_or_group = as.character(ds),
+  group = fifelse(grepl("^spd", ds), "SpD", "SPG"),
+  gene_id_raw = as.character(fid),
+  gene_id_norm = normalize_gene_id(fid),
+  gene_name = as.character(gene_name),
+  variant_id = as.character(lead_snp),
+  rsid = as.character(rsid),
+  PP4 = as.numeric(PP4),
+  cat = if ("cat" %chin% names(dlpfc)) as.character(cat) else NA_character_
+)]
+dlpfc_can[rsid == "", rsid := NA_character_]
+dlpfc_can[, gene_symbol_key := std_symbol_key(gene_name)]
+
+hb_can <- hb[, .(
+  source_project = "habenulaPilot",
+  source_set = "habenula_input",
+  context_or_group = "habenulaPilot",
+  group = "habenulaPilot",
+  gene_id_raw = as.character(gene),
+  gene_id_norm = normalize_gene_id(gene),
+  gene_name = as.character(gene_symbol),
+  variant_id = as.character(snp),
+  rsid = as.character(snp_rs_id),
+  PP4 = as.numeric(`PP.H4.abf`)
+)]
+hb_can[rsid == "", rsid := NA_character_]
+hb_can[, gene_symbol_key := std_symbol_key(gene_name)]
+```
+
+```{r strong-filter}
+##  define strong coloc sets using pp4 >= 0.8 for cross-study comparability.
+strong_dlpfc <- dlpfc_can[PP4 >= 0.8]
+strong_hb <- hb_can[PP4 >= 0.8]
+
+##  check optional consistency between pp4 thresholding and existing cat labels in dlpfc.
+if ("cat" %chin% names(strong_dlpfc)) {
+  dlpfc_cat_check <- dlpfc_can[!is.na(cat), .(
+    n = .N,
+    n_pp4_strong = sum(PP4 >= 0.8),
+    n_cat_strong = sum(cat == "strong_coloc")
+  )]
+  dlpfc_cat_check
+}
+
+##  bind all strong rows to simplify multi-set annotation and symbol ambiguity diagnostics.
+all_strong <- rbindlist(list(strong_dlpfc, strong_hb), fill = TRUE, use.names = TRUE)
+```
+
+```{r symbol-ambiguity-report}
+##  report symbol ambiguity where one standardized symbol maps to multiple normalized ensg ids.
+sym_amb <- all_strong[!is.na(gene_symbol_key), .(
+  gene_id_raw = first_non_missing(gene_id_raw),
+  gene_id_norm = first_non_missing(gene_id_norm),
+  gene_name = first_non_missing(gene_name),
+  variant_id = first_non_missing(variant_id),
+  rsid = first_non_missing(rsid),
+  source_set = uniq_concat(source_set),
+  context_or_group = uniq_concat(context_or_group),
+  n_gene_id_norm = uniqueN(gene_id_norm),
+  gene_id_norm_list = uniq_concat(gene_id_norm),
+  gene_name_list = uniq_concat(gene_name),
+  variant_id_list = uniq_concat(variant_id),
+  rsid_list = uniq_concat(rsid)
+), by = .(symbol_key = gene_symbol_key)][n_gene_id_norm > 1]
+
+f_sym_amb <- file.path(final_dir, "symbol_mode_ambiguity_report.tsv.gz")
+fwrite(sym_amb, f_sym_amb, sep = "\t")
+sym_amb[1:min(.N, 20L)]
+```
+
+```{r overlap-build-and-export}
+##  construct spd, spg, and habenula sets in both overlap modes and export mode-specific tables.
+mode_results <- list()
+partition_counts_all <- list()
+
+for (mode in overlap_modes) {
+  key_col <- if (mode == "ensg") "gene_id_norm" else "gene_symbol_key"
+
+  spd_rows <- strong_dlpfc[group == "SpD"]
+  spg_rows <- strong_dlpfc[group == "SPG"]
+  hb_rows <- strong_hb
+
+  spd_set <- collapse_set_rows(spd_rows, mode = mode, key_col = key_col, set_name = "spd_union_input")
+  spg_set <- collapse_set_rows(spg_rows, mode = mode, key_col = key_col, set_name = "spg_union_input")
+  hb_set <- collapse_set_rows(hb_rows, mode = mode, key_col = key_col, set_name = "habenula_input")
+
+  final_sets <- rbindlist(list(spd_set, spg_set, hb_set), fill = TRUE, use.names = TRUE)
+  assert_cols(final_sets, req_gene_variant_cols, paste0("final_sets_", mode))
+  fwrite(final_sets, file.path(final_dir, sprintf("strong_coloc_final_sets_%s.tsv.gz", mode)), sep = "\t")
+
+  all_keys <- sort(unique(c(spd_set$overlap_key, spg_set$overlap_key, hb_set$overlap_key)))
+  venn_core <- data.table(overlap_mode = mode, overlap_key = all_keys)
+  venn_core[, in_spd := overlap_key %chin% spd_set$overlap_key]
+  venn_core[, in_spg := overlap_key %chin% spg_set$overlap_key]
+  venn_core[, in_hb := overlap_key %chin% hb_set$overlap_key]
+  venn_core[, partition_label := fcase(
+    in_spd & in_spg & in_hb, "spd_spg_hb",
+    in_spd & in_spg & !in_hb, "spd_spg_only",
+    in_spd & !in_spg & in_hb, "spd_hb_only",
+    !in_spd & in_spg & in_hb, "spg_hb_only",
+    in_spd & !in_spg & !in_hb, "spd_only",
+    !in_spd & in_spg & !in_hb, "spg_only",
+    !in_spd & !in_spg & in_hb, "hb_only",
+    default = "none"
+  )]
+
+  ann <- collapse_annotation_rows(all_strong, mode = mode, key_col = key_col)
+  venn_annot <- merge(venn_core, ann, by = c("overlap_mode", "overlap_key"), all.x = TRUE)
+  assert_cols(venn_annot, req_gene_variant_cols, paste0("venn_annot_", mode))
+
+  fwrite(venn_annot, file.path(final_dir, sprintf("strong_coloc_venn_input_%s.tsv.gz", mode)), sep = "\t")
+  fwrite(venn_annot, file.path(final_dir, sprintf("strong_coloc_partition_members_%s.tsv.gz", mode)), sep = "\t")
+
+  group_counts <- data.table(
+    overlap_mode = mode,
+    source_set = c("spd_union_input", "spg_union_input", "habenula_input"),
+    n_keys = c(uniqueN(spd_set$overlap_key), uniqueN(spg_set$overlap_key), uniqueN(hb_set$overlap_key))
+  )
+  fwrite(group_counts, file.path(final_dir, sprintf("strong_coloc_group_counts_%s.tsv.gz", mode)), sep = "\t")
+
+  pcounts <- venn_annot[, .N, by = .(overlap_mode, partition_label)][order(partition_label)]
+  partition_counts_all[[mode]] <- pcounts
+
+  mode_results[[mode]] <- list(
+    spd_keys = spd_set$overlap_key,
+    spg_keys = spg_set$overlap_key,
+    hb_keys = hb_set$overlap_key,
+    final_sets = final_sets,
+    venn_annot = venn_annot,
+    group_counts = group_counts,
+    partition_counts = pcounts
+  )
+}
+
+partition_counts_all <- rbindlist(partition_counts_all, fill = TRUE, use.names = TRUE)
+f_part_counts <- file.path(final_dir, "strong_coloc_partition_counts_by_mode.tsv.gz")
+fwrite(partition_counts_all, f_part_counts, sep = "\t")
+```
+
+```{r validation-checks}
+##  run basic validation checks on overlap outputs and required metadata presence.
+for (mode in overlap_modes) {
+  x <- mode_results[[mode]]$final_sets
+  y <- mode_results[[mode]]$venn_annot
+  assert_cols(x, req_gene_variant_cols, paste0("validated_final_sets_", mode))
+  assert_cols(y, req_gene_variant_cols, paste0("validated_venn_annot_", mode))
+  stopifnot(nrow(x) > 0L)
+  stopifnot(nrow(y) > 0L)
+  stopifnot(any(y$in_spd | y$in_spg | y$in_hb))
+}
+```
+
+```{r venn-plots}
+##  draw one 3-way venn per overlap mode.
+for (mode in overlap_modes) {
+  draw_venn(
+    spd_keys = mode_results[[mode]]$spd_keys,
+    spg_keys = mode_results[[mode]]$spg_keys,
+    hb_keys = mode_results[[mode]]$hb_keys,
+    mode_label = mode
+  )
+}
+```
+
+```{r context-barplot}
+##  plot dlpfc strong coloc counts by context using pp4 >= 0.8.
+ctx_counts <- strong_dlpfc[, .N, by = .(context_or_group, group)][order(context_or_group)]
+ctx_counts[, context_or_group := factor(context_or_group, levels = unique(context_or_group))]
+
+ggplot(ctx_counts, aes(x = context_or_group, y = N, fill = group)) +
+  geom_col(width = 0.75) +
+  theme_bw() +
+  labs(
+    x = "dlpfc context",
+    y = "number of strong loci",
+    title = "dlpfc strong coloc counts by context",
+    subtitle = "strong definition is PP4 >= 0.8"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r group-barplot}
+##  compare spd/spg/habenula set sizes for each overlap mode.
+group_counts_all <- rbindlist(lapply(overlap_modes, function(mode) mode_results[[mode]]$group_counts), fill = TRUE)
+group_counts_all[, source_set := factor(source_set, levels = c("spd_union_input", "spg_union_input", "habenula_input"))]
+
+ggplot(group_counts_all, aes(x = source_set, y = n_keys, fill = source_set)) +
+  geom_col(width = 0.75) +
+  facet_wrap(~ overlap_mode, ncol = 1) +
+  theme_bw() +
+  labs(
+    x = "grouped set",
+    y = "unique strong overlap keys",
+    title = "strong set sizes by overlap mode",
+    subtitle = "strong definition is PP4 >= 0.8"
+  ) +
+  theme(legend.position = "none")
+```
+
+```{r mode-comparison}
+##  summarize and plot n_overlap between ensg and symbol modes by partition class.
+mode_cmp <- dcast(
+  partition_counts_all,
+  partition_label ~ overlap_mode,
+  value.var = "N",
+  fill = 0
+)
+f_mode_cmp <- file.path(final_dir, "strong_coloc_n_overlap_mode_comparison.tsv.gz")
+fwrite(mode_cmp, f_mode_cmp, sep = "\t")
+mode_cmp
+
+mode_cmp_long <- melt(mode_cmp, id.vars = "partition_label", variable.name = "overlap_mode", value.name = "N")
+ggplot(mode_cmp_long, aes(x = partition_label, y = N, fill = overlap_mode)) +
+  geom_col(position = "dodge") +
+  theme_bw() +
+  labs(
+    x = "intersection class",
+    y = "n_overlap",
+    title = "n_overlap comparison by overlap mode"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r donor-overlap}
+##  compute donor overlap counts and overlapped ids between dlpfc and habenula cohorts.
+dlpfc_donor <- fread(f_dlpfc_donor)
+hb_coldata <- fread(f_hb_coldata)
+assert_cols(dlpfc_donor, c("BrNum"), "dlpfc donor metadata")
+assert_cols(hb_coldata, c("BrNum"), "habenula colData")
+
+norm_br <- function(x) toupper(trimws(as.character(x)))
+d_ids <- sort(unique(norm_br(dlpfc_donor$BrNum)))
+h_ids <- sort(unique(norm_br(hb_coldata$BrNum)))
+ov_ids <- sort(intersect(d_ids, h_ids))
+
+donor_overlap_summary <- data.table(
+  n_dlpfc = length(d_ids),
+  n_habenula = length(h_ids),
+  n_overlap = length(ov_ids)
+)
+donor_overlap_ids <- data.table(BrNum = ov_ids)
+
+fwrite(donor_overlap_summary, file.path(final_dir, "donor_overlap_summary.tsv.gz"), sep = "\t")
+fwrite(donor_overlap_ids, file.path(final_dir, "donor_overlap_ids.tsv.gz"), sep = "\t")
+
+donor_overlap_summary
+donor_overlap_ids
+```
+
+```{r supplemental-prior-sensitivity}
+##  load supplemental prior-sensitivity outputs if available and summarize strong-locus robustness.
+if (file.exists(f_sens_sum) && file.exists(f_sens_gene)) {
+  sens_sum <- fread(f_sens_sum)
+  sens_gene <- fread(f_sens_gene)
+  assert_cols(sens_gene, c("ds", "fid", "default_pass", "frac_pass", "min_pass_p12"), "prior sensitivity per-gene")
+
+  strong_key <- unique(strong_dlpfc[, .(ds = context_or_group, fid = gene_id_raw)])
+  sens_strong <- merge(
+    strong_key,
+    sens_gene,
+    by = c("ds", "fid"),
+    all.x = TRUE
+  )
+  sens_strong_summary <- sens_strong[, .(
+    n_strong = .N,
+    n_with_sensitivity = sum(!is.na(frac_pass)),
+    n_default_pass = sum(default_pass == TRUE, na.rm = TRUE),
+    mean_frac_pass = mean(frac_pass, na.rm = TRUE),
+    n_any_pass_grid = sum(!is.na(min_pass_p12))
+  ), by = ds][order(ds)]
+
+  f_sens_strong <- file.path(final_dir, "strong_coloc_prior_sensitivity_summary.tsv.gz")
+  fwrite(sens_strong_summary, f_sens_strong, sep = "\t")
+  sens_strong_summary
+} else {
+  message("prior-sensitivity files not found; skipping supplemental panel.")
+}
+```

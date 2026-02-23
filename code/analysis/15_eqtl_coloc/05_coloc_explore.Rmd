@@ -4,106 +4,67 @@ title: "eqtl results exploration"
 ---
 ```{r}
 suppressMessages({
-    library(arrow)
     library(data.table)
-    library(BiocParallel)
     library(qs2)
     library(SummarizedExperiment)
-    library(stringi)
-    library(GenomicRanges)
+    library(ggplot2)
     library(here)
   })
 here::i_am('.git/HEAD')
 datadir=here("processed-data", "eQTL")
 rdsdir=here("processed-data", "rds")
-
-## refdata -> ref folder symlink to CHESS Brain ref data for now
-## GWAS data, GenomicRanges etc.
 refdir=here("processed-data", "ref")
 ```
 
 
 ```{r load GWAS and gene ranges}
 ## load gene-symbol data
+<<<<<<< HEAD
 granges <- qs_read(file.path(refdir,"granges.qs2")) ## gene info file created by 00_explore_data.Rmd last chunk
+=======
+granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd
+>>>>>>> 2555201d (add coloc prior-sensitivity testing, Venn diagrams with Habenula)
 g2sym <- setNames(granges$gene_name, granges$gene_id)
-## load GWAS data
+
+## load GWAS data (for rsid annotation only)
 fgwasflt <- file.path(refdir, 'SCZ_GWAS_flt_1e-6_R.8.tab.gz')
 gwas <- fread(fgwasflt)
-##
-gwas_set <- unique(gwas[p<5e-8]$variant_id) ## GWAS standard risk threshold
-gwas1e6_set <- unique(gwas$variant_id) ## loose p < 1e-6
+gwas_set <- unique(gwas[p<5e-8]$variant_id)
 
 ## genotype-gwas harmonized variant file
-fgtgwas <- file.path(refdir, 'GWAS_SCZ_tqtl-matched.tab.gz') ## this was created in 03_eqtl_explore.Rmd
+fgtgwas <- file.path(refdir, 'GWAS_SCZ_tqtl-matched.tab.gz')
 if (file.exists(fgtgwas)) {
-  gwas_vars <- fread(fgtgwas) ## 5.17million variants
+  gwas_vars <- fread(fgtgwas)
+} else {
+  stop("file not found: ", fgtgwas)
 }
-
 ```
 
-```{r-console-output}
-> head(gwas_vars)
-            variant_id     A1     A2         beta beta_se        N      p  ncas  ncon impinfo       rsid  fcas  fcon
-                <char> <char> <char>        <num>   <num>    <num>  <num> <int> <int>   <num>     <char> <num> <num>
-1: chr10:100000235:C:T      T      C -0.009098483  0.0094 58749.13 0.3310 53386 77258   0.983 rs11596870 0.692 0.692
-2: chr10:100000943:G:A      A      G  0.017695649  0.0139 58749.13 0.2015 53386 77258   0.986 rs11190359 0.890 0.893
-3: chr10:100000979:T:C      C      T  0.020804929  0.0183 58749.13 0.2559 53386 77258   0.995 rs11190360 0.941 0.942
-4: chr10:100002628:A:C      C      A -0.006200736  0.0087 58749.13 0.4760 53386 77258   0.991 rs11190363 0.541 0.546
-5: chr10:100002875:A:G      G      A  0.014900463  0.0161 58749.13 0.3574 53386 77258   0.995  rs7894103 0.921 0.924
-6: chr10:100004256:T:A      A      T -0.007402534  0.0090 58749.13 0.4113 53386 77258   0.983  rs7915731 0.631 0.633
-```
-
-```{r load DEGS}
-## also load donor metadata for later use
-fmeta <- file.path(refdir, "donor_meta.tsv.gz")
-donor_meta <- fread(fmeta) # brnum, dx, sex, age, rin
-
-## WARNING: makes sure char not factor is passed to this char2char mapping!
-ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
-       "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
-dss <- names(ds2name)
-## load degs adust SpD as SpD degs
-deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
-rownames(deg_spd_adj) <- deg_spd_adj$V1
-setnames(deg_spd_adj, 'V1', 'fid')
-spd_degs <- subset(deg_spd_adj, fdr_scz<=0.1) ## 10% FDR threshold was used
-spds <- grep('spd', names(ds2name), value=TRUE)
-ds2degs <- lapply(spds, \(x) spd_degs)
-names(ds2degs) <- spds
-## for the SpG contexts, separate DEGs per context:
-spgs <- grep('^[^s]', names(ds2name), value=TRUE)
-for (ds in spgs) {
-   if (ds=="vasc") {
-     fdegs <- here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
-   } else {
-     fdegs <- here("code/analysis/", paste0("dx_deg_spg_", ds), paste0(ds,"-dx_DEG-GM.csv"))
-   }
-   if (!file.exists(fdegs)) {
-     stop("file not found: ", fdegs)
-   }
-   dt <- fread(fdegs, data.table = FALSE)
-   rownames(dt) <- dt$ensembl
-   dt$fid <- rownames(dt)
-   setcolorder(dt, 'fid')
-   dt <- subset(dt, fdr_scz<=0.1)
-   ds2degs[[ds]] <- dt
-}
-# pnn has no degs for FDR<0.1 ?
+```{r dataset labels}
+ds2name <- setNames(
+  c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6", "SpD04-WM", "SpD05-L5",
+    "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),
+  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil")
+)
+window_levels <- c("w500k", "w1mb")
+window_labels <- c(w500k = "500kb primary", w1mb = "1Mb sensitivity")
 ```
 
 ```{r coloc utility functions}
-## Flatten one coloc-abf list into a filtered feature-level table
-### Note: coloc.abf assumes at most one casual variant per gene/trait,
-### so PP3/PP4 can be distorted for large cis windows
+assign_cat <- function(dt) {
+  dt[, cat := fcase(
+    PP4 >= 0.8, "strong_coloc",
+    PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "likely_coloc",
+    PP34 >= 0.8 & PP4_over_PP34 < 0.5, "distinct_causal",
+    (PP34 >= 0.8) | (PP4_over_PP34 >= 0.8), "follow_up",
+    default = NA_character_
+  )]
+  dt[]
+}
 
-## if cis windows frequently have multiple independent eQTL signals (common in brain),
-## coloc.abf’s single-causal assumption can inflate PP3 or muddle PP4 unless we condition or use a
-## multi-signal method (e.g. SuSiE-based coloc). The flattening won't fix that, but downstream claims
-## should reflect the assumption.
-
-flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80, rat_strong=0.9, rat_mod=0.8,
-                               add_priors=TRUE, id_map=NULL, do_filter=TRUE) {
+## Flatten one coloc-abf list into a feature-level table using cat only.
+flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80,
+                            add_priors=TRUE, id_map=NULL, do_filter=TRUE) {
   ids <- names(l)
   out <- rbindlist(lapply(ids, function(feature_id) {
     x <- l[[feature_id]]
@@ -117,12 +78,17 @@ flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80, rat_s
     cs_n <- if (is.na(cs_idx)) nrow(res) else cs_idx
     lead <- res[1]
     dt <- data.table(
-      nsnps=as.numeric(s[["nsnps"]]), PP0=as.numeric(s[["PP.H0.abf"]]), PP1=as.numeric(s[["PP.H1.abf"]]),
-      PP2=as.numeric(s[["PP.H2.abf"]]), PP3=as.numeric(s[["PP.H3.abf"]]), PP4=as.numeric(s[["PP.H4.abf"]]),
+      nsnps=as.numeric(s[["nsnps"]]),
+      PP0=as.numeric(s[["PP.H0.abf"]]),
+      PP1=as.numeric(s[["PP.H1.abf"]]),
+      PP2=as.numeric(s[["PP.H2.abf"]]),
+      PP3=as.numeric(s[["PP.H3.abf"]]),
+      PP4=as.numeric(s[["PP.H4.abf"]]),
       PP34=as.numeric(s[["PP.H3.abf"]]) + as.numeric(s[["PP.H4.abf"]]),
       PP4_over_PP34=as.numeric(s[["PP.H4.abf"]]) / (as.numeric(s[["PP.H3.abf"]]) + as.numeric(s[["PP.H4.abf"]])),
-      lead_snp=as.character(lead[["snp"]]), lead_snp_PPH4=as.numeric(lead[["SNP.PP.H4"]]),
-      lead_snp_PPsho=as.numeric(s[["PP.H4.abf"]]) * as.numeric(lead[["SNP.PP.H4"]]), ## shared overall
+      lead_snp=as.character(lead[["snp"]]),
+      lead_snp_PPH4=as.numeric(lead[["SNP.PP.H4"]]),
+      lead_snp_PPsho=as.numeric(s[["PP.H4.abf"]]) * as.numeric(lead[["SNP.PP.H4"]]),
       cs95_n_snp=as.integer(cs_n)
     )
     if (add_priors && !is.null(x$priors)) {
@@ -139,29 +105,10 @@ flattenFltColoc <- function(l, cs_level=0.95, pp4_min=0.50, pp34_min=0.80, rat_s
     nm <- unname(id_map[key])
     out[, fid := ifelse(!is.na(nm), paste0(nm, "|", key), key)]
   }
-  if (do_filter) out <- out[PP4 >= pp4_min | (PP3 + PP4) >= pp34_min]
-  ## we keep either:
-  ## - high confidence (PP4) = strong colocalization or
-  ## - strong evidence both traits associate in the region but with different causal variants (PP3 high)
-  ## goal is "interesting loci for follow-up", not strictly a "colocalized set"
-  out[, kept_by := fcase(
-    PP4 >= pp4_min & PP34 >= pp34_min, "both",
-    PP4 >= pp4_min,                   "PP4",
-    PP34 >= pp34_min,                 "PP34",
-    default = "none"
-  )]
-  # `kept_by` tells us why it survived the OR filter (PP4 only, PP34 only, or both).
-
-  out[, cls := fcase(
-    PP34 < pp34_min,                  "kept_PP4_low_PP34",
-    PP4_over_PP34 >= rat_strong,      "strong_coloc",
-    PP4_over_PP34 >= rat_mod,         "moderate_coloc",
-    PP4_over_PP34 < 0.50,             "likely_distinct_causal",
-    default = "ambig_H3_H4"
-  )]
-  ## `cls` separates "kept because PP4 is high but overall shared-signal evidence (PP34) is weaker"
-  ## from true coloc-ish cases and H3-dominant cases.
-  setcolorder(out, c("fid", "cls", "kept_by", setdiff(names(out), c("fid","cls","kept_by"))))
+  ## keep candidate loci for follow-up reporting
+  if (do_filter) out <- out[PP4 >= pp4_min | PP34 >= pp34_min]
+  out <- assign_cat(out)
+  setcolorder(out, c("fid", "cat", setdiff(names(out), c("fid", "cat"))))
   out[]
 }
 
@@ -175,84 +122,60 @@ saveFlattenedColoc <- function(l, out_path, ...) {
   invisible(dt)
 }
 
-## convenience to load, flatten, filter, and save one coloc list
-flattenColocAndSave <-function(path, ...) {
+flattenColocAndSave <- function(path, ...) {
   out_path <- sub("\\.qs2$", ".flat.tab.gz", path)
   if (file.exists(out_path)) {
     message("Output file exists, skipping: ", out_path)
-    return(invisible(NULL))
+    return(fread(out_path))
   }
   l <- qs_read(path)
-  b <- basename(path)
-  #proto <- ifelse(grepl("PolyA", b), "PolyA", ifelse(grepl("RiboZ", b), "RiboZ", NA_character_))
-  #feat <- ifelse(grepl("_tx", b), "tx", "gene")
   stopifnot(out_path != path)
   saveFlattenedColoc(l, out_path, ...)
 }
-
 ```
 
-```{r only once to create the flattened files}
+```{r load+flatten coloc per window}
 cdts <- list()
-paths <- list()
-for (ds in names(ds2name)) {
- fp <-file.path(datadir, "coloc", sprintf("coloc_%s_gene.qs2", ds))
- if (!file.exists(fp)) stop("file not found: ", fp)
- ff <- file.path(datadir, "coloc", sprintf("coloc_%s_gene.flat.tab.gz", ds))
- if (file.exists(ff)) {
-   cdts[[ds]] <- fread(ff)
- } else {
-   message("flattening: ", fp)
-   cdts[[ds]] <- flattenColocAndSave(fp)
-    if (!file.exists(ff)) stop("flattenColocAndSave failed: ", fp)
- }
- paths[[ds]] <- ff
+for (w in window_levels) {
+  cdts[[w]] <- list()
+  for (ds in names(ds2name)) {
+    fp <- file.path(datadir, "coloc", w, sprintf("coloc_%s_gene.qs2", ds))
+    if (!file.exists(fp)) stop("file not found: ", fp)
+    ff <- sub("\\.qs2$", ".flat.tab.gz", fp)
+    if (file.exists(ff)) {
+      cdts[[w]][[ds]] <- fread(ff)
+    } else {
+      message("flattening: ", fp)
+      cdts[[w]][[ds]] <- flattenColocAndSave(fp)
+      if (!file.exists(ff)) stop("flattenColocAndSave failed: ", fp)
+    }
+  }
+  cdts[[w]] <- cdts[[w]][names(ds2name)]
 }
-
-cdts <- cdts[names(ds2name)]
-
-## A scatter of PP4 vs PP4_over_PP34 (coloc strength vs dominance).
-## cs95_n_snp vs PP4 (credible set size tends to shrink with stronger signal, but multi-signal loci can behave oddly).
-## For reporting: always show PP0..PP4, PP4_over_PP34, lead SNP (and whether lead SNP is the same top SNP for both traits if you also compute that elsewhere), and priors.
-
 ```
 
+```{r aggregate data and save tables}
+fc_all <- rbindlist(lapply(window_levels, function(w) {
+  x <- rbindlist(cdts[[w]], idcol = "ds")
+  x[, window := w]
+  x
+}), fill = TRUE)
 
-```{r SKIP example stats per domain}
-fc <- cdts[["spd01"]]
-sum_stats <- fc[, .(
-  N=.N,
-  PP4_med=median(PP4, na.rm=TRUE),
-  PP4_q25=quantile(PP4, 0.25, na.rm=TRUE),
-  PP4_q75=quantile(PP4, 0.75, na.rm=TRUE),
-  PP34_med=median(PP34, na.rm=TRUE),
-  rat_med=median(PP4_over_PP34, na.rm=TRUE),
-  cs95_med=median(as.numeric(cs95_n_snp), na.rm=TRUE),
-  leadPPsho_med=median(lead_snp_PPsho, na.rm=TRUE)
-), by=cls][order(-N)]
-
-sum_stats
-
-```
-
-
-
-
-```{r aggregate data and save table}
-fc_all <- rbindlist(cdts, idcol="ds")
-fc_all[, gene_name:=g2sym[fid]]
-setcolorder(fc_all, c("ds", "fid", "gene_name", "lead_snp", "cls", "nsnps"))
-## add rsid for lead SNPs where available, for easier reporting and follow-up lookup
+fc_all[, gene_name := g2sym[fid]]
 fc_all[gwas_vars, rsid := i.rsid, on = .(lead_snp = variant_id)]
+setcolorder(fc_all, c(
+  "window", "ds", "fid", "gene_name", "cat", "lead_snp", "rsid", "nsnps",
+  setdiff(names(fc_all), c("window", "ds", "fid", "gene_name", "cat", "lead_snp", "rsid", "nsnps"))
+))
 
+## primary results table used for claims/reporting (500kb)
+fc_primary <- fc_all[window == "w500k"]
+fcoloc_primary <- file.path(datadir, "coloc", "coloc_abf_results.tsv.gz")
+fwrite(fc_primary, file = fcoloc_primary, sep = "\t")
 
-fcoloc <- file.path(datadir, "coloc", "coloc_abf_results.tsv.gz")
-
-if (!file.exists(fcoloc)) {
-   fwrite(fc_all, file=fcoloc, sep="\t")
-}
-
-
+## save by-window table for robustness analysis
+fcoloc_by_window <- file.path(datadir, "coloc", "coloc_abf_results_by_window.tsv.gz")
+fwrite(fc_all, file = fcoloc_by_window, sep = "\t")
 ```
 
 ## MAPK3 eQTL: chr16:30114519:G:C = rs7542
@@ -304,26 +227,31 @@ pdt <- fc_all[cat %chin% c("strong_coloc", "likely_coloc"),
     genes =  paste(sort(unique(gene_name)), collapse = ", ")
   ),  by = .(ds, cat)
 ]
-
-pdt <- pdt[all_grid, on = .(ds, cat)]
-pdt[is.na(N), `:=`(N = 0L, genes = NA_character_)]
-
-tot <- pdt[, .(Ntot = sum(N)), by = ds]
-pdt <- tot[pdt, on = "ds"]
-pdt
 ```
 
+```{r primary cat summary}
+cat_summary_primary <- fc_primary[!is.na(cat),
+  .(N = .N, genes = paste(sort(unique(gene_name)), collapse = ", ")),
+  by = .(ds, cat)
+][order(ds, cat)]
+cat_summary_primary
+```
 
-```{r stacked bars plot}
-pdt[, ds := as.character(ds)]
-ds_levels <- names(ds2name)
-ds_labels <- unname(ds2name)
-p <- ggplot(
-  pdt,
+```{r primary stacked bars}
+plot_dt <- fc_primary[cat %chin% c("strong_coloc", "likely_coloc"),
+  .N, by = .(ds, cat)]
+
+all_grid <- CJ(ds = names(ds2name), cat = c("strong_coloc", "likely_coloc"), unique = TRUE)
+plot_dt <- all_grid[plot_dt, on = .(ds, cat)]
+plot_dt[is.na(N), N := 0L]
+
+tot <- plot_dt[, .(Ntot = sum(N)), by = ds]
+
+ggplot(
+  plot_dt,
   aes(
-    x = factor(ds, levels = ds_levels, labels = ds_labels),
-    y = N,
-    fill = cat
+    x = factor(ds, levels = names(ds2name), labels = unname(ds2name)),
+    y = N, fill = cat
   )
 ) +
   geom_col(width = 0.75) +
@@ -334,58 +262,103 @@ p <- ggplot(
   ) +
   geom_text(
     data = tot,
-    aes(x = factor(ds, levels = ds_levels, labels = ds_labels), y = Ntot, label = paste0("n=", Ntot)),
-    inherit.aes = FALSE,
-    hjust = -0.1,
-    size = 3
+    aes(x = factor(ds, levels = names(ds2name), labels = unname(ds2name)), y = Ntot, label = paste0("n=", Ntot)),
+    inherit.aes = FALSE, hjust = -0.1, size = 3
   ) +
   coord_flip() +
   theme_bw() +
   labs(
-    x = NULL, y = "Number of genes",
-    title = "Potential colocalization loci by dataset",
+    x = NULL,
+    y = "Number of genes",
+    title = "Primary colocalization candidates by dataset (500kb)",
     subtitle = paste0(
-      "strong_coloc: PP34 >= 0.8 & PP4/(PP34) >= 0.9; ",
-      "distinct_causal: PP34 >= 0.8 & PP4/(PP34) < 0.5; ",
-      "follow_up: PP34 >= 0.8 | PP4 >= 0.8"
+      "cat rules: strong_coloc = PP4 >= 0.8; likely_coloc = PP34 >= 0.8 & PP4/(PP34) >= 0.9; ",
+      "distinct_causal = PP34 >= 0.8 & PP4/(PP34) < 0.5; follow_up = PP34 >= 0.8 | PP4/(PP34) >= 0.8"
     )
   ) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
-  scale_fill_manual(
-    values = c(
-      strong_coloc = "#7ebae0",
-      follow_up = "#c6dbf8"
-    ),
-    breaks = c("strong_coloc", "follow_up")
-  )
-print(p)
+  scale_fill_manual(values = c(strong_coloc = "#7ebae0", likely_coloc = "#c6dbf8"))
 ```
 
-```{r clean PP4 high only}
-library(data.table)
-library(ggplot2)
+```{r window comparison counts}
+cat_counts_window <- fc_all[!is.na(cat),
+  .(N = .N), by = .(window, ds, cat)
+][order(window, ds, cat)]
+cat_counts_window
+```
 
-pp4_thr <- 0.80
+```{r window comparison strong-likely metrics}
+jaccard <- function(a, b) {
+  u <- union(a, b)
+  if (!length(u)) return(NA_real_)
+  length(intersect(a, b)) / length(u)
+}
 
-all_ds <- data.table(ds = names(cdts))
+cmp_cats <- c("strong_coloc", "likely_coloc")
+cmp <- rbindlist(lapply(names(ds2name), function(ctx) {
+  rbindlist(lapply(cmp_cats, function(cc) {
+    s500 <- fc_all[window == "w500k" & ds == ctx & cat == cc, fid]
+    s1mb <- fc_all[window == "w1mb"  & ds == ctx & cat == cc, fid]
+    data.table(
+      ds = ctx,
+      cat = cc,
+      n_500k = length(s500),
+      n_1mb = length(s1mb),
+      n_shared = length(intersect(s500, s1mb)),
+      n_gain_1mb = length(setdiff(s1mb, s500)),
+      n_loss_1mb = length(setdiff(s500, s1mb)),
+      jaccard = jaccard(s500, s1mb)
+    )
+  }))
+}))
+cmp[order(ds, cat)]
+```
 
-pdt <- fc_all[PP4 > pp4_thr, .N, by=ds]
-pdt <- all_ds[pdt, on="ds"]
-pdt[is.na(N), N := 0L]
+```{r top discordant loci}
+wide <- dcast(
+  fc_all[, .(ds, fid, gene_name, window, cat, PP4, PP34, PP4_over_PP34, lead_snp)],
+  ds + fid + gene_name ~ window,
+  value.var = c("cat", "PP4", "PP34", "PP4_over_PP34", "lead_snp"),
+  fill = NA
+)
+discord <- wide[(cat_w500k != cat_w1mb) | (is.na(cat_w500k) != is.na(cat_w1mb))]
+discord[, major_change := fifelse(
+  cat_w500k %chin% c("strong_coloc", "likely_coloc") |
+    cat_w1mb %chin% c("strong_coloc", "likely_coloc"),
+  1L, 0L
+)]
+setorder(discord, -major_change, ds, gene_name)
 
-ds_lev <- names(cdts)
+cmp_dir <- file.path(datadir, "coloc", "window_comparison")
+if (!dir.exists(cmp_dir)) dir.create(cmp_dir, recursive = TRUE)
+fdiscord <- file.path(cmp_dir, "top_discordant_loci.tsv.gz")
+fwrite(discord, fdiscord, sep = "\t")
 
-ggplot(pdt, aes(x=factor(ds, levels = ds_lev), y=N)) +
-  geom_col(width=0.75) +
-  geom_text(aes(label=N), vjust=-0.4, size=3) +
+discord[1:min(.N, 100L)]
+```
+
+```{r window comparison plot}
+cmp_plot <- fc_all[cat %chin% c("strong_coloc", "likely_coloc"),
+  .N, by = .(window, ds, cat)]
+cmp_grid <- CJ(window = window_levels, ds = names(ds2name), cat = c("strong_coloc", "likely_coloc"), unique = TRUE)
+cmp_plot <- cmp_grid[cmp_plot, on = .(window, ds, cat)]
+cmp_plot[is.na(N), N := 0L]
+
+ggplot(
+  cmp_plot,
+  aes(
+    x = factor(ds, levels = names(ds2name), labels = unname(ds2name)),
+    y = N,
+    fill = cat
+  )
+) +
+  geom_col(position = "stack", width = 0.75) +
+  coord_flip() +
+  facet_wrap(~ window, ncol = 1, labeller = as_labeller(window_labels)) +
   theme_bw() +
   labs(
-    x=NULL, y="Number of features",
-    title=paste0("High-confidence colocalization candidates (PP4 > ", pp4_thr, ")")
+    x = NULL,
+    y = "Number of genes",
+    title = "Window sensitivity for strong/likely colocalization calls"
   ) +
-  scale_y_continuous(expand=expansion(mult=c(0, 0.12))) +
-  theme(
-    axis.text.x = element_text(angle=45, hjust=1)
-  )
-
+  scale_fill_manual(values = c(strong_coloc = "#4f83b6", likely_coloc = "#9fc4e4"))
 ```

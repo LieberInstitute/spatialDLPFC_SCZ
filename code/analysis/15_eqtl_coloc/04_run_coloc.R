@@ -17,7 +17,7 @@ if (file.exists(fgwas)) {
 
 ## symlink the eqtl results from
 eqtl_dir <- 'tqtl_out'
-out_dir  <- 'coloc'
+out_root <- here("processed-data", "eQTL", "coloc")
 
 ## prepare coloc input
 
@@ -29,8 +29,8 @@ library(BiocParallel)
 ##    this must have GWAS SCZ variants harmonized to tensorQTL variant IDs
 ## - eqtl_dir: directory containing parquet files like:
 ##             PolyA.gene.chr1.parquet, PolyA.tx.chr1.parquet, RiboZ.gene.chr1.parquet, RiboZ.tx.chr1.parquet
-## - out_dir: where to save coloc RDS per run
-if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)
+## - out_root: where to save coloc RDS by window (w500k, w1mb)
+if (!dir.exists(out_root)) dir.create(out_root, recursive = TRUE)
 
 ## case fraction s for GWAS
 if (all(c("ncas","ncon") %chin% names(gwas_tqtl))) {
@@ -128,36 +128,89 @@ bpparams <- MulticoreParam(n_cores, stop.on.error = FALSE, progressbar = FALSE)
 #on.exit(BiocParallel::bpstop(param_ps), add = TRUE)
 
 runs <- paste0(c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"), ".gene")
+window_cfg <- c(w500k = 500000L, w1mb = 1000000L)
 
-for (prefix in runs) {
-  ## determine output path first so we can skip completed runs
-  out_path <- file.path(out_dir, paste0("coloc_", gsub("\\.", "_", prefix), ".qs2"))
-  if (file.exists(out_path)) {
-    message(Sys.time(), " | ", prefix, " | output exists, skipping: ", out_path)
-    next
+priors <- list(p1 = 1e-4, p2 = 1e-4, p12 = 1e-5, sdY = 1, min_snps = 10L)
+
+for (wtag in names(window_cfg)) {
+  cis_window <- as.integer(window_cfg[[wtag]])
+  out_dir <- file.path(out_root, wtag)
+  if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)
+  message(Sys.time(), " | window=", wtag, " | cis_window=", cis_window)
+
+  for (prefix in runs) {
+    t0 <- Sys.time()
+    ## determine output path first so we can skip completed runs
+    out_path <- file.path(out_dir, paste0("coloc_", gsub("\\.", "_", prefix), ".qs2"))
+    meta_path <- sub("\\.qs2$", ".runmeta.tsv.gz", out_path)
+    if (file.exists(out_path) && file.exists(meta_path)) {
+      message(Sys.time(), " | ", wtag, " | ", prefix, " | output+meta exist, skipping")
+      next
+    }
+
+    message(Sys.time(), " | ", wtag, " | ", prefix, " | reading eQTL parquet...")
+    eqtl_dt <- read_eqtl_nominal(eqtl_dir, prefix, cis_window = cis_window)
+    n_eqtl_in_window <- nrow(eqtl_dt)
+
+    message(Sys.time(), " | ", wtag, " | ", prefix, " | building coloc_df...")
+    coloc_dt <- build_coloc_df(eqtl_dt, gwas_idx)
+    n_rows_coloc <- nrow(coloc_dt)
+    n_snps_coloc <- uniqueN(coloc_dt$snp)
+
+    genes <- unique(as.character(coloc_dt$phenotype_id))
+    genes <- genes[!is.na(genes)]
+    n_genes_input <- length(genes)
+    message(Sys.time(), " | ", wtag, " | ", prefix, " | running coloc per feature: ", n_genes_input, " genes")
+
+    res_list <- bplapply(setNames(genes, genes), run_coloc1_safe,
+      coloc_dt = coloc_dt,
+      s = s,
+      p1 = priors$p1,
+      p2 = priors$p2,
+      p12 = priors$p12,
+      sdY = priors$sdY,
+      min_snps = priors$min_snps,
+      BPPARAM = bpparams
+    )
+
+    ## drop errors and NULLs before naming/saving
+    err_idx <- which(vapply(res_list, inherits, logical(1), "coloc_err"))
+    n_err <- length(err_idx)
+    if (n_err) {
+      msg <- unique(vapply(res_list[err_idx], `[[`, character(1), ".error"))
+      message(n_err, " genes threw coloc errors; first: ", msg[1])
+      res_list <- res_list[-err_idx]
+    }
+    null_idx <- vapply(res_list, is.null, logical(1))
+    n_null <- sum(null_idx)
+    res_list <- res_list[!null_idx]
+    n_saved <- length(res_list)
+
+    qs_save(res_list, out_path)
+    elapsed_sec <- as.numeric(difftime(Sys.time(), t0, units = "secs"))
+
+    meta <- data.table(
+      timestamp = as.character(Sys.time()),
+      context = prefix,
+      window_tag = wtag,
+      cis_window = cis_window,
+      out_path = out_path,
+      n_eqtl_in_window = n_eqtl_in_window,
+      n_rows_coloc = n_rows_coloc,
+      n_snps_coloc = n_snps_coloc,
+      n_genes_input = n_genes_input,
+      n_genes_error = n_err,
+      n_genes_null = n_null,
+      n_genes_saved = n_saved,
+      priors_p1 = priors$p1,
+      priors_p2 = priors$p2,
+      priors_p12 = priors$p12,
+      priors_sdY = priors$sdY,
+      min_snps = priors$min_snps,
+      case_fraction_s = s,
+      elapsed_sec = elapsed_sec
+    )
+    fwrite(meta, meta_path, sep = "\t")
+    message(Sys.time(), " | ", wtag, " | ", prefix, " | saved: ", out_path)
   }
-  message(Sys.time(), " | ", prefix, " | reading eQTL parquet...")
-  eqtl_dt <- read_eqtl_nominal(eqtl_dir, prefix)
-  message(Sys.time(), " | ", prefix, " | building coloc_df...")
-  coloc_dt <- build_coloc_df(eqtl_dt, gwas_idx)
-  message(Sys.time(), " | ", prefix, " | running coloc per feature...")
-
-  genes <- unique(as.character(coloc_dt$phenotype_id))
-  genes <- genes[!is.na(genes)]
-
-  res_list <- bplapply( setNames(genes, genes), run_coloc1_safe,
-    coloc_dt = coloc_dt,  s = s,  BPPARAM = bpparams
-  )
-
-  ## drop errors and NULLs before naming/saving
-  err_idx <- which(vapply(res_list, inherits, logical(1), "coloc_err"))
-  if (length(err_idx)) {
-    msg <- unique(vapply(res_list[err_idx], `[[`, character(1), ".error"))
-    message(length(err_idx), " genes threw coloc errors; first: ", msg[1])
-    res_list <- res_list[-err_idx]
-  }
-  res_list <- res_list[!vapply(res_list, is.null, logical(1))]
-
-  qs_save(res_list, out_path)
-  message(Sys.time(), " | ", prefix, " | saved: ", out_path)
 }
