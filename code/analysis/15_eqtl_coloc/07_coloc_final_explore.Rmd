@@ -7,6 +7,8 @@ output: html_notebook
 suppressMessages({
   library(data.table)
   library(ggplot2)
+  library(stringr)
+  library(openxlsx)
   library(VennDiagram)
   library(grid)
   library(here)
@@ -19,11 +21,14 @@ refdir <- here("processed-data", "ref")
 hb_root <- "/home/gpertea/work/R/Habenula_Pilot"
 
 f_dlpfc <- file.path(datadir, "coloc", "coloc_abf_results.tsv.gz")
+f_dlpfc_gated <- file.path(datadir, "coloc", "coloc_abf_results_gated.tsv.gz")
 f_hb <- file.path(hb_root, "processed-data", "18_coloc", "supp_table.csv")
 f_dlpfc_donor <- file.path(refdir, "donor_meta.tsv.gz")
 f_hb_coldata <- file.path(hb_root, "processed-data", "17_eQTL", "tensorQTL_input", "colData.csv")
 f_sens_sum <- file.path(datadir, "coloc", "prior_sensitivity", "w500k_prior_sensitivity_summary.tsv.gz")
 f_sens_gene <- file.path(datadir, "coloc", "prior_sensitivity", "w500k_prior_sensitivity_per_gene.tsv.gz")
+f_sens_fail <- file.path(datadir, "coloc", "prior_sensitivity", "w500k_prior_sensitivity_fail_summary.tsv.gz")
+f_sens_fail_table <- file.path(datadir, "coloc", "prior_sensitivity", "w500k_prior_sensitivity_fail_table.tsv.gz")
 
 ##  select overlap modes here; default runs both ensg and symbol.
 overlap_modes <- c("ensg", "symbol")
@@ -40,7 +45,7 @@ if (!dir.exists(final_dir)) dir.create(final_dir, recursive = TRUE)
 ##  our base coloc run for dlpfc used fixed priors p1=1e-4, p2=1e-4, p12=1e-5 and then sensitivity varied p12 over a grid.
 ##  habenula used coloc.abf without explicit prior arguments, so coloc defaults were used (the same default values above).
 ##  dlpfc strategy differs by adding dual-window evaluation (500kb primary plus 1mb sensitivity) and a separate prior-sensitivity report.
-##  habenula strategy centered on the primary coloc run and downstream strong filtering at pp.h4.abf >= 0.8.
+##  habenula strategy centered on the primary coloc run and downstream strong filtering at pp.h4.abf > 0.8.
 ```
 
 ```{r helpers}
@@ -141,7 +146,7 @@ draw_venn <- function(spd_keys, spg_keys, hb_keys, mode_label) {
   )
   grid.draw(vp)
   grid.text(
-    label = paste0("strong coloc overlap (", mode_label, " mode; PP4 >= 0.8)"),
+    label = paste0("strong coloc overlap (", mode_label, " mode; PP4 > 0.8)"),
     x = unit(0.5, "npc"), y = unit(0.98, "npc"),
     gp = gpar(fontsize = 11, fontface = "bold")
   )
@@ -151,15 +156,107 @@ draw_venn <- function(spd_keys, spg_keys, hb_keys, mode_label) {
 ```{r load-inputs}
 ##  load required dlpfc and habenula coloc tables and assert expected schema.
 assert_file(f_dlpfc)
+assert_file(f_dlpfc_gated)
 assert_file(f_hb)
 assert_file(f_dlpfc_donor)
 assert_file(f_hb_coldata)
 
 dlpfc <- fread(f_dlpfc)
+dlpfc_gated <- fread(f_dlpfc_gated)
 hb <- fread(f_hb)
 
 assert_cols(dlpfc, c("fid", "gene_name", "lead_snp", "rsid", "PP4", "ds"), "dlpfc coloc table")
+assert_cols(dlpfc_gated, c("window", "ds", "fid", "gene_name", "cat_gated", "gate_pass", "gate_reason"), "dlpfc gated coloc table")
 assert_cols(hb, c("gene", "gene_symbol", "snp", "snp_rs_id", "PP.H4.abf"), "habenula supp table")
+```
+
+```{r gated-pass-clean-export}
+##  build pass-only cleaned coloc results and add binary gwas/dge/eqtl annotations for reporting.
+f_eqtl_cis <- file.path(datadir, "tqtl_out", "cis_independent_FDR05_merged_signfix.xlsx")
+f_eqtl_nom <- file.path(datadir, "tqtl_out", "nominal_BH05_merged_signfix.xlsx")
+f_gwas_match <- file.path(refdir, "GWAS_SCZ_tqtl-matched.tab.gz")
+f_deg_spd <- file.path(here("processed-data", "rds"), "10_dx_deg_adjust_spd", "dx-deg_PRECAST07.csv")
+f_deg_spg <- list(
+  neun = here("code/analysis", "dx_deg_spg_neun", "neun-dx_DEG-GM.csv"),
+  neuropil = here("code/analysis", "dx_deg_spg_neuropil", "neuropil-dx_DEG-GM.csv"),
+  pnn = here("code/analysis", "dx_deg_spg_pnn", "pnn-dx_DEG-GM.csv"),
+  vasc = here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
+)
+assert_file(f_eqtl_cis)
+assert_file(f_eqtl_nom)
+assert_file(f_gwas_match)
+assert_file(f_deg_spd)
+for (fp in unlist(f_deg_spg, use.names = FALSE)) assert_file(fp)
+
+norm_gene_id <- function(x) sub("\\.\\d+$", "", as.character(x))
+
+gated_pass <- dlpfc_gated[gate_reason == "pass"]
+assert_cols(
+  gated_pass,
+  c("ds", "fid", "gene_name", "lead_snp", "rsid", "nsnps", "PP3", "PP4", "PP34", "PP4_over_PP34", "cat_gated"),
+  "gated pass coloc table"
+)
+gated_pass[, cat := as.character(cat_gated)]
+
+##  gwas risk flag from harmonized gwas variants at p < 5e-8.
+gwas_match <- fread(f_gwas_match, select = c("variant_id", "p"))
+gwas_risk_set <- unique(gwas_match[p < 5e-8 & !is.na(variant_id), variant_id])
+gated_pass[, GWAS := as.integer(lead_snp %chin% gwas_risk_set)]
+
+##  eqtl/eqtlnom flags by context + variant using merged signfix workbooks.
+cis_merged <- as.data.table(read.xlsx(f_eqtl_cis, sheet = 1, detectDates = FALSE))
+nom_merged <- as.data.table(read.xlsx(f_eqtl_nom, sheet = 1, detectDates = FALSE))
+assert_cols(cis_merged, c("context", "variant_id"), "cis merged signfix")
+assert_cols(nom_merged, c("context", "variant_id"), "nominal merged signfix")
+cis_key <- unique(cis_merged[!is.na(context) & !is.na(variant_id), .(
+  ds = as.character(context),
+  lead_snp = as.character(variant_id)
+)])
+nom_key <- unique(nom_merged[!is.na(context) & !is.na(variant_id), .(
+  ds = as.character(context),
+  lead_snp = as.character(variant_id)
+)])
+gated_pass[, eQTL := 0L]
+gated_pass[, eQTLnom := 0L]
+gated_pass[cis_key, on = .(ds, lead_snp), eQTL := 1L]
+gated_pass[nom_key, on = .(ds, lead_snp), eQTLnom := 1L]
+
+##  dge flag by context + gene using layer-adjusted spd and context-specific spg files.
+ds2degs <- list()
+deg_spd <- fread(f_deg_spd)
+assert_cols(deg_spd, c("ensembl", "fdr_scz"), "spd layer-adjusted deg file")
+spd_deg_ids <- unique(norm_gene_id(deg_spd[fdr_scz <= 0.1 & !is.na(ensembl), ensembl]))
+for (ctx in sprintf("spd%02d", 1:7)) ds2degs[[ctx]] <- spd_deg_ids
+for (ctx in names(f_deg_spg)) {
+  ddt <- fread(f_deg_spg[[ctx]])
+  assert_cols(ddt, c("ensembl", "fdr_scz"), paste0("spg deg file: ", basename(f_deg_spg[[ctx]])))
+  ds2degs[[ctx]] <- unique(norm_gene_id(ddt[fdr_scz <= 0.1 & !is.na(ensembl), ensembl]))
+}
+gated_pass[, fid_norm := norm_gene_id(fid)]
+gated_pass[, DGE := as.integer(fid_norm %chin% ds2degs[[ds]]), by = ds]
+gated_pass[, fid_norm := NULL]
+
+coloc_clean_pass <- gated_pass[, .(
+  ds, fid, gene_name, lead_snp, rsid, nsnps,
+  PP3, PP4, PP34, PP4_over_PP34, cat,
+  GWAS, DGE, eQTL, eQTLnom
+)]
+setorder(coloc_clean_pass, ds, cat, -PP4, -PP34, fid)
+for (vv in c("GWAS", "DGE", "eQTL", "eQTLnom")) {
+  if (!all(coloc_clean_pass[[vv]] %in% c(0L, 1L)) || any(is.na(coloc_clean_pass[[vv]]))) {
+    stop(vv, " must be non-missing 0/1.")
+  }
+}
+
+f_coloc_clean_tsv <- file.path(final_dir, "coloc_abf_results_gated_pass_clean.tsv.gz")
+f_coloc_clean_xlsx <- file.path(final_dir, "coloc_abf_results_gated_pass_clean.xlsx")
+fwrite(coloc_clean_pass, f_coloc_clean_tsv, sep = "\t", quote = FALSE)
+wb <- createWorkbook()
+addWorksheet(wb, "coloc_pass")
+writeData(wb, "coloc_pass", coloc_clean_pass)
+saveWorkbook(wb, f_coloc_clean_xlsx, overwrite = TRUE)
+
+coloc_clean_pass
 ```
 
 ```{r canonical-schema}
@@ -197,15 +294,15 @@ hb_can[, gene_symbol_key := std_symbol_key(gene_name)]
 ```
 
 ```{r strong-filter}
-##  define strong coloc sets using pp4 >= 0.8 for cross-study comparability.
-strong_dlpfc <- dlpfc_can[PP4 >= 0.8]
-strong_hb <- hb_can[PP4 >= 0.8]
+##  define strong coloc sets using pp4 > 0.8 for cross-study comparability.
+strong_dlpfc <- dlpfc_can[PP4 > 0.8]
+strong_hb <- hb_can[PP4 > 0.8]
 
 ##  check optional consistency between pp4 thresholding and existing cat labels in dlpfc.
 if ("cat" %chin% names(strong_dlpfc)) {
   dlpfc_cat_check <- dlpfc_can[!is.na(cat), .(
     n = .N,
-    n_pp4_strong = sum(PP4 >= 0.8),
+    n_pp4_strong = sum(PP4 > 0.8),
     n_cat_strong = sum(cat == "strong_coloc")
   )]
   dlpfc_cat_check
@@ -332,20 +429,71 @@ for (mode in overlap_modes) {
 ```
 
 ```{r context-barplot}
-##  plot dlpfc strong coloc counts by context using pp4 >= 0.8.
-ctx_counts <- strong_dlpfc[, .N, by = .(context_or_group, group)][order(context_or_group)]
-ctx_counts[, context_or_group := factor(context_or_group, levels = unique(context_or_group))]
+##  summarize gated strong coloc genes by context and export a plot-ready table.
+ctx_map <- c(
+  spd01 = "SpD01-WMtz",
+  spd02 = "SpD02-L3/4",
+  spd03 = "SpD03-L6",
+  spd04 = "SpD04-WM",
+  spd05 = "SpD05-L5",
+  spd06 = "SpD06-L2/3",
+  spd07 = "SpD07-L1-M",
+  neun = "Neun",
+  neuropil = "Neuropil",
+  pnn = "PNN",
+  vasc = "Vasc"
+)
+ctx_levels <- names(ctx_map)
+ctx_labels <- unname(ctx_map)
 
-ggplot(ctx_counts, aes(x = context_or_group, y = N, fill = group)) +
-  geom_col(width = 0.75) +
+strong_gated <- dlpfc_gated[cat_gated == "strong_coloc", .(ds, fid, gene_name)]
+ctx_summary <- strong_gated[, .(
+  n_strong = uniqueN(fid),
+  gene_list = paste(sort(unique(gene_name[!is.na(gene_name) & gene_name != ""])), collapse = ", ")
+), by = ds]
+
+ctx_summary <- data.table(ds = ctx_levels)[ctx_summary, on = "ds"]
+ctx_summary[is.na(n_strong), n_strong := 0L]
+ctx_summary[is.na(gene_list), gene_list := ""]
+ctx_summary[, context_label := unname(ctx_map[ds])]
+ctx_summary[is.na(context_label), context_label := ds]
+ctx_summary[, context_label := factor(context_label, levels = ctx_labels)]
+ctx_summary[, gene_list_wrapped := fifelse(gene_list == "", "", str_wrap(gene_list, width = 44))]
+
+f_ctx_strong <- file.path(final_dir, "strong_coloc_gated_by_context.tsv.gz")
+fwrite(
+  ctx_summary[, .(ds, context_label = as.character(context_label), n_strong, gene_list)],
+  f_ctx_strong,
+  sep = "\t",
+  quote = FALSE
+)
+
+ggplot(ctx_summary, aes(x = context_label, y = n_strong)) +
+  geom_col(width = 0.4, fill = "#4f83b6") +
+  geom_text(
+    aes(y = n_strong + 0.08, label = ifelse(n_strong > 0, as.character(n_strong), "")),
+    hjust = 0,
+    size = 3
+  ) +
+  geom_text(
+    aes(y = n_strong + 0.55, label = gene_list_wrapped),
+    hjust = 0,
+    size = 2.9,
+    lineheight = 0.95
+  ) +
+  coord_flip(clip = "off") +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0.62))) +
   theme_bw() +
   labs(
-    x = "dlpfc context",
-    y = "number of strong loci",
-    title = "dlpfc strong coloc counts by context",
-    subtitle = "strong definition is PP4 >= 0.8"
+    x = "context",
+    y = "number of genes",
+    title = "strong colocalization by context",
+    subtitle = "PP4 > 0.8 and passed prior-sensitivity gate"
   ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(
+    axis.text.y = element_text(size = 9),
+    plot.margin = margin(6, 160, 6, 6, unit = "pt")
+  )
 ```
 
 ```{r group-barplot}
@@ -361,7 +509,7 @@ ggplot(group_counts_all, aes(x = source_set, y = n_keys, fill = source_set)) +
     x = "grouped set",
     y = "unique strong overlap keys",
     title = "strong set sizes by overlap mode",
-    subtitle = "strong definition is PP4 >= 0.8"
+    subtitle = "strong definition is PP4 > 0.8"
   ) +
   theme(legend.position = "none")
 ```
@@ -443,5 +591,47 @@ if (file.exists(f_sens_sum) && file.exists(f_sens_gene)) {
   sens_strong_summary
 } else {
   message("prior-sensitivity files not found; skipping supplemental panel.")
+}
+```
+
+```{r supplemental-gate-failures}
+##  load and summarize gate outcome reasons by category and context in a compact panel.
+if (file.exists(f_sens_fail) && file.exists(f_sens_fail_table)) {
+  sens_fail <- fread(f_sens_fail)
+  sens_fail_table <- fread(f_sens_fail_table)
+  fail_compact <- sens_fail[, .(n_loci = sum(n_loci)), by = .(cat_raw, gate_reason)][order(cat_raw, gate_reason)]
+
+  f_fail_compact <- file.path(final_dir, "prior_sensitivity_gate_reason_counts.tsv.gz")
+  f_fail_by_context <- file.path(final_dir, "prior_sensitivity_gate_reason_by_context.tsv.gz")
+  fwrite(fail_compact, f_fail_compact, sep = "\t")
+  fwrite(sens_fail_table, f_fail_by_context, sep = "\t")
+  fail_compact
+  sens_fail_table
+
+  fail_plot <- copy(sens_fail_table)
+  fail_plot[, ds := factor(ds, levels = sort(unique(ds)))]
+  fail_plot[, cat_raw := factor(cat_raw, levels = c("strong_coloc", "likely_coloc", "distinct_causal", "follow_up"))]
+
+  ggplot(fail_plot, aes(x = ds, y = n_loci, fill = gate_reason)) +
+    geom_col(width = 0.75) +
+    coord_flip() +
+    facet_wrap(~ cat_raw, ncol = 1, scales = "free_y") +
+    theme_bw() +
+    labs(
+      x = "context",
+      y = "number of loci",
+      title = "prior-sensitivity gate outcomes by context",
+      subtitle = "mid-level summary by cat_raw and gate_reason"
+    ) +
+    scale_fill_manual(values = c(
+      pass = "#6aa84f",
+      fail_default_rule = "#cc0000",
+      fail_cat_instability = "#e69138",
+      fail_no_plausible_points = "#8e7cc3",
+      fail_sensitivity_error = "#999999",
+      not_evaluated = "#c9c9c9"
+    ))
+} else {
+  message("prior-sensitivity fail summary files not found; skipping gate-failure panel.")
 }
 ```

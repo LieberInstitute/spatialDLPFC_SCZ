@@ -168,6 +168,48 @@ if (!file.exists(fprepgeno)) {
 }
 ```
 
+```{r orientation helpers}
+#' Build per-variant orientation metadata versus pvar allele order.
+#' @param variant_ids Character vector of variant IDs formatted as chr:pos:REF:ALT
+#' @param pvar data.table with ID, REF, ALT columns
+#' @return data.table with orientation columns for each variant_id
+build_orientation_lut <- function(variant_ids, pvar) {
+  ids <- data.table(variant_id = unique(as.character(variant_ids)))
+  ids <- ids[!is.na(variant_id) & nzchar(variant_id)]
+  ids[, c("id_chr", "id_pos", "id_REF", "id_ALT") := tstrsplit(
+    variant_id, ":", fixed = TRUE, keep = 1:4
+  )]
+
+  pvar_lut <- pvar[, .(variant_id = ID, pvar_REF = REF, pvar_ALT = ALT)]
+  setkey(pvar_lut, variant_id)
+  ori <- pvar_lut[ids, on = "variant_id"]
+
+  ori[, orientation_status := fifelse(
+    is.na(pvar_REF) | is.na(pvar_ALT), "missing_pvar",
+    fifelse(
+      is.na(id_REF) | is.na(id_ALT), "mismatch",
+      fifelse(
+        id_REF == pvar_REF & id_ALT == pvar_ALT, "aligned",
+        fifelse(id_REF == pvar_ALT & id_ALT == pvar_REF, "swapped", "mismatch")
+      )
+    )
+  )]
+  ori[, orientation_sign := fifelse(
+    orientation_status == "aligned", 1L,
+    fifelse(orientation_status == "swapped", -1L, NA_integer_)
+  )]
+  ori[]
+}
+
+#' Apply orientation sign to a slope-like effect.
+#' @param x Numeric vector
+#' @param orientation_sign Integer scalar/vector in {-1,1,NA}
+#' @return Numeric vector in reference-genome orientation
+orient_effect <- function(x, orientation_sign) {
+  ifelse(is.na(orientation_sign), x, x * orientation_sign)
+}
+```
+
 
 ```{r MAKP3 eQTL data only in neuropil}
 ## let's focus on 1 independent result for testing:
@@ -386,11 +428,9 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
   if (!is.null(rsid_col) && "ID" %in% names(pvar)) {
     rsid_map <- pvar[, .(variant_id = ID, rsid = get(rsid_col))]
   }
-  # Build variant -> REF/ALT map for on-demand genotype labels
-  allele_map <- NULL
-  if (all(c("ID", "REF", "ALT") %in% names(pvar))) {
-    allele_map <- pvar[, .(variant_id = ID, REF, ALT)]
-  }
+  # Build orientation metadata for current variants against pvar allele order
+  orientation_lut <- build_orientation_lut(eqtl_pairs$variant_id, pvar)
+  setkey(orientation_lut, variant_id)
   make_geno_labels <- function(dosage_vec, ref, alt) {
     geno_int <- round(dosage_vec)
     labels <- rep(NA_character_, length(geno_int))
@@ -415,18 +455,21 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
     }
     # Get expression and genotypes
     expr_vals <- expr_mat[gene_id, ]
-    geno_dosage <- plotdata$geno$dosage[sample_idx, var_id]
-    ref_val <- NA_character_
-    alt_val <- NA_character_
-    if (!is.null(allele_map)) {
-      idx <- match(var_id, allele_map$variant_id)
-      ref_val <- allele_map$REF[idx]
-      alt_val <- allele_map$ALT[idx]
-    }
-    geno_labels <- make_geno_labels(geno_dosage, ref_val, alt_val)
+    geno_dosage_raw <- plotdata$geno$dosage[sample_idx, var_id]
+
+    orow <- orientation_lut[.(var_id)]
+    id_ref <- if (nrow(orow) > 0L) orow$id_REF[1] else NA_character_
+    id_alt <- if (nrow(orow) > 0L) orow$id_ALT[1] else NA_character_
+    ori_status <- if (nrow(orow) > 0L) orow$orientation_status[1] else "missing_pvar"
+    ori_sign <- if (nrow(orow) > 0L) orow$orientation_sign[1] else NA_integer_
+
+    # Convert dosage to reference-genome orientation when pvar is swapped.
+    # This drives BOTH x-axis genotype grouping and labels (id_REF/id_ALT coding).
+    geno_dosage_ref <- if (!is.na(ori_sign) && ori_sign == -1L) 2 - geno_dosage_raw else geno_dosage_raw
+    geno_labels <- make_geno_labels(geno_dosage_ref, id_ref, id_alt)
 
     # Order genotypes by dosage within this variant
-    geno_order <- unique(geno_labels[order(geno_dosage)])
+    geno_order <- unique(geno_labels[order(geno_dosage_ref)])
     geno_order <- geno_order[!is.na(geno_order)]
     # Build facet label
     var_label <- if (!is.na(rsid_val) && nzchar(rsid_val)) {
@@ -435,19 +478,25 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
       var_id
     }
     facet_label <- sprintf("%s\n%s", var_label, gene_name)
-    # Get beta and p-value if available
-    beta_val <- if ("slope" %in% names(eqtl_pairs)) eqtl_pairs$slope[i] else NA
+    # Reorient effect direction to variant_id REF/ALT convention:
+    # slope_ref = slope * orientation_sign (sign flips when swapped).
+    # p-values are unchanged by orientation.
+    beta_raw <- if ("slope" %in% names(eqtl_pairs)) eqtl_pairs$slope[i] else NA
+    beta_val <- orient_effect(beta_raw, ori_sign)
     pval_val <- if ("pval_nominal" %in% names(eqtl_pairs)) eqtl_pairs$pval_nominal[i] else NA
     data.table(
       sample_id = names(expr_vals),
       expression = as.numeric(expr_vals),
       genotype = factor(geno_labels, levels = geno_order),  # Factor per-variant
-      dosage = geno_dosage,
+      dosage = geno_dosage_ref,
+      dosage_raw = geno_dosage_raw,
       DX = sample_info$DX,
       gene_id = gene_id,
       gene_name = gene_name,
       variant_id = var_id,
       facet = facet_label,
+      orientation_status = ori_status,
+      orientation_sign = ori_sign,
       beta = beta_val,
       pval = pval_val
     )
@@ -474,7 +523,8 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
     labs(
       x = "Genotype",
       y = ifelse(use_raw, "Expression (TMM log2 CPM)", "Residualized Expression"),
-      color = "Diagnosis"
+      color = "Dx"
+      #caption = "Genotype and beta are shown in reference-genome (variant_id) orientation."
     ) +
     theme_bw() +
     theme(

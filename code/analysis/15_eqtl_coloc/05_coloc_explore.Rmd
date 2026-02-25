@@ -19,11 +19,7 @@ refdir=here("processed-data", "ref")
 
 ```{r load GWAS and gene ranges}
 ## load gene-symbol data
-<<<<<<< HEAD
 granges <- qs_read(file.path(refdir,"granges.qs2")) ## gene info file created by 00_explore_data.Rmd last chunk
-=======
-granges <- qs_read("granges.qs2") ## gene info file created by 00_explore_data.Rmd
->>>>>>> 2555201d (add coloc prior-sensitivity testing, Venn diagrams with Habenula)
 g2sym <- setNames(granges$gene_name, granges$gene_id)
 
 ## load GWAS data (for rsid annotation only)
@@ -32,12 +28,24 @@ gwas <- fread(fgwasflt)
 gwas_set <- unique(gwas[p<5e-8]$variant_id)
 
 ## genotype-gwas harmonized variant file
-fgtgwas <- file.path(refdir, 'GWAS_SCZ_tqtl-matched.tab.gz')
+fgtgwas <- file.path(refdir, 'GWAS_SCZ_tqtl-matched.tab.gz') ## created by 03_eqtl_explore.Rmd
 if (file.exists(fgtgwas)) {
-  gwas_vars <- fread(fgtgwas)
+  gwas_vars <- fread(fgtgwas) ## 5.17million variants
 } else {
   stop("file not found: ", fgtgwas)
 }
+```
+
+```{r-console-output}
+> head(gwas_vars)
+            variant_id     A1     A2         beta beta_se        N      p  ncas  ncon impinfo       rsid  fcas  fcon
+                <char> <char> <char>        <num>   <num>    <num>  <num> <int> <int>   <num>     <char> <num> <num>
+1: chr10:100000235:C:T      T      C -0.009098483  0.0094 58749.13 0.3310 53386 77258   0.983 rs11596870 0.692 0.692
+2: chr10:100000943:G:A      A      G  0.017695649  0.0139 58749.13 0.2015 53386 77258   0.986 rs11190359 0.890 0.893
+3: chr10:100000979:T:C      C      T  0.020804929  0.0183 58749.13 0.2559 53386 77258   0.995 rs11190360 0.941 0.942
+4: chr10:100002628:A:C      C      A -0.006200736  0.0087 58749.13 0.4760 53386 77258   0.991 rs11190363 0.541 0.546
+5: chr10:100002875:A:G      G      A  0.014900463  0.0161 58749.13 0.3574 53386 77258   0.995  rs7894103 0.921 0.924
+6: chr10:100004256:T:A      A      T -0.007402534  0.0090 58749.13 0.4113 53386 77258   0.983  rs7915731 0.631 0.633
 ```
 
 ```{r dataset labels}
@@ -50,13 +58,51 @@ window_levels <- c("w500k", "w1mb")
 window_labels <- c(w500k = "500kb primary", w1mb = "1Mb sensitivity")
 ```
 
+```{r load DEGs}
+## also load donor metadata for later use
+fmeta <- file.path(refdir, "donor_meta.tsv.gz")
+donor_meta <- fread(fmeta) # brnum, dx, sex, age, rin
+## WARNING: makes sure char not factor is passed to this char2char mapping!
+ds2name <- setNames( c("SpD01-WMtz", "SpD02-L3/4", "SpD03-L6",  "SpD04-WM", "SpD05-L5",
+       "SpD06-L2/3","SpD07-L1", "Neun", "Vasc", "PNN", "Neuropil"),  c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"))
+dss <- names(ds2name)
+## load degs adust SpD as SpD degs
+deg_spd_adj <- fread(file.path(rdsdir, '10_dx_deg_adjust_spd/dx-deg_PRECAST07.csv'), data.table = FALSE)
+rownames(deg_spd_adj) <- deg_spd_adj$V1
+setnames(deg_spd_adj, 'V1', 'fid')
+spd_degs <- subset(deg_spd_adj, fdr_scz<=0.1) ## 10% FDR threshold was used
+spds <- grep('spd', names(ds2name), value=TRUE)
+ds2degs <- lapply(spds, \(x) spd_degs)
+names(ds2degs) <- spds
+## for the SpG contexts, separate DEGs per context:
+spgs <- grep('^[^s]', names(ds2name), value=TRUE)
+for (ds in spgs) {
+   if (ds=="vasc") {
+     fdegs <- here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
+   } else {
+     fdegs <- here("code/analysis/", paste0("dx_deg_spg_", ds), paste0(ds,"-dx_DEG-GM.csv"))
+   }
+   if (!file.exists(fdegs)) {
+     stop("file not found: ", fdegs)
+   }
+   dt <- fread(fdegs, data.table = FALSE)
+   rownames(dt) <- dt$ensembl
+   dt$fid <- rownames(dt)
+   setcolorder(dt, 'fid')
+   dt <- subset(dt, fdr_scz<=0.1)
+   ds2degs[[ds]] <- dt
+}
+## pnn has no degs for FDR<0.1 ?
+```
+
+
 ```{r coloc utility functions}
 assign_cat <- function(dt) {
   dt[, cat := fcase(
-    PP4 >= 0.8, "strong_coloc",
-    PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "likely_coloc",
-    PP34 >= 0.8 & PP4_over_PP34 < 0.5, "distinct_causal",
-    (PP34 >= 0.8) | (PP4_over_PP34 >= 0.8), "follow_up",
+    PP4 > 0.8, "strong_coloc",
+    PP34 > 0.8 & PP4_over_PP34 >= 0.9, "likely_coloc",
+    PP34 > 0.8 & PP4_over_PP34 < 0.5, "distinct_causal",
+    (PP34 > 0.8) | (PP4_over_PP34 > 0.8), "follow_up",
     default = NA_character_
   )]
   dt[]
@@ -200,18 +246,18 @@ rat_thr <- 0.90
 
 # fc_all assumed to already have ds, PP4, PP34, PP4_over_PP34
 fc_all[, cat := fcase(
-  PP4 >= 0.8, "strong_coloc",
-  PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "likely_coloc",
-  PP34 >= 0.8 & PP4_over_PP34 < 0.5,  "distinct_causal",
-  (PP34 >= 0.8) | (PP4_over_PP34 >= 0.8),       "follow_up", ## we already have PP4>0.5
+  PP4 > 0.8, "strong_coloc",
+  PP34 > 0.8 & PP4_over_PP34 >= 0.9, "likely_coloc",
+  PP34 > 0.8 & PP4_over_PP34 < 0.5,  "distinct_causal",
+  (PP34 > 0.8) | (PP4_over_PP34 > 0.8),       "follow_up", ## we already have PP4>0.5
   default = NA_character_
 )]
 
 
 #fc_all[, cat := fcase(
-#  PP34 >= 0.8 & PP4_over_PP34 >= 0.9, "strong_coloc",
-#  PP34 >= 0.8 & PP4_over_PP34 < 0.5,  "distinct_causal",
-#  (PP34 >= 0.8) | (PP4 >= 0.8),       "follow_up", ## we already have PP4>0.5
+#  PP34 > 0.8 & PP4_over_PP34 >= 0.9, "strong_coloc",
+#  PP34 > 0.8 & PP4_over_PP34 < 0.5,  "distinct_causal",
+#  (PP34 > 0.8) | (PP4 > 0.8),       "follow_up", ## we already have PP4>0.5
 #  default = NA_character_
 #)]
 ## get a quick summary/list in the console for now
@@ -237,46 +283,8 @@ cat_summary_primary <- fc_primary[!is.na(cat),
 cat_summary_primary
 ```
 
-```{r primary stacked bars}
-plot_dt <- fc_primary[cat %chin% c("strong_coloc", "likely_coloc"),
-  .N, by = .(ds, cat)]
-
-all_grid <- CJ(ds = names(ds2name), cat = c("strong_coloc", "likely_coloc"), unique = TRUE)
-plot_dt <- all_grid[plot_dt, on = .(ds, cat)]
-plot_dt[is.na(N), N := 0L]
-
-tot <- plot_dt[, .(Ntot = sum(N)), by = ds]
-
-ggplot(
-  plot_dt,
-  aes(
-    x = factor(ds, levels = names(ds2name), labels = unname(ds2name)),
-    y = N, fill = cat
-  )
-) +
-  geom_col(width = 0.75) +
-  geom_text(
-    aes(label = ifelse(N > 0, N, "")),
-    position = position_stack(vjust = 0.5),
-    size = 3
-  ) +
-  geom_text(
-    data = tot,
-    aes(x = factor(ds, levels = names(ds2name), labels = unname(ds2name)), y = Ntot, label = paste0("n=", Ntot)),
-    inherit.aes = FALSE, hjust = -0.1, size = 3
-  ) +
-  coord_flip() +
-  theme_bw() +
-  labs(
-    x = NULL,
-    y = "Number of genes",
-    title = "Primary colocalization candidates by dataset (500kb)",
-    subtitle = paste0(
-      "cat rules: strong_coloc = PP4 >= 0.8; likely_coloc = PP34 >= 0.8 & PP4/(PP34) >= 0.9; ",
-      "distinct_causal = PP34 >= 0.8 & PP4/(PP34) < 0.5; follow_up = PP34 >= 0.8 | PP4/(PP34) >= 0.8"
-    )
-  ) +
-  scale_fill_manual(values = c(strong_coloc = "#7ebae0", likely_coloc = "#c6dbf8"))
+```{r primary-stacked-bars-moved, eval=FALSE}
+##  moved final strong-only context barplot to 07_coloc_final_explore.Rmd.
 ```
 
 ```{r window comparison counts}
