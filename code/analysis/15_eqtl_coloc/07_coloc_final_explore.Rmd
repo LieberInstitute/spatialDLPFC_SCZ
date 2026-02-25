@@ -457,7 +457,7 @@ ctx_summary[is.na(n_strong), n_strong := 0L]
 ctx_summary[is.na(gene_list), gene_list := ""]
 ctx_summary[, context_label := unname(ctx_map[ds])]
 ctx_summary[is.na(context_label), context_label := ds]
-ctx_summary[, context_label := factor(context_label, levels = ctx_labels)]
+ctx_summary[, context_label := factor(context_label, levels = rev(ctx_labels))]
 ctx_summary[, gene_list_wrapped := fifelse(gene_list == "", "", str_wrap(gene_list, width = 44))]
 
 f_ctx_strong <- file.path(final_dir, "strong_coloc_gated_by_context.tsv.gz")
@@ -473,25 +473,22 @@ ggplot(ctx_summary, aes(x = context_label, y = n_strong)) +
   geom_text(
     aes(y = n_strong + 0.08, label = ifelse(n_strong > 0, as.character(n_strong), "")),
     hjust = 0,
-    size = 3
+    size = 4.5
   ) +
-  geom_text(
-    aes(y = n_strong + 0.55, label = gene_list_wrapped),
-    hjust = 0,
-    size = 2.9,
-    lineheight = 0.95
-  ) +
+  #geom_text( aes(y = n_strong + 0.55, label = gene_list_wrapped),
+  #  hjust = 0, size = 2.9,
+  #  lineheight = 0.95 ) +
   coord_flip(clip = "off") +
   scale_y_continuous(expand = expansion(mult = c(0.02, 0.62))) +
-  theme_bw() +
+  theme_bw(base_size = 14) +
   labs(
     x = "context",
     y = "number of genes",
-    title = "strong colocalization by context",
-    subtitle = "PP4 > 0.8 and passed prior-sensitivity gate"
+    title = "Strong colocalization by context (PP4>0.8) "
+    #subtitle = "PP4 > 0.8"
   ) +
   theme(
-    axis.text.y = element_text(size = 9),
+    axis.text.y = element_text(size = 14),
     plot.margin = margin(6, 160, 6, 6, unit = "pt")
   )
 ```
