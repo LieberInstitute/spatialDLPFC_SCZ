@@ -675,6 +675,12 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
   title_pairs <- unique(title_pairs[, .(gene_name, variant_label)])
   title_by_gene <- title_pairs[, .(variant_list = paste(unique(variant_label), collapse = ", ")), by = gene_name]
   auto_title <- paste(sprintf("%s - %s", title_by_gene$gene_name, title_by_gene$variant_list), collapse = " | ")
+  ## prepend dataset context name when ds is provided and title is "auto"
+  if (!is.null(ds) && nzchar(as.character(ds)[1]) && identical(as.character(title)[1], "auto")) {
+    ds_str <- as.character(ds)[1]
+    ds_label <- if (exists("ds2name") && ds_str %in% names(ds2name)) unname(ds2name[ds_str]) else ds_str
+    auto_title <- paste0(ds_label, ": ", auto_title)
+  }
   title_to_use <- NULL
   if (!is.null(title) && length(title) > 0L) {
     title_chr <- as.character(title)[1]
@@ -684,17 +690,17 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
   annot_dt <- plot_dt[, .(
     beta = unique(beta),
     pval = unique(pval),
-    ymin = min(expression),
+    ymin = min(expression, na.rm = TRUE),
     n_geno = length(unique(genotype))
   ), by = facet]
   annot_dt[, label := sprintf("beta = %.3g\np = %.2e", beta, pval)]
-  # anchor annotation to panel bottom-right (edge coordinates)
   p <- ggplot(plot_dt, aes(x = genotype, y = expression)) +
     geom_boxplot(outlier.shape = NA, alpha = 0.5) +
     geom_jitter(aes(color = DX), width = 0.2, size = 2, alpha = 0.8) +
     facet_wrap(~ facet, scales = "free") +
     scale_color_manual(values = c("NTC" = "#1b9e77", "SCZ" = "#d95f02")) +
     scale_x_discrete(drop = TRUE) +
+    scale_y_continuous(expand = expansion(mult = c(0.09, 0.05))) +
     labs(
       x = x_axis_label,
       y = ifelse(use_raw, "Expression (TMM log2 CPM)", "Residualized Expression"),
@@ -707,11 +713,11 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
       legend.position = "bottom"
     )
 
-  # Add beta/p-value annotations
+  # Add beta/p-value annotations anchored to bottom-right of each panel
   if (all(!is.na(annot_dt$beta))) {
     p <- p + geom_text(data = annot_dt,
                        aes(x = Inf, y = -Inf, label = label),
-                       hjust = 1.2, vjust = -0.2, size = 3, inherit.aes = FALSE)
+                       hjust = 1.1, vjust = -0.2, size = 3, inherit.aes = FALSE)
   }
   if (!is.null(title_to_use)) {
     p <- p + ggtitle(title_to_use)
@@ -719,7 +725,7 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
   p
 }
 
-#print(plot_eQTL_boxplots(npil_plotdata, ieqtls, title=ds2name[ds], gwas_eff = TRUE))
+#print(plot_eQTL_boxplots(plotdata, ieqtls, ds=ds, gwas_eff = TRUE))
 ```
 
 
@@ -743,7 +749,7 @@ stopifnot(nrow(ieqtls)>0)
 
 # Create plot
 ## this might have to be customized further
-p <- plot_eQTL_boxplots(npil_plotdata, ieqtls, title=ds2name[ds], gwas_eff = TRUE)
+p <- plot_eQTL_boxplots(npil_plotdata, ieqtls, ds=ds, gwas_eff = TRUE)
 print(p)
 ```
 
