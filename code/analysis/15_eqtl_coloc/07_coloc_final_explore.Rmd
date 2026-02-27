@@ -249,11 +249,28 @@ for (vv in c("GWAS", "DGE", "eQTL", "eQTLnom")) {
 }
 
 f_coloc_clean_tsv <- file.path(final_dir, "coloc_abf_results_gated_pass_clean.tsv.gz")
-f_coloc_clean_xlsx <- file.path(final_dir, "coloc_abf_results_gated_pass_clean.xlsx")
+f_coloc_clean_xlsx <- file.path(datadir, "coloc", "coloc_results.xlsx")
 fwrite(coloc_clean_pass, f_coloc_clean_tsv, sep = "\t", quote = FALSE)
+
+coloc_clean_pass_xlsx <- copy(coloc_clean_pass)
+setnames(coloc_clean_pass_xlsx, c(
+  "ds", "fid", "cat", "GWAS", "DGE", "eQTL", "eQTLnom"
+), c(
+  "expression_context", "ENSEMBL", "hypothesis_category",
+  "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "eQTL_independent", "eQTL_nominal"
+))
+setcolorder(coloc_clean_pass_xlsx, c(
+  "expression_context", "ENSEMBL", "gene_name", "lead_snp", "rsid", "nsnps",
+  "PP3", "PP4", "PP34", "PP4_over_PP34", "hypothesis_category",
+  "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "eQTL_independent", "eQTL_nominal"
+))
+for (vv in c("risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "eQTL_independent", "eQTL_nominal")) {
+  coloc_clean_pass_xlsx[, (vv) := as.logical(get(vv))]
+}
+
 wb <- createWorkbook()
 addWorksheet(wb, "coloc_pass")
-writeData(wb, "coloc_pass", coloc_clean_pass)
+writeData(wb, "coloc_pass", coloc_clean_pass_xlsx)
 saveWorkbook(wb, f_coloc_clean_xlsx, overwrite = TRUE)
 
 coloc_clean_pass
@@ -483,7 +500,7 @@ ggplot(ctx_summary, aes(x = context_label, y = n_strong)) +
   theme_bw(base_size = 14) +
   labs(
     x = "context",
-    y = "number of genes",
+    y = "number of gene-variant pairs",
     title = "Strong colocalization by context (PP4>0.8) "
     #subtitle = "PP4 > 0.8"
   ) +

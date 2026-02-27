@@ -41,6 +41,22 @@ g2sym <- setNames(granges$gene_name, granges$gene_id)
 
 ```
 
+NOTE: for GWAS SCZ data, A1 as the allele for frequency/beta so BETA is "of A1".
+Thus, A1/A2 are not guaranteed to be genome REF/ALT.
+They're effect-allele oriented (A1), and A2 is just the "other" allele,
+either could be REF or ALT, relative to the reference genome.
+
+```{r-console-output}
+> head(gwas_vars)
+            variant_id     A1     A2         beta beta_se        N      p  ncas  ncon impinfo       rsid  fcas  fcon
+                <char> <char> <char>        <num>   <num>    <num>  <num> <int> <int>   <num>     <char> <num> <num>
+1: chr10:100000235:C:T      T      C -0.009098483  0.0094 58749.13 0.3310 53386 77258   0.983 rs11596870 0.692 0.692
+2: chr10:100000943:G:A      A      G  0.017695649  0.0139 58749.13 0.2015 53386 77258   0.986 rs11190359 0.890 0.893
+3: chr10:100000979:T:C      C      T  0.020804929  0.0183 58749.13 0.2559 53386 77258   0.995 rs11190360 0.941 0.942
+4: chr10:100002628:A:C      C      A -0.006200736  0.0087 58749.13 0.4760 53386 77258   0.991 rs11190363 0.541 0.546
+5: chr10:100002875:A:G      G      A  0.014900463  0.0161 58749.13 0.3574 53386 77258   0.995  rs7894103 0.921 0.924
+6: chr10:100004256:T:A      A      T -0.007402534  0.0090 58749.13 0.4113 53386 77258   0.983  rs7915731 0.631 0.633
+```
 
 
 ```{r load all independent tensor QTL results}
@@ -92,7 +108,8 @@ pgen_prefix <- here("processed-data", "genotypes", "plink2", "merged_maf05")
 #' @param pgen_prefix Path prefix to plink2 files (without .pgen/.pvar/.psam extension)
 #' @return List with: dosage (samples x variants matrix),
 #'         pvar (data.table with variant info), samples (character vector of sample IDs)
-#' if gwas_vars is given, relevant GWAS info will be added to the pvar data.table, where available, columns: rsid, p, beta, beta_se, impinfo
+#' if gwas_vars is given, relevant GWAS info will be added to the pvar data.table, where available, columns:
+#' rsid, p, A1, A2, beta, beta_se, impinfo
 prepGenotypes <- function(pgen_prefix, gwas_vars = NULL) {
   # File paths
   pgen_file <- paste0(pgen_prefix, ".pgen")
@@ -109,7 +126,7 @@ prepGenotypes <- function(pgen_prefix, gwas_vars = NULL) {
 
   # Attach GWAS info if provided
   if (!is.null(gwas_vars)) {
-    required_cols <- c("variant_id", "rsid", "beta", "beta_se", "N", "p", "impinfo")
+    required_cols <- c("variant_id", "rsid", "A1", "A2", "beta", "beta_se", "N", "p", "impinfo")
     stopifnot("gwas_vars must include required columns" = all(required_cols %in% names(gwas_vars)))
     gwas_sub <- as.data.table(gwas_vars)[, ..required_cols]
     pvar <- merge(
@@ -362,16 +379,32 @@ cat("\nExpected beta from eQTL:", round(indr$slope[1], 3), "\n")
 ```
 
 
+variant_id (genomic) REF/ALT vs GWAS effect allele A1:
+Across all 5,170,966 GWAS-matched variants:
+ - A1 == variant_id ALT: 3,872,542 (74.90%)
+ - A1 == variant_id REF: 1,298,424 (25.10%)
+
+Among GWAS risk variants (p < 5e-8, n=18,853):
+ - A1 == variant_id ALT: 14,282 (75.75%)
+ - A1 == variant_id REF:  4,571 (24.25%)
+
+A1 == pvar ALT (100%)
+
 ```{r plot_eQTL_boxplots}
 #' Create faceted boxplots for eQTL gene-variant pairs
 #' @param plotdata Prepared data from prep_eQTLPlotData()
 #' @param eqtl_pairs data.table/data.frame with columns: phenotype_id, variant_id,
 #'        and optionally: slope (beta), pval_nominal, gene_name
-#' @param use_raw Logical; if TRUE use raw expression, otherwise use residualized (default FALSE)
 #' @param restrict_donors Optional vector of donor IDs to keep
-#' @param title Optional plot title
+#' @param title Plot title; default "auto" uses "<context> <gene_name> expression".
+#'        Set to NULL or "" to suppress title.
+#' @param gwas_eff Logical; if TRUE, orient plot to GWAS beta
+#'        with GWAS A1/A2/beta in plotdata$geno$pvar (x=0 protective homozygote, x=2 risk homozygote);
+#'        otherwise use variant_id REF/ALT orientation (REF homozygote at 0, ALT homozygote at 2)
+#' @param use_raw Logical; if TRUE use raw expression, otherwise use residualized (default FALSE)
+#' @param ds Optional dataset context key/string used in auto title; if found in ds2name, full context name is used.
 #' @return ggplot object
-plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_donors = NULL, title = NULL) {
+plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_donors = NULL, title = "auto", gwas_eff = FALSE, ds = NULL) {
   # ---- Validate inputs ----
   required_cols <- c("phenotype_id", "variant_id")
   stopifnot("eqtl_pairs must have phenotype_id and variant_id columns" =
@@ -421,14 +454,26 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
     sample_idx <- sample_idx[keep]
   }
   # Build variant -> rsID map if available
-  ## TODO: rsID mapping data here is very poor, should use another source
   pvar <- plotdata$geno$pvar
   rsid_col <- if ("rsID" %in% names(pvar)) "rsID" else if ("rsid" %in% names(pvar)) "rsid" else NULL
   rsid_map <- NULL
   if (!is.null(rsid_col) && "ID" %in% names(pvar)) {
     rsid_map <- pvar[, .(variant_id = ID, rsid = get(rsid_col))]
   }
-  # Build orientation metadata for current variants against pvar allele order
+  a1_col <- if ("A1" %in% names(pvar)) "A1" else if ("a1" %in% names(pvar)) "a1" else NULL
+  a2_col <- if ("A2" %in% names(pvar)) "A2" else if ("a2" %in% names(pvar)) "a2" else NULL
+  beta_col <- if ("beta" %in% names(pvar)) "beta" else if ("BETA" %in% names(pvar)) "BETA" else NULL
+  gwas_map <- NULL
+  if (!is.null(a1_col) && !is.null(a2_col) && !is.null(beta_col) && "ID" %in% names(pvar)) {
+    gwas_map <- pvar[, .(
+      variant_id = ID,
+      gwas_A1 = as.character(get(a1_col)),
+      gwas_A2 = as.character(get(a2_col)),
+      gwas_beta = suppressWarnings(as.numeric(get(beta_col)))
+    )]
+    setkey(gwas_map, variant_id)
+  }
+  # Build orientation lookup table for current variants against pvar allele order
   orientation_lut <- build_orientation_lut(eqtl_pairs$variant_id, pvar)
   setkey(orientation_lut, variant_id)
   make_geno_labels <- function(dosage_vec, ref, alt) {
@@ -460,16 +505,74 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
     orow <- orientation_lut[.(var_id)]
     id_ref <- if (nrow(orow) > 0L) orow$id_REF[1] else NA_character_
     id_alt <- if (nrow(orow) > 0L) orow$id_ALT[1] else NA_character_
+    pvar_ref <- if (nrow(orow) > 0L) orow$pvar_REF[1] else NA_character_
+    pvar_alt <- if (nrow(orow) > 0L) orow$pvar_ALT[1] else NA_character_
     ori_status <- if (nrow(orow) > 0L) orow$orientation_status[1] else "missing_pvar"
     ori_sign <- if (nrow(orow) > 0L) orow$orientation_sign[1] else NA_integer_
+    gwas_row <- if (!is.null(gwas_map)) gwas_map[.(var_id)] else data.table()
+    gwas_a1 <- if (nrow(gwas_row) > 0L) gwas_row$gwas_A1[1] else NA_character_
+    gwas_a2 <- if (nrow(gwas_row) > 0L) gwas_row$gwas_A2[1] else NA_character_
+    gwas_beta <- if (nrow(gwas_row) > 0L) gwas_row$gwas_beta[1] else NA_real_
 
-    # Convert dosage to reference-genome orientation when pvar is swapped.
-    # This drives BOTH x-axis genotype grouping and labels (id_REF/id_ALT coding).
-    geno_dosage_ref <- if (!is.na(ori_sign) && ori_sign == -1L) 2 - geno_dosage_raw else geno_dosage_raw
-    geno_labels <- make_geno_labels(geno_dosage_ref, id_ref, id_alt)
+    ## determine gwas risk-sign orientation against pvar ref/alt
+    risk_sign <- NA_integer_
+    gwas_status <- "not_requested"
+    protective_allele <- NA_character_
+    risk_allele <- NA_character_
+    if (isTRUE(gwas_eff)) {
+      if (is.null(gwas_map)) {
+        gwas_status <- "missing_gwas_cols"
+      } else if (is.na(pvar_ref) || is.na(pvar_alt) || !nzchar(pvar_ref) || !nzchar(pvar_alt)) {
+        gwas_status <- "missing_pvar"
+      } else if (is.na(gwas_a1) || is.na(gwas_a2) || !nzchar(gwas_a1) || !nzchar(gwas_a2)) {
+        gwas_status <- "missing_gwas"
+      } else if (is.na(gwas_beta)) {
+        gwas_status <- "missing_beta"
+      } else if (gwas_beta == 0) {
+        gwas_status <- "zero_beta"
+      } else {
+        pvar_ref_u <- toupper(pvar_ref)
+        pvar_alt_u <- toupper(pvar_alt)
+        gwas_a1_u <- toupper(gwas_a1)
+        gwas_a2_u <- toupper(gwas_a2)
+        if (!((gwas_a1_u == pvar_alt_u && gwas_a2_u == pvar_ref_u) ||
+              (gwas_a1_u == pvar_ref_u && gwas_a2_u == pvar_alt_u))) {
+          gwas_status <- "allele_mismatch"
+        } else {
+          if (gwas_beta < 0) {
+            protective_allele <- gwas_a1_u
+            risk_allele <- gwas_a2_u
+            gwas_status <- "a1_protective"
+          } else {
+            protective_allele <- gwas_a2_u
+            risk_allele <- gwas_a1_u
+            gwas_status <- "a2_protective"
+          }
+          if (risk_allele == pvar_alt_u) {
+            risk_sign <- 1L
+          } else if (risk_allele == pvar_ref_u) {
+            risk_sign <- -1L
+          } else {
+            gwas_status <- "allele_mismatch"
+          }
+        }
+      }
+    }
+
+    ## choose dosage and labels from gwas risk-sign mode or fallback variant_id mode
+    use_gwas_orientation <- isTRUE(gwas_eff) && !is.na(risk_sign)
+    if (use_gwas_orientation) {
+      geno_dosage_plot <- if (risk_sign == -1L) 2 - geno_dosage_raw else geno_dosage_raw
+      geno_labels <- make_geno_labels(geno_dosage_plot, protective_allele, risk_allele)
+      orientation_mode <- "gwas_risk_sign"
+    } else {
+      geno_dosage_plot <- if (!is.na(ori_sign) && ori_sign == -1L) 2 - geno_dosage_raw else geno_dosage_raw
+      geno_labels <- make_geno_labels(geno_dosage_plot, id_ref, id_alt)
+      orientation_mode <- "variant_id_refalt"
+    }
 
     # Order genotypes by dosage within this variant
-    geno_order <- unique(geno_labels[order(geno_dosage_ref)])
+    geno_order <- unique(geno_labels[order(geno_dosage_plot)])
     geno_order <- geno_order[!is.na(geno_order)]
     # Build facet label
     var_label <- if (!is.na(rsid_val) && nzchar(rsid_val)) {
@@ -478,17 +581,15 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
       var_id
     }
     facet_label <- sprintf("%s\n%s", var_label, gene_name)
-    # Reorient effect direction to variant_id REF/ALT convention:
-    # slope_ref = slope * orientation_sign (sign flips when swapped).
-    # p-values are unchanged by orientation.
+    ## set beta orientation source to match plotted risk dosage axis
     beta_raw <- if ("slope" %in% names(eqtl_pairs)) eqtl_pairs$slope[i] else NA
-    beta_val <- orient_effect(beta_raw, ori_sign)
+    beta_val <- if (use_gwas_orientation) orient_effect(beta_raw, risk_sign) else orient_effect(beta_raw, ori_sign)
     pval_val <- if ("pval_nominal" %in% names(eqtl_pairs)) eqtl_pairs$pval_nominal[i] else NA
     data.table(
       sample_id = names(expr_vals),
       expression = as.numeric(expr_vals),
       genotype = factor(geno_labels, levels = geno_order),  # Factor per-variant
-      dosage = geno_dosage_ref,
+      dosage = geno_dosage_plot,
       dosage_raw = geno_dosage_raw,
       DX = sample_info$DX,
       gene_id = gene_id,
@@ -497,11 +598,65 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
       facet = facet_label,
       orientation_status = ori_status,
       orientation_sign = ori_sign,
+      gwas_A1 = gwas_a1,
+      gwas_A2 = gwas_a2,
+      gwas_beta = gwas_beta,
+      gwas_status = gwas_status,
+      risk_sign = risk_sign,
+      protective_allele = protective_allele,
+      risk_allele = risk_allele,
+      orientation_mode = orientation_mode,
       beta = beta_val,
       pval = pval_val
     )
   })
   plot_dt <- rbindlist(plot_list)
+  ## warn once when gwas mode falls back to variant_id orientation
+  if (isTRUE(gwas_eff)) {
+    fallback_status <- c("missing_gwas_cols", "missing_pvar", "missing_gwas", "missing_beta", "zero_beta", "allele_mismatch")
+    fallback_dt <- unique(plot_dt[gwas_status %in% fallback_status, .(variant_id, gwas_status)])
+    if (nrow(fallback_dt) > 0L) {
+      show_n <- min(5L, nrow(fallback_dt))
+      show_txt <- paste(sprintf("%s (%s)", fallback_dt$variant_id[seq_len(show_n)], fallback_dt$gwas_status[seq_len(show_n)]), collapse = ", ")
+      warning(sprintf(
+        "gwas_eff=TRUE fell back to variant_id REF/ALT orientation for %d variant(s) in risk-sign mode: %s%s",
+        nrow(fallback_dt),
+        show_txt,
+        if (nrow(fallback_dt) > show_n) ", ..." else ""
+      ))
+    }
+  }
+  ## set x-axis label with effect allele only when gwas risk-sign orientation was used
+  x_axis_label <- "Genotype"
+  if (isTRUE(gwas_eff)) {
+    effect_alleles <- unique(plot_dt[orientation_mode == "gwas_risk_sign" & !is.na(risk_allele) & nzchar(risk_allele), risk_allele])
+    if (length(effect_alleles) == 1L) {
+      x_axis_label <- sprintf("Genotype (effect allele: %s)", effect_alleles[1])
+    } else if (length(effect_alleles) > 1L) {
+      x_axis_label <- "Genotype (effect allele: varies by facet)"
+    }
+  }
+  ## resolve auto title from ds context and plotted gene(s)
+  resolve_context_label <- function(ds_value) {
+    if (is.null(ds_value)) return(NULL)
+    ds_chr <- as.character(ds_value)[1]
+    if (!nzchar(ds_chr)) return(NULL)
+    if (exists("ds2name", inherits = TRUE)) {
+      lut <- get("ds2name", inherits = TRUE)
+      if (!is.null(names(lut)) && ds_chr %in% names(lut)) return(unname(lut[[ds_chr]]))
+    }
+    ds_chr
+  }
+  gene_title <- unique(na.omit(as.character(eqtl_pairs$gene_name)))
+  gene_title <- gene_title[nzchar(gene_title)]
+  gene_title <- if (length(gene_title) == 1L) gene_title else "multiple genes"
+  context_label <- resolve_context_label(ds)
+  auto_title <- if (!is.null(context_label)) sprintf("%s %s expression", context_label, gene_title) else sprintf("%s expression", gene_title)
+  title_to_use <- NULL
+  if (!is.null(title) && length(title) > 0L) {
+    title_chr <- as.character(title)[1]
+    if (nzchar(title_chr)) title_to_use <- if (identical(title_chr, "auto")) auto_title else title_chr
+  }
   # ---- Create annotation labels for each facet ----
   annot_dt <- plot_dt[, .(
     beta = unique(beta),
@@ -521,7 +676,7 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
     scale_color_manual(values = c("NTC" = "#1b9e77", "SCZ" = "#d95f02")) +
     scale_x_discrete(drop = TRUE) +
     labs(
-      x = "Genotype",
+      x = x_axis_label,
       y = ifelse(use_raw, "Expression (TMM log2 CPM)", "Residualized Expression"),
       color = "Dx"
       #caption = "Genotype and beta are shown in reference-genome (variant_id) orientation."
@@ -538,8 +693,8 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
                        aes(x = x+0.8, y = y, label = label),
                        hjust = 1.1, vjust = 0.9, size = 3, inherit.aes = FALSE)
   }
-  if (!is.null(title)) {
-    p <- p + ggtitle(title)
+  if (!is.null(title_to_use)) {
+    p <- p + ggtitle(title_to_use)
   }
   p
 }
@@ -567,7 +722,7 @@ stopifnot(nrow(ieqtls)>0)
 
 # Create plot
 ## this might have to be customized further
-p <- plot_eQTL_boxplots(npil_plotdata, ieqtls) #, title = sprintf("%s eQTL examop", dsname))
+p <- plot_eQTL_boxplots(npil_plotdata, ieqtls, title=ds2name[ds], gwas_eff = TRUE)
 print(p)
 ```
 
@@ -579,7 +734,7 @@ neun_fcovars <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
 neun_plotdata <- prep_eQTLPlotData(neun_spe, geno, neun_fcovars)
 
 eqtls <- nomres[["neun"]][gene_name=="MAPK3" & variant_id == "chr16:30114519:G:C"]
-pnom <- plot_eQTL_boxplots(neun_plotdata, eqtls)
+pnom <- plot_eQTL_boxplots(neun_plotdata, eqtls, gwas_eff = TRUE)
 print(pnom)
 ```
 

@@ -79,7 +79,9 @@ if (file.exists(fgwas)) {
   } else {
     fhg19gwas <- file.path(refdir, 'PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz')
     ## NOTE: A1 as the allele for frequency/beta so BETA is "of A1".
-    ##    A1/A2 are not guaranteed to be genome REF/ALT. They're effect-allele oriented (A1) and the "other" allele (A2)
+    ##    A1/A2 are not guaranteed to be genome REF/ALT
+    ## if beta>0 then A1 is the EFFECT allele (A2 is protective)
+    ## if beta<0 then A2 is the EFFECT allele (A1 is protective).
 
     #data/PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz'
     stopifnot(file.exists(fhg19gwas))
@@ -118,8 +120,8 @@ if (file.exists(fgwas)) {
     gwas_wide[, chr := paste0("chr", chr)]
     qs_save(gwas_wide, fgwas38)
   }
-  ### NOTE: in gwas_wide, a0 = EFFECT allele (former A1), a1 = other allele (former A2)
-  ## harmonize with tensorqtl variant universe
+  ### NOTE: in gwas_wide, a0 = effect reference allele (former A1), a1 = other allele (former A2)
+  ## harmonize with tensorqtl variant universe (i.e. pvar REF ALT, not necessarily genomic REF ALT)
   ## prepare GWAS for matching
   sumstats_for_match <- gwas_wide[, .(
     chr, pos,
