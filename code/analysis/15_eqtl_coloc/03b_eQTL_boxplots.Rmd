@@ -42,9 +42,9 @@ g2sym <- setNames(granges$gene_name, granges$gene_id)
 ```
 
 NOTE: for GWAS SCZ data, A1 as the allele for frequency/beta so BETA is "of A1".
-Thus, A1/A2 are not guaranteed to be genome REF/ALT.
-They're effect-allele oriented (A1), and A2 is just the "other" allele,
-either could be REF or ALT, relative to the reference genome.
+A1/A2 are not guaranteed to be genome REF/ALT.
+
+
 
 ```{r-console-output}
 > head(gwas_vars)
@@ -379,7 +379,7 @@ cat("\nExpected beta from eQTL:", round(indr$slope[1], 3), "\n")
 ```
 
 
-variant_id (genomic) REF/ALT vs GWAS effect allele A1:
+variant_id (genomic) REF/ALT vs GWAS A1:
 Across all 5,170,966 GWAS-matched variants:
  - A1 == variant_id ALT: 3,872,542 (74.90%)
  - A1 == variant_id REF: 1,298,424 (25.10%)
@@ -388,7 +388,12 @@ Among GWAS risk variants (p < 5e-8, n=18,853):
  - A1 == variant_id ALT: 14,282 (75.75%)
  - A1 == variant_id REF:  4,571 (24.25%)
 
-A1 == pvar ALT (100%)
+
+A1 == pvar ALT (100%) => because GWAS data was harmonized with pvar REF/ALT orientation
+flipping the beta sign accordingly.
+(see 03_eqtl_explore.Rmd for details on GWAS-tensorQTL matching/harmonization)
+
+A1 is the ALT allele in 75% of cases
 
 ```{r plot_eQTL_boxplots}
 #' Create faceted boxplots for eQTL gene-variant pairs
@@ -398,11 +403,10 @@ A1 == pvar ALT (100%)
 #' @param restrict_donors Optional vector of donor IDs to keep
 #' @param title Plot title; default "auto" uses "<context> <gene_name> expression".
 #'        Set to NULL or "" to suppress title.
-#' @param gwas_eff Logical; if TRUE, orient plot to GWAS beta
+#' @param ds Optional dataset context key/string used in auto title; if found in ds2name, full context name #' @param gwas_eff Logical; if TRUE, orient plot to GWAS beta
 #'        with GWAS A1/A2/beta in plotdata$geno$pvar (x=0 protective homozygote, x=2 risk homozygote);
 #'        otherwise use variant_id REF/ALT orientation (REF homozygote at 0, ALT homozygote at 2)
 #' @param use_raw Logical; if TRUE use raw expression, otherwise use residualized (default FALSE)
-#' @param ds Optional dataset context key/string used in auto title; if found in ds2name, full context name is used.
 #' @return ggplot object
 plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_donors = NULL, title = "auto", gwas_eff = FALSE, ds = NULL) {
   # ---- Validate inputs ----
@@ -476,6 +480,26 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
   # Build orientation lookup table for current variants against pvar allele order
   orientation_lut <- build_orientation_lut(eqtl_pairs$variant_id, pvar)
   setkey(orientation_lut, variant_id)
+  # Return a keyed lookup row or a 1-row typed default when missing.
+  lookup_row_or_default <- function(map_dt, key_val, default_row) {
+    if (is.null(map_dt)) return(data.table::copy(default_row))
+    row <- map_dt[.(key_val)]
+    if (nrow(row) > 0L) return(row[1L])
+    data.table::copy(default_row)
+  }
+  orientation_default <- data.table(
+    id_REF = NA_character_,
+    id_ALT = NA_character_,
+    pvar_REF = NA_character_,
+    pvar_ALT = NA_character_,
+    orientation_status = "missing_pvar",
+    orientation_sign = NA_integer_
+  )
+  gwas_default <- data.table(
+    gwas_A1 = NA_character_,
+    gwas_A2 = NA_character_,
+    gwas_beta = NA_real_
+  )
   make_geno_labels <- function(dosage_vec, ref, alt) {
     geno_int <- round(dosage_vec)
     labels <- rep(NA_character_, length(geno_int))
@@ -502,17 +526,17 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
     expr_vals <- expr_mat[gene_id, ]
     geno_dosage_raw <- plotdata$geno$dosage[sample_idx, var_id]
 
-    orow <- orientation_lut[.(var_id)]
-    id_ref <- if (nrow(orow) > 0L) orow$id_REF[1] else NA_character_
-    id_alt <- if (nrow(orow) > 0L) orow$id_ALT[1] else NA_character_
-    pvar_ref <- if (nrow(orow) > 0L) orow$pvar_REF[1] else NA_character_
-    pvar_alt <- if (nrow(orow) > 0L) orow$pvar_ALT[1] else NA_character_
-    ori_status <- if (nrow(orow) > 0L) orow$orientation_status[1] else "missing_pvar"
-    ori_sign <- if (nrow(orow) > 0L) orow$orientation_sign[1] else NA_integer_
-    gwas_row <- if (!is.null(gwas_map)) gwas_map[.(var_id)] else data.table()
-    gwas_a1 <- if (nrow(gwas_row) > 0L) gwas_row$gwas_A1[1] else NA_character_
-    gwas_a2 <- if (nrow(gwas_row) > 0L) gwas_row$gwas_A2[1] else NA_character_
-    gwas_beta <- if (nrow(gwas_row) > 0L) gwas_row$gwas_beta[1] else NA_real_
+    orow <- lookup_row_or_default(orientation_lut, var_id, orientation_default)
+    id_ref <- orow$id_REF[1]
+    id_alt <- orow$id_ALT[1]
+    pvar_ref <- orow$pvar_REF[1]
+    pvar_alt <- orow$pvar_ALT[1]
+    ori_status <- orow$orientation_status[1]
+    ori_sign <- orow$orientation_sign[1]
+    gwas_row <- lookup_row_or_default(gwas_map, var_id, gwas_default)
+    gwas_a1 <- gwas_row$gwas_A1[1]
+    gwas_a2 <- gwas_row$gwas_A2[1]
+    gwas_beta <- gwas_row$gwas_beta[1]
 
     ## determine gwas risk-sign orientation against pvar ref/alt
     risk_sign <- NA_integer_
@@ -636,22 +660,19 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
       x_axis_label <- "Genotype (effect allele: varies by facet)"
     }
   }
-  ## resolve auto title from ds context and plotted gene(s)
-  resolve_context_label <- function(ds_value) {
-    if (is.null(ds_value)) return(NULL)
-    ds_chr <- as.character(ds_value)[1]
-    if (!nzchar(ds_chr)) return(NULL)
-    if (exists("ds2name", inherits = TRUE)) {
-      lut <- get("ds2name", inherits = TRUE)
-      if (!is.null(names(lut)) && ds_chr %in% names(lut)) return(unname(lut[[ds_chr]]))
-    }
-    ds_chr
+  ## resolve auto title as a 'gene - variant-list' string for plotted pairs
+  title_pairs <- copy(eqtl_pairs[, .(gene_name, variant_id)])
+  if (!is.null(rsid_map)) {
+    title_pairs[, rsid := rsid_map$rsid[match(variant_id, rsid_map$variant_id)]]
+  } else {
+    title_pairs[, rsid := NA_character_]
   }
-  gene_title <- unique(na.omit(as.character(eqtl_pairs$gene_name)))
-  gene_title <- gene_title[nzchar(gene_title)]
-  gene_title <- if (length(gene_title) == 1L) gene_title else "multiple genes"
-  context_label <- resolve_context_label(ds)
-  auto_title <- if (!is.null(context_label)) sprintf("%s %s expression", context_label, gene_title) else sprintf("%s expression", gene_title)
+  title_pairs[, gene_name := as.character(gene_name)]
+  title_pairs[is.na(gene_name) | !nzchar(gene_name), gene_name := "unknown_gene"]
+  title_pairs[, variant_label := ifelse(!is.na(rsid) & nzchar(rsid), rsid, variant_id)]
+  title_pairs <- unique(title_pairs[, .(gene_name, variant_label)])
+  title_by_gene <- title_pairs[, .(variant_list = paste(unique(variant_label), collapse = ", ")), by = gene_name]
+  auto_title <- paste(sprintf("%s - %s", title_by_gene$gene_name, title_by_gene$variant_list), collapse = " | ")
   title_to_use <- NULL
   if (!is.null(title) && length(title) > 0L) {
     title_chr <- as.character(title)[1]
@@ -734,7 +755,7 @@ neun_fcovars <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
 neun_plotdata <- prep_eQTLPlotData(neun_spe, geno, neun_fcovars)
 
 eqtls <- nomres[["neun"]][gene_name=="MAPK3" & variant_id == "chr16:30114519:G:C"]
-pnom <- plot_eQTL_boxplots(neun_plotdata, eqtls, gwas_eff = TRUE)
+pnom <- plot_eQTL_boxplots(neun_plotdata, eqtls, ds=ds, gwas_eff = TRUE)
 print(pnom)
 ```
 
@@ -746,7 +767,7 @@ fcovars <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
 plotdata <- prep_eQTLPlotData(spe, geno, fcovars)
 eqtls <- nomres[[ds]][gene_name=="KANSL1-AS1" & rsid== "rs1378358"]
 
-pl <- plot_eQTL_boxplots(plotdata, eqtls)
+pl <- plot_eQTL_boxplots(plotdata, eqtls, ds=ds,gwas_eff = TRUE)
 print(pl)
 #plx <- plot_eQTL_boxplots(plotdata, eqtls, restrict_donors = xdonors)
 #print(plx)
@@ -765,7 +786,7 @@ for (ds in ctxs) {
   plotdata <- prep_eQTLPlotData(spe, geno, covar_file)
   indr <- indres[[ds]]
   ieqtls <- indr[gene_name=="KANSL1-AS1"]
-  p <- plot_eQTL_boxplots(plotdata, ieqtls, title = sprintf("%s KANSL1-AS1 eQTL", dsname))
+  p <- plot_eQTL_boxplots(plotdata, ieqtls, ds = ds, gwas_eff = TRUE)
   print(p)
 }
 ```
