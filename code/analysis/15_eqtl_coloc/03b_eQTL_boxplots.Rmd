@@ -233,6 +233,8 @@ orient_effect <- function(x, orientation_sign) {
 ds <- 'neuropil'
 dsname <- unname(ds2name[ds])
 ## load data for the specified dataset
+## these per-context SpEs were built in 01_prep_inputs.R with writeSpE flag,
+## so it has the tmm assay, before rint assay was calculated for tensorQTL BED input
 spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
 ## use assays(spe)$tmm for expression data, TMM normalized log(CPM+1)
 covar_file <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
@@ -249,7 +251,7 @@ xdonors <- fread(fxenium, header=FALSE)$V1
 #' @param spe SpatialExperiment object with tmm assay
 #' @param geno Genotype object from prepGenotypes()
 #' @param covar_file Path to tensorQTL covariates file
-#' @return List with residualized/raw expression matrices, gene/sample info, and genotype reference
+#' @return List with expression matrices, gene/sample info, and genotype reference
 prep_eQTLPlotData <- function(spe, geno, covar_file) {
   # ---- Validate inputs ----
   stopifnot("spe must be a SummarizedExperiment" = is(spe, "SummarizedExperiment"))
@@ -686,10 +688,7 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
     n_geno = length(unique(genotype))
   ), by = facet]
   annot_dt[, label := sprintf("beta = %.3g\np = %.2e", beta, pval)]
-  # Position at rightmost genotype (x) and bottom of facet (y)
-  annot_dt[, x := n_geno]
-  annot_dt[, y := ymin]
-  # ---- Build plot ----
+  # anchor annotation to panel bottom-right (edge coordinates)
   p <- ggplot(plot_dt, aes(x = genotype, y = expression)) +
     geom_boxplot(outlier.shape = NA, alpha = 0.5) +
     geom_jitter(aes(color = DX), width = 0.2, size = 2, alpha = 0.8) +
@@ -711,8 +710,8 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
   # Add beta/p-value annotations
   if (all(!is.na(annot_dt$beta))) {
     p <- p + geom_text(data = annot_dt,
-                       aes(x = x+0.8, y = y, label = label),
-                       hjust = 1.1, vjust = 0.9, size = 3, inherit.aes = FALSE)
+                       aes(x = Inf, y = -Inf, label = label),
+                       hjust = 1.2, vjust = -0.2, size = 3, inherit.aes = FALSE)
   }
   if (!is.null(title_to_use)) {
     p <- p + ggtitle(title_to_use)
@@ -720,6 +719,7 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
   p
 }
 
+#print(plot_eQTL_boxplots(npil_plotdata, ieqtls, title=ds2name[ds], gwas_eff = TRUE))
 ```
 
 
