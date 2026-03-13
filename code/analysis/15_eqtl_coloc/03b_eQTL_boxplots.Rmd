@@ -760,7 +760,7 @@ neun_spe <- qs_read(file.path(tqtl_in, sprintf('%s.gene.spe.qs2',ds)))
 neun_fcovars <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
 neun_plotdata <- prep_eQTLPlotData(neun_spe, geno, neun_fcovars)
 
-eqtls <- nomres[["neun"]][gene_name=="MAPK3" & variant_id == "chr16:30114519:G:C"]
+eqtls <- nomres[["neun"]][gene_name=="MAPK3" & rsid == "rs7542"]
 pnom <- plot_eQTL_boxplots(neun_plotdata, eqtls, ds=ds, gwas_eff = TRUE)
 print(pnom)
 ```
@@ -773,14 +773,14 @@ fcovars <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", ds))
 plotdata <- prep_eQTLPlotData(spe, geno, fcovars)
 eqtls <- nomres[[ds]][gene_name=="KANSL1-AS1" & rsid== "rs1378358"]
 
-pl <- plot_eQTL_boxplots(plotdata, eqtls, ds=ds,gwas_eff = TRUE)
+pl <- plot_eQTL_boxplots(plotdata, eqtls, ds=ds, gwas_eff = TRUE)
 print(pl)
 #plx <- plot_eQTL_boxplots(plotdata, eqtls, restrict_donors = xdonors)
 #print(plx)
 
 ```
 
-```{r plot KANSL1-AS1 gene}
+```{r plot KANSL1-AS1 independent eQTLs across contexts}
 ## which indep results have KANSL1-AS1?
 nvec <- sapply(indres, \(x) nrow(x[gene_name=="KANSL1-AS1"]))
 ctxs <- names(nvec[nvec>0])
@@ -795,6 +795,86 @@ for (ds in ctxs) {
   p <- plot_eQTL_boxplots(plotdata, ieqtls, ds = ds, gwas_eff = TRUE)
   print(p)
 }
+```
+
+```{r MAPK3-rs7542 in vasc dataset}
+target_gene_id <- "ENSG00000102882"  # MAPK3
+target_variant <- "chr16:30114519:G:C"  # rs7542 in harmonized set
+target_ds <- "vasc"
+
+vasc_spe <- qs_read(file.path(tqtl_in, sprintf("%s.gene.spe.qs2", target_ds)))
+vasc_covar_file <- file.path(tqtl_in, sprintf("%s.gene.covars.txt", target_ds))
+vasc_plotdata <- prep_eQTLPlotData(vasc_spe, geno, vasc_covar_file)
+
+eqtls_vasc <- nomres[[target_ds]][
+  phenotype_id == target_gene_id & variant_id == target_variant
+]
+vasc_source <- "nominal_FDR05"
+
+if (nrow(eqtls_vasc) == 0L) {
+  vasc_source <- "nominal_p001"
+  f_vasc_p001 <- file.path(tqtl_out, sprintf("%s.gene.eqtl-nominal_p001.tab.gz", target_ds))
+  stopifnot("Missing fallback vasc nominal file" = file.exists(f_vasc_p001))
+  eqtls_vasc <- fread(f_vasc_p001)[
+    phenotype_id == target_gene_id & variant_id == target_variant
+  ]
+  eqtls_vasc[, gene_name := g2sym[phenotype_id]]
+  if (!"rsid" %in% names(eqtls_vasc)) {
+    eqtls_vasc <- merge(eqtls_vasc, rsid_lut, by = "variant_id", all.x = TRUE, sort = FALSE)
+  }
+  message(sprintf(
+    "Variant absent from %s.gene.eqtl-nominal_FDR05.tab.gz; using fallback %s for plotting.",
+    target_ds, vasc_source
+  ))
+} else {
+  message(sprintf("Using %s source for %s.", vasc_source, target_ds))
+}
+
+stopifnot(nrow(eqtls_vasc) == 1L)
+stopifnot(
+  eqtls_vasc$phenotype_id == target_gene_id,
+  eqtls_vasc$variant_id == target_variant
+)
+
+cat("Selected vasculature MAPK3-rs7542 stats:\n")
+print(eqtls_vasc[, .(
+  phenotype_id, gene_name, variant_id, rsid,
+  pval_nominal, fdr, slope, slope_se, af, ma_samples, ma_count
+)])
+
+p_vasc <- plot_eQTL_boxplots(vasc_plotdata, eqtls_vasc, ds = target_ds, gwas_eff = TRUE)
+print(p_vasc)
+
+context_order <- c("neuropil", "neun", "vasc")
+context_stats <- rbindlist(lapply(context_order, function(ctx) {
+  ctx_dt <- nomres[[ctx]][phenotype_id == target_gene_id & variant_id == target_variant]
+  ctx_source <- "nominal_FDR05"
+  if (ctx == target_ds && nrow(ctx_dt) == 0L) {
+    ctx_dt <- copy(eqtls_vasc)
+    ctx_source <- vasc_source
+  }
+  if (nrow(ctx_dt) == 0L) {
+    return(data.table(
+      context = ctx,
+      source = ctx_source,
+      pval_nominal = NA_real_,
+      fdr = NA_real_,
+      slope = NA_real_
+    ))
+  }
+  data.table(
+    context = ctx,
+    source = ctx_source,
+    pval_nominal = ctx_dt$pval_nominal[1],
+    fdr = ctx_dt$fdr[1],
+    slope = ctx_dt$slope[1]
+  )
+}))
+
+cat("\nCross-context MAPK3-rs7542 summary:\n")
+print(context_stats)
+
+
 ```
 
 
