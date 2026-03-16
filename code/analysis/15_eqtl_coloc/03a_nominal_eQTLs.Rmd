@@ -16,6 +16,7 @@ suppressMessages({
     library(here)
   })
 here::i_am('.git/HEAD')
+source(here("code", "analysis", "15_eqtl_coloc", "table_utils.R"))
 rdsdir=here("processed-data", "rds")
 ## refdata -> ref folder symlink to CHESS Brain ref data for now
 refdir=here("processed-data", "ref") ## some general reference files prepared for our data
@@ -100,14 +101,26 @@ add_signfix_columns <- function(dt) {
   out[]
 }
 
-signfix_suffix <- function(suffix) {
-  sub("(\\.tab\\.gz|\\.txt\\.gz)$", "_signfix\\1", suffix)
+signfix_marker <- function(path) paste0(path, ".signfix_done")
+
+needs_signfix <- function(path) {
+  marker <- signfix_marker(path)
+  !file.exists(marker) || file.info(path)$mtime > file.info(marker)$mtime
 }
 
-write_signfix_copy <- function(in_file, out_file) {
-  dt <- fread(in_file)
-  dt_fix <- add_signfix_columns(dt)
-  fwrite(dt_fix, out_file, sep = "\t", quote = FALSE)
+overwrite_signfixed_file <- function(path, req_cols = NULL) {
+  assert_file(path)
+  dt <- drop_pandas_index_cols(fread(path))
+  if (!is.null(req_cols)) assert_cols(dt, req_cols, basename(path))
+  n_before <- nrow(dt)
+  dt_fix <- add_signfix_columns(copy(dt))
+  if (nrow(dt_fix) != n_before) stop("Row count changed during signfix overwrite: ", basename(path))
+  if (!is.null(req_cols)) assert_cols(dt_fix, req_cols, basename(path))
+  tmp <- paste0(path, ".tmp")
+  fwrite(dt_fix, tmp, sep = "\t", quote = FALSE)
+  ok <- file.rename(tmp, path)
+  if (!ok) stop("Failed to replace file after signfix: ", path)
+  writeLines(as.character(Sys.time()), signfix_marker(path))
   invisible(nrow(dt_fix))
 }
 ```
@@ -140,24 +153,38 @@ read_eqtl_nominal <- function(eqtl_dir, prefix, min_pval=0.001) {
 
 ```{r gather nominal eqtls for all datasets}
 runs <- paste0(c(paste0('spd0',1:7), "neun", "vasc", "pnn", "neuropil"), ".gene")
+contexts <- names(ds2name)
 
 neqtls <- list() ## loading all nominal eQTLs with pval_nominal<=0.001, with FDR added as a column
 for (prefix in runs) {
   fnom001 <- file.path(eqtl_dir, paste0(prefix, ".eqtl-nominal_p001.tab.gz"))
-  if (file.exists(fnom001)) {
-    message(Sys.time(), " | ", prefix, " | nominal eQTL pval<=0.001 already gathered at ", fnom001)
-    neqtls[[prefix]] <- fread(fnom001)
-    next
-  }
-  ## determine output path first so we can skip completed runs
-  message(Sys.time(), " | ", prefix, " | reading eQTL parquet...")
-  eqdt <- read_eqtl_nominal(eqtl_dir, prefix)
-  fwrite(eqdt, fnom001, sep="\t", quote=FALSE)
-  ## also write FDR<0.05 subset
   fnomfdr05 <- file.path(eqtl_dir, paste0(prefix, ".eqtl-nominal_FDR05.tab.gz"))
+  if (!file.exists(fnom001)) {
+    message(Sys.time(), " | ", prefix, " | reading eQTL parquet...")
+    eqdt <- read_eqtl_nominal(eqtl_dir, prefix)
+    fwrite(eqdt, fnom001, sep="\t", quote=FALSE)
+    message(Sys.time(), " | ", prefix, " | written nominal eQTL pval<=0.001 (", nrow(eqdt), " rows).")
+  } else {
+    message(Sys.time(), " | ", prefix, " | nominal eQTL pval<=0.001 already gathered at ", fnom001)
+  }
+
+  if (needs_signfix(fnom001)) {
+    n_fixed <- overwrite_signfixed_file(
+      fnom001,
+      req_cols = c("phenotype_id", "variant_id", "start_distance", "af", "ma_samples",
+                   "ma_count", "pval_nominal", "slope", "slope_se", "fdr")
+    )
+    message(Sys.time(), " | ", prefix, " | sign-corrected canonical nominal p001 file (", n_fixed, " rows).")
+  }
+
+  eqdt <- drop_pandas_index_cols(fread(fnom001))
+  assert_cols(eqdt, c("phenotype_id", "variant_id", "start_distance", "af", "ma_samples",
+                      "ma_count", "pval_nominal", "slope", "slope_se", "fdr"), basename(fnom001))
+  if (eqdt[pval_nominal > 0.001, .N] > 0L) stop(basename(fnom001), " has rows with pval_nominal > 0.001.")
   eqdt_fdr05 <- eqdt[fdr<0.05]
   fwrite(eqdt_fdr05, fnomfdr05, sep="\t", quote=FALSE)
-  message(Sys.time(), " | ", prefix, " | written nominal eQTL pval<=0.001 (", nrow(eqdt), " rows) and FDR<0.05 (", nrow(eqdt_fdr05), " rows).")
+  if (eqdt_fdr05[fdr >= 0.05, .N] > 0L) stop(basename(fnomfdr05), " has rows with fdr >= 0.05.")
+  message(Sys.time(), " | ", prefix, " | refreshed canonical FDR<0.05 subset (", nrow(eqdt_fdr05), " rows).")
   neqtls[[prefix]] <- eqdt
 }
 names(neqtls) <- sub("\\.gene$", "", names(neqtls))
@@ -166,10 +193,9 @@ names(neqtls) <- sub("\\.gene$", "", names(neqtls))
 #eqdt[fdr<0.05][phenotype_id==ensg]
 ```
 
-```{r write signfix per-context outputs}
-contexts <- c(sprintf("spd%02d", 1:7), "neun", "vasc", "pnn", "neuropil")
+```{r canonicalize per-context outputs}
 signfix_targets <- c(
-  "gene.eqtl-nominal_FDR05.tab.gz",
+  "gene.eqtl-nominal_p001.tab.gz",
   "gene.map_cis.tab.gz",
   "gene.map_independent.txt.gz",
   "gene.DxINT.cis_qtl_top_assoc.txt.gz"
@@ -177,11 +203,12 @@ signfix_targets <- c(
 
 for (ctx in contexts) {
   for (suf in signfix_targets) {
-    in_file <- file.path(eqtl_dir, sprintf("%s.%s", ctx, suf))
-    stopifnot("Missing input eQTL file" = file.exists(in_file))
-    out_file <- file.path(eqtl_dir, sprintf("%s.%s", ctx, signfix_suffix(suf)))
-    n_written <- write_signfix_copy(in_file, out_file)
-    message(sprintf("Wrote signfix file: %s (%d rows)", basename(out_file), n_written))
+    target_file <- file.path(eqtl_dir, sprintf("%s.%s", ctx, suf))
+    assert_file(target_file)
+    if (needs_signfix(target_file)) {
+      n_written <- overwrite_signfixed_file(target_file, req_cols = c("phenotype_id", "variant_id"))
+      message(sprintf("Sign-corrected canonical file: %s (%d rows)", basename(target_file), n_written))
+    }
   }
 }
 ```
@@ -325,39 +352,6 @@ rmapk3 <- eqtl_gwas_overlap(neqtls, "MAPK3", gwas_vars, sym2ensg)
 ```
 
 ```{r export merged significant tables}
-contexts <- c(sprintf("spd%02d", 1:7), "neun", "vasc", "pnn", "neuropil")
-
-assert_files_exist <- function(files) {
-  missing <- files[!file.exists(files)]
-  if (length(missing) > 0L) {
-    stop("Missing required files:\n", paste(missing, collapse = "\n"))
-  }
-}
-
-assert_cols_exist <- function(dt, cols, label) {
-  miss <- setdiff(cols, names(dt))
-  if (length(miss) > 0L) {
-    stop(sprintf("%s is missing required columns: %s", label, paste(miss, collapse = ", ")))
-  }
-}
-
-drop_pandas_index_cols <- function(dt) {
-  if ("V1" %in% names(dt)) dt[, V1 := NULL]
-  unnamed <- grep("^Unnamed", names(dt), value = TRUE)
-  if (length(unnamed) > 0L) dt[, (unnamed) := NULL]
-  dt
-}
-
-warn_missing_rsid <- function(dt, label) {
-  nmiss <- dt[is.na(rsID), .N]
-  if (nmiss > 0L) {
-    warning(sprintf(
-      "%s has %d rows with no rsID in GWAS_SCZ_tqtl-matched.tab.gz; keeping rsID=NA.",
-      label, nmiss
-    ))
-  }
-}
-
 read_ctx_table <- function(ctx, suffix, req_cols = NULL) {
   f <- file.path(eqtl_dir, sprintf("%s.gene.%s", ctx, suffix))
   assert_files_exist(f)
@@ -375,54 +369,15 @@ gwas_lut <- unique(gwas_vars[, .(variant_id, rsID = rsid, GWAS = as.integer(p < 
 setkey(gwas_lut, variant_id)
 
 ## strong coloc lookup by context for gene and lead variant annotations
-norm_gene_id <- function(x) sub("\\.\\d+$", "", as.character(x))
 f_coloc <- here("processed-data", "eQTL", "coloc", "coloc_abf_results.tsv.gz")
 assert_files_exist(f_coloc)
 coloc_res <- fread(f_coloc)
-assert_cols_exist(coloc_res, c("ds", "fid", "lead_snp"), "coloc_abf_results.tsv.gz")
-if ("cat" %in% names(coloc_res)) {
-  strong_coloc <- coloc_res[cat == "strong_coloc"]
-} else {
-  assert_cols_exist(coloc_res, c("PP4"), "coloc_abf_results.tsv.gz")
-  warning("coloc_abf_results.tsv.gz has no cat column; using PP4 > 0.8 for strong_coloc fallback.")
-  strong_coloc <- coloc_res[PP4 > 0.8]
-}
-strong_coloc_gene <- unique(strong_coloc[, .(
-  context = as.character(ds),
-  gene_id_norm = norm_gene_id(fid)
-)])
-strong_coloc_var <- unique(strong_coloc[, .(
-  context = as.character(ds),
-  variant_id = as.character(lead_snp)
-)])
-setkey(strong_coloc_gene, context, gene_id_norm)
-setkey(strong_coloc_var, context, variant_id)
+strong_coloc_lookup <- build_strong_coloc_lookup(coloc_res, context_col = "ds", gene_col = "fid", variant_col = "lead_snp")
+setkey(strong_coloc_lookup$gene, context, gene_id_norm)
+setkey(strong_coloc_lookup$variant, context, variant_id)
 
 ## DGE lookup by context: SpD uses layer-adjusted DEGs, SpG uses context-specific DEG files
-ds2degs <- list()
-spd_degs <- fread(file.path(rdsdir, "10_dx_deg_adjust_spd", "dx-deg_PRECAST07.csv"))
-assert_cols_exist(spd_degs, c("ensembl", "fdr_scz"), "dx-deg_PRECAST07.csv")
-spd_deg_ids <- unique(spd_degs[fdr_scz <= 0.1 & !is.na(ensembl), ensembl])
-for (ds in sprintf("spd%02d", 1:7)) {
-  ds2degs[[ds]] <- spd_deg_ids
-}
-
-spg_deg_files <- list(
-  neun = here("code/analysis", "dx_deg_spg_neun", "neun-dx_DEG-GM.csv"),
-  neuropil = here("code/analysis", "dx_deg_spg_neuropil", "neuropil-dx_DEG-GM.csv"),
-  pnn = here("code/analysis", "dx_deg_spg_pnn", "pnn-dx_DEG-GM.csv"),
-  vasc = here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
-)
-assert_files_exist(unlist(spg_deg_files, use.names = FALSE))
-for (ds in names(spg_deg_files)) {
-  ddt <- fread(spg_deg_files[[ds]])
-  assert_cols_exist(ddt, c("ensembl", "fdr_scz"), basename(spg_deg_files[[ds]]))
-  ds2degs[[ds]] <- unique(ddt[fdr_scz <= 0.1 & !is.na(ensembl), ensembl])
-}
-
-if (!setequal(names(ds2degs), contexts)) {
-  stop("DGE context mismatch. Have: ", paste(sort(names(ds2degs)), collapse = ", "))
-}
+deg_sets <- load_deg_sets(contexts = contexts, project_root = here(), rdsdir = rdsdir)
 
 ## ---- cis (map_cis + map_independent) ----
 cis_req <- c("phenotype_id", "variant_id", "start_distance", "qval", "pval_perm", "pval_beta",
@@ -430,12 +385,12 @@ cis_req <- c("phenotype_id", "variant_id", "start_distance", "qval", "pval_perm"
 indep_req <- c("phenotype_id", "variant_id", "start_distance", "rank", "pval_perm", "pval_beta",
                "pval_nominal", "slope", "slope_se", "af", "ma_samples", "ma_count")
 
-map_cis_all <- rbindlist(lapply(contexts, read_ctx_table, suffix = "map_cis_signfix.tab.gz", req_cols = cis_req),
+map_cis_all <- rbindlist(lapply(contexts, read_ctx_table, suffix = "map_cis.tab.gz", req_cols = cis_req),
                          use.names = TRUE, fill = TRUE)
 map_cis_sig <- map_cis_all[qval < 0.05]
 map_cis_sig[, `:=`(source = "map_cis", map_cis_qval = qval)]
 
-map_indep_all <- rbindlist(lapply(contexts, read_ctx_table, suffix = "map_independent_signfix.txt.gz", req_cols = indep_req),
+map_indep_all <- rbindlist(lapply(contexts, read_ctx_table, suffix = "map_independent.txt.gz", req_cols = indep_req),
                            use.names = TRUE, fill = TRUE)
 parent_q <- unique(map_cis_all[, .(context, phenotype_id, map_cis_qval = qval)])
 map_indep_all <- merge(map_indep_all, parent_q, by = c("context", "phenotype_id"), all.x = TRUE)
@@ -446,13 +401,14 @@ cis_all <- rbindlist(list(map_cis_sig, map_indep_sig), use.names = TRUE, fill = 
 cis_all[, gene_name := g2sym[phenotype_id]]
 cis_all <- merge(cis_all, gwas_lut, by = "variant_id", all.x = TRUE, sort = FALSE)
 cis_all[is.na(GWAS), GWAS := 0L]
-cis_all[, DGE := as.integer(phenotype_id %chin% ds2degs[[context]]), by = context]
-cis_all[, gene_id_norm := norm_gene_id(phenotype_id)]
-cis_all[, var_coloc := 0L]
-cis_all[strong_coloc_var, on = .(context, variant_id), var_coloc := 1L]
-cis_all[, gene_coloc := 0L]
-cis_all[strong_coloc_gene, on = .(context, gene_id_norm), gene_coloc := 1L]
-cis_all[, gene_id_norm := NULL]
+cis_all <- apply_deg_flags(cis_all, context_col = "context", gene_col = "phenotype_id", deg_sets = deg_sets)
+cis_all <- apply_strong_coloc_flags(
+  cis_all,
+  context_col = "context",
+  gene_col = "phenotype_id",
+  variant_col = "variant_id",
+  strong_lookup = strong_coloc_lookup
+)
 
 ## keep one row per context-gene-variant key; prefer map_cis (lead) when both sources contain the same pair
 cis_all[, source_priority := fifelse(source == "map_cis", 2L, 1L)]
@@ -476,12 +432,8 @@ cis_all[, source := fifelse(has_map_cis == 1L, "map_cis", "map_independent")]
 if (cis_all[is.na(gene_name), .N] > 0L) stop("cis_all has missing gene_name values.")
 warn_missing_rsid(cis_all, "cis_all")
 if (!all(cis_all$context %chin% contexts)) stop("cis_all has unexpected context labels.")
-if (!all(cis_all$DGE %in% c(0L, 1L))) stop("cis_all DGE must be 0/1.")
-if (!all(cis_all$GWAS %in% c(0L, 1L)) || any(is.na(cis_all$GWAS))) stop("cis_all GWAS must be non-NA 0/1.")
-if (!all(cis_all$var_coloc %in% c(0L, 1L)) || any(is.na(cis_all$var_coloc))) stop("cis_all var_coloc must be non-NA 0/1.")
-if (!all(cis_all$gene_coloc %in% c(0L, 1L)) || any(is.na(cis_all$gene_coloc))) stop("cis_all gene_coloc must be non-NA 0/1.")
-if (!all(cis_all$has_map_cis %in% c(0L, 1L))) stop("cis_all has_map_cis must be 0/1.")
-if (!all(cis_all$has_map_independent %in% c(0L, 1L))) stop("cis_all has_map_independent must be 0/1.")
+validate_binary_cols(cis_all, c("GWAS", "DGE", "DGEp05", "var_coloc", "gene_coloc", "has_map_cis", "has_map_independent"), "cis_all")
+if (cis_all[DGE == 1L & DGEp05 != 1L, .N] > 0L) stop("cis_all has DGE==1 rows not present in DGEp05.")
 if (cis_all[, anyDuplicated(.SD), .SDcols = c("context", "phenotype_id", "variant_id")] > 0L) {
   stop("cis_all has duplicated context-phenotype_id-variant_id keys after collapse.")
 }
@@ -495,14 +447,14 @@ if (nrow(lead_missing) > 0L) stop("cis lead inclusion check failed.")
 setcolorder(cis_all, c(
   "context", "source",
   "phenotype_id", "gene_name", "variant_id",
-  "rsID", "GWAS", "DGE", "var_coloc", "gene_coloc",
+  "rsID", "GWAS", "DGE", "DGEp05", "var_coloc", "gene_coloc",
   "start_distance", "map_cis_qval", "qval", "pval_perm", "pval_beta", "pval_nominal",
   "slope", "slope_se", "af", "ma_samples", "ma_count"
 ))
 cis_all <- cis_all[, .(
   context, source,
   phenotype_id, gene_name, variant_id,
-  rsID, GWAS, DGE, var_coloc, gene_coloc,
+  rsID, GWAS, DGE, DGEp05, var_coloc, gene_coloc,
   start_distance, map_cis_qval, qval, pval_perm, pval_beta, pval_nominal,
   slope, slope_se, af, ma_samples, ma_count
 )]
@@ -512,37 +464,36 @@ setorder(cis_all, context, source, phenotype_id, pval_nominal)
 nominal_req <- c("phenotype_id", "variant_id", "start_distance", "fdr", "pval_nominal", "slope",
                  "slope_se", "af", "ma_samples", "ma_count")
 nominal_all <- rbindlist(
-  lapply(contexts, read_ctx_table, suffix = "eqtl-nominal_FDR05_signfix.tab.gz", req_cols = nominal_req),
+  lapply(contexts, read_ctx_table, suffix = "eqtl-nominal_FDR05.tab.gz", req_cols = nominal_req),
   use.names = TRUE, fill = TRUE
 )
 nominal_all <- nominal_all[fdr < 0.05]
 nominal_all[, gene_name := g2sym[phenotype_id]]
 nominal_all <- merge(nominal_all, gwas_lut, by = "variant_id", all.x = TRUE, sort = FALSE)
 nominal_all[is.na(GWAS), GWAS := 0L]
-nominal_all[, DGE := as.integer(phenotype_id %chin% ds2degs[[context]]), by = context]
-nominal_all[, gene_id_norm := norm_gene_id(phenotype_id)]
-nominal_all[, var_coloc := 0L]
-nominal_all[strong_coloc_var, on = .(context, variant_id), var_coloc := 1L]
-nominal_all[, gene_coloc := 0L]
-nominal_all[strong_coloc_gene, on = .(context, gene_id_norm), gene_coloc := 1L]
-nominal_all[, gene_id_norm := NULL]
+nominal_all <- apply_deg_flags(nominal_all, context_col = "context", gene_col = "phenotype_id", deg_sets = deg_sets)
+nominal_all <- apply_strong_coloc_flags(
+  nominal_all,
+  context_col = "context",
+  gene_col = "phenotype_id",
+  variant_col = "variant_id",
+  strong_lookup = strong_coloc_lookup
+)
 
 if (nominal_all[is.na(gene_name), .N] > 0L) stop("nominal_all has missing gene_name values.")
 warn_missing_rsid(nominal_all, "nominal_all")
 if (!all(nominal_all$context %chin% contexts)) stop("nominal_all has unexpected context labels.")
-if (!all(nominal_all$DGE %in% c(0L, 1L))) stop("nominal_all DGE must be 0/1.")
-if (!all(nominal_all$GWAS %in% c(0L, 1L)) || any(is.na(nominal_all$GWAS))) stop("nominal_all GWAS must be non-NA 0/1.")
-if (!all(nominal_all$var_coloc %in% c(0L, 1L)) || any(is.na(nominal_all$var_coloc))) stop("nominal_all var_coloc must be non-NA 0/1.")
-if (!all(nominal_all$gene_coloc %in% c(0L, 1L)) || any(is.na(nominal_all$gene_coloc))) stop("nominal_all gene_coloc must be non-NA 0/1.")
+validate_binary_cols(nominal_all, c("GWAS", "DGE", "DGEp05", "var_coloc", "gene_coloc"), "nominal_all")
+if (nominal_all[DGE == 1L & DGEp05 != 1L, .N] > 0L) stop("nominal_all has DGE==1 rows not present in DGEp05.")
 
 setcolorder(nominal_all, c(
   "context", "phenotype_id", "gene_name", "variant_id",
-  "rsID", "GWAS", "DGE", "var_coloc", "gene_coloc",
+  "rsID", "GWAS", "DGE", "DGEp05", "var_coloc", "gene_coloc",
   "start_distance", "fdr", "pval_nominal", "slope", "slope_se", "af", "ma_samples", "ma_count"
 ))
 nominal_all <- nominal_all[, .(
   context, phenotype_id, gene_name, variant_id,
-  rsID, GWAS, DGE, var_coloc, gene_coloc,
+  rsID, GWAS, DGE, DGEp05, var_coloc, gene_coloc,
   start_distance, fdr, pval_nominal, slope, slope_se, af, ma_samples, ma_count
 )]
 setorder(nominal_all, context, phenotype_id, pval_nominal)
@@ -554,11 +505,29 @@ write_excel_single <- function(main_dt, out_file, main_sheet) {
   saveWorkbook(wb, out_file, overwrite = TRUE)
 }
 
-out_cis <- file.path(eqtl_dir, "cis_independent_FDR05_merged_signfix.xlsx")
-out_nom <- file.path(eqtl_dir, "nominal_BH05_merged_signfix.xlsx")
+cis_all_xlsx <- rename_eqtl_excel_cols(cis_all)
+setcolorder(cis_all_xlsx, c(
+  "expression_context", "eQTL_source",
+  "ENSEMBL", "gene_name", "variant_id",
+  "rsid", "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "SCZD_DGE_layer_adjusted_p05",
+  "strong_coloc_variant", "strong_coloc_gene",
+  "start_distance", "map_cis_qval", "qval", "pval_perm", "pval_beta", "pval_nominal",
+  "slope", "slope_se", "af", "ma_samples", "ma_count"
+))
 
-write_excel_single(cis_all, out_cis, "cis_independent")
-write_excel_single(nominal_all, out_nom, "nominal_BH05")
+nominal_all_xlsx <- rename_eqtl_excel_cols(nominal_all)
+setcolorder(nominal_all_xlsx, c(
+  "expression_context", "ENSEMBL", "gene_name", "variant_id",
+  "rsid", "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "SCZD_DGE_layer_adjusted_p05",
+  "strong_coloc_variant", "strong_coloc_gene",
+  "start_distance", "fdr", "pval_nominal", "slope", "slope_se", "af", "ma_samples", "ma_count"
+))
+
+out_cis <- file.path(eqtl_dir, "cis_independent_FDR05_merged.xlsx")
+out_nom <- file.path(eqtl_dir, "nominal_BH05_merged.xlsx")
+
+write_excel_single(cis_all_xlsx, out_cis, "cis_independent")
+write_excel_single(nominal_all_xlsx, out_nom, "nominal_BH05")
 
 message("Wrote: ", out_cis)
 message("Wrote: ", out_nom)

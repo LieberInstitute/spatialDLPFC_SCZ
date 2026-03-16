@@ -16,6 +16,7 @@ suppressMessages({
 
 ##  set project paths and key inputs for dlpfc and habenula coloc summaries.
 here::i_am(".git/HEAD")
+source(here("code", "analysis", "15_eqtl_coloc", "table_utils.R"))
 datadir <- here("processed-data", "eQTL")
 refdir <- here("processed-data", "ref")
 hb_root <- "/home/gpertea/work/R/Habenula_Pilot"
@@ -50,35 +51,6 @@ if (!dir.exists(final_dir)) dir.create(final_dir, recursive = TRUE)
 
 ```{r helpers}
 ##  define small helper utilities for schema checks and robust aggregation.
-assert_file <- function(path) {
-  if (!file.exists(path)) stop("missing file: ", path)
-}
-
-assert_cols <- function(dt, cols, label) {
-  miss <- setdiff(cols, names(dt))
-  if (length(miss)) stop("missing columns in ", label, ": ", paste(miss, collapse = ", "))
-}
-
-first_non_missing <- function(x) {
-  x <- as.character(x)
-  x <- x[!is.na(x) & x != ""]
-  if (length(x)) x[[1]] else NA_character_
-}
-
-uniq_concat <- function(x) {
-  x <- as.character(x)
-  x <- sort(unique(x[!is.na(x) & x != ""]))
-  if (length(x)) paste(x, collapse = ";") else NA_character_
-}
-
-std_symbol_key <- function(x) {
-  y <- toupper(trimws(as.character(x)))
-  y[y == ""] <- NA_character_
-  y
-}
-
-normalize_gene_id <- function(x) sub("\\.\\d+$", "", as.character(x))
-
 ##  collapse rows into one row per overlap key and source set while preserving annotation lists.
 collapse_set_rows <- function(dt, mode, key_col, set_name) {
   d <- copy(dt)
@@ -172,23 +144,12 @@ assert_cols(hb, c("gene", "gene_symbol", "snp", "snp_rs_id", "PP.H4.abf"), "habe
 
 ```{r gated-pass-clean-export}
 ##  build pass-only cleaned coloc results and add binary gwas/dge/eqtl annotations for reporting.
-f_eqtl_cis <- file.path(datadir, "tqtl_out", "cis_independent_FDR05_merged_signfix.xlsx")
-f_eqtl_nom <- file.path(datadir, "tqtl_out", "nominal_BH05_merged_signfix.xlsx")
+f_eqtl_cis <- file.path(datadir, "tqtl_out", "cis_independent_FDR05_merged.xlsx")
+f_eqtl_nom <- file.path(datadir, "tqtl_out", "nominal_BH05_merged.xlsx")
 f_gwas_match <- file.path(refdir, "GWAS_SCZ_tqtl-matched.tab.gz")
-f_deg_spd <- file.path(here("processed-data", "rds"), "10_dx_deg_adjust_spd", "dx-deg_PRECAST07.csv")
-f_deg_spg <- list(
-  neun = here("code/analysis", "dx_deg_spg_neun", "neun-dx_DEG-GM.csv"),
-  neuropil = here("code/analysis", "dx_deg_spg_neuropil", "neuropil-dx_DEG-GM.csv"),
-  pnn = here("code/analysis", "dx_deg_spg_pnn", "pnn-dx_DEG-GM.csv"),
-  vasc = here("processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
-)
 assert_file(f_eqtl_cis)
 assert_file(f_eqtl_nom)
 assert_file(f_gwas_match)
-assert_file(f_deg_spd)
-for (fp in unlist(f_deg_spg, use.names = FALSE)) assert_file(fp)
-
-norm_gene_id <- function(x) sub("\\.\\d+$", "", as.character(x))
 
 gated_pass <- dlpfc_gated[gate_reason == "pass"]
 assert_cols(
@@ -201,19 +162,19 @@ gated_pass[, cat := as.character(cat_gated)]
 ##  gwas risk flag from harmonized gwas variants at p < 5e-8.
 gwas_match <- fread(f_gwas_match, select = c("variant_id", "p"))
 gwas_risk_set <- unique(gwas_match[p < 5e-8 & !is.na(variant_id), variant_id])
-gated_pass[, GWAS := as.integer(lead_snp %chin% gwas_risk_set)]
+gated_pass <- apply_gwas_flag(gated_pass, variant_col = "lead_snp", gwas_variants = gwas_risk_set, out_col = "GWAS")
 
-##  eqtl/eqtlnom flags by context + variant using merged signfix workbooks.
+##  eqtl/eqtlnom flags by context + variant using merged canonical workbooks.
 cis_merged <- as.data.table(read.xlsx(f_eqtl_cis, sheet = 1, detectDates = FALSE))
 nom_merged <- as.data.table(read.xlsx(f_eqtl_nom, sheet = 1, detectDates = FALSE))
-assert_cols(cis_merged, c("context", "variant_id"), "cis merged signfix")
-assert_cols(nom_merged, c("context", "variant_id"), "nominal merged signfix")
-cis_key <- unique(cis_merged[!is.na(context) & !is.na(variant_id), .(
-  ds = as.character(context),
+assert_cols(cis_merged, c("expression_context", "variant_id"), "cis merged workbook")
+assert_cols(nom_merged, c("expression_context", "variant_id"), "nominal merged workbook")
+cis_key <- unique(cis_merged[!is.na(expression_context) & !is.na(variant_id), .(
+  ds = as.character(expression_context),
   lead_snp = as.character(variant_id)
 )])
-nom_key <- unique(nom_merged[!is.na(context) & !is.na(variant_id), .(
-  ds = as.character(context),
+nom_key <- unique(nom_merged[!is.na(expression_context) & !is.na(variant_id), .(
+  ds = as.character(expression_context),
   lead_snp = as.character(variant_id)
 )])
 gated_pass[, eQTL := 0L]
@@ -222,51 +183,29 @@ gated_pass[cis_key, on = .(ds, lead_snp), eQTL := 1L]
 gated_pass[nom_key, on = .(ds, lead_snp), eQTLnom := 1L]
 
 ##  dge flag by context + gene using layer-adjusted spd and context-specific spg files.
-ds2degs <- list()
-deg_spd <- fread(f_deg_spd)
-assert_cols(deg_spd, c("ensembl", "fdr_scz"), "spd layer-adjusted deg file")
-spd_deg_ids <- unique(norm_gene_id(deg_spd[fdr_scz <= 0.1 & !is.na(ensembl), ensembl]))
-for (ctx in sprintf("spd%02d", 1:7)) ds2degs[[ctx]] <- spd_deg_ids
-for (ctx in names(f_deg_spg)) {
-  ddt <- fread(f_deg_spg[[ctx]])
-  assert_cols(ddt, c("ensembl", "fdr_scz"), paste0("spg deg file: ", basename(f_deg_spg[[ctx]])))
-  ds2degs[[ctx]] <- unique(norm_gene_id(ddt[fdr_scz <= 0.1 & !is.na(ensembl), ensembl]))
-}
-gated_pass[, fid_norm := norm_gene_id(fid)]
-gated_pass[, DGE := as.integer(fid_norm %chin% ds2degs[[ds]]), by = ds]
-gated_pass[, fid_norm := NULL]
+deg_sets <- load_deg_sets(contexts = default_eqtl_contexts, project_root = here(), rdsdir = here("processed-data", "rds"))
+gated_pass <- apply_deg_flags(gated_pass, context_col = "ds", gene_col = "fid", deg_sets = deg_sets)
 
 coloc_clean_pass <- gated_pass[, .(
   ds, fid, gene_name, lead_snp, rsid, nsnps,
   PP3, PP4, PP34, PP4_over_PP34, cat,
-  GWAS, DGE, eQTL, eQTLnom
+  GWAS, DGE, DGEp05, eQTL, eQTLnom
 )]
 setorder(coloc_clean_pass, ds, cat, -PP4, -PP34, fid)
-for (vv in c("GWAS", "DGE", "eQTL", "eQTLnom")) {
-  if (!all(coloc_clean_pass[[vv]] %in% c(0L, 1L)) || any(is.na(coloc_clean_pass[[vv]]))) {
-    stop(vv, " must be non-missing 0/1.")
-  }
-}
+validate_binary_cols(coloc_clean_pass, c("GWAS", "DGE", "DGEp05", "eQTL", "eQTLnom"), "coloc_clean_pass")
+if (coloc_clean_pass[DGE == 1L & DGEp05 != 1L, .N] > 0L) stop("coloc_clean_pass has DGE==1 rows not present in DGEp05.")
 
 f_coloc_clean_tsv <- file.path(final_dir, "coloc_abf_results_gated_pass_clean.tsv.gz")
 f_coloc_clean_xlsx <- file.path(datadir, "coloc", "coloc_results.xlsx")
 fwrite(coloc_clean_pass, f_coloc_clean_tsv, sep = "\t", quote = FALSE)
 
-coloc_clean_pass_xlsx <- copy(coloc_clean_pass)
-setnames(coloc_clean_pass_xlsx, c(
-  "ds", "fid", "cat", "GWAS", "DGE", "eQTL", "eQTLnom"
-), c(
-  "expression_context", "ENSEMBL", "hypothesis_category",
-  "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "eQTL_independent", "eQTL_nominal"
-))
+coloc_clean_pass_xlsx <- rename_coloc_excel_cols(coloc_clean_pass)
 setcolorder(coloc_clean_pass_xlsx, c(
   "expression_context", "ENSEMBL", "gene_name", "lead_snp", "rsid", "nsnps",
   "PP3", "PP4", "PP34", "PP4_over_PP34", "hypothesis_category",
-  "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "eQTL_independent", "eQTL_nominal"
+  "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "SCZD_DGE_layer_adjusted_p05",
+  "eQTL_independent", "eQTL_nominal"
 ))
-for (vv in c("risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "eQTL_independent", "eQTL_nominal")) {
-  coloc_clean_pass_xlsx[, (vv) := as.logical(get(vv))]
-}
 
 wb <- createWorkbook()
 addWorksheet(wb, "coloc_pass")
