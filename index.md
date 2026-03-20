@@ -40,7 +40,9 @@ software labeled by emojis:
 ## Data Access
 Public [globus endpoint](https://research.libd.org/globus/) to access R objects associate with apps for this project.  
 All data, including raw FASTQ files and SpaceRanger processed data outputs, can be accessed via Gene Expression Omnibus (GEO) under accessions [GSE307403](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE307403) and [GSE307404](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE307404)
-Zenodo Archive for this project can be found at [10.5281/zenodo.18663825](https://doi.org/10.5281/zenodo.18663825).
+Zenodo Archive for this project can be found at [10.5281/zenodo.18663825](https://doi.org/10.5281/zenodo.18663825).  
+
+For the GitHub repository for the Xenium portion of the project, please visit [https://github.com/LieberInstitute/spatialDLPFC_SCZ_XENIUM](https://github.com/LieberInstitute/spatialDLPFC_SCZ_XENIUM). The Zenodo Archive for this portion of the project can be found at [10.5281/zenodo.19135970](https://doi.org/10.5281/zenodo.19135970).
 
 ## Background:  
 [https://www.sciencedirect.com/science/article/pii/S092099641500002X?via%3Dihub](https://www.sciencedirect.com/science/article/pii/S092099641500002X?via%3Dihub)  
