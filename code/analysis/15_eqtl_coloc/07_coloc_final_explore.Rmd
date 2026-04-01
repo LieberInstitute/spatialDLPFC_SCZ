@@ -26,6 +26,8 @@ f_dlpfc_gated <- file.path(datadir, "coloc", "coloc_abf_results_gated.tsv.gz")
 f_hb_source <- file.path(hb_root, "processed-data", "18_coloc", "supp_table.csv")
 hb_gene_dir <- here("code", "analysis", "15_eqtl_coloc", "gene_lists")
 f_hb_gene_list <- file.path(hb_gene_dir, "habenulaPilot_coloc.tsv")
+f_ext_meta <- file.path(hb_gene_dir, "external_reference_metadata.tsv")
+f_ref85_scz <- file.path(hb_gene_dir, "reference85_scz_only_derived.csv")
 f_dlpfc_donor <- file.path(refdir, "donor_meta.tsv.gz")
 f_hb_coldata <- file.path(hb_root, "processed-data", "17_eQTL", "tensorQTL_input", "colData.csv")
 f_sens_sum <- file.path(datadir, "coloc", "prior_sensitivity", "w500k_prior_sensitivity_summary.tsv.gz")
@@ -585,22 +587,29 @@ donor_overlap_ids
 
 ```{r cross-study-overlap-inputs}
 ##  load external reference sets and build the current-study gene set for cross-study overlap.
-f_ref85 <- file.path(hb_gene_dir, "reference85_scz_bd_20genes_filtered.csv")
 f_ref86 <- file.path(hb_gene_dir, "reference86_fetal_brain_colocalized_genes.csv")
 f_ref87_int18 <- file.path(hb_gene_dir, "Ref87_INT-18_SCZ_Risk_Gene_List.csv")
 
 assert_file(f_hb_gene_list)
-assert_file(f_ref85)
+assert_file(f_ext_meta)
+assert_file(f_ref85_scz)
 assert_file(f_ref86)
 assert_file(f_ref87_int18)
 
 hb_gl <- fread(f_hb_gene_list)
-ref85 <- fread(f_ref85)
+ext_meta <- fread(f_ext_meta)
+ref85 <- fread(f_ref85_scz)
 ref86 <- fread(f_ref86)
 ref87_int18 <- fread(f_ref87_int18)
 
 assert_cols(hb_gl, c("gene_name"), "habenulaPilot_coloc.tsv")
-assert_cols(ref85, c("gene_name"), "reference85_scz_bd_20genes_filtered.csv")
+assert_cols(ext_meta, c(
+  "set_name", "paper_short", "source_ref", "evidence_type", "disorder_scope",
+  "developmental_stage", "brain_region_group", "brain_regions_detail",
+  "n_samples", "n_donors", "ancestry_summary", "demographics_note",
+  "comparison_role", "source_url"
+), "external_reference_metadata.tsv")
+assert_cols(ref85, c("gene_name", "variant", "ref85_selection_rule", "ref85_source_note"), "reference85_scz_only_derived.csv")
 assert_cols(ref86, c("gene_name"), "reference86_fetal_brain_colocalized_genes.csv")
 assert_cols(ref87_int18, c("sczgenenames"), "Ref87_INT-18_SCZ_Risk_Gene_List.csv")
 
@@ -613,7 +622,7 @@ to_gene_set <- function(x) {
 sets5 <- list(
   SCZD_PNN = to_gene_set(strong_dlpfc$gene_name),
   habenulaPilot = to_gene_set(hb_gl$gene_name),
-  Zeng2022_ref85 = to_gene_set(ref85$gene_name),
+  Zeng2022_ref85_SCZ = to_gene_set(ref85$gene_name),
   Wen2024_ref86 = to_gene_set(ref86$gene_name),
   Wang2018_ref87_INT18 = to_gene_set(ref87_int18$sczgenenames)
 )
@@ -630,6 +639,21 @@ message(sprintf(
 ))
 set_sizes_5way
 ```
+
+```{r cross-study-reference-metadata}
+##  primary framing: document the external sets before interpreting sparse cross-study overlaps.
+study_meta <- ext_meta[
+  set_name %chin% c("SCZD_PNN", "habenulaPilot", "Zeng2022_ref85_SCZ", "Wen2024_ref86", "Wang2018_ref87_INT18"),
+  .(
+    set_name, paper_short, evidence_type, disorder_scope, developmental_stage,
+    brain_region_group, brain_regions_detail, n_samples, n_donors,
+    ancestry_summary, comparison_role
+  )
+]
+study_meta
+```
+
+These comparison sets are intentionally heterogeneous. `habenulaPilot` is the closest prior-study comparator, `Zeng2022_ref85_SCZ` is an adult multi-region SCZ-focused colocalization subset derived from the BREMA schizophrenia rows, `Wen2024_ref86` is a fetal cortical xQTL/colocalization reference, and `Wang2018_ref87_INT18` is a broad PsychENCODE SCZ risk-prioritization framework rather than a coloc-only list.
 
 ```{r cross-study-overlap-helpers}
 ##  helper utilities for membership summaries and venn input counts.
@@ -733,7 +757,7 @@ validate_venn_counts_4way <- function(vc) {
 ```
 
 ```{r cross-study-overlap-5way}
-##  primary 5-way overlap: SCZD_PNN + habenulaPilot + refs 85/86/87(INT18).
+##  broad external context: SCZD_PNN + habenulaPilot + refs 85/86/87(INT18).
 set_names5 <- names(sets5)
 membership5 <- build_membership_table(sets5)
 combo_members_5way <- summarize_combos(membership5, set_names5)
@@ -755,41 +779,55 @@ fwrite(small_intersections_5way, f_5way_small, sep = "\t", quote = FALSE)
 vc5 <- venn_counts_5way(sets5)
 validate_venn_counts_5way(vc5)
 
-f_venn5 <- file.path(final_dir, "gene_list_overlap_venn_5way.png")
-png(f_venn5, width = 2200, height = 1700, res = 200)
-grid.newpage()
-v5 <- VennDiagram::draw.quintuple.venn(
-  area1 = vc5$area1, area2 = vc5$area2, area3 = vc5$area3, area4 = vc5$area4, area5 = vc5$area5,
-  n12 = vc5$n12, n13 = vc5$n13, n14 = vc5$n14, n15 = vc5$n15,
-  n23 = vc5$n23, n24 = vc5$n24, n25 = vc5$n25, n34 = vc5$n34, n35 = vc5$n35, n45 = vc5$n45,
-  n123 = vc5$n123, n124 = vc5$n124, n125 = vc5$n125, n134 = vc5$n134, n135 = vc5$n135,
-  n145 = vc5$n145, n234 = vc5$n234, n235 = vc5$n235, n245 = vc5$n245, n345 = vc5$n345,
-  n1234 = vc5$n1234, n1235 = vc5$n1235, n1245 = vc5$n1245, n1345 = vc5$n1345, n2345 = vc5$n2345,
-  n12345 = vc5$n12345,
-  category = set_names5,
-  fill = c("#4f83b6", "#86b6d4", "#f4b183", "#a9d18e", "#b4a7d6"),
-  alpha = rep(0.45, 5),
-  cex = 0.85,
-  cat.cex = 0.95,
-  cat.col = c("#1f3f5b", "#1f3f5b", "#7f4a0c", "#3f6522", "#4a3a6c"),
-  ind = FALSE
-)
-grid.draw(v5)
-grid.text(
-  label = "Gene-symbol overlap across SCZD_PNN, habenulaPilot, and refs 85/86/87(INT18)",
-  x = unit(0.5, "npc"), y = unit(0.985, "npc"),
-  gp = gpar(fontsize = 13, fontface = "bold")
-)
-dev.off()
+draw_venn5 <- function() {
+  ##  label placement: 0=up, 90=right, 180=down, 270=left (per set in set_names5 order).
+  ##  moved side labels (habenulaPilot and Wang2018_ref87_INT18) upward to avoid clipping.
+  cat_pos5 <- c(0, 0, 215, 145, 0)
+  cat_dist5 <- c(0.05, 0.12, 0.2, 0.2, 0.12)
+
+  grid.newpage()
+  v5 <- VennDiagram::draw.quintuple.venn(
+    area1 = vc5$area1, area2 = vc5$area2, area3 = vc5$area3, area4 = vc5$area4, area5 = vc5$area5,
+    n12 = vc5$n12, n13 = vc5$n13, n14 = vc5$n14, n15 = vc5$n15,
+    n23 = vc5$n23, n24 = vc5$n24, n25 = vc5$n25, n34 = vc5$n34, n35 = vc5$n35, n45 = vc5$n45,
+    n123 = vc5$n123, n124 = vc5$n124, n125 = vc5$n125, n134 = vc5$n134, n135 = vc5$n135,
+    n145 = vc5$n145, n234 = vc5$n234, n235 = vc5$n235, n245 = vc5$n245, n345 = vc5$n345,
+    n1234 = vc5$n1234, n1235 = vc5$n1235, n1245 = vc5$n1245, n1345 = vc5$n1345, n2345 = vc5$n2345,
+    n12345 = vc5$n12345,
+    category = set_names5,
+    fill = c("#4f83b6", "#86b6d4", "#f4b183", "#a9d18e", "#b4a7d6"),
+    alpha = rep(0.45, 5),
+    cex = 0.85,
+    cat.cex = 0.95,
+    cat.pos = cat_pos5,
+    cat.dist = cat_dist5,
+    cat.col = c("#1f3f5b", "#1f3f5b", "#7f4a0c", "#3f6522", "#4a3a6c"),
+    ind = FALSE
+  )
+  grid.draw(v5)
+}
+
+##  show in notebook output.
+draw_venn5()
+
+##  optional export for finalized layout tuning.
+# f_venn5_pdf <- file.path(final_dir, "gene_list_overlap_venn_5way.pdf")
+# pdf(f_venn5_pdf, width = 11, height = 8.5)
+# draw_venn5()
+# dev.off()
 
 combo_counts_5way[n_genes > 0][order(-n_genes, combo_label)][1:min(.N, 15L)]
 ```
 
+The broad 5-way overlap is useful for context, but it mixes adult DLPFC spatial colocalization, adult habenula bulk colocalization, adult multi-region brain colocalization candidates, fetal cortical colocalization, and an integrative PsychENCODE SCZ risk-prioritization resource. We therefore treat it as a broad external-context figure rather than a replication-style comparison.
+
+For interpretation, the comparison tiers are: adult-focused external context (`SCZD_PNN`, `habenulaPilot`, `Zeng2022_ref85_SCZ`, `Wang2018_ref87_INT18`), developmental external context (`Wen2024_ref86`), and integrative SCZ-risk context (`Wang2018_ref87_INT18` with `INT17` as a stricter sensitivity subset).
+
 ```{r cross-study-overlap-sczd-unique}
 ##  SCZD_PNN-unique genes and their distribution across the 11 expression contexts.
 sczd_unique <- membership5[
-  SCZD_PNN & !habenulaPilot & !Zeng2022_ref85 & !Wen2024_ref86 & !Wang2018_ref87_INT18,
-  .(gene_name, SCZD_PNN, habenulaPilot, Zeng2022_ref85, Wen2024_ref86, Wang2018_ref87_INT18)
+  SCZD_PNN & !habenulaPilot & !Zeng2022_ref85_SCZ & !Wen2024_ref86 & !Wang2018_ref87_INT18,
+  .(gene_name, SCZD_PNN, habenulaPilot, Zeng2022_ref85_SCZ, Wen2024_ref86, Wang2018_ref87_INT18)
 ]
 setorder(sczd_unique, gene_name)
 
@@ -826,8 +864,8 @@ sczd_ctx_summary
 ```
 
 ```{r cross-study-overlap-4way}
-##  secondary 4-way overlap excluding habenulaPilot.
-sets4 <- sets5[c("SCZD_PNN", "Zeng2022_ref85", "Wen2024_ref86", "Wang2018_ref87_INT18")]
+##  primary adult-focused overlap excluding the fetal reference set.
+sets4 <- sets5[c("SCZD_PNN", "habenulaPilot", "Zeng2022_ref85_SCZ", "Wang2018_ref87_INT18")]
 set_names4 <- names(sets4)
 membership4 <- build_membership_table(sets4)
 combo_members_4way <- summarize_combos(membership4, set_names4)
@@ -841,31 +879,75 @@ fwrite(combo_members_4way, f_4way_members, sep = "\t", quote = FALSE)
 vc4 <- venn_counts_4way(sets4)
 validate_venn_counts_4way(vc4)
 
-f_venn4 <- file.path(final_dir, "gene_list_overlap_venn_4way_no_hb.png")
-png(f_venn4, width = 2000, height = 1600, res = 200)
-grid.newpage()
-v4 <- VennDiagram::draw.quad.venn(
-  area1 = vc4$area1, area2 = vc4$area2, area3 = vc4$area3, area4 = vc4$area4,
-  n12 = vc4$n12, n13 = vc4$n13, n14 = vc4$n14, n23 = vc4$n23, n24 = vc4$n24, n34 = vc4$n34,
-  n123 = vc4$n123, n124 = vc4$n124, n134 = vc4$n134, n234 = vc4$n234, n1234 = vc4$n1234,
-  category = set_names4,
-  fill = c("#4f83b6", "#f4b183", "#a9d18e", "#b4a7d6"),
-  alpha = rep(0.45, 4),
-  cex = 1.0,
-  cat.cex = 1.0,
-  cat.col = c("#1f3f5b", "#7f4a0c", "#3f6522", "#4a3a6c"),
-  ind = FALSE
-)
-grid.draw(v4)
-grid.text(
-  label = "Gene-symbol overlap across SCZD_PNN and refs 85/86/87(INT18) (habenula removed)",
-  x = unit(0.5, "npc"), y = unit(0.985, "npc"),
-  gp = gpar(fontsize = 13, fontface = "bold")
-)
-dev.off()
+draw_venn4 <- function() {
+  grid.newpage()
+  v4 <- VennDiagram::draw.quad.venn(
+    area1 = vc4$area1, area2 = vc4$area2, area3 = vc4$area3, area4 = vc4$area4,
+    n12 = vc4$n12, n13 = vc4$n13, n14 = vc4$n14, n23 = vc4$n23, n24 = vc4$n24, n34 = vc4$n34,
+    n123 = vc4$n123, n124 = vc4$n124, n134 = vc4$n134, n234 = vc4$n234, n1234 = vc4$n1234,
+    category = set_names4,
+    fill = c("#4f83b6", "#f4b183", "#a9d18e", "#b4a7d6"),
+    alpha = rep(0.45, 4),
+    cex = 1.0,
+    cat.cex = 1.0,
+    cat.col = c("#1f3f5b", "#7f4a0c", "#3f6522", "#4a3a6c"),
+    ind = FALSE
+  )
+  grid.draw(v4)
+}
+
+##  show in notebook output.
+draw_venn4()
+
+##  optional export for finalized layout tuning.
+# f_venn4_pdf <- file.path(final_dir, "gene_list_overlap_venn_4way_adult_context.pdf")
+# pdf(f_venn4_pdf, width = 10, height = 8)
+# draw_venn4()
+# dev.off()
 
 combo_counts_4way[n_genes > 0][order(-n_genes, combo_label)][1:min(.N, 15L)]
 ```
+
+```{r ref87-sensitivity}
+##  sensitivity: compare the broad Ref87 list (INT18) with the high-confidence subset (INT17).
+f_ref87_int17 <- file.path(hb_gene_dir, "Ref87_INT-17_SCZ_High_Confidence_Gene_List.csv")
+assert_file(f_ref87_int17)
+
+ref87_int17 <- fread(f_ref87_int17)
+assert_cols(ref87_int17, c("sczgenenames"), "Ref87_INT-17_SCZ_High_Confidence_Gene_List.csv")
+
+ref87_sets <- list(
+  Wang2018_ref87_INT18 = to_gene_set(ref87_int18$sczgenenames),
+  Wang2018_ref87_INT17 = to_gene_set(ref87_int17$sczgenenames)
+)
+
+ref87_sens_summary <- data.table(
+  ref87_set = names(ref87_sets),
+  n_genes = as.integer(lengths(ref87_sets)),
+  n_overlap_sczd_pnn = vapply(ref87_sets, function(z) length(intersect(z, sets5$SCZD_PNN)), integer(1))
+)
+
+ref87_overlap_detail <- data.table(
+  overlap_with_int18 = paste(intersect(ref87_sets$Wang2018_ref87_INT18, sets5$SCZD_PNN), collapse = "; "),
+  overlap_with_int17 = paste(intersect(ref87_sets$Wang2018_ref87_INT17, sets5$SCZD_PNN), collapse = "; "),
+  genes_lost_when_using_int17 = paste(setdiff(
+    intersect(ref87_sets$Wang2018_ref87_INT18, sets5$SCZD_PNN),
+    intersect(ref87_sets$Wang2018_ref87_INT17, sets5$SCZD_PNN)
+  ), collapse = "; ")
+)
+
+stopifnot(all(ref87_sets$Wang2018_ref87_INT17 %chin% ref87_sets$Wang2018_ref87_INT18))
+
+f_ref87_sens_sum <- file.path(final_dir, "gene_list_overlap_ref87_sensitivity_summary.tsv.gz")
+f_ref87_sens_det <- file.path(final_dir, "gene_list_overlap_ref87_sensitivity_detail.tsv.gz")
+fwrite(ref87_sens_summary, f_ref87_sens_sum, sep = "\t", quote = FALSE)
+fwrite(ref87_overlap_detail, f_ref87_sens_det, sep = "\t", quote = FALSE)
+
+ref87_sens_summary
+ref87_overlap_detail
+```
+
+`Wang2018_ref87_INT17` is a stricter subset of `Wang2018_ref87_INT18`, but it reduces the already-small `SCZD_PNN` overlap. We therefore keep `INT18` as the broad Ref87 comparator and use `INT17` only as a sensitivity check.
 
 ```{r supplemental-prior-sensitivity}
 ##  load supplemental prior-sensitivity outputs if available and summarize strong-locus robustness.
@@ -938,3 +1020,223 @@ if (file.exists(f_sens_fail) && file.exists(f_sens_fail_table)) {
   message("prior-sensitivity fail summary files not found; skipping gate-failure panel.")
 }
 ```
+
+```{r mini-coloc-kansl1-as1-spd04}
+##  compact regional-association panel for the SpD04-WM KANSL1-AS1 coloc locus.
+f_mini_gwas <- file.path(refdir, "GWAS_SCZ_tqtl-matched.tab.gz")
+f_mini_eqtl <- file.path(datadir, "tqtl_out", "spd04.gene.cis_qtl_pairs.chr17.parquet")
+f_mini_coloc <- file.path(datadir, "coloc", "coloc_spd04_gene.qs2")
+f_mini_gated <- file.path(datadir, "coloc", "coloc_abf_results_gated.tsv.gz")
+f_mini_exprbed <- file.path(datadir, "tqtl_in", "spd04.gene.expr.bed.gz")
+assert_file(f_mini_gwas)
+assert_file(f_mini_eqtl)
+assert_file(f_mini_coloc)
+assert_file(f_mini_gated)
+assert_file(f_mini_exprbed)
+
+mini_context <- "spd04"
+mini_context_label <- "SpD04-WM"
+mini_gene_id <- "ENSG00000214401"
+mini_gene_symbol <- "KANSL1-AS1"
+mini_lead_variant <- "chr17:46188473:C:T"
+mini_lead_rsid <- "rs2532240"
+mini_window_left_bp <- 300000L
+mini_window_right_bp <- 125000L
+mini_gw_line <- -log10(5e-8)
+
+mini_gated <- fread(f_mini_gated)
+mini_gated_row <- mini_gated[
+  ds == mini_context & fid == mini_gene_id & lead_snp == mini_lead_variant
+]
+if (nrow(mini_gated_row) != 1L) {
+  stop("Expected exactly one gated coloc row for the SpD04-WM KANSL1-AS1 locus.")
+}
+
+mini_coloc_obj <- qs2::qs_read(f_mini_coloc)[[mini_gene_id]]
+if (is.null(mini_coloc_obj) || is.null(mini_coloc_obj$results) || is.null(mini_coloc_obj$summary)) {
+  stop("Missing coloc results for the SpD04-WM KANSL1-AS1 locus.")
+}
+mini_coloc_res <- as.data.table(mini_coloc_obj$results)
+assert_cols(mini_coloc_res, c("snp", "SNP.PP.H4"), "mini coloc SNP-level results")
+mini_coloc_res[, c("chr", "pos", "ref", "alt") := tstrsplit(snp, ":", fixed = TRUE)]
+mini_coloc_res[, pos := as.integer(pos)]
+
+mini_gwas_dt <- fread(f_mini_gwas, select = c("variant_id", "rsid", "p", "beta", "beta_se"))
+mini_gwas_dt[, c("chr", "pos", "ref", "alt") := tstrsplit(variant_id, ":", fixed = TRUE)]
+mini_gwas_dt[, pos := as.integer(pos)]
+
+mini_eqtl_dt <- as.data.table(arrow::read_parquet(
+  f_mini_eqtl,
+  col_select = c("phenotype_id", "variant_id", "start_distance", "pval_nominal", "slope", "slope_se")
+))
+mini_eqtl_dt <- mini_eqtl_dt[phenotype_id == mini_gene_id]
+mini_eqtl_dt[, c("chr", "pos", "ref", "alt") := tstrsplit(variant_id, ":", fixed = TRUE)]
+mini_eqtl_dt[, pos := as.integer(pos)]
+
+mini_exprbed <- fread(f_mini_exprbed, select = 1:4)
+setnames(mini_exprbed, c("#Chr", "start", "end", "ID"), c("chr", "start", "end", "gene_id"))
+mini_gene_row <- mini_exprbed[gene_id == mini_gene_id]
+if (nrow(mini_gene_row) != 1L) {
+  stop("Expected exactly one phenotype BED row for the SpD04-WM KANSL1-AS1 locus.")
+}
+mini_tss_pos <- mini_gene_row$start[1]
+
+mini_lead_pos <- mini_gwas_dt[variant_id == mini_lead_variant, pos][1]
+if (is.na(mini_lead_pos)) stop("Lead variant not found in harmonized GWAS table.")
+
+mini_gwas_dt <- mini_gwas_dt[
+  chr == "chr17" &
+    pos >= mini_lead_pos - mini_window_left_bp &
+    pos <= mini_lead_pos + mini_window_right_bp
+]
+mini_eqtl_dt <- mini_eqtl_dt[
+  chr == "chr17" &
+    pos >= mini_lead_pos - mini_window_left_bp &
+    pos <= mini_lead_pos + mini_window_right_bp
+]
+
+mini_eqtl_dt <- merge(
+  mini_eqtl_dt,
+  mini_gwas_dt[, .(variant_id, rsid)],
+  by = "variant_id",
+  all.x = TRUE,
+  suffixes = c("", "_gwas")
+)
+mini_eqtl_dt <- merge(
+  mini_eqtl_dt,
+  mini_coloc_res[, .(variant_id = snp, SNP.PP.H4)],
+  by = "variant_id",
+  all.x = TRUE
+)
+
+mini_eqtl_dt[, rsid := fifelse(!is.na(rsid) & rsid != "", rsid, variant_id)]
+mini_eqtl_dt[, track := "eQTL"]
+mini_eqtl_dt[, neglog10p := -log10(pval_nominal)]
+mini_eqtl_dt[, is_lead := variant_id == mini_lead_variant]
+mini_eqtl_dt[, pos_mb := pos / 1e6]
+
+mini_gwas_dt[, track := "GWAS"]
+mini_gwas_dt[, neglog10p := -log10(p)]
+mini_gwas_dt[, is_lead := variant_id == mini_lead_variant]
+mini_gwas_dt[, pos_mb := pos / 1e6]
+
+mini_coloc_meta <- data.table(
+  context = mini_context,
+  context_label = mini_context_label,
+  gene_id = mini_gene_id,
+  gene_symbol = mini_gene_symbol,
+  lead_variant = mini_lead_variant,
+  lead_rsid = mini_lead_rsid,
+  lead_pos = mini_lead_pos,
+  lead_pos_mb = mini_lead_pos / 1e6,
+  tss_pos = mini_tss_pos,
+  tss_pos_mb = mini_tss_pos / 1e6,
+  rsid_validated = mini_gwas_dt[variant_id == mini_lead_variant, rsid][1] == mini_lead_rsid,
+  cat_gated = mini_gated_row$cat_gated[1],
+  gate_reason = mini_gated_row$gate_reason[1],
+  PP4 = mini_gated_row$PP4[1],
+  PP34 = mini_gated_row$PP34[1],
+  PP4_over_PP34 = mini_gated_row$PP4_over_PP34[1],
+  lead_to_tss_bp = mini_lead_pos - mini_tss_pos,
+  lead_snp_pp_h4 = mini_eqtl_dt[is_lead == TRUE, SNP.PP.H4][1],
+  top3_snp_pp_h4_sum = mini_coloc_res[order(-SNP.PP.H4)][1:min(.N, 3L), sum(SNP.PP.H4)]
+)
+
+if (!isTRUE(mini_coloc_meta$rsid_validated[1])) {
+  stop("Lead rsID mismatch between the harmonized GWAS table and expected mini coloc locus.")
+}
+
+mini_plot_dt <- rbindlist(list(
+  mini_eqtl_dt[, .(track, pos_mb, neglog10p, is_lead, label = fifelse(is_lead, mini_lead_rsid, NA_character_))],
+  mini_gwas_dt[, .(track, pos_mb, neglog10p, is_lead, label = fifelse(is_lead, mini_lead_rsid, NA_character_))]
+), use.names = TRUE)
+mini_plot_dt[, track := factor(track, levels = c("eQTL", "GWAS"))]
+
+mini_label_dt <- mini_plot_dt[is_lead == TRUE]
+mini_label_dt[, y_label := neglog10p + 0.06 * max(mini_plot_dt[track == .BY$track, neglog10p], na.rm = TRUE), by = track]
+mini_tss_dt <- data.table(
+  track = factor("eQTL", levels = levels(mini_plot_dt$track)),
+  xintercept = mini_tss_pos / 1e6
+)
+mini_hline_dt <- data.table(track = factor("GWAS", levels = levels(mini_plot_dt$track)), yint = mini_gw_line)
+mini_x_limits <- c(
+  mini_lead_pos - mini_window_left_bp,
+  mini_lead_pos + mini_window_right_bp
+) / 1e6
+
+p_kansl1_as1_spd04_wm_mini <- ggplot(mini_plot_dt, aes(x = pos_mb, y = neglog10p)) +
+  geom_vline(
+    data = mini_tss_dt,
+    aes(xintercept = xintercept),
+    inherit.aes = FALSE,
+    linetype = "dotted",
+    linewidth = 0.35,
+    color = "#666666"
+  ) +
+  geom_hline(
+    data = mini_hline_dt,
+    aes(yintercept = yint),
+    inherit.aes = FALSE,
+    linetype = "dashed",
+    linewidth = 0.3,
+    color = "#6b4c6f"
+  ) +
+  geom_point(
+    data = mini_plot_dt[is_lead == FALSE],
+    aes(color = track),
+    size = 1.5,
+    alpha = 0.9
+  ) +
+  geom_point(
+    data = mini_plot_dt[is_lead == TRUE],
+    color = "#d7301f",
+    size = 2.2
+  ) +
+  geom_text(
+    data = mini_label_dt,
+    aes(y = y_label, label = label),
+    color = "#d7301f",
+    size = 2.8,
+    fontface = "bold",
+    vjust = 0
+  ) +
+  facet_grid(track ~ ., scales = "free_y", switch = "y") +
+  coord_cartesian(xlim = mini_x_limits, clip = "off") +
+  scale_color_manual(values = c(eQTL = "#eb8c23", GWAS = "#3b84c6")) +
+  scale_x_continuous(expand = expansion(mult = c(0.01, 0.02))) +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0.16))) +
+  labs(
+    x = "Chromosomal position (Mb)",
+    y = expression(-log[10](P)),
+    title = "Colocalization signal for KANSL1-AS1",
+    subtitle = sprintf(
+      "%s; lead SNP %s; coloc PP4 = %.2f",
+      mini_context_label,
+      mini_lead_rsid,
+      mini_coloc_meta$PP4[1]
+    )
+  ) +
+  theme_bw(base_size = 8) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", size = 10),
+    plot.subtitle = element_text(size = 8),
+    axis.title = element_text(size = 8),
+    axis.text = element_text(size = 7),
+    strip.background = element_blank(),
+    strip.text.y.left = element_text(angle = 0, face = "bold", size = 8),
+    strip.placement = "outside",
+    panel.spacing.y = unit(0.15, "lines"),
+    plot.margin = margin(t = 5.5, r = 18, b = 5.5, l = 5.5)
+  )
+
+f_mini_pdf <- file.path(final_dir, "kansl1_as1_spd04_wm_mini_coloc_panel.pdf")
+f_mini_png <- file.path(final_dir, "kansl1_as1_spd04_wm_mini_coloc_panel.png")
+ggsave(f_mini_pdf, p_kansl1_as1_spd04_wm_mini, width = 3.2, height = 2.6, units = "in", dpi = 300)
+ggsave(f_mini_png, p_kansl1_as1_spd04_wm_mini, width = 3.2, height = 2.6, units = "in", dpi = 300)
+
+mini_coloc_meta
+p_kansl1_as1_spd04_wm_mini
+```
+
+The stacked `GWAS` and `eQTL` tracks are a compact regional-association view of concordant signal at the `KANSL1-AS1` locus in `SpD04-WM`; the colocalization inference itself is still the posterior support (`PP4 = 0.88`), and `rs2532240` should be interpreted as the top shared-signal candidate rather than a uniquely proven causal SNP.
