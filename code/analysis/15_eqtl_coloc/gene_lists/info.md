@@ -32,24 +32,9 @@ The overlap is performed on **unique gene symbols**.
   colocalization genes**, not generic eGenes
 
 Current symbols used in the overlap:
-
-- `AC004148.1`
-- `ACYP2`
-- `APC2`
-- `ARL17B`
-- `CDHR1`
-- `CTDSPL2`
-- `DNPH1`
-- `EFEMP1`
-- `ELOVL1`
-- `GOLGA6L9`
-- `KANSL1-AS1`
-- `LY6H`
-- `RNASEH2C`
-- `RPS17`
-- `SETDB2`
-- `SLC25A27`
-- `SMG6`
+`AC004148.1`, `ACYP2`, `APC2`, `ARL17B`, `CDHR1`, `CTDSPL2`, `DNPH1`,
+`EFEMP1`, `ELOVL1`, `GOLGA6L9`, `KANSL1-AS1`, `LY6H`, `RNASEH2C`, `RPS17`,
+`SETDB2`, `SLC25A27`, `SMG6`
 
 ## 2. Habenula comparison set: `habenulaPilot`
 
@@ -172,7 +157,7 @@ Gene list used for overlap:
   file from the PsychENCODE resource
 - this is best described as a **broad integrative SCZ risk-gene reference set**
 - the source file also contains Ensembl IDs, but the overlap summarized here is
-  based on the gene-symbol representation of this list
+  based on gene symbols
 
 ## Evidence-class summary
 
