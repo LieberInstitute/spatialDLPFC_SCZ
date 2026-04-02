@@ -8,7 +8,7 @@ The overlap is performed on **unique gene symbols**.
 ## Summary of the current inputs
 
 | Set name | File used | Unique symbols used now | What the list represents |
-| --- | --- | --- | ---: | --- |
+| --- | --- | ---: | --- |
 | `SCZD_PNN` | current-study strong coloc gene set | 17 | current-study strong coloc genes (`PP4 > 0.8`) |
 | `habenulaPilot` | `habenulaPilot_coloc.tsv` | 16 | prior habenula coloc gene list, collapsed to unique gene symbols |
 | `Zeng2022_ref85` | `reference85_scz_bd_20genes_filtered.csv` | 20 | adult brain eQTL/GWAS candidate causal genes for SZ and/or BD |
