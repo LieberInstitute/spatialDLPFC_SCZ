@@ -338,64 +338,7 @@ prep_eQTLPlotData <- function(spe, geno, covar_file) {
     geno = geno  # reference to genotype object
   )
 }
-
 ```
-
-```{r SKIP test/validate prep_eQTLPlotData}
-# Verify output structure
-##
-plotdata <- prep_eQTLPlotData(spe, geno, covar_file)
-cat("\n=== prep_eQTLPlotData output ===\n")
-cat("resid_expr:", class(plotdata$resid_expr), "dim:", paste(dim(plotdata$resid_expr), collapse=" x "), "\n")
-cat("raw_expr:", class(plotdata$raw_expr), "dim:", paste(dim(plotdata$raw_expr), collapse=" x "), "\n")
-cat("gene_info:", class(plotdata$gene_info), "nrow:", nrow(plotdata$gene_info), "\n")
-cat("sample_info:", class(plotdata$sample_info), "nrow:", nrow(plotdata$sample_info), "\n")
-cat("DX distribution:", table(plotdata$sample_info$DX), "\n")
-
-# Test genotype retrieval for an eQTL pair
-cat("\n=== Genotype retrieval test ===\n")
-test_var <- indr$variant_id[1]
-test_gene <- indr$phenotype_id[1]
-cat("Test variant:", test_var, "\nTest gene:", test_gene, "\n")
-
-test_ref <- plotdata$geno$pvar$REF[match(test_var, plotdata$geno$pvar$ID)]
-test_alt <- plotdata$geno$pvar$ALT[match(test_var, plotdata$geno$pvar$ID)]
-test_dosage <- plotdata$geno$dosage[plotdata$sample_idx, test_var]
-test_geno_int <- round(test_dosage)
-test_geno_labels <- rep(NA_character_, length(test_geno_int))
-test_ok <- !is.na(test_geno_int) & test_geno_int %in% 0:2
-if (is.na(test_ref) || is.na(test_alt) || !nzchar(test_ref) || !nzchar(test_alt)) {
-  test_geno_labels[test_ok] <- as.character(test_geno_int[test_ok])
-} else {
-  test_labels_map <- c(paste0(test_ref, test_ref), paste0(test_ref, test_alt), paste0(test_alt, test_alt))
-  test_geno_labels[test_ok] <- test_labels_map[test_geno_int[test_ok] + 1L]
-}
-expr_resid <- plotdata$resid_expr[test_gene, ]
-
-cat("\nExpression by genotype (residualized):\n")
-for (g in sort(unique(na.omit(test_geno_labels)))) {
-  vals <- expr_resid[test_geno_labels == g]
-  cat(sprintf("  %s (n=%d): mean=%.3f, sd=%.3f\n", g, length(vals), mean(vals), sd(vals)))
-}
-cat("\nExpected beta from eQTL:", round(indr$slope[1], 3), "\n")
-```
-
-
-variant_id (genomic) REF/ALT vs GWAS A1:
-Across all 5,170,966 GWAS-matched variants:
- - A1 == variant_id ALT: 3,872,542 (74.90%)
- - A1 == variant_id REF: 1,298,424 (25.10%)
-
-Among GWAS risk variants (p < 5e-8, n=18,853):
- - A1 == variant_id ALT: 14,282 (75.75%)
- - A1 == variant_id REF:  4,571 (24.25%)
-
-
-A1 == pvar ALT (100%) => because GWAS data was harmonized with pvar REF/ALT orientation
-flipping the beta sign accordingly.
-(see 03_eqtl_explore.Rmd for details on GWAS-tensorQTL matching/harmonization)
-
-A1 is the ALT allele in 75% of cases
 
 ```{r plot_eQTL_boxplots}
 #' Create faceted boxplots for eQTL gene-variant pairs
@@ -698,7 +641,7 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
     geom_boxplot(outlier.shape = NA, alpha = 0.5) +
     geom_jitter(aes(color = DX), width = 0.2, size = 2, alpha = 0.8) +
     facet_wrap(~ facet, scales = "free") +
-    scale_color_manual(values = c("NTC" = "#1b9e77", "SCZ" = "#d95f02")) +
+    scale_color_manual(values = c("NTC" = "#377eb8", "SCZ" = "#e41a1c")) +
     scale_x_discrete(drop = TRUE) +
     scale_y_continuous(expand = expansion(mult = c(0.09, 0.05))) +
     labs(

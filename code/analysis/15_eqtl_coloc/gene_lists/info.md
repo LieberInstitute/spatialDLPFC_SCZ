@@ -1,165 +1,248 @@
-# coloc-gene-overlaps
+# Cross-study Gene-List Overlap Inputs
 
-This note documents the external schizophrenia-related comparison sets used in
-`07_coloc_final_explore.Rmd` for the current **SCZD_PNN** DLPFC spatial
-transcriptomics colocalization analysis.
+This note documents the datasets currently used by
+`07_coloc_final_explore.Rmd` for the cross-study gene-symbol overlap analysis.
+It is intended as a factual record of the comparison inputs and how they are
+used in the current code.
 
-## Main framing
+## Current implementation in code
 
-These comparison sets are not equivalent in tissue, developmental stage, donor
-composition, or evidence type.
+The current overlap code uses:
 
-Use them as:
+- a primary 5-way comparison across `SCZD_PNN`, `habenulaPilot`,
+  `Zeng2022_ref85`, `Wen2024_ref86`, and `Wang2018_ref87_INT18`
+- a secondary 4-way comparison that removes `habenulaPilot`
 
-- external support
-- cross-study concordance
-- context for novelty
+Matching is done on **gene symbols only**.
 
-Do not describe refs 85-87 as direct replication datasets.
+In code, all sets are normalized with `std_symbol_key()` and converted to a
+deduplicated symbol set with `to_gene_set()`. This means:
 
-## Primary comparison logic
+- symbols are uppercased and trimmed
+- blank / missing entries are removed
+- repeated rows are collapsed to unique gene symbols
+- variant IDs and Ensembl IDs are **not** used for the overlap itself
 
-The notebook now uses two layers of comparison:
+## Summary of the current inputs
 
-1. an **adult-focused primary comparison**
-   - `SCZD_PNN`
-   - `habenulaPilot`
-   - `Zeng2022_ref85_SCZ`
-   - `Wang2018_ref87_INT18`
+| Set name | File used in code | Column used for overlap | Unique symbols used now | What the list represents |
+| --- | --- | --- | ---: | --- |
+| `SCZD_PNN` | derived in-memory from current notebook objects | `strong_dlpfc$gene_name` | 17 | current-study strong coloc genes (`PP4 > 0.8`) |
+| `habenulaPilot` | `habenulaPilot_coloc.tsv` | `gene_name` | 16 | prior habenula coloc gene list, collapsed to unique gene symbols |
+| `Zeng2022_ref85` | `reference85_scz_bd_20genes_filtered.csv` | `gene_name` | 20 | adult brain eQTL/GWAS candidate causal genes for SZ and/or BD |
+| `Wen2024_ref86` | `reference86_fetal_brain_colocalized_genes.csv` | `gene_name` | 5 | developing-brain colocalized gene list |
+| `Wang2018_ref87_INT18` | `Ref87_INT-18_SCZ_Risk_Gene_List.csv` | `sczgenenames` | 908 | broad PsychENCODE SCZ risk-gene prioritization list |
 
-2. a **broad external-context comparison**
-   - `SCZD_PNN`
-   - `habenulaPilot`
-   - `Zeng2022_ref85_SCZ`
-   - `Wen2024_ref86`
-   - `Wang2018_ref87_INT18`
+## 1. Current study: `SCZD_PNN`
 
-`Wen2024_ref86` stays in the broader context because it is a fetal cortical
-reference rather than an adult-brain matched comparator.
+- Study type: adult human dlPFC spatial transcriptomics with pseudobulked
+  donor-level eQTL and colocalization analysis
+- Brain region: dorsolateral prefrontal cortex
+- Spatial contexts represented in the coloc analysis: `spd01` to `spd07`,
+  `neun`, `neuropil`, `pnn`, `vasc`
+- Donors currently used in this repository: 63
+- Diagnosis composition: 32 `SCZ`, 31 `NTC`
+- Sex: 34 male, 29 female
+- Age (years): median 48.58, mean 47.03, range 23.16 to 61.39
+- Gene set used for overlap: the deduplicated symbol set from current
+  strong-coloc rows in `strong_dlpfc`, defined by `PP4 > 0.8`
+- Evidence type of the overlap genes: **current-study strong colocalization
+  genes**, not generic eGenes
 
-## Ref85 update
+Current symbols used in the overlap:
 
-### What changed
+- `AC004148.1`
+- `ACYP2`
+- `APC2`
+- `ARL17B`
+- `CDHR1`
+- `CTDSPL2`
+- `DNPH1`
+- `EFEMP1`
+- `ELOVL1`
+- `GOLGA6L9`
+- `KANSL1-AS1`
+- `LY6H`
+- `RNASEH2C`
+- `RPS17`
+- `SETDB2`
+- `SLC25A27`
+- `SMG6`
 
-The old file `reference85_scz_bd_20genes_filtered.csv` is no longer the primary
-Ref85 input for overlap analysis.
+## 2. Habenula comparison set: `habenulaPilot`
 
-The notebook now uses:
+- File used in code: `habenulaPilot_coloc.tsv`
+- Current file structure: 260 gene-variant rows, collapsed in code to 16 unique
+  gene symbols for overlap
+- Source data in the local habenula project: `/processed-data/18_coloc/supp_table.csv`
+- Brain region: habenula
+- Donors in the local habenula colData used for project context: 68
+- Diagnosis composition: 35 `Schizo`, 33 `Control`
+- Sex: all male
+- Race: all `CAUC`
+- Age at death (years): median 43.85, mean 44.14, range 20.22 to 68.00
+- Relationship to current study: this is the only comparison set here with
+  known donor overlap based on `BrNum` IDs; the current notebook identifies 10
+  overlapping donors
+- Gene set used for overlap: unique normalized symbols from the `gene_name`
+  column of `habenulaPilot_coloc.tsv`
+- Evidence type of the overlap genes: **habenula coloc genes**, not generic
+  eGenes
 
-- `reference85_scz_only_derived.csv`
+Current symbols used in the overlap:
 
-### Derivation rule
-
-This derived file was built from the public BREMA results table associated with
-Zeng et al. 2022 using the **SCZ-present** rule:
-
-- trait must equal `Schizophrenia`
-- `Shared causal prob > 0.01`
-- genes are retained even if they also appear for `Bipolar disorder` or
-  `Schizophrenia/Bipolar disorder`
-
-This means the resulting Ref85 set is best described as:
-
-- **adult multi-region brain SCZ-focused colocalization candidates from Zeng et al.**
-
-and not as:
-
-- legacy mixed psychiatric panel for the primary notebook comparison
-- SCZ-exclusive subset
-
-### Derived Ref85 genes
-
-`reference85_scz_only_derived.csv` contains 15 genes:
-
-- `ZNF823`
-- `THOC7`
-- `FURIN`
-- `FAM134A`
-- `ZFAND2B`
-- `CACNA1C`
-- `CNPPD1`
-- `ABCB6`
-- `INO80E`
+- `ANKRD45`
+- `ATXN7`
+- `C5ORF63`
+- `CCDC122`
+- `CD40`
+- `DNAH10OS`
+- `GABBR2`
+- `IFT52`
+- `LRRC37A2`
+- `PABPC1L`
 - `PCCB`
-- `CNTN4`
-- `RERE`
-- `CLCN3`
-- `B3GAT1`
-- `GATAD2A`
+- `RGS16`
+- `RP11-166B2.1`
+- `SLC25A27`
+- `TDRD6`
+- `UPF1`
 
-### Provenance
+## 3. Ref 85: `Zeng2022_ref85`
 
-Ref85 derivation source:
+- Reference: Zeng et al., 2022
+- DOI: `10.1038/s41588-021-00987-9`
+- Title: *Multi-ancestry eQTL meta-analysis of human brain identifies candidate
+  causal variants for brain-related traits*
+- File used in code: `reference85_scz_bd_20genes_filtered.csv`
+- Column used for overlap: `gene_name`
+- Current overlap set size: 20 unique normalized symbols
 
-- paper: https://pmc.ncbi.nlm.nih.gov/articles/PMC8852232/
-- PDF: https://gwern.net/doc/genetics/heritable/2022-zeng.pdf
-- BREMA results table: https://hoffmg01.dmz.hpc.mssm.edu/brema/v2/brain_related_traits.html
+Study design and source material:
 
-## External study summaries
-
-### Current study: `SCZD_PNN`
-
-- adult postmortem human DLPFC spatial transcriptomics
-- donor-level pseudobulk across 63 donors
-- current manuscript colocalization set
-
-### `habenulaPilot`
-
-- adult postmortem human habenula bulk RNA-seq colocalization set
-- 68 samples in the local comparison table
-- closest prior-study comparator in this notebook
-
-### Ref85: `Zeng2022_ref85_SCZ`
-
-- Zeng et al. 2022
-- adult multi-region brain eQTL/GWAS colocalization candidates
-- source cohorts span PsychENCODE, ROSMAP, and GTEx brain data
+- adult postmortem multi-region brain eQTL meta-analysis
 - 3,983 RNA-seq samples from 2,119 donors
-- multi-ancestry, including 474 non-European individuals
-- use as adult-brain external support, not DLPFC-matched replication
+- includes 474 non-European individuals
+- combines dorsolateral prefrontal cortex samples from PsychENCODE and ROSMAP
+  with 13 GTEx brain regions
+- GTEx brain tissues relevant to this paper are the standard v8 brain panel:
+  amygdala, anterior cingulate cortex (BA24), caudate, cerebellar hemisphere,
+  cerebellum, cortex, frontal cortex (BA9), hippocampus, hypothalamus, nucleus
+  accumbens, putamen, spinal cord (cervical C1), and substantia nigra
 
-### Ref86: `Wen2024_ref86`
+What the current comparison file represents:
 
-- developing human brain xQTL/colocalization resource
-- fetal cortical RNA-seq across five cohorts
-- 672 RNA-seq samples
-- cross-ancestry; approximately 45% African ancestry and 42% European ancestry
-- use as developmental external support, not adult-brain replication
+- the code does **not** use all eGenes from Zeng et al.
+- the code uses a local 20-gene file of **GWAS-prioritized / candidate causal
+  genes** for schizophrenia and/or bipolar disorder
+- this should therefore be described as an **adult brain eQTL/GWAS candidate
+  causal gene list**, not as a generic eGene list
 
-Source:
+Current symbols used in the overlap:
 
-- https://pmc.ncbi.nlm.nih.gov/articles/PMC10029021/
+- `ABCB6`
+- `B3GAT1`
+- `CACNA1C`
+- `CLCN3`
+- `CNPPD1`
+- `CNTN4`
+- `EEF1A2`
+- `FAM134A`
+- `FURIN`
+- `GATAD2A`
+- `INO80E`
+- `KCTD13`
+- `LL22NC03-86G7.1`
+- `PBX4`
+- `PCCB`
+- `RERE`
+- `THOC7`
+- `XPNPEP3`
+- `ZFAND2B`
+- `ZNF823`
 
-### Ref87: `Wang2018_ref87_INT18`
+## 4. Ref 86: `Wen2024_ref86`
 
-- Wang et al. 2018 / PsychENCODE
-- broad integrative SCZ risk-gene prioritization framework
-- not a coloc-only list
-- resource spans adult PFC, temporal cortex, and cerebellum
-- use as broad SCZ-risk context
+- Reference: Wen et al., 2024
+- DOI: `10.1126/science.adh0829`
+- Title: *Cross-ancestry atlas of gene, isoform, and splicing regulation in the
+  developing human brain*
+- File used in code: `reference86_fetal_brain_colocalized_genes.csv`
+- Column used for overlap: `gene_name`
+- Current overlap set size: 5 unique normalized symbols
 
-Source:
+Study design and source material:
 
-- https://pmc.ncbi.nlm.nih.gov/articles/PMC6413328/
+- developing human brain xQTL resource
+- 672 distinct developing brain donors across five cohorts
+- 654 samples retained with matched genotype and cortical RNA-seq data
+- developmental span: 4 to 39 post-conception weeks
+- ancestry composition reported in the paper: 45% European, 25%
+  Latino/admixed American, 22% African-American, 8% East Asian / Southeast
+  Asian
+- tissue context described in the paper as **developing human neocortex** /
+  cortical RNA-seq, not adult dlPFC
 
-### Ref87 sensitivity: `Wang2018_ref87_INT17`
+What the current comparison file represents:
 
-- high-confidence subset of `INT18`
-- sensitivity only
-- should not replace `INT18` as the broad primary Ref87 comparator
+- the code does **not** use all fetal eGenes or all fetal xQTL genes from Wen
+  et al.
+- the code uses a local 5-gene file of **fetal-brain colocalized genes**
+- this should therefore be described as a **developing-brain colocalization
+  comparison set**, not as a generic eGene list
 
-## Interpretation guidance
+Current symbols used in the overlap:
 
-Preferred language:
+- `ANKRD45`
+- `CCDC122`
+- `DNAH10OS`
+- `LRRC37A2`
+- `PCCB`
 
-- external support
-- cross-study concordance
-- adult-focused context
-- developmental context
-- integrative SCZ-risk context
+## 5. Ref 87: `Wang2018_ref87_INT18`
 
-Avoid language implying:
+- Reference: Wang et al., 2018
+- DOI: `10.1126/science.aat8464`
+- Title: *Comprehensive functional genomic resource and integrative model for
+  the human brain*
+- File used in code: `Ref87_INT-18_SCZ_Risk_Gene_List.csv`
+- Columns in file: `sczgenenames`, `ensembl_names`
+- Column used for overlap: `sczgenenames`
+- Current overlap set size: 908 unique normalized symbols
 
-- direct replication
-- same-evidence benchmarking
-- one-to-one tissue matching across all sets
+Study design and source material:
+
+- adult brain functional-genomics resource generated by PsychENCODE
+- 1,866 individuals in the integrated resource
+- diagnosis composition reported in the article summary: 926 PsychENCODE
+  controls, 113 GTEx controls, 558 schizophrenia, 217 bipolar disorder,
+  44 autism spectrum disorder, and 8 affective disorder
+- adult brain regions represented in the resource: prefrontal cortex (`PFC`),
+  temporal cortex (`TC`), and cerebellum (`CB`)
+
+What the current comparison file represents:
+
+- the code does **not** use PsychENCODE adult-brain eGenes
+- the code does **not** use a pure colocalization-gene list
+- the code uses the broad `INT18` **schizophrenia risk-gene prioritization**
+  file from the PsychENCODE resource
+- this should therefore be described as a **broad integrative SCZ risk-gene
+  reference set**
+
+Because the current overlap code matches only on `sczgenenames`, Ensembl IDs in
+the file are retained for provenance in the source CSV but are not used in the
+current intersection logic.
+
+## Evidence-class summary
+
+The five overlap sets are not the same evidence class.
+
+- `SCZD_PNN`: current-study strong coloc genes
+- `habenulaPilot`: prior coloc genes
+- `Zeng2022_ref85`: adult brain eQTL/GWAS candidate causal genes
+- `Wen2024_ref86`: developing-brain colocalized genes from an xQTL atlas
+- `Wang2018_ref87_INT18`: broad PsychENCODE SCZ risk-gene prioritization set
+
+Accordingly, refs 85-87 are not all the same type of adult dlPFC colocalization
+resource. In the current notebook, the comparison is a **gene-level overlap
+against external schizophrenia-related prioritization resources**.
