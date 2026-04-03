@@ -10,10 +10,10 @@ The overlap is performed on **unique gene symbols**.
 | Set name | File used | Unique symbols used now | What the list represents |
 | --- | --- | ---: | --- |
 | `SCZD_PNN` | current-study strong coloc gene set | 17 | current-study strong coloc genes (`PP4 > 0.8`) |
-| `habenulaPilot` | `habenulaPilot_coloc.tsv` | 16 | prior habenula coloc gene list, collapsed to unique gene symbols |
-| `Zeng2022_ref85` | `reference85_scz_bd_20genes_filtered.csv` | 20 | adult brain eQTL/GWAS candidate causal genes for SZ and/or BD |
-| `Wen2024_ref86` | `reference86_fetal_brain_colocalized_genes.csv` | 5 | developing-brain colocalized gene list |
-| `Wang2018_ref87_INT18` | `Ref87_INT-18_SCZ_Risk_Gene_List.csv` | 908 | broad PsychENCODE SCZ risk-gene prioritization list |
+| `habenulaPilot` | `habenulaPilot-coloc-genes.csv` | 16 | prior habenula coloc gene list, collapsed to unique gene symbols |
+| `Zeng2022_ref85` | `ref85-scz_only_derived.csv` | 20 | adult brain eQTL/GWAS candidate causal genes for SZ and/or BD |
+| `Wen2024_ref86` | `ref86-devbrain-coloc.csv` | 5 | developing-brain colocalized gene list |
+| `Wang2018_ref87_INT18` | `ref86-INT18-PsychEncode-SCZ-risk.csv` | 908 | broad PsychENCODE SCZ risk-gene prioritization list |
 
 ## 1. Current study: `SCZD_PNN`
 
@@ -38,10 +38,9 @@ Current symbols used in the overlap:
 
 ## 2. Habenula comparison set: `habenulaPilot`
 
-- File used: `habenulaPilot_coloc.tsv`
+- File used: `habenulaPilot-coloc-genes.csv`
 - Current file structure: 260 gene-variant rows, corresponding to 16 unique
   gene symbols used in the overlap
-- Source data in the local habenula project: `/processed-data/18_coloc/supp_table.csv`
 - Data type used to derive the comparison list: adult postmortem **bulk RNA-seq**
   colocalization analysis
 - Brain region: habenula
@@ -53,7 +52,7 @@ Current symbols used in the overlap:
 - Relationship to current study: this is the only comparison set here with
   known donor overlap based on `BrNum` IDs; there are 10 overlapping donors
 - Gene list used for overlap: the unique gene symbols represented in
-  `habenulaPilot_coloc.tsv`
+  `habenulaPilot-coloc-genes.csv`
 - Evidence type of the genes in this list: **habenula coloc genes**, not generic
   eGenes
 
@@ -68,7 +67,7 @@ Current symbols used in the overlap:
 - DOI: `10.1038/s41588-021-00987-9`
 - Title: *Multi-ancestry eQTL meta-analysis of human brain identifies candidate
   causal variants for brain-related traits*
-- File used: `reference85_scz_bd_20genes_filtered.csv`
+- File used: `ref85-scz_only_derived.csv`
 - Current overlap set size: 20 unique normalized symbols
 
 Study design and source material:
@@ -103,7 +102,7 @@ Current symbols used in the overlap:
 - DOI: `10.1126/science.adh0829`
 - Title: *Cross-ancestry atlas of gene, isoform, and splicing regulation in the
   developing human brain*
-- File used: `reference86_fetal_brain_colocalized_genes.csv`
+- File used: `ref86-devbrain-coloc.csv`
 - Current overlap set size: 5 unique normalized symbols
 
 Study design and source material:
@@ -135,7 +134,7 @@ Current symbols used in the overlap:
 - DOI: `10.1126/science.aat8464`
 - Title: *Comprehensive functional genomic resource and integrative model for
   the human brain*
-- File used: `Ref87_INT-18_SCZ_Risk_Gene_List.csv`
+- File used: `ref86-INT18-PsychEncode-SCZ-risk.csv`
 - Current overlap set size: 908 unique normalized symbols
 
 Study design and source material:

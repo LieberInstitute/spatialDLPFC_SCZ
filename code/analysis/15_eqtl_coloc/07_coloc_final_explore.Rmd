@@ -25,9 +25,11 @@ f_dlpfc <- file.path(datadir, "coloc", "coloc_abf_results.tsv.gz")
 f_dlpfc_gated <- file.path(datadir, "coloc", "coloc_abf_results_gated.tsv.gz")
 f_hb_source <- file.path(hb_root, "processed-data", "18_coloc", "supp_table.csv")
 hb_gene_dir <- here("code", "analysis", "15_eqtl_coloc", "gene_lists")
-f_hb_gene_list <- file.path(hb_gene_dir, "habenulaPilot_coloc.tsv")
+f_hb_gene_list <- file.path(hb_gene_dir, "habenulaPilot-coloc-genes.csv")
 f_ext_meta <- file.path(hb_gene_dir, "external_reference_metadata.tsv")
-f_ref85_scz <- file.path(hb_gene_dir, "reference85_scz_only_derived.csv")
+f_ref85_scz <- file.path(hb_gene_dir, "ref85-scz_only_derived.csv")
+f_ref86 <- file.path(hb_gene_dir, "ref86-devbrain-coloc.csv")
+f_ref87_int18 <- file.path(hb_gene_dir, "ref87-INT18-PsychEncode-SCZ-risk.csv")
 f_dlpfc_donor <- file.path(refdir, "donor_meta.tsv.gz")
 f_hb_coldata <- file.path(hb_root, "processed-data", "17_eQTL", "tensorQTL_input", "colData.csv")
 f_sens_sum <- file.path(datadir, "coloc", "prior_sensitivity", "w500k_prior_sensitivity_summary.tsv.gz")
@@ -177,20 +179,27 @@ hb <- fread(f_hb_source)
 
 ##  cache compact habenula coloc table locally (gene_name + variant_id) when missing.
 if (!dir.exists(hb_gene_dir)) dir.create(hb_gene_dir, recursive = TRUE)
-if (!file.exists(f_hb_gene_list)) {
+hb_gene_list <- tryCatch(fread(f_hb_gene_list), error = function(e) NULL)
+if (
+  is.null(hb_gene_list) ||
+  !all(c("gene_name", "variant_id", "rsID") %chin% names(hb_gene_list))
+) {
   hb_gene_list <- unique(hb[, .(
     gene_name = as.character(gene_symbol),
-    variant_id = as.character(snp)
+    variant_id = as.character(snp),
+    rsID = as.character(snp_rs_id)
   )])
   hb_gene_list <- hb_gene_list[
     !is.na(gene_name) & gene_name != "" &
     !is.na(variant_id) & variant_id != ""
   ]
-  setorder(hb_gene_list, gene_name, variant_id)
-  fwrite(hb_gene_list, f_hb_gene_list, sep = "\t", quote = FALSE)
+  hb_gene_list[is.na(rsID) | rsID == "", rsID := ""]
+  setorder(hb_gene_list, gene_name, variant_id, rsID)
+  hb_gene_list <- unique(hb_gene_list, by = c("gene_name", "variant_id", "rsID"))
+  fwrite(hb_gene_list, f_hb_gene_list, sep = ",", quote = TRUE)
 }
 hb_gene_list <- fread(f_hb_gene_list)
-assert_cols(hb_gene_list, c("gene_name", "variant_id"), "habenula cached gene list")
+assert_cols(hb_gene_list, c("gene_name", "variant_id", "rsID"), "habenulaPilot-coloc-genes.csv")
 
 assert_cols(dlpfc, c("fid", "gene_name", "lead_snp", "rsid", "PP4", "ds"), "dlpfc coloc table")
 assert_cols(dlpfc_gated, c("window", "ds", "fid", "gene_name", "cat_gated", "gate_pass", "gate_reason"), "dlpfc gated coloc table")
@@ -587,9 +596,6 @@ donor_overlap_ids
 
 ```{r cross-study-overlap-inputs}
 ##  load external reference sets and build the current-study gene set for cross-study overlap.
-f_ref86 <- file.path(hb_gene_dir, "reference86_fetal_brain_colocalized_genes.csv")
-f_ref87_int18 <- file.path(hb_gene_dir, "Ref87_INT-18_SCZ_Risk_Gene_List.csv")
-
 assert_file(f_hb_gene_list)
 assert_file(f_ext_meta)
 assert_file(f_ref85_scz)
@@ -599,19 +605,19 @@ assert_file(f_ref87_int18)
 hb_gl <- fread(f_hb_gene_list)
 ext_meta <- fread(f_ext_meta)
 ref85 <- fread(f_ref85_scz)
-ref86 <- fread(f_ref86)
+ref86 <- fread(f_ref86, blank.lines.skip = TRUE)
 ref87_int18 <- fread(f_ref87_int18)
 
-assert_cols(hb_gl, c("gene_name"), "habenulaPilot_coloc.tsv")
+assert_cols(hb_gl, c("gene_name", "variant_id", "rsID"), "habenulaPilot-coloc-genes.csv")
 assert_cols(ext_meta, c(
   "set_name", "paper_short", "source_ref", "evidence_type", "disorder_scope",
   "developmental_stage", "brain_region_group", "brain_regions_detail",
   "n_samples", "n_donors", "ancestry_summary", "demographics_note",
   "comparison_role", "source_url"
 ), "external_reference_metadata.tsv")
-assert_cols(ref85, c("gene_name", "variant", "ref85_selection_rule", "ref85_source_note"), "reference85_scz_only_derived.csv")
-assert_cols(ref86, c("gene_name"), "reference86_fetal_brain_colocalized_genes.csv")
-assert_cols(ref87_int18, c("sczgenenames"), "Ref87_INT-18_SCZ_Risk_Gene_List.csv")
+assert_cols(ref85, c("gene_name", "variant", "ref85_selection_rule", "ref85_source_note"), "ref85-scz_only_derived.csv")
+assert_cols(ref86, c("gene_name"), "ref86-devbrain-coloc.csv")
+assert_cols(ref87_int18, c("sczgenenames"), "ref87-INT18-PsychEncode-SCZ-risk.csv")
 
 to_gene_set <- function(x) {
   y <- std_symbol_key(x)
@@ -754,6 +760,25 @@ validate_venn_counts_4way <- function(vc) {
   stopifnot(vc$n24 <= min(vc$area2, vc$area4))
   stopifnot(vc$n34 <= min(vc$area3, vc$area4))
 }
+
+venn_counts_3way <- function(sets_named) {
+  stopifnot(length(sets_named) == 3L)
+  s1 <- sets_named[[1]]; s2 <- sets_named[[2]]; s3 <- sets_named[[3]]
+  inter_n <- function(...) length(Reduce(intersect, list(...)))
+  list(
+    area1 = length(s1), area2 = length(s2), area3 = length(s3),
+    n12 = inter_n(s1, s2), n13 = inter_n(s1, s3), n23 = inter_n(s2, s3),
+    n123 = inter_n(s1, s2, s3)
+  )
+}
+
+validate_venn_counts_3way <- function(vc) {
+  stopifnot(all(unlist(vc) == as.integer(unlist(vc))))
+  stopifnot(vc$n12 <= min(vc$area1, vc$area2))
+  stopifnot(vc$n13 <= min(vc$area1, vc$area3))
+  stopifnot(vc$n23 <= min(vc$area2, vc$area3))
+  stopifnot(vc$n123 <= min(vc$n12, vc$n13, vc$n23))
+}
 ```
 
 ```{r cross-study-overlap-5way}
@@ -823,6 +848,62 @@ The broad 5-way overlap is useful for context, but it mixes adult DLPFC spatial 
 
 For interpretation, the comparison tiers are: adult-focused external context (`SCZD_PNN`, `habenulaPilot`, `Zeng2022_ref85_SCZ`, `Wang2018_ref87_INT18`), developmental external context (`Wen2024_ref86`), and integrative SCZ-risk context (`Wang2018_ref87_INT18` with `INT17` as a stricter sensitivity subset).
 
+```{r cross-study-overlap-3way-external-merged}
+##  simplified summary: current study, habenula prior-study comparator, and merged external brain xQTL/GWAS support.
+external_merged <- sort(unique(c(
+  sets5$Zeng2022_ref85_SCZ,
+  sets5$Wen2024_ref86,
+  sets5$Wang2018_ref87_INT18
+)))
+
+sets3 <- list(
+  SCZD_PNN = sets5$SCZD_PNN,
+  habenulaPilot = sets5$habenulaPilot,
+  External_Brain_xQTL_GWAS = external_merged
+)
+
+membership3 <- build_membership_table(sets3)
+combo_members_3way <- summarize_combos(membership3, names(sets3))
+combo_counts_3way <- combo_members_3way[, c("combo_label", "n_sets", names(sets3), "n_genes"), with = FALSE]
+
+f_3way_counts <- file.path(final_dir, "gene_list_overlap_3way_external_merged_combo_counts.tsv.gz")
+f_3way_members <- file.path(final_dir, "gene_list_overlap_3way_external_merged_combo_members.tsv.gz")
+fwrite(combo_counts_3way, f_3way_counts, sep = "\t", quote = FALSE)
+fwrite(combo_members_3way, f_3way_members, sep = "\t", quote = FALSE)
+
+vc3 <- venn_counts_3way(sets3)
+validate_venn_counts_3way(vc3)
+
+draw_venn3 <- function() {
+  grid.newpage()
+  v3 <- VennDiagram::draw.triple.venn(
+    area1 = vc3$area1, area2 = vc3$area2, area3 = vc3$area3,
+    n12 = vc3$n12, n13 = vc3$n13, n23 = vc3$n23, n123 = vc3$n123,
+    category = c("SCZD_PNN", "habenulaPilot", "External Brain xQTL/GWAS"),
+    fill = c("#4f83b6", "#86b6d4", "#b4a7d6"),
+    alpha = rep(0.45, 3),
+    cex = 1.0,
+    cat.cex = 0.95,
+    cat.col = c("#1f3f5b", "#1f3f5b", "#4a3a6c"),
+    ind = FALSE
+  )
+  grid.draw(v3)
+}
+
+##  show in notebook output.
+draw_venn3()
+
+##  optional export for finalized layout tuning.
+# f_venn3_pdf <- file.path(final_dir, "gene_list_overlap_venn_3way_external_merged.pdf")
+# pdf(f_venn3_pdf, width = 9, height = 7)
+# draw_venn3()
+# dev.off()
+
+combo_counts_3way[n_genes > 0][order(-n_genes, combo_label)][]
+```
+
+This 3-way panel collapses the heterogeneous external references into a single umbrella comparison set for a cleaner high-level overlap view. The merged external circle combines adult brain eQTL/GWAS candidate genes, developmental xQTL/colocalization genes, and broad PsychENCODE SCZ-risk prioritization, so it should be interpreted as a generic external brain genetics comparison rather than a replication-only overlap.
+
 ```{r cross-study-overlap-sczd-unique}
 ##  SCZD_PNN-unique genes and their distribution across the 11 expression contexts.
 sczd_unique <- membership5[
@@ -833,6 +914,19 @@ setorder(sczd_unique, gene_name)
 
 f_sczd_unique <- file.path(final_dir, "gene_list_overlap_sczd_unique_genes.tsv.gz")
 fwrite(sczd_unique, f_sczd_unique, sep = "\t", quote = FALSE)
+
+sczd_pnn_coloc_strong <- unique(strong_dlpfc[, .(
+  context = as.character(context_or_group),
+  gene_name = std_symbol_key(gene_name),
+  variant_id = as.character(variant_id),
+  rsID = as.character(rsid)
+)])
+sczd_pnn_coloc_strong <- sczd_pnn_coloc_strong[!is.na(gene_name) & gene_name != ""]
+sczd_pnn_coloc_strong[is.na(rsID) | rsID == "", rsID := ""]
+setorder(sczd_pnn_coloc_strong, context, gene_name, variant_id, rsID)
+
+f_sczd_pnn_coloc <- file.path(final_dir, "sczd-pnn-coloc-strong.csv")
+fwrite(sczd_pnn_coloc_strong, f_sczd_pnn_coloc, sep = ",", quote = TRUE)
 
 sczd_ctx <- unique(strong_dlpfc[, .(
   context = as.character(context_or_group),
