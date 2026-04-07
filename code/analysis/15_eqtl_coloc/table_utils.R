@@ -192,8 +192,8 @@ rename_eqtl_excel_cols <- function(dt) {
     source = "eQTL_source",
     rsID = "rsid",
     GWAS = "risk_SNP_GWAS",
-    DGE = "SCZD_DGE_layer_adjusted",
-    DGEp05 = "SCZD_DGE_layer_adjusted_p05",
+    DGE = "SCZD_DEG_layer_adjusted",
+    DGEp05 = "SCZD_DEG_layer_adjusted_p05",
     var_coloc = "strong_coloc_variant",
     gene_coloc = "strong_coloc_gene"
   )
@@ -209,8 +209,8 @@ rename_coloc_excel_cols <- function(dt) {
     fid = "ENSEMBL",
     cat = "hypothesis_category",
     GWAS = "risk_SNP_GWAS",
-    DGE = "SCZD_DGE_layer_adjusted",
-    DGEp05 = "SCZD_DGE_layer_adjusted_p05",
+    DGE = "SCZD_DEG_layer_adjusted",
+    DGEp05 = "SCZD_DEG_layer_adjusted_p05",
     eQTL = "eQTL_independent",
     eQTLnom = "eQTL_nominal"
   )

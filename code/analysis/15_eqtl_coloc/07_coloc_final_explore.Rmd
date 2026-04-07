@@ -47,6 +47,10 @@ stopifnot(identical(sort(names(overlap_specs)), c("gene_only", "gene_variant")))
 ##  define output location for final comparison artifacts.
 final_dir <- file.path(datadir, "coloc", "final")
 if (!dir.exists(final_dir)) dir.create(final_dir, recursive = TRUE)
+
+plotdir <- here("plots", "15_eqtl_coloc")
+if (!dir.exists(plotdir)) dir.create(plotdir, recursive = TRUE)
+
 ```
 
 ```{r concept-notes, eval=FALSE}
@@ -267,7 +271,7 @@ coloc_clean_pass_xlsx <- rename_coloc_excel_cols(coloc_clean_pass)
 setcolorder(coloc_clean_pass_xlsx, c(
   "expression_context", "ENSEMBL", "gene_name", "lead_snp", "rsid", "nsnps",
   "PP3", "PP4", "PP34", "PP4_over_PP34", "hypothesis_category",
-  "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "SCZD_DGE_layer_adjusted_p05",
+  "risk_SNP_GWAS", "SCZD_DEG_layer_adjusted", "SCZD_DEG_layer_adjusted_p05",
   "eQTL_independent", "eQTL_nominal"
 ))
 
@@ -1324,10 +1328,10 @@ p_kansl1_as1_spd04_wm_mini <- ggplot(mini_plot_dt, aes(x = pos_mb, y = neglog10p
     plot.margin = margin(t = 5.5, r = 18, b = 5.5, l = 5.5)
   )
 
-f_mini_pdf <- file.path(final_dir, "kansl1_as1_spd04_wm_mini_coloc_panel.pdf")
-f_mini_png <- file.path(final_dir, "kansl1_as1_spd04_wm_mini_coloc_panel.png")
-ggsave(f_mini_pdf, p_kansl1_as1_spd04_wm_mini, width = 3.2, height = 2.6, units = "in", dpi = 300)
-ggsave(f_mini_png, p_kansl1_as1_spd04_wm_mini, width = 3.2, height = 2.6, units = "in", dpi = 300)
+f_mini_pdf <- file.path(plotdir, "coloc_KANSL1-AS1_spd04_mini_panel.pdf")
+f_mini_png <- file.path(plotdir, "coloc_KANSL1-AS1_spd04_mini_panel.png")
+ggsave(f_mini_pdf, p_kansl1_as1_spd04_wm_mini, width = 4.3, height = 3)
+#ggsave(f_mini_png, p_kansl1_as1_spd04_wm_mini, width = 3.2, height = 2.6, units = "in", dpi = 300)
 
 mini_coloc_meta
 p_kansl1_as1_spd04_wm_mini
