@@ -727,8 +727,8 @@ plot_eQTL_boxplots <- function(plotdata, eqtl_pairs, use_raw = FALSE, restrict_d
   list(p=p, fname=paste0("eqtl_", auto_title_safe))
 }
 
-pobj <- plot_eQTL_boxplots(npil_plotdata, ieqtls, ds=ds, gwas_eff = TRUE)
-print(pobj$p)
+#pobj <- plot_eQTL_boxplots(npil_plotdata, ieqtls, ds=ds, gwas_eff = TRUE)
+#print(pobj$p)
 ```
 
 
@@ -998,9 +998,6 @@ for (ds in plot_contexts) {
 }
 ```
 
-### ignore below
-
-
 
 ```{r MAPK3-rs7542 in vasc dataset}
 target_gene_id <- "ENSG00000102882"  # MAPK3
@@ -1049,6 +1046,7 @@ print(eqtls_vasc[, .(
 
 p_vasc <- plot_eQTL_boxplots(vasc_plotdata, eqtls_vasc, ds = target_ds, gwas_eff = TRUE)
 print(p_vasc)
+ggsave(file.path(plotdir, paste0(p_vasc$fname, ".pdf")), p_vasc$p, width = 3.5, height = 5)
 
 context_order <- c("neuropil", "neun", "vasc")
 context_stats <- rbindlist(lapply(context_order, function(ctx) {
