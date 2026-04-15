@@ -484,7 +484,7 @@ cis_all_xlsx <- rename_eqtl_excel_cols(cis_all)
 setcolorder(cis_all_xlsx, c(
   "expression_context", "eQTL_source",
   "ENSEMBL", "gene_name", "variant_id",
-  "rsid", "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "SCZD_DGE_layer_adjusted_p05",
+  "rsid", "risk_SNP_GWAS", "SCZD_DEG", "SCZD_DEG_p05",
   "strong_coloc_variant", "strong_coloc_gene",
   "start_distance", "map_cis_qval", "qval", "pval_perm", "pval_beta", "pval_nominal",
   "slope", "slope_se", "af", "ma_samples", "ma_count"
@@ -493,7 +493,7 @@ setcolorder(cis_all_xlsx, c(
 nominal_all_xlsx <- rename_eqtl_excel_cols(nominal_all)
 setcolorder(nominal_all_xlsx, c(
   "expression_context", "ENSEMBL", "gene_name", "variant_id",
-  "rsid", "risk_SNP_GWAS", "SCZD_DGE_layer_adjusted", "SCZD_DGE_layer_adjusted_p05",
+  "rsid", "risk_SNP_GWAS", "SCZD_DEG", "SCZD_DEG_p05",
   "strong_coloc_variant", "strong_coloc_gene",
   "start_distance", "fdr", "pval_nominal", "slope", "slope_se", "af", "ma_samples", "ma_count"
 ))

@@ -271,7 +271,7 @@ coloc_clean_pass_xlsx <- rename_coloc_excel_cols(coloc_clean_pass)
 setcolorder(coloc_clean_pass_xlsx, c(
   "expression_context", "ENSEMBL", "gene_name", "lead_snp", "rsid", "nsnps",
   "PP3", "PP4", "PP34", "PP4_over_PP34", "hypothesis_category",
-  "risk_SNP_GWAS", "SCZD_DEG_layer_adjusted", "SCZD_DEG_layer_adjusted_p05",
+  "risk_SNP_GWAS", "SCZD_DEG", "SCZD_DEG_p05",
   "eQTL_independent", "eQTL_nominal"
 ))
 
