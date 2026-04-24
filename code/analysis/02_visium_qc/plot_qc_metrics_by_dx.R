@@ -71,7 +71,7 @@ p_umi <- plotColData(spe,
   geom_hline(
     aes(yintercept = 100),
     alpha = 0.8,
-    linetype = "dashed", color = "lightgrey"
+    linetype = "dashed", color = "black"
   ) +
   scale_y_log10(
     breaks = scales::trans_breaks("log10", function(x) 10^x),
@@ -125,7 +125,7 @@ p_gene <- plotColData(spe,
   geom_hline(
     aes(yintercept = 200),
     alpha = 0.8,
-    linetype = "dashed", color = "lightgrey"
+    linetype = "dashed", color = "black"
   ) +
   facet_wrap(~ spe$DX, scales = "free_x") +
   scale_y_log10(
