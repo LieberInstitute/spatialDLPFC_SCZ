@@ -29,6 +29,12 @@ sub_spe <- spe[, spe$sample_id == sample_id]
 sub_spe$row <- sub_spe$array_row
 sub_spe$col <- sub_spe$array_col
 
+## -- 2026-08-13 update --
+## Note that the spatial coordinates were not offset and
+## that is ok in this case since the data was subset to one donor first.
+## See http://edward130603.github.io/BayesSpace/articles/joint_clustering.html#clustering-1
+## for more details.
+
 # Run BayesSpace
 set.seed(030122)
 obj_BS <- spatialPreprocess(sub_spe,
