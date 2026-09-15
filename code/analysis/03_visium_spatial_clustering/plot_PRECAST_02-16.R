@@ -102,44 +102,81 @@ panel_list <-
             )
           ) +
           theme(
+            text = element_text(family = "Arial"),
             panel.border = element_rect(colour = "black", fill = NA, size = 1),
             plot.margin = margin(t = 10, b = 10)
           )
         return(ret_p)
       })
 
-    # browser()
     p_panel <- ggarrange(
       plotlist = p_list,
       nrow = 1,
       ncol = 2,
       common.legend = TRUE, legend = "none"
-    ) #|>
-    # annotate_figure(
-    #   fig.lab = sprintf("k=%02d", .k),
-    #   fig.lab.size = 12,
-    #   fig.lab.pos = "top"
-    # )
-    return(p_panel)
+    )
+
+    cowplot::plot_grid(
+      cowplot::ggdraw() +
+        cowplot::draw_label(
+          sprintf("k=%02d", .k),
+          angle = 90,
+          fontface = "bold",
+          fontfamily = "Arial"
+        ),
+      p_panel,
+      nrow = 1,
+      rel_widths = c(0.08, 1)
+    )
   })
 
 ## Format individual plots ----
 
 # Make panels ----
-cowplot::plot_grid(
-  plotlist = panel_list,
-  nrow = 8, ncol = 2 # ,
-  # labels = sprintf("k=%02d", 2:16)
-  # TODO: use the max precast label
-  # common.legend = TRUE,
-  # legend = "bottom"
-) |> ggsave(
+header <- cowplot::ggdraw() +
+  cowplot::draw_label(
+    "Br8667_NTC",
+    x = 0.15278,
+    fontface = "bold",
+    fontfamily = "Arial"
+  ) +
+  cowplot::draw_label(
+    "Br5973_SCZ",
+    x = 0.38426,
+    fontface = "bold",
+    fontfamily = "Arial"
+  ) +
+  cowplot::draw_label(
+    "Br8667_NTC",
+    x = 0.65278,
+    fontface = "bold",
+    fontfamily = "Arial"
+  ) +
+  cowplot::draw_label(
+    "Br5973_SCZ",
+    x = 0.88426,
+    fontface = "bold",
+    fontfamily = "Arial"
+  )
+
+plot_grid <- cowplot::plot_grid(
+  header,
+  cowplot::plot_grid(
+    plotlist = panel_list,
+    nrow = 8, ncol = 2
+  ),
+  ncol = 1,
+  rel_heights = c(0.14, 8)
+)
+
+ggsave(
   here(
     "plots/03_visium_spatial_clustering",
     "spot_plot_PRECAST_2-16_rep_samples.pdf"
   ),
-  plot = _,
-  height = 14.7, width = 7
+  plot = plot_grid,
+  device = cairo_pdf,
+  height = 14.95725, width = 7.56
 )
 
 
