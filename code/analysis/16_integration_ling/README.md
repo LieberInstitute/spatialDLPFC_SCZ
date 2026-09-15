@@ -21,8 +21,7 @@ used throughout this directory.)
   * `SNAPa_loadings_ranked` / `SNAPn_loadings_ranked`: full, descending-ranked
     cNMF gene loadings for each program.
   * `SNAPa_top2000` / `SNAPn_top2000`: top 2000 genes by loading - the gene
-    set convention Ling et al. used for donor-level scoring; this is the set
-    used for our projection onto Visium spots.
+    set convention Ling et al. used for donor-level scoring.
 
   The file also contains `donor_SNAP_scores` and `donor_metadata` sheets,
   which are Ling et al.'s own published per-donor SNAP-a/SNAP-n scores and
@@ -39,25 +38,49 @@ used throughout this directory.)
 | Script | Description |
 | --- | --- |
 | `01-prepare_SNAP_loadings.R` | Reads the Ling et al. xlsx loadings and saves a tidy `SNAP_loadings.rds` (full + top-2000 gene loadings for SNAP-a/SNAP-n). |
-| `02-project_SNAP_scores.R` | Loads the finalized `spe` and the prepared loadings; for each program, computes a per-spot loading-weighted projection score from log-normalized expression, then z-scores it across all spots ("normalized projection"). Saves a slim `key`-indexed `SNAP_score_df.rds` for merging back into `colData(spe)` in downstream scripts. |
+| `02-project_SNAP_scores.R` | Loads the finalized `spe` and the prepared loadings; for each program, computes loading-weighted per-spot projections from both the top-2000 and full gene sets, then z-scores each across all spots ("normalized projection"). Saves a slim `key`-indexed `SNAP_score_df.rds` for merging back into `colData(spe)` in downstream scripts. |
 | `03-spot_plot_SNAP_rep_samples.R` | Spatial spot plots (via `escheR`) for the two representative samples, Br8667 (`V13M06-342_D1`, NTC) and Br5973 (`V13M06-343_D1`, SCZ): spot border = spatial domain (`spd_label`), spot fill = normalized SNAP-a / SNAP-n projection score. |
 | `04-donor_spd_SNAP_distribution.R` | Donor-level visualizations of the SNAP-a / SNAP-n projection score distribution across donors (boxplot) and across spatial domains (boxplot + donor x domain heatmap), split by diagnosis. |
 
 ## Projection method
 
-For a given program (SNAP-a or SNAP-n), let `w_g` be the cNMF loading of gene
-`g` from the `top2000` gene set, and `x_gj` be the log-normalized expression
-of gene `g` in spot `j` (`logcounts(spe)`, matched by gene symbol). The
-per-spot projection score is the loading-weighted average expression:
+For a given program (SNAP-a or SNAP-n) and gene set (top-2000 or full), let
+`w_g` be the cNMF loading of gene `g`, and `x_gj` be the log-normalized
+expression of gene `g` in spot `j` (`logcounts(spe)`, matched by gene symbol),
+restricted to the genes present in the Visium panel. The per-spot projection
+score depends on whether the matched loadings are all nonnegative:
 
-```
-score_j = sum_g(w_g * x_gj) / sum_g(w_g)
-```
+* **Top-2000 gene sets** (Ling et al.'s ranked-by-loading convention: all
+  loadings are nonnegative) use a loading-weighted *average* expression:
 
-restricted to the genes present in the Visium panel. This score is then
-z-scored across all spots (all 63 donors) to produce the "normalized
-projection" used for spatial and donor-level visualization, so that SNAP-a
-and SNAP-n scores are on a comparable scale across samples.
+  ```
+  score_j = sum_g(w_g * x_gj) / sum_g(w_g)
+  ```
+
+  Dividing by the matched loading sum makes this a weighted average, so a
+  score does not increase simply because a gene set has more genes or a
+  larger total loading.
+
+* **Full gene sets** include negative loadings (genes the program pushes
+  down, not just up), so normalizing by `sum(w_g)` is not meaningful (the
+  denominator can be small, zero, or have an arbitrary sign). For these, the
+  raw loading-weighted sum is used instead, without normalization:
+
+  ```
+  score_j = sum_g(w_g * x_gj)
+  ```
+
+Each of the four program-by-gene-set scores is then z-scored across all spots
+(all 63 donors) to produce the "normalized projection" used for visualization.
+`SNAPa_score`, `SNAPn_score`, `SNAPa_zscore`, and `SNAPn_zscore` retain their
+existing top-2000 (weighted-average) meaning for downstream compatibility. The
+all-gene results (raw weighted-sum, unnormalized) are saved as
+`SNAPa_all_genes_score`, `SNAPn_all_genes_score`, `SNAPa_all_genes_zscore`,
+and `SNAPn_all_genes_zscore`.
+
+Where a full ranked loading list contains a gene symbol more than once, its
+loadings are summed before matching it to the Visium panel; the all-gene score
+therefore retains the total contribution of every listed loading.
 
 ## Outputs
 

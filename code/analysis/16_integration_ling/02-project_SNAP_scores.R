@@ -29,21 +29,35 @@ snap_loadings <- readRDS(
 
 
 # Project SNAP loadings onto spots -----------------------------------------
-## For a given program's top-2000 gene loadings, compute a loading-weighted
-## average of log-normalized expression per spot:
-##   score_j = sum_g(w_g * x_gj) / sum_g(w_g)
-## restricted to genes matched (by gene symbol) on the Visium panel.
-project_snap_score <- function(spe, loading_df, min_genes = 50) {
+## For a given program's gene loadings, compute a per-spot projection from
+## log-normalized expression, restricted to genes matched (by gene symbol) on
+## the Visium panel:
+##   - top-2000 gene sets have all-nonnegative loadings (Ling et al.'s ranked-
+##     by-loading convention), so we compute a loading-weighted *average*:
+##       score_j = sum_g(w_g * x_gj) / sum_g(w_g)
+##     Dividing by the total loading prevents scores from differing only
+##     because one gene set has larger aggregate loading.
+##   - full gene sets include negative loadings (genes pushed down by the
+##     program, not just up), so a weighted-average normalization by sum(w)
+##     is not meaningful (the denominator can be small, zero, or sign-
+##     flipping). For these, we instead compute the raw loading-weighted sum:
+##       score_j = sum_g(w_g * x_gj)
+project_snap_score <- function(spe, loading_df, gene_set, min_genes = 50) {
   program_name <- unique(loading_df$program)
   stopifnot(length(program_name) == 1)
+
+  # Safeguard against duplicate symbols in future loading-file releases.
+  loading_df <- loading_df |>
+    group_by(gene) |>
+    summarize(loading = sum(loading), .groups = "drop")
 
   gene_match <- match(loading_df$gene, rowData(spe)$gene_name)
   keep <- !is.na(gene_match)
 
   cat(
     sprintf(
-      "%s: matched %d / %d top-2000 genes on the Visium panel\n",
-      program_name, sum(keep), nrow(loading_df)
+      "%s (%s): matched %d / %d genes on the Visium panel\n",
+      program_name, gene_set, sum(keep), nrow(loading_df)
     )
   )
 
@@ -55,19 +69,48 @@ project_snap_score <- function(spe, loading_df, min_genes = 50) {
   w <- loading_df$loading[keep]
   expr_mat <- logcounts(spe)[gene_match[keep], , drop = FALSE]
 
-  as.numeric((w %*% expr_mat) / sum(w))
+  # Only normalize into a weighted average when all matched loadings are
+  # nonnegative (as in the top-2000 gene sets); otherwise return the raw
+  # loading-weighted sum, since normalizing by sum(w) is not meaningful when
+  # loadings can be negative.
+  if (all(w >= 0)) {
+    stopifnot(
+      "Matched gene loadings must have a nonzero sum" = sum(w) != 0
+    )
+    as.numeric((w %*% expr_mat) / sum(w))
+  } else {
+    as.numeric(w %*% expr_mat)
+  }
 }
 
 top2000 <- snap_loadings$top2000
+all_genes <- snap_loadings$full
 
 snapa_score <- project_snap_score(
   spe,
-  top2000 |> filter(program == "SNAP-a")
+  top2000 |> filter(program == "SNAP-a"),
+  gene_set = "top 2000"
 )
 
 snapn_score <- project_snap_score(
   spe,
-  top2000 |> filter(program == "SNAP-n")
+  top2000 |> filter(program == "SNAP-n"),
+  gene_set = "top 2000"
+)
+
+# NOTE: the full loading lists contain negative loadings, so
+# `project_snap_score()` returns a raw loading-weighted sum here (not
+# normalized by sum(w), unlike the top-2000 scores above).
+snapa_all_genes_score <- project_snap_score(
+  spe,
+  all_genes |> filter(program == "SNAP-a"),
+  gene_set = "all genes"
+)
+
+snapn_all_genes_score <- project_snap_score(
+  spe,
+  all_genes |> filter(program == "SNAP-n"),
+  gene_set = "all genes"
 )
 
 
@@ -82,19 +125,25 @@ score_df <- tibble(
   dx = spe$dx,
   spd_label = spe$spd_label,
   SNAPa_score = snapa_score,
-  SNAPn_score = snapn_score
+  SNAPn_score = snapn_score,
+  SNAPa_all_genes_score = snapa_all_genes_score,
+  SNAPn_all_genes_score = snapn_all_genes_score
 ) |>
   mutate(
     # Normalized (z-scored) projection, computed across all spots/donors so
     # that SNAP-a and SNAP-n are on a comparable scale for visualization.
     SNAPa_zscore = as.numeric(scale(SNAPa_score)),
-    SNAPn_zscore = as.numeric(scale(SNAPn_score))
+    SNAPn_zscore = as.numeric(scale(SNAPn_score)),
+    SNAPa_all_genes_zscore = as.numeric(scale(SNAPa_all_genes_score)),
+    SNAPn_all_genes_zscore = as.numeric(scale(SNAPn_all_genes_score))
   )
 
 # error prevention
 stopifnot(nrow(score_df) == ncol(spe))
 stopifnot(!anyNA(score_df$SNAPa_zscore))
 stopifnot(!anyNA(score_df$SNAPn_zscore))
+stopifnot(!anyNA(score_df$SNAPa_all_genes_zscore))
+stopifnot(!anyNA(score_df$SNAPn_all_genes_zscore))
 
 
 # Save -----------------------------------------------------------------------
@@ -103,7 +152,7 @@ saveRDS(
   file.path(fld_out, "SNAP_score_df.rds")
 )
 
-print("Finished projecting SNAP-a / SNAP-n scores onto Visium spots")
+print("Finished projecting top-2000 and all-gene SNAP-a / SNAP-n scores onto Visium spots")
 
 
 # Session info ----
