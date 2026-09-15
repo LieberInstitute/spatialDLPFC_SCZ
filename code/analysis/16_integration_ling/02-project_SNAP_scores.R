@@ -124,26 +124,18 @@ score_df <- tibble(
   brnum = spe$brnum,
   dx = spe$dx,
   spd_label = spe$spd_label,
-  SNAPa_score = snapa_score,
-  SNAPn_score = snapn_score,
+  SNAPa_top_2000_score = snapa_score,
+  SNAPn_top_2000_score = snapn_score,
   SNAPa_all_genes_score = snapa_all_genes_score,
   SNAPn_all_genes_score = snapn_all_genes_score
-) |>
-  mutate(
-    # Normalized (z-scored) projection, computed across all spots/donors so
-    # that SNAP-a and SNAP-n are on a comparable scale for visualization.
-    SNAPa_zscore = as.numeric(scale(SNAPa_score)),
-    SNAPn_zscore = as.numeric(scale(SNAPn_score)),
-    SNAPa_all_genes_zscore = as.numeric(scale(SNAPa_all_genes_score)),
-    SNAPn_all_genes_zscore = as.numeric(scale(SNAPn_all_genes_score))
-  )
+)
 
 # error prevention
 stopifnot(nrow(score_df) == ncol(spe))
-stopifnot(!anyNA(score_df$SNAPa_zscore))
-stopifnot(!anyNA(score_df$SNAPn_zscore))
-stopifnot(!anyNA(score_df$SNAPa_all_genes_zscore))
-stopifnot(!anyNA(score_df$SNAPn_all_genes_zscore))
+stopifnot(!anyNA(score_df$SNAPa_top_2000_score))
+stopifnot(!anyNA(score_df$SNAPn_top_2000_score))
+stopifnot(!anyNA(score_df$SNAPa_all_genes_score))
+stopifnot(!anyNA(score_df$SNAPn_all_genes_score))
 
 
 # Save -----------------------------------------------------------------------

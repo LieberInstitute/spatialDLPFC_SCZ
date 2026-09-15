@@ -38,9 +38,9 @@ used throughout this directory.)
 | Script | Description |
 | --- | --- |
 | `01-prepare_SNAP_loadings.R` | Reads the Ling et al. xlsx loadings and saves a tidy `SNAP_loadings.rds` (full + top-2000 gene loadings for SNAP-a/SNAP-n). |
-| `02-project_SNAP_scores.R` | Loads the finalized `spe` and the prepared loadings; for each program, computes loading-weighted per-spot projections from both the top-2000 and full gene sets, then z-scores each across all spots ("normalized projection"). Saves a slim `key`-indexed `SNAP_score_df.rds` for merging back into `colData(spe)` in downstream scripts. |
-| `03-spot_plot_SNAP_rep_samples.R` | Spatial spot plots (via `escheR`) for the two representative samples, Br8667 (`V13M06-342_D1`, NTC) and Br5973 (`V13M06-343_D1`, SCZ): spot border = spatial domain (`spd_label`), spot fill = normalized SNAP-a / SNAP-n projection score. |
-| `04-donor_spd_SNAP_distribution.R` | Donor-level visualizations of the SNAP-a / SNAP-n projection score distribution across donors (boxplot) and across spatial domains (boxplot + donor x domain heatmap), split by diagnosis. |
+| `02-project_SNAP_scores.R` | Loads the finalized `spe` and the prepared loadings; for each program, computes loading-weighted per-spot projections from both the top-2000 and full gene sets. Saves a slim `key`-indexed `SNAP_score_df.rds` for merging back into `colData(spe)` in downstream scripts. |
+| `03-spot_plot_SNAP_rep_samples.R` | Spatial spot plots (via `escheR`) for the two representative samples, Br8667 (`V13M06-342_D1`, NTC) and Br5973 (`V13M06-343_D1`, SCZ): spot border = spatial domain (`spd_label`), spot fill = SNAP-a / SNAP-n projection score (top-2000 and all-genes), grayscale (white = minimum, black = maximum). |
+| `04-donor_spd_SNAP_distribution.R` | Donor-level visualizations of the SNAP-a / SNAP-n projection score distribution across donors (boxplot) and across spatial domains (boxplot + donor x domain heatmap), split by diagnosis; produced separately for the top-2000 and all-genes gene sets. |
 
 ## Projection method
 
@@ -70,13 +70,10 @@ score depends on whether the matched loadings are all nonnegative:
   score_j = sum_g(w_g * x_gj)
   ```
 
-Each of the four program-by-gene-set scores is then z-scored across all spots
-(all 63 donors) to produce the "normalized projection" used for visualization.
-`SNAPa_score`, `SNAPn_score`, `SNAPa_zscore`, and `SNAPn_zscore` retain their
-existing top-2000 (weighted-average) meaning for downstream compatibility. The
-all-gene results (raw weighted-sum, unnormalized) are saved as
-`SNAPa_all_genes_score`, `SNAPn_all_genes_score`, `SNAPa_all_genes_zscore`,
-and `SNAPn_all_genes_zscore`.
+Each of the four program-by-gene-set scores is saved as-is (no further
+scaling/normalization): `SNAPa_top_2000_score` and `SNAPn_top_2000_score`
+(weighted-average, top-2000 gene sets), and `SNAPa_all_genes_score` and
+`SNAPn_all_genes_score` (raw weighted-sum, full gene sets).
 
 Where a full ranked loading list contains a gene symbol more than once, its
 loadings are summed before matching it to the Visium panel; the all-gene score
@@ -86,8 +83,13 @@ therefore retains the total contribution of every listed loading.
 
 * `processed-data/rds/16_integration_ling/SNAP_loadings.rds`
 * `processed-data/rds/16_integration_ling/SNAP_score_df.rds`
-* `plots/16_integration_ling/spot_plot_SNAPa_rep_samples.pdf`
-* `plots/16_integration_ling/spot_plot_SNAPn_rep_samples.pdf`
-* `plots/16_integration_ling/SNAP_score_by_donor.pdf`
-* `plots/16_integration_ling/SNAP_score_by_spatial_domain.pdf`
-* `plots/16_integration_ling/SNAP_score_donor_by_domain_heatmap.pdf`
+* `plots/16_integration_ling/spot_plot_SNAPa_top_2000_rep_samples.pdf`
+* `plots/16_integration_ling/spot_plot_SNAPn_top_2000_rep_samples.pdf`
+* `plots/16_integration_ling/spot_plot_SNAPa_all_genes_rep_samples.pdf`
+* `plots/16_integration_ling/spot_plot_SNAPn_all_genes_rep_samples.pdf`
+* `plots/16_integration_ling/SNAP_score_by_donor_top_2000.pdf`
+* `plots/16_integration_ling/SNAP_score_by_donor_all_genes.pdf`
+* `plots/16_integration_ling/SNAP_score_by_spatial_domain_top_2000.pdf`
+* `plots/16_integration_ling/SNAP_score_by_spatial_domain_all_genes.pdf`
+* `plots/16_integration_ling/SNAP_score_donor_by_domain_heatmap_top_2000.pdf`
+* `plots/16_integration_ling/SNAP_score_donor_by_domain_heatmap_all_genes.pdf`

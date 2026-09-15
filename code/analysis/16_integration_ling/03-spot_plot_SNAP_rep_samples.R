@@ -34,9 +34,13 @@ score_df <- readRDS(
   )
 )
 
-## Merge normalized SNAP scores into colData(spe) ----
+## Merge SNAP scores into colData(spe) ----
 col_data_df <- score_df |>
-  select(key, SNAPa_zscore, SNAPn_zscore) |>
+  select(
+    key,
+    SNAPa_top_2000_score, SNAPn_top_2000_score,
+    SNAPa_all_genes_score, SNAPn_all_genes_score
+  ) |>
   right_join(
     colData(spe) |> data.frame(),
     by = "key",
@@ -47,8 +51,10 @@ rownames(col_data_df) <- col_data_df$key
 # error prevention
 stopifnot(identical(col_data_df$key, spe$key))
 
-spe$SNAPa_zscore <- col_data_df$SNAPa_zscore
-spe$SNAPn_zscore <- col_data_df$SNAPn_zscore
+spe$SNAPa_top_2000_score <- col_data_df$SNAPa_top_2000_score
+spe$SNAPn_top_2000_score <- col_data_df$SNAPn_top_2000_score
+spe$SNAPa_all_genes_score <- col_data_df$SNAPa_all_genes_score
+spe$SNAPn_all_genes_score <- col_data_df$SNAPn_all_genes_score
 
 ## sample_label used for panel titles, e.g. Br8667_NTC ----
 spe$sample_label <- paste0(spe$brnum, "_", toupper(spe$dx))
@@ -75,7 +81,7 @@ spd_palette <- set_names(
 
 
 # Make spot plot ----
-## Function to create escheR spot plot for a given normalized SNAP score ----
+## Function to create escheR spot plot for a given SNAP score ----
 plot_snap_spot <- function(spe, score_var, title) {
   plot_list <- unique(spe$sample_label) |>
     set_names() |>
@@ -98,18 +104,18 @@ plot_snap_spot <- function(spe, score_var, title) {
         )
     })
 
-  ## Shared, diverging color scale (score is z-scored, centered at 0) ----
+  ## Shared color scale (grayscale: white = min, black = max) ----
   score_range <- range(spe[[score_var]], na.rm = TRUE)
-  score_lim <- max(abs(score_range)) * c(-1, 1)
+
+  fill_scale <- scale_fill_gradient(
+    name = title,
+    limits = score_range,
+    low = "white", high = "black"
+  )
 
   plot_list <- plot_list |> lapply(FUN = function(.p) {
     .p +
-      scale_fill_gradient2(
-        name = title,
-        limits = score_lim,
-        low = "steelblue", mid = "white", high = "firebrick",
-        midpoint = 0
-      ) +
+      fill_scale +
       scale_color_manual(
         name = "Spatial Domain",
         values = spd_palette,
@@ -134,35 +140,63 @@ plot_snap_spot <- function(spe, score_var, title) {
 }
 
 
-## SNAP-a spot plot ----
-combined_plot_snapa <- plot_snap_spot(
+## SNAP-a top-2000 spot plot ----
+combined_plot_snapa_top2000 <- plot_snap_spot(
   spe,
-  score_var = "SNAPa_zscore",
-  title = "SNAP-a\n(normalized)"
+  score_var = "SNAPa_top_2000_score",
+  title = "SNAP-a\n(top 2000)"
 )
 
 ggsave(
-  filename = file.path(fld_plot, "spot_plot_SNAPa_rep_samples.pdf"),
-  plot = combined_plot_snapa,
+  filename = file.path(fld_plot, "spot_plot_SNAPa_top_2000_rep_samples.pdf"),
+  plot = combined_plot_snapa_top2000,
   height = 5.5, width = 11.5,
   units = "in"
 )
 
-## SNAP-n spot plot ----
-combined_plot_snapn <- plot_snap_spot(
+## SNAP-n top-2000 spot plot ----
+combined_plot_snapn_top2000 <- plot_snap_spot(
   spe,
-  score_var = "SNAPn_zscore",
-  title = "SNAP-n\n(normalized)"
+  score_var = "SNAPn_top_2000_score",
+  title = "SNAP-n\n(top 2000)"
 )
 
 ggsave(
-  filename = file.path(fld_plot, "spot_plot_SNAPn_rep_samples.pdf"),
-  plot = combined_plot_snapn,
+  filename = file.path(fld_plot, "spot_plot_SNAPn_top_2000_rep_samples.pdf"),
+  plot = combined_plot_snapn_top2000,
   height = 5.5, width = 11.5,
   units = "in"
 )
 
-print("Finished making SNAP-a / SNAP-n spot plots for representative samples")
+## SNAP-a all-genes spot plot ----
+combined_plot_snapa_all_genes <- plot_snap_spot(
+  spe,
+  score_var = "SNAPa_all_genes_score",
+  title = "SNAP-a\n(all genes)"
+)
+
+ggsave(
+  filename = file.path(fld_plot, "spot_plot_SNAPa_all_genes_rep_samples.pdf"),
+  plot = combined_plot_snapa_all_genes,
+  height = 5.5, width = 11.5,
+  units = "in"
+)
+
+## SNAP-n all-genes spot plot ----
+combined_plot_snapn_all_genes <- plot_snap_spot(
+  spe,
+  score_var = "SNAPn_all_genes_score",
+  title = "SNAP-n\n(all genes)"
+)
+
+ggsave(
+  filename = file.path(fld_plot, "spot_plot_SNAPn_all_genes_rep_samples.pdf"),
+  plot = combined_plot_snapn_all_genes,
+  height = 5.5, width = 11.5,
+  units = "in"
+)
+
+print("Finished making SNAP-a / SNAP-n top-2000 and all-genes spot plots for representative samples")
 
 
 # Session Info ----
