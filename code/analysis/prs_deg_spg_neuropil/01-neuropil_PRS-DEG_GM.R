@@ -18,7 +18,7 @@ raw_pb_neuropil <- readRDS(
   )
 )
 
-## Subset to WM only ----
+## Subset to GM only ----
 pb_neuropil <- raw_pb_neuropil[
   ,
   raw_pb_neuropil$registration_variable %in%
@@ -32,16 +32,19 @@ ncol(pb_neuropil)
 prs_data <- read_csv(
   here(
     "processed-data/donor_prs",
-    "Spatial_DLPFC_SCZ_PRS.csv"
+    "SCZ_PRS_with_dx_and_genetic_PCs.csv"
   )
 ) |>
   rename_with(
     ~ paste0("genotype_", .x), starts_with("PC")
   ) |>
-  select(
-    brnum = IID,
+    select(
+    # brnum = IID,
+    brnum = subject,
     PRS,
     starts_with("genotype_")
+  ) |> mutate(
+    norm_PRS = scale(PRS, center = TRUE, scale = TRUE)
   )
 
 colData(pb_neuropil) <- as.data.frame(colData(pb_neuropil)) |>
@@ -51,7 +54,7 @@ colData(pb_neuropil) <- as.data.frame(colData(pb_neuropil)) |>
 # limma test ----
 ## Create desgin matrix ----
 dx_mod <- model.matrix(
-  ~ 0 + PRS + fnl_spd + age + sex + slide_id + genotype_PC1 + genotype_PC2,
+  ~ 0 + norm_PRS + fnl_spd + age + sex + slide_id + genotype_PC1 + genotype_PC2 + genotype_PC3,
   colData(pb_neuropil)
 )
 
@@ -74,7 +77,7 @@ fit <- lmFit(
 eb_fit <- eBayes(fit)
 
 test_res <- topTable(eb_fit,
-  coef = "PRS", number = Inf, genelist = fit$genes,
+  coef = "norm_PRS", number = Inf, genelist = fit$genes,
   adjust.method = "BH", sort.by = "B", resort.by = NULL,
   p.value = 1, fc = NULL, lfc = NULL, confint = FALSE
 )
@@ -89,8 +92,8 @@ fnl_res <- test_res |>
 
 # Save results ----
 write_csv(fnl_res, file = here(
-  "processed-data/rds/14_prs_deg",
-  "Neuropil_PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+  "processed-data/rds/14_prs_deg/Neuropil_PRS_DEG",
+  "Neuropil_PRS_DEG_res_PRECAST07_donor_spd.csv"
 ))
 
 

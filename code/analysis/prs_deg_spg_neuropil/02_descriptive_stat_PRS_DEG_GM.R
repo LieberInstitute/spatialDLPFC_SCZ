@@ -8,8 +8,8 @@ suppressPackageStartupMessages({
 # Load Neuropil PRS-DEG results ----
 prs_deg_res <- read_csv(
   here(
-      "processed-data/rds/14_prs_deg",
-      "Neuropil_PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+  "processed-data/rds/14_prs_deg/Neuropil_PRS_DEG",
+  "Neuropil_PRS_DEG_res_PRECAST07_donor_spd.csv"
     )
 )
 
@@ -26,11 +26,11 @@ hist(
 ## Number of DEGs at diffferent p-cutoffs ----
 ### Nominal p < 0.05 ----
 sum(prs_deg_res$P.Value < 0.05)
-# [1] 354
+# [1] 1590
 
 ### FDR < 0.1 ----
 sum(prs_deg_res$adj.P.Val < 0.1)
-# [1] 5
+# [1] 453
 
 prs_deg_res |> filter(adj.P.Val < 0.1) |> pull(gene_name)
 # [1] "MTRNR2L8"   "AC004556.3" "SURF1"      "MRPL23"    

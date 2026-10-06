@@ -19,8 +19,8 @@ dx_deg_df <- read_csv(
 ## Neuropil PRS-DEG result ----
 prs_deg_df <- read_csv(
   here(
-    "processed-data/rds/14_prs_deg",
-    "Neuropil_PRS_DEG_test_res_PRECAST07_donor_spd.csv"
+  "processed-data/rds/14_prs_deg/Neuropil_PRS_DEG",
+  "Neuropil_PRS_DEG_res_PRECAST07_donor_spd.csv"
   )
 )
 
@@ -46,7 +46,7 @@ merged_df <- dx_deg_df |>
 
 ### Descriptive statistics ----
 cor(merged_df$t_stat_scz, merged_df$t_prs)
-# [1] 0.3806872
+# [1] 0.5418209
 
 
 # Scatter plot ----
@@ -109,7 +109,7 @@ ggplot(
 
 ggsave(
   filename = here(
-    "plots/14_prs_deg",
+    "plots/14_prs_deg/Neuropil_PRS_DEG",
     "cor_plot_Neuropil_PRS_vs_Dx-DEGs.pdf"
   ),
   width = 7, height = 5.5, units = "in"
