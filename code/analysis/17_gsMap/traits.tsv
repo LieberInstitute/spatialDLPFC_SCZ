@@ -1,0 +1,9 @@
+# GWAS traits run through gsMap steps 07-12.
+# Column 2 is a gsMap-formatted file name inside processed-data/17_gsMap/sumstats/.
+# Uncomment / add rows to run more traits; each extra trait must first be
+# formatted with `gsmap format_sumstats` (see 02-format_sumstats.sh).
+trait_name	sumstats_file
+SCZ_PGC3	SCZ_PGC3.sumstats.gz
+# BIP_PGC4	BIP_PGC4.sumstats.gz
+# MDD_PGC	MDD_PGC.sumstats.gz
+# Height	Height.sumstats.gz
