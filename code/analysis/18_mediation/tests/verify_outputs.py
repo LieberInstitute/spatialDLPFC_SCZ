@@ -33,12 +33,13 @@ def check_family(rows, prefix):
 
 def check_robustness(outdir, manifest, primary, signature):
     expected = set()
+    status = read_table(outdir / 'sensitivity/status.tsv')
+    voom_engine = any(row['analysis'] == 'fixed_weights' for row in status)
     for screen in manifest:
-        labels = ['slide_rin', 'matched_logcounts', 'fixed_weights']
+        labels = ['slide_rin'] + (['matched_logcounts', 'fixed_weights'] if voom_engine else ['voom'])
         if 'neun' in (screen['source'], screen['target']):
             labels.append('without_spd07')
         expected.update((screen['screen_id'], label) for label in labels)
-    status = read_table(outdir / 'sensitivity/status.tsv')
     completed = {(row['screen_id'], row['analysis']) for row in status
                  if row['status'] == 'complete'}
     assert expected <= completed, 'Required sensitivity tasks missing or failed'
@@ -50,8 +51,8 @@ def check_robustness(outdir, manifest, primary, signature):
         assert len({r['gene_id'] for r in rows}) == len(rows), 'Duplicate sensitivity gene'
         genes = {r['gene_id'] for r in rows}
         primary_genes = {r['gene_id'] for r in primary[sid]}
-        if label == 'without_spd07':
-            assert genes <= primary_genes, 'Domain-exclusion universe exceeds primary universe'
+        if label in ('without_spd07', 'voom'):
+            assert genes <= primary_genes, 'Refiltered universe exceeds primary universe'
         else:
             assert genes == primary_genes, \
                 'Sensitivity testing universe differs from primary: ' + sid + '/' + label

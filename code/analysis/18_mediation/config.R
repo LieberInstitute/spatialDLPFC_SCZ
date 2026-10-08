@@ -1,9 +1,16 @@
 ## fixed scientific choices; paths resolve against --project-root.
 config <- list(
-  version = "1.0.0",
+  version = "1.1.0",
+  ## "limma_logcounts" reproduces the manuscript SPG DE model; "voom" is the 2026-10-01 engine.
+  engine = "limma_logcounts",
   spds = sprintf("spd%02d", c(2, 3, 5, 6, 7)),
   min_donors = 10L, min_per_dx = 5L, min_residual_df = 5L,
-  min_spots = 10L, dx_p = 0.05, mediator_dx_p = 0.05, mediator_q = 0.05,
+  ## refit every screen with shared spots removed, not only screens with primary hits.
+  overlap_refit_all = TRUE,
+  ## B&K step 2 (Dx -> M) is accepted from the manuscript nominal DEG nomination, as in the
+  ## ERC framework; the matched-sample a-path is reported but gates hits only when TRUE.
+  require_mediator_gate = FALSE,
+  min_spots = 10L, dx_p = 0.05, mediator_dx_p = 0.05, mediator_q = 0.10,
   seed = 172026L,
   pb = c(vasc = "processed-data/rds/PB_dx_spg/pseudo_vasc_pos_donor_spd.rds",
          neun = "processed-data/rds/PB_dx_spg/pseudo_neun_pos_donor_spd.rds",

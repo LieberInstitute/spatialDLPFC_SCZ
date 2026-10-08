@@ -15,7 +15,11 @@ audit_stage <- function(inputs, screens, cfg, env) {
   for (i in seq_len(nrow(screens))) {
     s <- screens[i, ]; src <- inputs$objects[[s$source]]; tgt <- inputs$objects[[s$target]]
     m <- match_samples(src, tgt, cfg); d <- m$samples
-    sdge <- prepare_dge(src, d$key, m$design); tdge <- prepare_dge(tgt, d$key, m$design)
+    if (identical(cfg$engine, "limma_logcounts")) {
+      sdge <- prepare_logcounts(src, d$key); tdge <- prepare_logcounts(tgt, d$key)
+    } else {
+      sdge <- prepare_dge(src, d$key, m$design); tdge <- prepare_dge(tgt, d$key, m$design)
+    }
     assert(s$mediator_id %in% rownames(sdge), paste(s$screen_id, "mediator unavailable"))
     assert(nrow(d) == s$expected_samples && length(unique(d$donor)) == s$expected_donors,
            paste("Matched sample counts changed for", s$screen_id, "- review configuration"))
@@ -62,7 +66,7 @@ primary_stage <- function(inputs, screens, all_screens, cfg, env, workers) {
       write_tsv(a$samples, file.path(env$out, "primary", paste0(s$screen_id, "_samples.tsv")))
       write_tsv(a$results, file.path(env$out, "primary", paste0(s$screen_id, "_results.tsv.gz")))
       data.frame(screen_id = s$screen_id, status = "complete", message = "", artifact = path,
-                 baseline_key = attr(a$baseline, "cache_key"), joint_key = attr(a$joint, "cache_key"))
+                 baseline_key = attr(a$baseline, "cache_key") %||% "", joint_key = attr(a$joint, "cache_key") %||% "")
     }, error = function(e) data.frame(screen_id = s$screen_id, status = "failed", message = conditionMessage(e),
                                       artifact = "", baseline_key = "", joint_key = ""))
   }, mc.cores = min(workers, nrow(screens)), mc.preschedule = FALSE)
@@ -132,27 +136,42 @@ sensitivity_stage <- function(inputs, screens, cfg, env, workers = 1L) {
         data.frame(screen_id = s$screen_id, analysis = label, status = "complete", message = "")
       }, error = function(e) data.frame(screen_id = s$screen_id, analysis = label, status = "failed", message = conditionMessage(e)))
     }
-    status[[length(status) + 1L]] <- run("slide_rin", function() {
+    if (identical(cfg$engine, "limma_logcounts")) {
+      status[[length(status) + 1L]] <- run("slide_rin", function() {
+        b <- run_screen(s, inputs, cfg, env, extra = c("slide_id", "rin"))
+        b$results$analysis <- "slide_rin"; b$results
+      })
+      ## the 2026-10-01 primary engine, retained as a sensitivity on its own filtered gene universe.
+      status[[length(status) + 1L]] <- run("voom", function() {
+        vcfg <- cfg; vcfg$engine <- "voom"
+        b <- run_screen(s, inputs, vcfg, env)
+        b$results$analysis <- "voom"; b$results
+      })
+      fixed <- list(rho = a$rho[["target"]])
+    }
+    if (identical(cfg$engine, "voom")) status[[length(status) + 1L]] <- run("slide_rin", function() {
       des <- make_design(d, cfg, c("slide_id", "rin"))
       sf <- cached_voom(a$sdge, des, d, env)
       bf <- cached_voom(a$tdge, des, d, env)
       jf <- cached_voom(a$tdge, make_design(d, cfg, c("slide_id", "rin", "M")), d, env)
       sensitivity_result(a, bf, jf, sf, cfg, inputs, "slide_rin")
     })
-    status[[length(status) + 1L]] <- run("matched_logcounts", function() {
-      ts <- inputs$objects[[s$target]]$logcounts[rownames(a$tdge), d$key, drop = FALSE]
-      ss <- inputs$objects[[s$source]]$logcounts[rownames(a$sdge), d$key, drop = FALSE]
-      dl <- d; dl$M <- as.numeric(scale(ss[s$mediator_id, ]))
-      sf <- fit_logcounts(ss, a$design, dl)$fit
-      bf <- fit_logcounts(ts, a$design, dl)$fit
-      jf <- fit_logcounts(ts, make_design(dl, cfg, "M"), dl)$fit
-      sensitivity_result(a, bf, jf, sf, cfg, inputs, "matched_logcounts")
-    })
-    fixed <- NULL
-    status[[length(status) + 1L]] <- run("fixed_weights", function() {
-      fixed <<- fixed_comparison(a, cfg)
-      sensitivity_result(a, fixed$baseline, fixed$joint, a$source_fit, cfg, inputs, "fixed_weights")
-    })
+    if (identical(cfg$engine, "voom")) {
+      status[[length(status) + 1L]] <- run("matched_logcounts", function() {
+        ts <- inputs$objects[[s$target]]$logcounts[rownames(a$tdge), d$key, drop = FALSE]
+        ss <- inputs$objects[[s$source]]$logcounts[rownames(a$sdge), d$key, drop = FALSE]
+        dl <- d; dl$M <- as.numeric(scale(ss[s$mediator_id, ]))
+        sf <- fit_logcounts(ss, a$design, dl)$fit
+        bf <- fit_logcounts(ts, a$design, dl)$fit
+        jf <- fit_logcounts(ts, make_design(dl, cfg, "M"), dl)$fit
+        sensitivity_result(a, bf, jf, sf, cfg, inputs, "matched_logcounts")
+      })
+      fixed <- NULL
+      status[[length(status) + 1L]] <- run("fixed_weights", function() {
+        fixed <<- fixed_comparison(a, cfg)
+        sensitivity_result(a, fixed$baseline, fixed$joint, a$source_fit, cfg, inputs, "fixed_weights")
+      })
+    }
     if (s$source == "neun" || s$target == "neun") {
       status[[length(status) + 1L]] <- run("without_spd07", function() {
         b <- run_screen(s, inputs, cfg, env, setdiff(cfg$spds, "spd07"),
@@ -179,7 +198,7 @@ sensitivity_stage <- function(inputs, screens, cfg, env, workers = 1L) {
       assert(identical(a$samples$key, b$samples$key), "FGF samples differ")
       d <- a$samples; d$M2 <- b$samples$M
       des <- make_design(d, cfg, c("M", "M2"))
-      f <- cached_voom(a$tdge, des, d, env)
+      f <- fit_target(a, des, env)
       r <- merge(prefix_coef(coef_table(f, "M"), "FGF1"), prefix_coef(coef_table(f, "M2"), "FGF2"), by = "gene_id")
       r$mediator_correlation <- cor(d$M, d$M2); r$design_condition_number <- kappa(des)
       write_tsv(r, file.path(env$out, "diagnostics", "neuropil_FGF1_FGF2_joint.tsv.gz"))

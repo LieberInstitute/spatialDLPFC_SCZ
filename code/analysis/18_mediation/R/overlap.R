@@ -64,7 +64,10 @@ overlap_stage <- function(inputs, screens, cfg, env) {
   statuses <- list()
   for (i in seq_len(nrow(screens))) {
     s <- screens[i, ]; hit_ids <- primary$gene_id[primary$screen_id == s$screen_id & primary$screen_hit]
-    if (!length(hit_ids)) {
+    ## with overlap_refit_all, also track pairs whose only failed gate is the mediator gate.
+    near_ids <- primary$gene_id[primary$screen_id == s$screen_id & primary$failed_gates %in% c("", "mediator_gate")]
+    track_ids <- unique(c(hit_ids, if (isTRUE(cfg$overlap_refit_all)) near_ids))
+    if (!length(hit_ids) && !isTRUE(cfg$overlap_refit_all)) {
       statuses[[i]] <- data.frame(screen_id = s$screen_id, status = "not_required_no_primary_hits", message = "", n_samples = NA_integer_, n_donors = NA_integer_)
       next
     }
@@ -89,15 +92,16 @@ overlap_stage <- function(inputs, screens, cfg, env) {
                   file.path(env$out, "overlap", paste0(s$screen_id, "_", context, "_retention.tsv")))
         pb <- pb[, valid, drop = FALSE]; d <- d[valid, ]
         assert(ncol(pb) > 0, "No pseudobulks remain after shared-spot removal")
-        lc <- edgeR::cpm(edgeR::calcNormFactors(edgeR::DGEList(pb)), log = TRUE)
+        ## same normalization as the stored pseudobulk logcounts (spatialLIBD::registration_pseudobulk).
+        lc <- edgeR::cpm(edgeR::calcNormFactors(edgeR::DGEList(pb)), log = TRUE, prior.count = 1)
         rebuilt$objects[[context]] <- list(counts = pb, logcounts = lc, genes = original$genes, samples = d)
       }
       b <- run_screen(s, rebuilt, cfg, env, restrict = list(source = rownames(a$sdge), target = rownames(a$tdge)))
       r <- b$results; r$analysis <- "shared_spots_removed"; r$primary_hit <- r$gene_id %in% hit_ids
       write_tsv(r, file.path(env$out, "overlap", paste0(s$screen_id, "_results.tsv.gz")))
-      comparison <- merge(primary[primary$screen_id == s$screen_id & primary$screen_hit, c("gene_id", "gene_name", "screen_hit", "c_beta", "cprime_beta", "b_q")],
-        r[, c("gene_id", "screen_hit", "c_beta", "cprime_beta", "b_q")], by = "gene_id", all.x = TRUE,
-        suffixes = c("_primary", "_overlap_removed"))
+      cols <- c("gene_id", "screen_hit", "failed_gates", "a_beta", "a_p", "c_beta", "c_p", "cprime_beta", "cprime_p", "b_beta", "b_q", "relative_shrinkage")
+      comparison <- merge(primary[primary$screen_id == s$screen_id & primary$gene_id %in% track_ids, c("gene_name", cols)],
+        r[, cols], by = "gene_id", all.x = TRUE, suffixes = c("_primary", "_overlap_removed"))
       comparison$testable <- !is.na(comparison$screen_hit_overlap_removed)
       write_tsv(comparison, file.path(env$out, "overlap", paste0(s$screen_id, "_hit_comparison.tsv")))
       save_atomic(list(samples = b$samples, scaling = b$scaling, signature = env$signature), file.path(env$out, "overlap", paste0(s$screen_id, "_metadata.rds")))

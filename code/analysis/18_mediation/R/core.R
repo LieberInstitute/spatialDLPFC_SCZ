@@ -181,14 +181,15 @@ classify_pairs <- function(r, cfg) {
   r$mediator_gate <- r$a_p < cfg$mediator_dx_p
   r$mediator_outcome_gate <- r$b_q < cfg$mediator_q
   r$significance_loss <- r$cprime_p >= cfg$dx_p
-  r$screen_hit <- r$historical_gate & r$baseline_gate & r$mediator_gate & r$mediator_outcome_gate & r$significance_loss
+  gates <- c("historical_gate", "baseline_gate", if (!isFALSE(cfg$require_mediator_gate)) "mediator_gate",
+             "mediator_outcome_gate", "significance_loss")
+  r$screen_hit <- Reduce(`&`, r[gates])
   r$absolute_shrinkage <- abs(r$c_beta) - abs(r$cprime_beta)
   r$direction_reversal <- r$c_beta * r$cprime_beta < 0
   r$coefficient_shrinkage <- r$absolute_shrinkage > 0 & !r$direction_reversal
   r$relative_shrinkage <- ifelse(abs(r$c_beta) > 1e-8, 1 - r$cprime_beta / r$c_beta, NA_real_)
   r$attenuated_still_significant <- r$historical_gate & r$baseline_gate & r$coefficient_shrinkage & !r$significance_loss
   r$higher_priority <- r$screen_hit & r$coefficient_shrinkage & !is.na(r$b_q_global) & r$b_q_global < cfg$mediator_q
-  gates <- c("historical_gate", "baseline_gate", "mediator_gate", "mediator_outcome_gate", "significance_loss")
   r$failed_gates <- apply(r[, gates, drop = FALSE], 1, function(z) paste(gates[!z], collapse = ";"))
   r
 }
@@ -208,9 +209,55 @@ assemble_results <- function(screen, historical, genes, source_fit, baseline, jo
   r$b_q_global <- NA_real_
   classify_pairs(r, cfg)
 }
-run_screen <- function(screen, inputs, cfg, env, spds = cfg$spds, restrict = NULL) {
+prepare_logcounts <- function(object, keys, restrict_genes = NULL) {
+  E <- object$logcounts[, match(keys, colnames(object$logcounts)), drop = FALSE]
+  assert(identical(colnames(E), keys), "Logcounts alignment failed")
+  if (!is.null(restrict_genes)) E <- E[rownames(E) %in% restrict_genes, , drop = FALSE]
+  E <- E[apply(E, 1, function(x) diff(range(x)) > 0), , drop = FALSE]
+  assert(nrow(E) > 1L, "No usable gene universe")
+  E
+}
+## manuscript engine: stored logcounts, donor correlation from the covariate design without SpD
+## (spatialLIBD::registration_block_cor), one target correlation shared by nested models.
+run_screen_logcounts <- function(screen, src, tgt, matched, cfg, restrict, extra) {
+  d <- matched$samples
+  des <- if (length(extra)) make_design(d, cfg, extra) else matched$design
+  cd <- make_design(d, cfg, extra, include_spd = FALSE)
+  sE <- prepare_logcounts(src, d$key, restrict$source)
+  tE <- prepare_logcounts(tgt, d$key, restrict$target)
+  assert(screen$mediator_id %in% rownames(sE), "Mediator unavailable in source logcounts")
+  rho_s <- limma::duplicateCorrelation(sE, cd, block = d$donor)$consensus.correlation
+  rho_t <- limma::duplicateCorrelation(tE, cd, block = d$donor)$consensus.correlation
+  assert(is.finite(rho_s) && is.finite(rho_t), "Nonestimable donor correlation")
+  sf <- limma::lmFit(sE, des, block = d$donor, correlation = rho_s)
+  med <- as.numeric(sE[screen$mediator_id, ])
+  assert(all(is.finite(med)) && sd(med) > 1e-8, "Missing or constant mediator expression")
+  scaling <- c(mean = mean(med), sd = sd(med))
+  d$M_logCPM <- med; d$M <- (med - scaling[["mean"]]) / scaling[["sd"]]
+  jd <- make_design(d, cfg, c(extra, "M"))
+  bf <- limma::lmFit(tE, des, block = d$donor, correlation = rho_t)
+  jf <- limma::lmFit(tE, jd, block = d$donor, correlation = rho_t)
+  bf$EList <- list(E = tE, weights = NULL)
+  list(d = d, des = des, sdge = sE, tdge = tE, sf = sf, bf = bf, jf = jf, scaling = scaling,
+       rho = c(source = rho_s, target = rho_t))
+}
+## fit an additional target design with the engine and variance settings of a primary artifact.
+fit_target <- function(a, design, env) {
+  if (is.null(a$rho)) return(cached_voom(a$tdge, design, a$samples, env))
+  limma::lmFit(a$tdge, design, block = a$samples$donor, correlation = a$rho[["target"]])
+}
+run_screen <- function(screen, inputs, cfg, env, spds = cfg$spds, restrict = NULL, extra = character()) {
   src <- inputs$objects[[screen$source]]; tgt <- inputs$objects[[screen$target]]
   matched <- match_samples(src, tgt, cfg, spds)
+  if (identical(cfg$engine, "limma_logcounts")) {
+    z <- run_screen_logcounts(screen, src, tgt, matched, cfg, restrict, extra)
+    r <- assemble_results(screen, inputs$historical[[screen$target]], tgt$genes, z$sf, z$bf, z$jf, cfg)
+    r$n_samples <- nrow(z$d); r$n_donors <- length(unique(z$d$donor)); r$run_signature <- env$signature
+    return(list(screen = screen, samples = z$d, exclusions = matched$exclusions, design = z$des,
+                sdge = z$sdge, tdge = z$tdge, source_fit = z$sf, baseline = z$bf, joint = z$jf,
+                scaling = z$scaling, rho = z$rho, results = r, signature = env$signature))
+  }
+  assert(identical(cfg$engine, "voom") && !length(extra), "Unsupported engine or extra covariates for voom run_screen")
   d <- matched$samples; des <- matched$design
   sdge <- prepare_dge(src, d$key, des, if (!is.null(restrict)) restrict$source else NULL)
   tdge <- prepare_dge(tgt, d$key, des, if (!is.null(restrict)) restrict$target else NULL)

@@ -104,10 +104,11 @@ report_stage <- function(screens, cfg, env) {
     z <- summary[i, ]; sprintf("| %s | %d | %d | %.4g | %d | %d |", z$screen_id, z$donors, z$tested_genes, z$a_p, z$screening_hits, z$higher_priority_hits)
   }, "")
   text <- c("# SCZ PTN/FGF exploratory mediation screening", "", paste("Generated:", Sys.time()),
-    paste("Run signature:", env$signature), "", header, "|---|---:|---:|---:|---:|---:|", rows, "",
+    paste("Run signature:", env$signature), paste("Model engine:", cfg$engine), "", header, "|---|---:|---:|---:|---:|---:|", rows, "",
     sens_text, overlap_text, "",
-    "The screening rule requires historical and matched-baseline diagnosis p < 0.05, matched mediator diagnosis p < 0.05, conditional mediator-outcome BH FDR < 0.05, and adjusted diagnosis p >= 0.05.", "",
-    "Higher priority additionally requires same-direction coefficient shrinkage and BH FDR < 0.05 across all five mediator-outcome testing families. This is not a mediation-discovery FDR guarantee.", "",
+    sprintf("Screening rule: historical and matched-baseline diagnosis p < %g, %sconditional mediator-outcome BH FDR < %g, and adjusted diagnosis p >= %g.",
+            cfg$dx_p, if (isFALSE(cfg$require_mediator_gate)) "" else sprintf("matched mediator diagnosis p < %g, ", cfg$mediator_dx_p), cfg$mediator_q, cfg$dx_p), "",
+    sprintf("Higher priority additionally requires same-direction coefficient shrinkage and BH FDR < %g across all five mediator-outcome testing families. This is not a mediation-discovery FDR guarantee.", cfg$mediator_q), "",
     "All four historical mediator nominations fail gene-wide FDR 0.05. Nominal selection and testing reuse the same cohort. A p-value crossing 0.05 is not a test of coefficient change or proof of mediation.", "",
     "These are cross-sectional mixed-tissue observations with repeated SpDs per donor and potentially shared spots between SPGs. Diagnosis is not randomized; temporal ordering and unmeasured confounding remain unresolved. Results support hypotheses for follow-up, not causal or functional validation.", "",
     "See screen_summary.tsv, hit_sensitivity_comparison.tsv (when hits exist), primary/all_pairs.tsv.gz, historical/reconciliation.tsv, and the sensitivity/overlap status tables for complete evidence.")

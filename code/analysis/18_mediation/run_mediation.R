@@ -4,17 +4,18 @@ script_arg <- grep("^--file=", commandArgs(), value = TRUE)
 script_dir <- dirname(normalizePath(sub("^--file=", "", script_arg[1])))
 source(file.path(script_dir, "R", "core.R"))
 opt <- list(stage = "audit", project_root = normalizePath(file.path(script_dir, "../../..")),
-            config = file.path(script_dir, "config.R"), screens = "all", workers = "1", outdir = NULL, plots = NULL)
+            config = file.path(script_dir, "config.R"), screens = "all", workers = "1", outdir = NULL, plots = NULL, engine = NULL, overlap_all = FALSE)
 if ("--help" %in% args) {
   cat("Rscript run_mediation.R --stage audit|historical|screen|sensitivity|overlap|report|primary|all\n",
       "  --project-root PATH --config PATH --screens all|comma-separated-IDs\n",
-      "  --outdir PATH --plots PATH --workers N --audit-only\n",
+      "  --outdir PATH --plots PATH --workers N --engine limma_logcounts|voom --overlap-all --audit-only\n",
       "Stages 'all' and 'overlap' load the large raw spot object; use the 64 GB job.\n")
   quit(status = 0)
 }
 i <- 1L
 while (i <= length(args)) {
   if (args[i] == "--audit-only") { opt$stage <- "audit"; i <- i + 1L; next }
+  if (args[i] == "--overlap-all") { opt$overlap_all <- TRUE; i <- i + 1L; next }
   key <- gsub("-", "_", sub("^--", "", args[i]))
   assert(key %in% names(opt) && i < length(args), paste("Unknown/incomplete argument", args[i]))
   opt[[key]] <- args[i + 1L]; i <- i + 2L
@@ -25,6 +26,9 @@ packages <- c("SpatialExperiment", "edgeR", "limma", "data.table", "digest", "Ma
 for (pkg in packages) assert(requireNamespace(pkg, quietly = TRUE), paste("Missing R package", pkg))
 data.table::setDTthreads(1L)
 source(opt$config)
+if (!is.null(opt$engine)) config$engine <- opt$engine
+if (isTRUE(opt$overlap_all)) config$overlap_refit_all <- TRUE
+assert(config$engine %in% c("limma_logcounts", "voom"), "Unknown engine")
 source(file.path(script_dir, "R", "stages.R"))
 source(file.path(script_dir, "R", "overlap.R"))
 source(file.path(script_dir, "R", "report.R"))
@@ -65,7 +69,7 @@ write_tsv(data.frame(time = as.character(Sys.time()), stage = opt$stage, signatu
                     screens = paste(screens$screen_id, collapse = ",")),
           file.path(provenance_dir, paste0("invocation_", opt$stage, ".tsv")))
 inputs <- if (opt$stage != "report") load_inputs(config, root) else NULL
-stages <- if (opt$stage == "all") c("audit", "historical", "screen", "sensitivity", "overlap", "report") else if (opt$stage == "primary") c("audit", "historical", "screen", "sensitivity", "report") else opt$stage
+stages <- if (opt$stage == "all") c("audit", "historical", "screen", "overlap", "report") else if (opt$stage == "primary") c("audit", "historical", "screen", "report") else opt$stage
 for (stage in stages) {
   message("Stage: ", stage, " signature=", substr(signature, 1, 12))
   switch(stage,

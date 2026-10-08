@@ -21,7 +21,9 @@ bad_d <- d; bad_d$age[1] <- NA_real_; expect_error(function() make_design(bad_d,
 bad_d <- d; bad_d$M <- 1; expect_error(function() make_design(bad_d, config, "M"))
 base <- data.frame(historical_p = rep(.01, 4), c_p = rep(.01, 4), a_p = c(.01, .01, .2, .01),
  b_q = rep(.01, 4), cprime_p = c(.1, .01, .1, .1), c_beta = rep(1, 4), cprime_beta = c(1.2, .5, .5, -.5), b_q_global = rep(.01, 4))
-z <- classify_pairs(base, config)
+strict <- config; strict$require_mediator_gate <- TRUE
+z <- classify_pairs(base, strict)
+assert(classify_pairs(base, config)$screen_hit[3], "Optional mediator gate still enforced")
 assert(z$screen_hit[1] && !z$coefficient_shrinkage[1] && !z$higher_priority[1], "Significance loss incorrectly implies shrinkage")
 assert(z$attenuated_still_significant[2] && !z$screen_hit[2], "Retained significance classification wrong")
 assert(!z$screen_hit[3] && !z$mediator_gate[3], "Failed mediator gate ignored")

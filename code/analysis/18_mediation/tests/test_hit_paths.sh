@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ## synthetic integration fixture; never writes to production analysis outputs.
 set -eo pipefail
-module load conda_R/4.5
+if command -v module >/dev/null 2>&1; then module load conda_R/4.5; fi
 set -u
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 analysis_dir=${1:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}
@@ -16,7 +16,7 @@ main <- function() {
   set.seed(7919)
   root <- tempfile("synthetic_mediation_"); dir.create(root)
   on.exit(unlink(root, recursive = TRUE), add = TRUE)
-  cfg <- config; cfg$min_spots <- 2L; cfg$spots <- "raw.rds"
+  cfg <- config; cfg$min_spots <- 2L; cfg$spots <- "raw.rds"; cfg$overlap_refit_all <- FALSE
   env <- list(root = root, out = file.path(root, "outputs"), signature = "synthetic_hitpath_v1")
   d <- expand.grid(SpD = c("spd02", "spd03"), donor = paste0("donor", 1:20), stringsAsFactors = FALSE)
   donor_index <- as.integer(sub("donor", "", d$donor))
