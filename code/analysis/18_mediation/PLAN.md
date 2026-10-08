@@ -12,7 +12,7 @@ are in [DESIGN.md](DESIGN.md) and
 Adapt the expression-screening framework from `LFF_spatial_ERC/code/22_Mediation`
 to diagnosis-associated expression in spatialDLPFC_SCZ. The reference source
 revision is `9d8d75d9df7e3052fd65ca558584ff7123cb3dfa`.
-The new analysis occupies `code/analysis/17_mediation`, alongside the numbered
+The new analysis occupies `code/analysis/18_mediation`, alongside the numbered
 analysis folders. The eQTL/colocalization implementation is a separate workflow.
 
 Five fixed hypotheses are evaluated:

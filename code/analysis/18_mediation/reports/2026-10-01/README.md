@@ -42,9 +42,11 @@ values, cache keys, and the executed model signature are unchanged.
 
 The recorded model signature describes the original runtime path-dependent
 provenance, not a newly computed signature over these normalized metadata files.
-The matching R source and screen/configuration fingerprints are verified against
-the current analysis folder. Python packaging tools and Markdown documentation
-are outside the R model fingerprint.
+The archived fingerprints describe the code and paths used for the original run.
+The analysis and runtime output folders were subsequently renamed from
+`17_mediation` to `18_mediation`, and the entry point defaults were updated.
+Archived metadata and hashes retain the original paths and fingerprints. Python
+packaging tools and Markdown documentation are outside the R model fingerprint.
 
 ## Reproduction and validation
 
@@ -52,13 +54,13 @@ From the repository root, the exported statistical results can be checked withou
 raw data or R packages:
 
 ```bash
-python3 code/analysis/17_mediation/tests/verify_outputs.py \
-  --outdir code/analysis/17_mediation/reports/2026-10-01 --require-robustness
+python3 code/analysis/18_mediation/tests/verify_outputs.py \
+  --outdir code/analysis/18_mediation/reports/2026-10-01 --require-robustness
 ```
 
 New full-data fits require the input files identified in `config.R` and the
 recorded Bioconductor environment. Default runtime outputs remain in
-`processed-data/17_mediation` and `plots/17_mediation`; this packaging operation
+`processed-data/18_mediation` and `plots/18_mediation`; this packaging operation
 does not change pipeline output defaults. The [main README](../../README.md)
 documents stage commands and scheduler use.
 

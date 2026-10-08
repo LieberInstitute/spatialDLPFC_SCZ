@@ -9,7 +9,7 @@ start times. Retained logs and tables are under `reports/2026-10-01/`. Early
 setup attempts are summarized from the execution record; their original log
 files are not included in the local report snapshot.
 
-The implementation was added in `code/analysis/17_mediation`. Existing analysis
+The implementation was added in `code/analysis/18_mediation`. Existing analysis
 code and scientific input files were not modified. Remote execution used the
 existing JHPCE checkout without resetting or synchronizing unrelated changes.
 The local base revision was `a800250c`; the remote recorded revision was
@@ -131,7 +131,7 @@ are included in the review snapshot.
   Existing code comments were impersonal and factual. The run's recorded R/TSV
   source fingerprints match the source packaged for review.
 - Created the `mediation` branch from the existing local checkout. The commit
-  scope is restricted to `code/analysis/17_mediation`; existing untracked runtime
+  scope is restricted to `code/analysis/18_mediation`; existing untracked runtime
   output directories outside it are excluded.
 
 ## 7. Review entry points

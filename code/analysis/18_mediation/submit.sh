@@ -3,7 +3,7 @@
 set -euo pipefail
 analysis_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 project_root=${1:-$(cd "$analysis_dir/../../.." && pwd)}
-output_dir=${2:-"$project_root/processed-data/17_mediation"}
+output_dir=${2:-"$project_root/processed-data/18_mediation"}
 mkdir -p "$output_dir/logs"
 screen_id=$(sbatch --parsable --job-name=scz-mediation --cpus-per-task=4 --mem=16G --time=04:00:00 \
   --output="$output_dir/logs/screening-%j.log" "$analysis_dir/job.sh" "$analysis_dir" screening "$project_root" "$output_dir")

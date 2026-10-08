@@ -45,7 +45,7 @@ and [the validation record](VALIDATION.md) for results and interpretation.
 From the SCZ project root:
 
 ```bash
-bash code/analysis/17_mediation/submit.sh
+bash code/analysis/18_mediation/submit.sh
 ```
 
 This submits a 4 CPU / 16 GB screening job. After it succeeds, a 4 CPU / 16 GB
@@ -59,15 +59,15 @@ Individual stages, executed within a compute allocation:
 
 ```bash
 module load conda_R/4.5
-Rscript --vanilla code/analysis/17_mediation/tests/test_core.R
-bash code/analysis/17_mediation/tests/test_hit_paths.sh
-Rscript --vanilla code/analysis/17_mediation/run_mediation.R --stage audit
-Rscript --vanilla code/analysis/17_mediation/run_mediation.R --stage historical
-Rscript --vanilla code/analysis/17_mediation/run_mediation.R --stage screen --workers 4
-Rscript --vanilla code/analysis/17_mediation/run_mediation.R --stage sensitivity
-Rscript --vanilla code/analysis/17_mediation/run_mediation.R --stage overlap
-Rscript --vanilla code/analysis/17_mediation/run_mediation.R --stage report
-python3 code/analysis/17_mediation/tests/verify_outputs.py --outdir processed-data/17_mediation --require-robustness
+Rscript --vanilla code/analysis/18_mediation/tests/test_core.R
+bash code/analysis/18_mediation/tests/test_hit_paths.sh
+Rscript --vanilla code/analysis/18_mediation/run_mediation.R --stage audit
+Rscript --vanilla code/analysis/18_mediation/run_mediation.R --stage historical
+Rscript --vanilla code/analysis/18_mediation/run_mediation.R --stage screen --workers 4
+Rscript --vanilla code/analysis/18_mediation/run_mediation.R --stage sensitivity
+Rscript --vanilla code/analysis/18_mediation/run_mediation.R --stage overlap
+Rscript --vanilla code/analysis/18_mediation/run_mediation.R --stage report
+python3 code/analysis/18_mediation/tests/verify_outputs.py --outdir processed-data/18_mediation --require-robustness
 ```
 
 `--stage primary` runs audit, historical reconciliation, screening, sensitivities,
@@ -92,7 +92,7 @@ installation is needed when working through JHPCE.
 
 ## Outputs
 
-Outputs default to `processed-data/17_mediation`; figures to `plots/17_mediation`.
+Outputs default to `processed-data/18_mediation`; figures to `plots/18_mediation`.
 
 - `audit/`: input inventory, sample matching, exclusions, target gene universes.
 - `historical/`: historical model reproduction and numerical reconciliation.

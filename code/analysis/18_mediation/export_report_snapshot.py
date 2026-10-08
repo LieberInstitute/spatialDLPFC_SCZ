@@ -24,8 +24,8 @@ def main():
     dest = analysis / 'reports' / args.label
     assert not dest.exists(), 'Snapshot already exists; use a new label'
     root = args.project_root.resolve()
-    source = root / 'processed-data/17_mediation'
-    plots = root / 'plots/17_mediation'
+    source = root / 'processed-data/18_mediation'
+    plots = root / 'plots/18_mediation'
     assert (source / 'report/RESULTS.md').is_file(), 'Completed report unavailable'
     assert (source / 'sensitivity/status.tsv').is_file(), 'Sensitivity status unavailable'
     candidates = []

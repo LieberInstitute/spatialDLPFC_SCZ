@@ -38,8 +38,8 @@ if (opt$screens != "all") {
   screens <- screens[match(ids, screens$screen_id), ]
 }
 root <- normalizePath(path.expand(opt$project_root))
-out <- if (is.null(opt$outdir)) file.path(root, "processed-data", "17_mediation") else path.expand(opt$outdir)
-plots <- if (is.null(opt$plots)) file.path(root, "plots", "17_mediation") else path.expand(opt$plots)
+out <- if (is.null(opt$outdir)) file.path(root, "processed-data", "18_mediation") else path.expand(opt$outdir)
+plots <- if (is.null(opt$plots)) file.path(root, "plots", "18_mediation") else path.expand(opt$plots)
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
 out <- normalizePath(out)
 files <- unique(file.path(root, c(config$pb, config$historical, config$donor_meta)))
