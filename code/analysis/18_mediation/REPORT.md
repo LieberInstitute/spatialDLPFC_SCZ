@@ -58,10 +58,22 @@ passed) is superseded.
   All show same-sign attenuation of c with a x b consistent with c.
 - Attenuation is partial: median 16%, 7 pairs >= 25%. c' p values are 0.051-0.16,
   i.e. the loss of significance is marginal for most pairs.
-- Restricting Y to manuscript FDR < .10 DEGs (nominal compromise in step 2 only)
-  leaves 1 pair (PTN vascular -> neuropil HSPD1); the other screens have none.
-  Strongly DE targets keep a significant c' after adjustment, so the 92 pairs come
-  from nominally DE targets where modest attenuation moves p just past .05.
+- Threshold dependence (all rows: matched c p < .05 and c' p >= .05):
+
+  | Step 1: Y selection | Step 3a: b | PTN -> neuropil | PTN -> neuronal | FGF1 neuropil -> vasc | FGF2 neuropil -> vasc | FGF1 neuronal -> vasc | Total |
+  |---|---|---:|---:|---:|---:|---:|---:|
+  | nominal p < .05 | FDR < .05 | 30 | 11 | 9 | 22 | 3 | 75 |
+  | nominal p < .05 | FDR < .10 (primary) | 35 | 16 | 12 | 26 | 3 | 92 |
+  | nominal p < .05 | p < .05 | 39 | 22 | 17 | 26 | 6 | 110 |
+  | FDR < .10 | FDR < .05 or < .10 | 1 | 0 | 0 | 0 | 0 | 1 (HSPD1) |
+  | FDR < .10 | p < .05 | 1 | 0 | 0 | 0 | 1 | 2 (+ APOLD1) |
+  | FDR < .05 | any of the above | 0 | 0 | 0 | 0 | 0 | 0 |
+
+  Step 1 drives the result: strongly DE targets keep a significant c' after
+  adjustment, so the pairs come from nominally DE targets where modest attenuation
+  moves p just past .05. Among eligible targets, b p < .05 occurs for 433, 368, 77,
+  137 and 38 genes (screen order above) against ~59, 65, 13, 13 and 10 expected by
+  chance; FDR < .10 already captures most of these associations.
 - Top pairs (b FDR):
   - PTN -> neuropil: DIO2, IGSF8, KCNJ16, PHYHIP, CCND3, ARAP2, TCEAL4, CAMK1G
   - PTN -> neuronal: CAMK1G, BOD1L1, PDP1, CCDC102B, LY6H, SMARCA2
