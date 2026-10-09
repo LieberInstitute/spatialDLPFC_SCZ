@@ -5,10 +5,10 @@ Outputs: `processed-data/18_mediation/run_2026-10-08_limma/`.
 
 ## Goal
 
-Fig 6F nominates SCZ-linked ligand-receptor axes (PTN-PTPR, FGF-FGFR1) by gene
+Fig 6F nominates SCZ-linked ligand-receptor (LR) axes (PTN-PTPR, FGF-FGFR1) by gene
 overlap with microenvironment-restricted SCZ-DEGs (nominal p < .05). A reviewer
 asked for evidence beyond this annotation. The screen tests whether SCZ-associated
-ligand expression in one SPG microenvironment statistically accounts for part of the
+PTN/FGF expression in one SPG microenvironment statistically accounts for part of the
 SCZ association of genes in another microenvironment of the same donor and SpD:
 
 - Dx -> vascular PTN -> neuropil or neuronal genes
@@ -18,14 +18,27 @@ SCZ association of genes in another microenvironment of the same donor and SpD:
 
 Baron & Kenny screen adapted from the ERC/LC framework (`LFF_spatial_ERC/code/22_Mediation`),
 using the manuscript SPG DE model (limma on donor x SpD logcounts, `~ Dx + age + sex + SpD`,
-donor blocking) on gray-matter SpDs with >= 10 spots in both contexts
+donor blocking) on gray-matter SpDs with >= 10 spots in both microenvironments
 (272 observations / 61 donors for vascular-neuropil, 220 / 58 for vascular-neuronal).
 
-| Step | Criterion |
-|---|---|
-| 1. X -> Y | target is a manuscript microenvironment DEG (p < .05) and matched-sample c p < .05 |
-| 2. X -> M | mediator is a manuscript nominal DEG in its source context (PTN vascular p = .013, FGF1 neuropil .040, FGF2 neuropil .033, FGF1 neuronal .047) |
-| 3. Y ~ X + M | mediator coefficient b BH FDR < .10 over all target genes in the screen; c' p >= .05 |
+X = diagnosis (SCZ vs NTC). M = expression of PTN, FGF1 or FGF2 in the source
+microenvironment, one value per donor x SpD. Y = each gene in the target
+microenvironment of the same donor x SpD, one model per gene.
+
+| Screen | M | Y |
+|---|---|---|
+| PTN vascular -> neuropil | PTN, vascular | neuropil genes |
+| PTN vascular -> neuronal | PTN, vascular | neuronal genes |
+| FGF1 neuropil -> vascular | FGF1, neuropil | vascular genes |
+| FGF2 neuropil -> vascular | FGF2, neuropil | vascular genes |
+| FGF1 neuronal -> vascular | FGF1, neuronal | vascular genes |
+
+| Step | Criterion | Threshold |
+|---|---|---|
+| 1. X -> Y | Y is a manuscript DEG of its microenvironment, and matched-sample c p < .05 | nominal p < .05 (FDR < .10 would leave 352 neuropil, 90 neuronal, 19 vascular targets) |
+| 2. X -> M | M is a manuscript DEG in its source microenvironment (PTN vascular p = .013, FGF1 neuropil .040, FGF2 neuropil .033, FGF1 neuronal .047; FDR .31-.46) | nominal p < .05 |
+| 3a. M -> Y given X | b BH FDR over all target genes in the screen | FDR < .10 |
+| 3b. X -> Y given M | c' no longer significant | p >= .05 (mirrors step 1) |
 
 The manuscript DE tables were reproduced exactly (max |dp| < 5e-13). The 2026-10-01
 run (voom engine plus a re-test of step 2 on matched samples, which no mediator
@@ -45,6 +58,10 @@ passed) is superseded.
   All show same-sign attenuation of c with a x b consistent with c.
 - Attenuation is partial: median 16%, 7 pairs >= 25%. c' p values are 0.051-0.16,
   i.e. the loss of significance is marginal for most pairs.
+- Restricting Y to manuscript FDR < .10 DEGs (nominal compromise in step 2 only)
+  leaves 1 pair (PTN vascular -> neuropil HSPD1); the other screens have none.
+  Strongly DE targets keep a significant c' after adjustment, so the 92 pairs come
+  from nominally DE targets where modest attenuation moves p just past .05.
 - Top pairs (b FDR):
   - PTN -> neuropil: DIO2, IGSF8, KCNJ16, PHYHIP, CCND3, ARAP2, TCEAL4, CAMK1G
   - PTN -> neuronal: CAMK1G, BOD1L1, PDP1, CCDC102B, LY6H, SMARCA2
@@ -52,7 +69,7 @@ passed) is superseded.
   - FGF1 neuronal -> vascular: FAM107A, RGS4, SLC24A2
 - The FGF -> vascular hits are dominated by astrocyte-enriched genes (AGT, MT3,
   MT1M/G, FAM107A, SLC14A1); FGF2 and PTN are themselves astrocyte-expressed in
-  adult cortex. The data cannot separate ligand-mediated effects from a shared
+  adult cortex. The data cannot separate PTN/FGF-mediated effects from a shared
   astrocyte abundance or state present in both microenvironments of a donor/SpD.
 
 ### Mediator diagnosis effects in the matched samples (reported, not gated)
@@ -85,8 +102,9 @@ pseudobulks and refitting (263 / 60 and 209 / 57 observations / donors):
 
 ## Interpretation and limits
 
-- Steps 1 and 2 rest on nominal (p < .05) DEG selection, the same threshold the
-  reviewers questioned; step 2 does not replicate at p < .05 in the matched samples.
+- Steps 1 and 2 both rest on nominal (p < .05) DEG selection, the threshold the
+  reviewers questioned; step 2 does not replicate at p < .05 in the matched samples,
+  and with FDR-selected targets only one pair remains.
 - "Loss of significance" is not a test of attenuation; no indirect effect or its
   uncertainty is estimated, and attenuation is modest.
 - Observational, cross-sectional data: no temporal order, and common causes

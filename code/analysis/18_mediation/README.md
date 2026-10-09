@@ -1,19 +1,23 @@
 # PTN/FGF cross-microenvironment mediation screen
 
-Baron & Kenny-style screen of whether SCZ-associated expression of a ligand in one
-SPG microenvironment accounts for SCZ-associated expression in another, using the
-same donor x SpD pseudobulks and DE model as the manuscript (Fig 6F LR pairs).
+Baron & Kenny-style screen of whether SCZ-associated PTN/FGF expression in one SPG
+microenvironment accounts for part of the SCZ association of genes in another, using
+the same donor x SpD pseudobulks and DE model as the manuscript (Fig 6F LR pairs).
 Adapted from `LFF_spatial_ERC/code/22_Mediation`. Findings: [REPORT.md](REPORT.md).
 
-## Screens (`screens.tsv`)
+## X, M, Y (`screens.tsv`)
 
-| screen | mediator (source context) | outcomes (target context) |
+X = diagnosis (SCZ vs NTC). M = expression of one gene (PTN, FGF1 or FGF2) in the
+source microenvironment pseudobulk, one value per donor x SpD. Y = each gene in the
+target microenvironment pseudobulk of the same donor x SpD, one model per gene.
+
+| screen | M (source microenvironment) | Y (target microenvironment) |
 |---|---|---|
-| `ptn_vasc_neuropil` | PTN (vascular) | neuropil genes |
-| `ptn_vasc_neun` | PTN (vascular) | neuronal genes |
-| `fgf1_neuropil_vasc` | FGF1 (neuropil) | vascular genes |
-| `fgf2_neuropil_vasc` | FGF2 (neuropil) | vascular genes |
-| `fgf1_neun_vasc` | FGF1 (neuronal) | vascular genes |
+| `ptn_vasc_neuropil` | PTN, vascular | neuropil genes |
+| `ptn_vasc_neun` | PTN, vascular | neuronal genes |
+| `fgf1_neuropil_vasc` | FGF1, neuropil | vascular genes |
+| `fgf2_neuropil_vasc` | FGF2, neuropil | vascular genes |
+| `fgf1_neun_vasc` | FGF1, neuronal | vascular genes |
 
 ## Model (`engine = "limma_logcounts"`, the manuscript SPG DE model)
 
@@ -26,13 +30,14 @@ Adapted from `LFF_spatial_ERC/code/22_Mediation`. Findings: [REPORT.md](REPORT.m
   `duplicateCorrelation` on `~ Dx + age + sex` (as `spatialLIBD::registration_block_cor`);
   one target correlation shared by the c and c'/b fits; default `eBayes`.
 - B&K steps, as in the ERC framework:
-  1. X -> Y: target gene is a manuscript microenvironment DEG (p < .05) and has
-     matched-sample c p < .05 (c and c' come from the same samples).
-  2. X -> M: accepted from the manuscript nomination of the mediator as a nominal
-     DEG in its source context (PTN vascular p = .013, FGF1 neuropil .040,
-     FGF2 neuropil .033, FGF1 neuronal .047). The matched-sample a-path is
-     reported but does not gate hits (`require_mediator_gate = FALSE`).
-  3. Y ~ X + M: b BH FDR < .10 over all target genes in the screen, and c' p >= .05.
+  1. X -> Y (nominal): Y is a manuscript DEG of its microenvironment at p < .05
+     and has matched-sample c p < .05 (c and c' come from the same samples).
+  2. X -> M (nominal): accepted from the manuscript nominal DEG call for M in its
+     source microenvironment (PTN vascular p = .013, FGF1 neuropil .040,
+     FGF2 neuropil .033, FGF1 neuronal .047; none FDR < .10). The matched-sample
+     a-path is reported but does not gate hits (`require_mediator_gate = FALSE`).
+  3. Y ~ X + M: b BH FDR < .10 over all target genes in the screen (corrected),
+     and c' p >= .05 (nominal, mirroring step 1).
   `higher_priority` also requires |c'| < |c| (same sign) and b FDR < .10 pooled over screens.
 - Historical stage re-fits the three manuscript microenvironment DE tables exactly.
 - Overlap stage: SPG labels are not exclusive, so spots labeled in both contexts are
