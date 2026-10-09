@@ -23,22 +23,24 @@ target microenvironment pseudobulk of the same donor x SpD, one model per gene.
 
 - Observations: donor x SpD pseudobulks present in both contexts (>= 10 spots each),
   gray-matter SpD02/03/05/06/07. Stored `logcounts` (TMM log2-CPM, prior.count 1).
-- a (Dx -> M): source logcounts `~ 0 + Dx + age + sex + SpD`, SCZ - NTC.
-- c (Dx -> Y): target logcounts, same design. c' and b: same design `+ M`,
-  where M is the source mediator logCPM standardized over matched observations.
+- Mediator Dx effect (matched samples): source logcounts `~ 0 + Dx + age + sex + SpD`, SCZ - NTC.
+- `_base` (Dx -> Y): target logcounts, same design. `_med` (Dx effect) and `_med_vec`
+  (M coefficient): same design `+ M`, where M is the source mediator logCPM
+  standardized over matched observations. Naming follows 22_Mediation.
 - `limma::lmFit` with donor blocking; consensus correlation from
   `duplicateCorrelation` on `~ Dx + age + sex` (as `spatialLIBD::registration_block_cor`);
-  one target correlation shared by the c and c'/b fits; default `eBayes`.
+  one target correlation shared by the baseline and mediator-adjusted fits; default `eBayes`.
 - B&K steps, as in the ERC framework:
   1. X -> Y (nominal): Y is a manuscript DEG of its microenvironment at p < .05
-     and has matched-sample c p < .05 (c and c' come from the same samples).
+     and has matched-sample P.Value_base < .05 (base and med come from the same samples).
   2. X -> M (nominal): accepted from the manuscript nominal DEG call for M in its
      source microenvironment (PTN vascular p = .013, FGF1 neuropil .040,
      FGF2 neuropil .033, FGF1 neuronal .047; none FDR < .10). The matched-sample
-     a-path is reported but does not gate hits (`require_mediator_gate = FALSE`).
-  3. Y ~ X + M: b BH FDR < .10 over all target genes in the screen (corrected),
-     and c' p >= .05 (nominal, mirroring step 1).
-  `higher_priority` also requires |c'| < |c| (same sign) and b FDR < .10 pooled over screens.
+     mediator Dx effect is reported but does not gate hits (`require_mediator_gate = FALSE`).
+  3. Y ~ X + M: fdr_med_vec < .10 (BH over all target genes in the screen),
+     and P.Value_med >= .05 (nominal, mirroring step 1).
+  `higher_priority` also requires |logFC_med| < |logFC_base| (same sign) and
+  fdr_med_vec < .10 pooled over screens.
 - Historical stage re-fits the three manuscript microenvironment DE tables exactly.
 - Overlap stage: SPG labels are not exclusive, so spots labeled in both contexts are
   removed from both pseudobulks, which are rebuilt from the raw spots and refit
@@ -70,8 +72,12 @@ bash code/analysis/18_mediation/submit.sh
 
 ## Outputs (`--outdir`)
 
-- `primary/all_pairs.tsv.gz`: every screen x target gene with a/c/c'/b estimates,
-  gates, and `failed_gates`; `mediator_gates.tsv`: one a-path row per screen.
+- `primary/all_pairs.tsv.gz`: every screen x target gene with all estimates, gates,
+  and `failed_gates`; `mediator_gates.tsv`: one mediator Dx-effect row per screen.
+  Internal column prefixes: `a_` = mediator Dx effect, `c_` = `_base`,
+  `cprime_` = `_med`, `b_` = `_med_vec`.
+- `report/mediation_hits_92.csv` (and `.tab`): the qualifying pairs with
+  22_Mediation column names.
 - `overlap/`: raw-to-pseudobulk reconciliation, shared-spot counts,
   `<screen>_results.tsv.gz` refits and `<screen>_hit_comparison.tsv`
   (primary vs shared-spot-removed for primary hits).

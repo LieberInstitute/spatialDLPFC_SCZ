@@ -23,7 +23,10 @@ donor blocking) on gray-matter SpDs with >= 10 spots in both microenvironments
 
 X = diagnosis (SCZ vs NTC). M = expression of PTN, FGF1 or FGF2 in the source
 microenvironment, one value per donor x SpD. Y = each gene in the target
-microenvironment of the same donor x SpD, one model per gene.
+microenvironment of the same donor x SpD, one model per gene. Statistics follow the
+22_Mediation naming: `_base` = Dx effect on Y in the baseline model `Y ~ X + covariates`;
+`_med` = Dx effect on Y in the mediator-adjusted model `Y ~ X + M + covariates`;
+`_med_vec` = coefficient of M in that model.
 
 | Screen | M | Y |
 |---|---|---|
@@ -35,10 +38,10 @@ microenvironment of the same donor x SpD, one model per gene.
 
 | Step | Criterion | Threshold |
 |---|---|---|
-| 1. X -> Y | Y is a manuscript DEG of its microenvironment, and matched-sample c p < .05 | nominal p < .05 (FDR < .10 would leave 352 neuropil, 90 neuronal, 19 vascular targets) |
+| 1. X -> Y | Y is a manuscript DEG of its microenvironment, and matched-sample P.Value_base < .05 | nominal p < .05 (FDR < .10 would leave 352 neuropil, 90 neuronal, 19 vascular targets) |
 | 2. X -> M | M is a manuscript DEG in its source microenvironment (PTN vascular p = .013, FGF1 neuropil .040, FGF2 neuropil .033, FGF1 neuronal .047; FDR .31-.46) | nominal p < .05 |
-| 3a. M -> Y given X | b BH FDR over all target genes in the screen | FDR < .10 |
-| 3b. X -> Y given M | c' no longer significant | p >= .05 (mirrors step 1) |
+| 3a. M -> Y given X | fdr_med_vec (BH over all target genes in the screen) | FDR < .10 |
+| 3b. X -> Y given M | Dx effect no longer significant | P.Value_med >= .05 (mirrors step 1) |
 
 The manuscript DE tables were reproduced exactly (max |dp| < 5e-13). The 2026-10-01
 run (voom engine plus a re-test of step 2 on matched samples, which no mediator
@@ -46,7 +49,7 @@ passed) is superseded.
 
 ## Results
 
-| Screen | Step 3 eligible targets | b FDR < .10 | Hits | Median c shrinkage [range] |
+| Screen | Step 3 eligible targets | fdr_med_vec < .10 | Hits | Median Dx effect shrinkage [range] |
 |---|---:|---:|---:|---|
 | PTN vascular -> neuropil | 1,187 | 400 | 35 | 17% [11-37%] |
 | PTN vascular -> neuronal | 1,293 | 224 | 16 | 9% [8-16%] |
@@ -54,13 +57,15 @@ passed) is superseded.
 | FGF2 neuropil -> vascular | 258 | 119 | 26 | 19% [10-37%] |
 | FGF1 neuronal -> vascular | 200 | 13 | 3 | 14% [13-14%] |
 
-- 92 pairs meet the rule; 87 also pass b FDR < .10 pooled over the five screens.
-  All show same-sign attenuation of c with a x b consistent with c.
-- Attenuation is partial: median 16%, 7 pairs >= 25%. c' p values are 0.051-0.16,
+- 92 pairs meet the rule; 87 also pass fdr_med_vec < .10 pooled over the five screens.
+  In all, logFC_med is smaller than logFC_base with the same sign (shrinkage =
+  1 - logFC_med / logFC_base), and the signs of the mediator Dx effect and
+  logFC_med_vec are consistent with the sign of logFC_base.
+- Attenuation is partial: median 16%, 7 pairs >= 25%. P.Value_med is 0.051-0.16,
   i.e. the loss of significance is marginal for most pairs.
-- Threshold dependence (all rows: matched c p < .05 and c' p >= .05):
+- Threshold dependence (all rows: P.Value_base < .05 and P.Value_med >= .05):
 
-  | Step 1: Y selection | Step 3a: b | PTN -> neuropil | PTN -> neuronal | FGF1 neuropil -> vasc | FGF2 neuropil -> vasc | FGF1 neuronal -> vasc | Total |
+  | Step 1: Y selection | Step 3a: med_vec | PTN -> neuropil | PTN -> neuronal | FGF1 neuropil -> vasc | FGF2 neuropil -> vasc | FGF1 neuronal -> vasc | Total |
   |---|---|---:|---:|---:|---:|---:|---:|
   | nominal p < .05 | FDR < .05 | 30 | 11 | 9 | 22 | 3 | 75 |
   | nominal p < .05 | FDR < .10 (primary) | 35 | 16 | 12 | 26 | 3 | 92 |
@@ -69,12 +74,12 @@ passed) is superseded.
   | FDR < .10 | p < .05 | 1 | 0 | 0 | 0 | 1 | 2 (+ APOLD1) |
   | FDR < .05 | any of the above | 0 | 0 | 0 | 0 | 0 | 0 |
 
-  Step 1 drives the result: strongly DE targets keep a significant c' after
+  Step 1 drives the result: strongly DE targets keep a significant Dx effect after
   adjustment, so the pairs come from nominally DE targets where modest attenuation
-  moves p just past .05. Among eligible targets, b p < .05 occurs for 433, 368, 77,
+  moves p just past .05. Among eligible targets, P.Value_med_vec < .05 occurs for 433, 368, 77,
   137 and 38 genes (screen order above) against ~59, 65, 13, 13 and 10 expected by
   chance; FDR < .10 already captures most of these associations.
-- Top pairs (b FDR):
+- Top pairs (fdr_med_vec):
   - PTN -> neuropil: DIO2, IGSF8, KCNJ16, PHYHIP, CCND3, ARAP2, TCEAL4, CAMK1G
   - PTN -> neuronal: CAMK1G, BOD1L1, PDP1, CCDC102B, LY6H, SMARCA2
   - FGF1/FGF2 neuropil -> vascular: AGT, MT3, FAM107A, MT1M, MT1G, HINT1, SLC14A1, CHGB
@@ -106,11 +111,11 @@ SPG labels are not exclusive: within matched samples 28% of vascular spots are a
 neuropil spots and 21% are also neuronal spots. Removing shared spots from both
 pseudobulks and refitting (263 / 60 and 209 / 57 observations / donors):
 
-- b is essentially unchanged (median refit/primary ratio 0.90-1.01; FGF1 neuronal 1.38);
-  80 of 92 primary hits keep b FDR < .10. The mediator-outcome associations are not
-  produced by shared spots.
+- logFC_med_vec is essentially unchanged (median refit/primary ratio 0.90-1.01;
+  FGF1 neuronal 1.38); 80 of 92 primary hits keep fdr_med_vec < .10. The
+  mediator-outcome associations are not produced by shared spots.
 - Hit membership is unstable: 33 of 92 primary hits remain hits, and the refit yields
-  103 hits overall, because c' p values sit near the .05 boundary.
+  103 hits overall, because P.Value_med sits near the .05 boundary.
 
 ## Interpretation and limits
 
@@ -121,7 +126,7 @@ pseudobulks and refitting (263 / 60 and 209 / 57 observations / donors):
   uncertainty is estimated, and attenuation is modest.
 - Observational, cross-sectional data: no temporal order, and common causes
   (cell composition, astrocyte state, medication, tissue quality) can induce both
-  the a and b associations. 58-61 independent donors.
+  the Dx -> M and M -> Y associations. 58-61 independent donors.
 - The screen supports, at a nominal level, co-variation of PTN/FGF expression with
   SCZ-associated genes across microenvironments, most plausibly through a shared
   astrocyte component; it does not demonstrate ligand-receptor signaling or causation.
