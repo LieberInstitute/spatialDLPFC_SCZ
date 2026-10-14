@@ -1,0 +1,249 @@
+RESCUE: 279806 rows, 30 cell type columns (incl. 'Unattributed Expression')
+ [1] "Astro"                   "EndoMural_01"           
+ [3] "EndoMural_02"            "Excit_01"               
+ [5] "Excit_02"                "Excit_03"               
+ [7] "Excit_04"                "Excit_05"               
+ [9] "Excit_06"                "Excit_07"               
+[11] "Excit_08"                "Excit_09"               
+[13] "Excit_10"                "Excit_11"               
+[15] "Excit_12"                "Excit_13"               
+[17] "Excit_14"                "Excit_15"               
+[19] "Inhib_01"                "Inhib_02"               
+[21] "Inhib_03"                "Inhib_04"               
+[23] "Inhib_05"                "Inhib_06"               
+[25] "Micro"                   "Oligo_01"               
+[27] "Oligo_02"                "Oligo_03"               
+[29] "OPC"                     "Unattributed Expression"
+# A tibble: 25 x 5
+   check                                                     
+   <chr>                                                     
+ 1 n_spots_spe                                               
+ 2 n_spots_rescue                                            
+ 3 n_duplicated_spot_id_rescue                               
+ 4 n_rescue_spots_matched_to_spe                             
+ 5 n_spe_spots_with_rescue                                   
+ 6 identical_spot_id_and_barcode_cols                        
+ 7 n_samples_spe                                             
+ 8 n_samples_rescue                                          
+ 9 samples_only_in_spe                                       
+10 samples_only_in_rescue                                    
+11 concordance_sample_id                                     
+12 concordance_array_row                                     
+13 concordance_array_col                                     
+14 concordance_pxl_row_in_fullres                            
+15 concordance_pxl_col_in_fullres                            
+16 concordance_domain_vs_PRECAST_07                          
+17 nUMI_exact_match_frac                                     
+18 nUMI_pearson_cor_with_sum_umi                             
+19 nUMI_over_sum_umi_ratio_quantiles                         
+20 nUMI_greater_than_sum_umi_n                               
+21 n_NA_proportions                                          
+22 proportions_within_0_1                                    
+23 max_abs_deviation_rowsum_from_1                           
+24 unattributed_ratio_minus_Unattributed_Expression_quantiles
+25 unattributed_ratio_cor_Unattributed_Expression            
+   value                                   pass  hard 
+   <chr>                                   <lgl> <lgl>
+ 1 "279806"                                TRUE  FALSE
+ 2 "279806"                                TRUE  FALSE
+ 3 "0"                                     TRUE  TRUE 
+ 4 "279806"                                TRUE  FALSE
+ 5 "279806"                                TRUE  FALSE
+ 6 "TRUE"                                  TRUE  FALSE
+ 7 "63"                                    TRUE  FALSE
+ 8 "63"                                    TRUE  FALSE
+ 9 ""                                      TRUE  FALSE
+10 ""                                      TRUE  FALSE
+11 "1.000000"                              TRUE  TRUE 
+12 "1.000000"                              TRUE  TRUE 
+13 "1.000000"                              TRUE  TRUE 
+14 "1.000000"                              TRUE  TRUE 
+15 "1.000000"                              TRUE  TRUE 
+16 "1.000000"                              TRUE  TRUE 
+17 "0.0518"                                NA    FALSE
+18 "0.999999"                              NA    FALSE
+19 "0.9797;0.9952;0.9988;1.0000;1.0000"    NA    FALSE
+20 "0"                                     TRUE  FALSE
+21 "0"                                     TRUE  TRUE 
+22 "TRUE"                                  TRUE  TRUE 
+23 "2.776e-15"                             TRUE  TRUE 
+24 "-0.2434;-0.0813;-0.0130;0.1076;0.1945" NA    FALSE
+25 "0.9903"                                NA    FALSE
+   note                                                         
+   <chr>                                                        
+ 1 ""                                                           
+ 2 ""                                                           
+ 3 ""                                                           
+ 4 "100.0000% of RESCUE spots"                                  
+ 5 "100.0000% of spe spots (unmatched spots get NA)"            
+ 6 ""                                                           
+ 7 ""                                                           
+ 8 ""                                                           
+ 9 ""                                                           
+10 ""                                                           
+11 "fraction of matched spots with identical value"             
+12 "fraction of matched spots with identical value"             
+13 "fraction of matched spots with identical value"             
+14 "fraction of matched spots with identical value"             
+15 "fraction of matched spots with identical value"             
+16 "fraction of matched spots with identical value"             
+17 ""                                                           
+18 ""                                                           
+19 "min;1%;median;99%;max"                                      
+20 ""                                                           
+21 ""                                                           
+22 ""                                                           
+23 "row sum over all cell types incl. 'Unattributed Expression'"
+24 "min;1%;median;99%;max"                                      
+25 ""                                                           
+# A tibble: 63 x 7
+   sample_id     brnum  dx    n_spots_spe n_spots_rescue n_spots_matched
+   <chr>         <chr>  <chr>       <int>          <int>           <int>
+ 1 V12D07-334_A1 Br5373 scz          4370           4370            4370
+ 2 V12D07-334_B1 Br5472 ntc          3911           3911            3911
+ 3 V12D07-334_C1 Br5789 scz          4342           4342            4342
+ 4 V12D07-334_D1 Br6432 ntc          4370           4370            4370
+ 5 V12F14-053_A1 Br2719 ntc          4977           4977            4977
+ 6 V12F14-053_C1 Br5182 ntc          3717           3717            3717
+ 7 V12F14-053_D1 Br5367 ntc          3252           3252            3252
+ 8 V12F14-057_A1 Br1526 scz          3123           3123            3123
+ 9 V12F14-057_B1 Br1958 scz          3820           3820            3820
+10 V12F14-057_C1 Br2039 scz          3374           3374            3374
+11 V12F14-057_D1 Br2378 scz          4133           4133            4133
+12 V13F27-293_A1 Br5622 ntc          4984           4984            4984
+13 V13F27-293_B1 Br5599 ntc          4928           4928            4928
+14 V13F27-293_C1 Br5588 scz          4854           4854            4854
+15 V13F27-293_D1 Br6032 scz          4711           4711            4711
+16 V13F27-294_A1 Br5746 scz          3995           3995            3995
+17 V13F27-294_B1 Br5928 scz          4579           4579            4579
+18 V13F27-294_C1 Br5314 ntc          4149           4149            4149
+19 V13F27-294_D1 Br5639 ntc          4343           4343            4343
+20 V13F27-295_A1 Br1092 ntc          4311           4311            4311
+21 V13F27-295_B1 Br8325 ntc          4508           4508            4508
+22 V13F27-295_C1 Br2627 scz          3702           3702            3702
+23 V13F27-295_D1 Br8772 scz          4405           4405            4405
+24 V13F27-296_A1 Br1139 scz          4631           4631            4631
+25 V13F27-296_B1 Br1578 scz          4463           4463            4463
+26 V13F27-296_C1 Br1753 ntc          4893           4893            4893
+27 V13F27-296_D1 Br6389 ntc          4910           4910            4910
+28 V13F27-336_A1 Br8218 ntc          4431           4431            4431
+29 V13F27-336_B1 Br1204 ntc          3954           3954            3954
+30 V13F27-336_C1 Br1923 scz          4386           4386            4386
+31 V13F27-336_D1 Br2421 scz          4926           4926            4926
+32 V13M06-279_A1 Br1113 ntc          3909           3909            3909
+33 V13M06-279_B1 Br8042 ntc          4600           4600            4600
+34 V13M06-279_C1 Br8537 scz          4593           4593            4593
+35 V13M06-279_D1 Br8514 scz          4798           4798            4798
+36 V13M06-280_A1 Br5590 scz          4587           4587            4587
+37 V13M06-280_B1 Br5636 scz          4849           4849            4849
+38 V13M06-280_C1 Br2720 ntc          2477           2477            2477
+39 V13M06-280_D1 Br6257 ntc          4851           4851            4851
+40 V13M06-281_A1 Br5400 ntc          4625           4625            4625
+41 V13M06-281_B1 Br5395 ntc          3474           3474            3474
+42 V13M06-281_C1 Br2242 scz          4790           4790            4790
+43 V13M06-281_D1 Br5888 scz          4255           4255            4255
+44 V13M06-282_A1 Br6560 scz          4418           4418            4418
+45 V13M06-282_B1 Br6437 scz          4364           4364            4364
+46 V13M06-282_C1 Br6297 ntc          4776           4776            4776
+47 V13M06-282_D1 Br5436 ntc          4746           4746            4746
+48 V13M06-340_A1 Br5931 ntc          4825           4825            4825
+49 V13M06-340_B1 Br8406 ntc          4974           4974            4974
+50 V13M06-340_C1 Br1682 scz          4656           4656            4656
+51 V13M06-340_D1 Br2470 scz          4979           4979            4979
+52 V13M06-342_A1 Br5224 scz          4979           4979            4979
+53 V13M06-342_B1 Br8207 scz          4748           4748            4748
+54 V13M06-342_C1 Br8433 ntc          4922           4922            4922
+55 V13M06-342_D1 Br8667 ntc          4800           4800            4800
+56 V13M06-343_A1 Br5276 ntc          4221           4221            4221
+57 V13M06-343_B1 Br8492 ntc          4382           4382            4382
+58 V13M06-343_C1 Br5573 scz          4981           4981            4981
+59 V13M06-343_D1 Br5973 scz          4971           4971            4971
+60 V13M06-344_A1 Br6496 scz          4605           4605            4605
+61 V13M06-344_B1 Br6369 scz          4963           4963            4963
+62 V13M06-344_C1 Br1214 ntc          4680           4680            4680
+63 V13M06-344_D1 Br5228 ntc          4556           4556            4556
+# i 1 more variable: frac_spe_matched <dbl>
+[1] "Finished merging RESCUE cell type proportions into spe"
+- Session info ---------------------------------------------------------------
+ setting  value
+ version  R version 4.4.2 (2024-10-31)
+ os       macOS Sonoma 14.6.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  C
+ ctype    C
+ tz       America/Denver
+ date     2026-10-07
+ pandoc   3.1.12.1 @ /opt/homebrew/bin/pandoc
+
+- Packages -------------------------------------------------------------------
+ package              * version date (UTC) lib source
+ abind                  1.4-8   2024-09-12 [1] CRAN (R 4.4.1)
+ Biobase              * 2.66.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ BiocGenerics         * 0.52.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ bit                    4.5.0.1 2024-12-03 [1] CRAN (R 4.4.1)
+ bit64                  4.6.0-1 2025-01-16 [1] CRAN (R 4.4.1)
+ cli                    3.6.3   2024-06-21 [1] CRAN (R 4.4.0)
+ colorspace             2.1-1   2024-07-26 [1] CRAN (R 4.4.0)
+ crayon                 1.5.3   2024-06-20 [1] CRAN (R 4.4.0)
+ DelayedArray           0.32.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ dplyr                * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+ forcats              * 1.0.0   2023-01-29 [1] CRAN (R 4.4.0)
+ generics               0.1.3   2022-07-05 [1] CRAN (R 4.4.0)
+ GenomeInfoDb         * 1.42.1  2024-11-28 [1] Bioconductor 3.20 (R 4.4.2)
+ GenomeInfoDbData       1.2.13  2025-01-19 [1] Bioconductor
+ GenomicRanges        * 1.58.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ ggplot2              * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+ glue                   1.8.0   2024-09-30 [1] CRAN (R 4.4.1)
+ gtable                 0.3.6   2024-10-25 [1] CRAN (R 4.4.1)
+ here                 * 1.0.1   2020-12-13 [1] CRAN (R 4.4.0)
+ hms                    1.1.3   2023-03-21 [1] CRAN (R 4.4.0)
+ httr                   1.4.7   2023-08-15 [1] CRAN (R 4.4.0)
+ IRanges              * 2.40.1  2024-12-05 [1] Bioconductor 3.20 (R 4.4.2)
+ jsonlite               1.8.9   2024-09-20 [1] CRAN (R 4.4.1)
+ lattice                0.22-6  2024-03-20 [1] CRAN (R 4.4.2)
+ lifecycle              1.0.4   2023-11-07 [1] CRAN (R 4.4.0)
+ lubridate            * 1.9.4   2024-12-08 [1] CRAN (R 4.4.1)
+ magick                 2.8.5   2024-09-20 [1] CRAN (R 4.4.1)
+ magrittr               2.0.3   2022-03-30 [1] CRAN (R 4.4.0)
+ Matrix                 1.7-1   2024-10-18 [1] CRAN (R 4.4.2)
+ MatrixGenerics       * 1.18.1  2025-01-09 [1] Bioconductor 3.20 (R 4.4.2)
+ matrixStats          * 1.5.0   2025-01-07 [1] CRAN (R 4.4.1)
+ munsell                0.5.1   2024-04-01 [1] CRAN (R 4.4.0)
+ pillar                 1.10.1  2025-01-07 [1] CRAN (R 4.4.1)
+ pkgconfig              2.0.3   2019-09-22 [1] CRAN (R 4.4.0)
+ purrr                * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
+ R6                     2.5.1   2021-08-19 [1] CRAN (R 4.4.0)
+ Rcpp                   1.0.14  2025-01-12 [1] CRAN (R 4.4.1)
+ readr                * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
+ rjson                  0.2.23  2024-09-16 [1] CRAN (R 4.4.1)
+ rlang                  1.1.5   2025-01-17 [1] CRAN (R 4.4.1)
+ rprojroot              2.0.4   2023-11-05 [1] CRAN (R 4.4.0)
+ S4Arrays               1.6.0   2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ S4Vectors            * 0.44.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ scales                 1.3.0   2023-11-28 [1] CRAN (R 4.4.0)
+ sessioninfo          * 1.2.2   2021-12-06 [1] CRAN (R 4.4.0)
+ SingleCellExperiment * 1.28.1  2024-11-23 [1] Bioconductor 3.20 (R 4.4.2)
+ SparseArray            1.6.0   2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ SpatialExperiment    * 1.16.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ stringi                1.8.4   2024-05-06 [1] CRAN (R 4.4.0)
+ stringr              * 1.5.1   2023-11-14 [1] CRAN (R 4.4.0)
+ SummarizedExperiment * 1.36.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ tibble               * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+ tidyr                * 1.3.1   2024-01-24 [1] CRAN (R 4.4.0)
+ tidyselect             1.2.1   2024-03-11 [1] CRAN (R 4.4.0)
+ tidyverse            * 2.0.0   2023-02-22 [1] CRAN (R 4.4.0)
+ timechange             0.3.0   2024-01-18 [1] CRAN (R 4.4.0)
+ tzdb                   0.4.0   2023-05-12 [1] CRAN (R 4.4.0)
+ UCSC.utils             1.2.0   2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ utf8                   1.2.4   2023-10-22 [1] CRAN (R 4.4.0)
+ vctrs                  0.6.5   2023-12-01 [1] CRAN (R 4.4.0)
+ vroom                  1.6.5   2023-12-05 [1] CRAN (R 4.4.0)
+ withr                  3.0.2   2024-10-28 [1] CRAN (R 4.4.1)
+ XVector                0.46.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ zlibbioc               1.52.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+
+------------------------------------------------------------------------------

@@ -1,0 +1,26 @@
+check,value,pass,hard,note
+n_spots_spe,279806,TRUE,FALSE,
+n_spots_rescue,279806,TRUE,FALSE,
+n_duplicated_spot_id_rescue,0,TRUE,TRUE,
+n_rescue_spots_matched_to_spe,279806,TRUE,FALSE,100.0000% of RESCUE spots
+n_spe_spots_with_rescue,279806,TRUE,FALSE,100.0000% of spe spots (unmatched spots get NA)
+identical_spot_id_and_barcode_cols,TRUE,TRUE,FALSE,
+n_samples_spe,63,TRUE,FALSE,
+n_samples_rescue,63,TRUE,FALSE,
+samples_only_in_spe,,TRUE,FALSE,
+samples_only_in_rescue,,TRUE,FALSE,
+concordance_sample_id,1.000000,TRUE,TRUE,fraction of matched spots with identical value
+concordance_array_row,1.000000,TRUE,TRUE,fraction of matched spots with identical value
+concordance_array_col,1.000000,TRUE,TRUE,fraction of matched spots with identical value
+concordance_pxl_row_in_fullres,1.000000,TRUE,TRUE,fraction of matched spots with identical value
+concordance_pxl_col_in_fullres,1.000000,TRUE,TRUE,fraction of matched spots with identical value
+concordance_domain_vs_PRECAST_07,1.000000,TRUE,TRUE,fraction of matched spots with identical value
+nUMI_exact_match_frac,0.0518,NA,FALSE,
+nUMI_pearson_cor_with_sum_umi,0.999999,NA,FALSE,
+nUMI_over_sum_umi_ratio_quantiles,0.9797;0.9952;0.9988;1.0000;1.0000,NA,FALSE,min;1%;median;99%;max
+nUMI_greater_than_sum_umi_n,0,TRUE,FALSE,
+n_NA_proportions,0,TRUE,TRUE,
+proportions_within_0_1,TRUE,TRUE,TRUE,
+max_abs_deviation_rowsum_from_1,2.776e-15,TRUE,TRUE,row sum over all cell types incl. 'Unattributed Expression'
+unattributed_ratio_minus_Unattributed_Expression_quantiles,-0.2434;-0.0813;-0.0130;0.1076;0.1945,NA,FALSE,min;1%;median;99%;max
+unattributed_ratio_cor_Unattributed_Expression,0.9903,NA,FALSE,
