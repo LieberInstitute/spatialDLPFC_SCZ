@@ -75,6 +75,6 @@ if (sys.nframe() == 0L) {
   root <- normalizePath(file.path(dirname(script), "../.."))
   args <- commandArgs(trailingOnly = TRUE)
   stopifnot(length(args) <= 1)
-  output <- if (length(args)) args[1] else file.path(root, "processed-data/spg_pb_de/SPG_Dx_statistics_unfiltered.xlsx")
+  output <- if (length(args)) args[1] else file.path(root, "processed-data/18_mediation/report/SPG_Dx_statistics_unfiltered.xlsx")
   export_spg_dx_statistics(root, output)
 }
