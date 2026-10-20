@@ -75,7 +75,10 @@ n_spg_marker <- list(
   PNN = pnn_df |> filter(fdr_TRUE < 0.05 & t_stat_TRUE > 0) |> nrow()
 ) |> unlist()
 
+print(n_spg_marker)
 
+#  Neuropil        Neun Vasculature         PNN 
+#        1495        4211         515         985 
 
 # Exact test for enrichment ----
 ## Overall DEGs ----
