@@ -1,0 +1,303 @@
+# Load library ----
+suppressPackageStartupMessages({
+  library(here)
+  library(tidyverse)
+  library(spatialLIBD)
+  library(ComplexHeatmap)
+  library(circlize)
+  library(latex2exp)
+  library(sessioninfo)
+})
+
+# Load Data ----
+## Load BrainSeqV2 DEGs ----
+load(
+  here(
+    "processed-data/BrainSeqV2",
+    "dxStats_dlpfc_filtered_qSVA_geneLevel_noHGoldQSV_matchDLPFC.rda"
+  )
+)
+# NOTE: contains outGene (what we need w. qSV) and outGene0 and outGeneNoAdjust
+# https://github.com/LieberInstitute/brainseq_phase2?tab=readme-ov-file#dxstats_dlpfc_filtered_qsva_genelevel_nohgoldqsv_matchdlpfcrda
+gene_df <- outGene
+
+## Load layer-markers ----
+PRECAST_layer_enrichment <- read_csv(
+  here(
+    "code/analysis/04_SpD_marker_genes",
+    "raw_enrichment_spd_marker_gene.csv"
+  )
+)
+
+### Number of markers per layer ----
+tstats <- PRECAST_layer_enrichment[, grep("[f|t]_stat_", colnames(PRECAST_layer_enrichment))]
+colnames(tstats) <- gsub("[f|t]_stat_", "", colnames(tstats))
+fdrs <- PRECAST_layer_enrichment[, grep("fdr_", colnames(PRECAST_layer_enrichment))]
+colnames(fdrs) <- gsub("fdr_", "", colnames(fdrs))
+
+n_layer_marker <- colnames(tstats) |>
+  set_names() |>
+  map_dbl(
+    # NOTE: the fdr threshold should be consistent with the enrichrment test parameters
+    ~ sum(tstats[, .x] > 0 & fdrs[, .x] < 0.05)
+  )
+
+## Load SpD annotation ----
+spd_anno_df <- read_csv(
+  here(
+    "processed-data/man_anno",
+    "spd_labels_k7.csv"
+  )
+) |>
+  mutate(anno_lab = factor(
+    paste0(gsub("spd", "SpD", spd), "-", label),
+    levels = c(
+      "SpD07-L1/M",
+      "SpD06-L2/3",
+      "SpD02-L3/4",
+      "SpD05-L5",
+      "SpD03-L6",
+      "SpD01-WMtz",
+      "SpD04-WM"
+    )
+  ))
+
+# Enrichment test ----
+BrainSeqV2_DEG_list <- list(
+  # `Overall` = gene_df |> filter(adj.P.Val < 0.10) |> pull(ensemblID),
+  `Up` = gene_df |> filter(adj.P.Val < 0.10 & logFC > 0) |> pull(ensemblID),
+  `Down` = gene_df |> filter(adj.P.Val < 0.10 & logFC < 0) |> pull(ensemblID)
+)
+
+res <- gene_set_enrichment(
+  gene_list = BrainSeqV2_DEG_list,
+  modeling_results = list("enrichment" = PRECAST_layer_enrichment),
+  model_type = "enrichment",
+  fdr_cut = 0.05
+)
+
+# Make visualizaiton of the results ----
+## Annotaed SpDs to layers ----
+annotated_res <- res |>
+  inner_join(
+    spd_anno_df,
+    by = c("test" = "spd")
+  ) |>
+  mutate(test = anno_lab) |>
+  select(-label, -anno_lab)
+
+n_layer_marker_annotated <- n_layer_marker
+names(n_layer_marker_annotated) <- spd_anno_df$anno_lab[match(names(n_layer_marker), spd_anno_df$spd)]
+
+## Make dot plot using complexHeatmap-----
+res <- annotated_res
+
+mat <- res |>
+  mutate(
+    OR = ifelse(OR < 1, 1, OR),
+  ) |>
+  select(
+    ID, test, OR
+  ) |>
+  pivot_wider(names_from = test, values_from = OR, values_fill = 0) |>
+  column_to_rownames("ID") |>
+  as.matrix()
+
+# Scale the size based on -log10(Pval)
+size_mat <- res |>
+  mutate(
+    fdr_p = Pval |> p.adjust(method = "fdr"),
+    sig_cat = case_when(
+      Pval >= 0.05 ~ "nonsig",
+      Pval < 0.05 & fdr_p >= 0.05 ~ "Nominal p < 0.05",
+      fdr_p < 0.05 ~ "FDR < 0.05"
+    ),
+    size = case_when(
+      sig_cat == "nonsig" ~ 0.5,
+      sig_cat == "Nominal p < 0.05" ~ 1,
+      sig_cat == "FDR < 0.05" ~ 1.5
+    )
+  ) |>
+  select(
+    ID, test, size
+  ) |>
+  pivot_wider(names_from = test, values_from = size, values_fill = 0) |>
+  column_to_rownames("ID") |>
+  as.matrix()
+
+# Reorder the matrix based on the order of spd_anno_df
+spd_order <- c(
+  "SpD07-L1/M",
+  "SpD06-L2/3",
+  "SpD02-L3/4",
+  "SpD05-L5",
+  "SpD03-L6",
+  "SpD01-WMtz",
+  "SpD04-WM"
+)
+
+cell_type_order <- res$ID |> unique()
+
+mat <- mat[cell_type_order, spd_order]
+size_mat <- size_mat[cell_type_order, spd_order]
+
+# Change matrix orientation: DEG by layer
+# mat <- mat
+# size_mat <- size_mat
+
+n_degs <- res |>
+  select(ID, SetSize) |>
+  distinct(ID, SetSize) |>
+  deframe()
+
+# deg_ha <- HeatmapAnnotation(
+#   # Create a named list for the annotation
+#   DEGs = anno_barplot(
+#     n_degs,
+#     border = TRUE,
+#     axis = TRUE,
+#     gp = gpar(fill = "black"),
+#     height = unit(1, "cm"),
+#     axis_param = list(
+#       # direction = "reverse",
+#       at = seq(0, max(n_degs), by = 50),
+#       labels = seq(0, max(n_degs), by = 50)
+#     )
+#   ),
+#   annotation_name_gp = gpar(fontsize = 8) # set annotation title font size
+# )
+
+layer_marker_ha <- HeatmapAnnotation(
+  # Create a named list for the annotation
+  n_layer_marker = anno_barplot(
+    n_layer_marker_annotated[spd_order],
+    border = FALSE,
+    axis = TRUE,
+    gp = gpar(fill = "black"),
+    height = unit(2, "cm"),
+    axis_param = list(
+      side = "left",
+      at = seq(0, max(n_layer_marker_annotated), by = 2000),
+      labels = seq(0, max(n_layer_marker_annotated), by = 2000)
+    )
+  ),
+  annotation_name_gp = gpar(fontsize = 8), # set annotation title font size
+  show_annotation_name = FALSE
+)
+
+# Define color function for Odds Ratio
+col_fun <- colorRamp2(
+  # TODO: change the color scale
+  c(min(mat), median(mat), max(mat)),
+  c("grey", "yellow", "blue")
+)
+
+# Create the dot plot using ComplexHeatmap
+ht_list <- Heatmap(
+  mat,
+  name = "Odds Ratio",
+  col = col_fun,
+  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  # Keep cell boundaries with black lines but hide the heatmap elements
+  rect_gp = gpar(col = "lightgrey", lwd = 0.5, fill = NA),
+  cell_fun = function(j, i, x, y, width, height, fill) {
+    grid.circle(
+      x = x, y = y,
+      r = unit(size_mat[i, j], "mm"),
+      gp = gpar(fill = col_fun(mat[i, j]), col = NA)
+    )
+  },
+  # Annotation Bar plot
+  top_annotation = layer_marker_ha,
+  # left_annotation = ,
+
+  # Aesthetics
+  row_names_gp = gpar(fontsize = 8),
+  column_names_gp = gpar(fontsize = 8, rot = 45, just = "right"),
+  heatmap_legend_param = list(
+    title = "Odds Ratio",
+    title_gp = gpar(fontsize = 8),
+    labels_gp = gpar(fontsize = 8),
+    at = c(1, 3, 6),
+    labels = TeX(c("$\\leq$1", "3", "6"))
+  )
+)
+
+# browser()
+
+
+
+
+# Create complexHeatmap
+# ret_htmap <- enrichment_dot_plot_heatmap(
+#   res = annotated_res
+# )
+
+
+# Save plots -----
+## Save heatmap only -----
+pdf(
+  file = here(
+    "plots/12_cross_study_enrichment",
+    "dotplot_BrainSeqV2_DEG_vs_PRECAST_SpD.pdf"
+  ),
+  width = 2, height = 2.1
+)
+ht_list |> draw(show_heatmap_legend = FALSE)
+dev.off()
+
+## Save legend ------
+### Save legend - dot_size -----
+lgd_list <- list(
+  # dot size for p-value
+  Legend(
+    labels = c("N.S.", "Nominal p < 0.05", "FDR p < 0.05"),
+    title = "Significance", type = "points",
+    # pch = 16,
+    legend_gp = gpar(fill = "white", col = "black"), # remove border and background
+    size = unit(1:3, "mm"),
+    title_gp = gpar(fontsize = 8),
+    labels_gp = gpar(fontsize = 8),
+    background = "transparent",
+    nrow = 1
+  )
+)
+
+pdf(
+  file = here(
+    "plots/12_cross_study_enrichment",
+    "dotplot_BrainSeqV2_DEG_vs_PRECAST_SpD_legend_raw.pdf"
+  ),
+  width = 4, height = 3
+)
+draw(
+  ht_list,
+  annotation_legend_list = lgd_list,
+  annotation_legend_side = "bottom"
+)
+dev.off()
+
+
+# Session Info ----
+sessioninfo::session_info()
+
+# Deprecateted code
+## Visaulize via heatmap (Deprecated) -----
+# pdf(
+#   file = here(
+#     "plots/12_cross_study_enrichment",
+#     "heatmap_BrainSeqV2_DEG_vs_PRECAST_SpD.pdf"
+#   ),
+#   width = 3, height = 4
+# )
+# # plot
+# annotated_res |>
+#   gene_set_enrichment_plot(
+#     # res,
+#     PThresh = 12,
+#     ORcut = 3,
+#     enrichOnly = FALSE,
+#     cex = 1.5 # control the size of the text
+#   ) + title("BrainSeqV2 SCZ-DEGs")
+# dev.off()
