@@ -1,0 +1,19 @@
+{
+  "source": "primary/all_pairs.tsv.gz",
+  "source_sha256": "a959e91c9c3c65e4301b0155a3fd13024d2a9816e0ae927af5e11734d9944c1a",
+  "source_run_signature": "50f8ff7283333ce46d4b1469d9e8614d45e945dfdd97ce4b092490c80001dbbb",
+  "tested_pairs": 44247,
+  "filter": {
+    "historical_p": "< 0.05",
+    "c_p": "< 0.05",
+    "b_p": "< 0.05",
+    "cprime_p": ">= 0.05"
+  },
+  "matched_mediator_diagnosis_gate": false,
+  "FDR_columns": "unchanged annotations; original full testing families",
+  "previous_pairs": 92,
+  "nominal_pairs": 110,
+  "unique_outcome_genes": 90,
+  "coefficient_shrinkage_pairs": 110,
+  "script_sha256": "430e8522e3df7b88594b438c1685bc8bf0c8053584e042ad75290be311b576b8"
+}

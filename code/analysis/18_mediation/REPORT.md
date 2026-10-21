@@ -3,6 +3,23 @@
 Run: 2026-10-08, signature `50f8ff72...`, local (R 4.5.2, limma 3.66.0, edgeR 4.8.2).
 Outputs: `processed-data/18_mediation/run_2026-10-08_limma/`.
 
+Nominal reporting update (2026-10-21): re-filtering all 44,247 existing pairs with
+step 3a p < .05 confirms 110 pairs and 90 unique outcome genes. All 92 original
+FDR < .10 pairs remain, with 18 additional pairs. Every other criterion is
+unchanged; no models were refitted. All 110 pairs show same-direction diagnosis
+coefficient shrinkage, although shrinkage was not added as a selection gate.
+The revised table is `report/mediation_hits_nominal_p05.csv` (also `.tab`) under
+the output directory above. Source fingerprints and the exact rule are recorded
+in `report/nominal_filter_provenance.json`. Reproduce from the project root with:
+
+```bash
+python3 code/analysis/18_mediation/export_nominal_results.py \
+  --source-run processed-data/18_mediation/run_2026-10-08_limma
+```
+
+FDR values remain reference annotations. The sections below
+describe the original fitted-run classification and its threshold comparison.
+
 ## Goal
 
 Fig 6F nominates SCZ-linked ligand-receptor (LR) axes (PTN-PTPR, FGF-FGFR1) by gene

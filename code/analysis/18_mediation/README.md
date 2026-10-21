@@ -5,6 +5,25 @@ microenvironment accounts for part of the SCZ association of genes in another, u
 the same donor x SpD pseudobulks and DE model as the manuscript (Fig 6F LR pairs).
 Adapted from `LFF_spatial_ERC/code/22_Mediation`. Findings: [REPORT.md](REPORT.md).
 
+Current reporting uses nominal p < .05 for the conditional mediator coefficient
+(step 3a). The October 8 fits and their original FDR < .10 hit flags are retained
+as source artifacts. `export_nominal_results.py` applies the nominal reporting
+filter to those complete results, preserving every other screening criterion.
+This confirms 110 pairs (90 unique outcome genes), including all 92 previous pairs.
+
+```bash
+python3 code/analysis/18_mediation/export_nominal_results.py \
+  --source-run processed-data/18_mediation/run_2026-10-08_limma
+```
+
+The source run's `report/` receives `mediation_hits_nominal_p05.csv` and `.tab`,
+`nominal_screen_summary.tsv`, and `nominal_filter_provenance.json` (source signature,
+SHA-256 fingerprints, thresholds and counts). FDR columns retain their original
+testing families and serve as annotations. Matched mediator diagnosis effects,
+coefficient shrinkage and sign reversals are reported without adding gates.
+These are hypothesis-generating screening candidates; nominal selection does not
+control the false-discovery rate or establish causal mediation.
+
 ## X, M, Y (`screens.tsv`)
 
 X = diagnosis (SCZ vs NTC). M = expression of one gene (PTN, FGF1 or FGF2) in the
@@ -30,7 +49,8 @@ target microenvironment pseudobulk of the same donor x SpD, one model per gene.
 - `limma::lmFit` with donor blocking; consensus correlation from
   `duplicateCorrelation` on `~ Dx + age + sex` (as `spatialLIBD::registration_block_cor`);
   one target correlation shared by the baseline and mediator-adjusted fits; default `eBayes`.
-- B&K steps, as in the ERC framework:
+- Original fitted-run classification, as in the ERC framework (current nominal
+  reporting replaces only the step 3a threshold, as described above):
   1. X -> Y (nominal): Y is a manuscript DEG of its microenvironment at p < .05
      and has matched-sample P.Value_base < .05 (base and med come from the same samples).
   2. X -> M (nominal): accepted from the manuscript nominal DEG call for M in its
