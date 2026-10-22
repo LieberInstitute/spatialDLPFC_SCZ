@@ -1,0 +1,83 @@
+{
+  "input_sha256": {
+    "source_results": "a959e91c9c3c65e4301b0155a3fd13024d2a9816e0ae927af5e11734d9944c1a",
+    "nominal_hits": "2cffd2573ec1d3e08dbfb39d60d965aa3db4dba6e1ff72ec75afc9468ca2986f",
+    "org.Hs.eg.sqlite": "8f036569a229574e9d23c73e8ccf7246e0797b64f9d224cc75fed5de891c8a09",
+    "GO.sqlite": "ccdb10199a59103c051dabe04f4f89445be1fb804d7b8889eed4f75b0a9b787b"
+  },
+  "annotation_packages": {
+    "org.Hs.eg.db": "3.22.0",
+    "GO.db": "3.22.0"
+  },
+  "annotation_metadata": {
+    "org.Hs.eg.db": {
+      "DBSCHEMAVERSION": "2.1",
+      "Db type": "OrgDb",
+      "Supporting package": "AnnotationDbi",
+      "DBSCHEMA": "HUMAN_DB",
+      "ORGANISM": "Homo sapiens",
+      "SPECIES": "Human",
+      "EGSOURCEDATE": "2025-Sep24",
+      "EGSOURCENAME": "Entrez Gene",
+      "EGSOURCEURL": "ftp://ftp.ncbi.nlm.nih.gov/gene/DATA",
+      "CENTRALID": "EG",
+      "TAXID": "9606",
+      "GOSOURCENAME": "Gene Ontology",
+      "GOSOURCEURL": "http://current.geneontology.org/ontology/go-basic.obo",
+      "GOSOURCEDATE": "2025-07-22",
+      "GOEGSOURCEDATE": "2025-Sep24",
+      "GOEGSOURCENAME": "Entrez Gene",
+      "GOEGSOURCEURL": "ftp://ftp.ncbi.nlm.nih.gov/gene/DATA",
+      "KEGGSOURCENAME": "KEGG GENOME",
+      "KEGGSOURCEURL": "ftp://ftp.genome.jp/pub/kegg/genomes",
+      "KEGGSOURCEDATE": "2011-Mar15",
+      "GPSOURCENAME": "UCSC Genome Bioinformatics (Homo sapiens)",
+      "GPSOURCEURL": "ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/database",
+      "GPSOURCEDATE": "UTC-Sep26",
+      "ENSOURCEDATE": "2025-Sep03",
+      "ENSOURCENAME": "Ensembl",
+      "ENSOURCEURL": "ftp://ftp.ensembl.org/pub/current_fasta",
+      "UPSOURCENAME": "Uniprot",
+      "UPSOURCEURL": "http://www.UniProt.org/",
+      "UPSOURCEDATE": "Sat Oct  4 09:48:11 2025"
+    },
+    "GO.db": {
+      "GOSOURCENAME": "Gene Ontology",
+      "GOSOURCEURL": "http://current.geneontology.org/ontology/go-basic.obo",
+      "GOSOURCEDATE": "2025-07-22",
+      "Db type": "GODb",
+      "package": "AnnotationDbi",
+      "DBSCHEMA": "GO_DB",
+      "GOEGSOURCEDATE": "2025-Sep24",
+      "GOEGSOURCENAME": "Entrez Gene",
+      "GOEGSOURCEURL": "ftp://ftp.ncbi.nlm.nih.gov/gene/DATA",
+      "DBSCHEMAVERSION": "2.1"
+    }
+  },
+  "software": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "script_sha256": "b19f2fc3fd1a8bdcbb20642609afa0cc1a46bcfe2c8df4f018d587a008b7aebc",
+  "overlap_unit": "unique Ensembl outcome gene ID across all target contexts",
+  "background_mode": "all_tested",
+  "GO_background": "Background: all tested outcome genes in each target microenvironment.",
+  "GO_additional_BH": "all eligible terms including zero overlaps at p=1; separately pooled across the 15 query-overlap families",
+  "GO_qvalue": "Storey q-values are not used; significance uses BH p < .05",
+  "GO_test": "one-sided hypergeometric overrepresentation; inherited GO annotations; term background sizes 10\u2013500",
+  "GO_BH_family": "all query-overlapping eligible terms within one screen and ontology, before plotting filters",
+  "GO_display": "top 3 BH<.05 terms with >=2 candidate genes per screen; union across screens",
+  "GO_sources": [
+    "https://bioconductor.org/packages/3.22/data/annotation/html/org.Hs.eg.db.html",
+    "https://bioconductor.org/packages/3.22/data/annotation/html/GO.db.html"
+  ],
+  "method_reference": "LFF_spatial_ERC/code/22_Mediation/06_Mediation_GO.R and DOSE 4.4.0 enricher_internal",
+  "mediation_pairs": 110,
+  "unique_outcome_genes": 90,
+  "annotation_snapshot_sha256": {
+    "GO_gene_mapping.tsv": "466873dbb9e85678e39de4fade5ff357b9bdd922bda00826dd8203b397714c56",
+    "GO_term_snapshot.tsv": "8b06b6a830dca82a501ac0dca4afb180bfd5577262006bfb3b428f6fc308ddb7",
+    "GO_annotation_snapshot.tsv.gz": "0001b9cacc16a0a5057eac74908d928236cac0a191e0048033035238b55baf6f"
+  }
+}

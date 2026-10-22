@@ -24,6 +24,11 @@ coefficient shrinkage and sign reversals are reported without adding gates.
 These are hypothesis-generating screening candidates; nominal selection does not
 control the false-discovery rate or establish causal mediation.
 
+Gene-overlap and GO figures: [DOWNSTREAM.md](DOWNSTREAM.md). The 110 pairs contain
+90 unique outcome genes. No GO term passes BH p < .05 with screen-eligible DEG
+backgrounds; 11 screen–term associations pass with all-tested target backgrounds.
+Both analyses and correction sensitivities are retained for interpretation.
+
 ## X, M, Y (`screens.tsv`)
 
 X = diagnosis (SCZ vs NTC). M = expression of one gene (PTN, FGF1 or FGF2) in the
