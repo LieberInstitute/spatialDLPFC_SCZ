@@ -29,6 +29,9 @@ Gene-overlap and GO figures: [DOWNSTREAM.md](DOWNSTREAM.md). The 110 pairs conta
 backgrounds; 11 screen–term associations pass with all-tested target backgrounds.
 Both analyses and correction sensitivities are retained for interpretation.
 
+Candidate boxplots: [BOXPLOTS.md](BOXPLOTS.md). Complete atlases cover all 110
+pairs, with donor-mean companions and a documented 11-gene / 16-pair shortlist.
+
 ## X, M, Y (`screens.tsv`)
 
 X = diagnosis (SCZ vs NTC). M = expression of one gene (PTN, FGF1 or FGF2) in the
