@@ -5,11 +5,11 @@ suppressPackageStartupMessages({
   library(sessioninfo)
 })
 
-source(here("code/analysis/18_rescue/rescue_plot_utils.R"))
+source(here("code/analysis/18_rescue_cell_type_proportion/rescue_plot_utils.R"))
 
 
 # Config ----
-fld_out <- here("processed-data/rds/18_rescue")
+fld_out <- here("processed-data/rds/18_rescue_cell_type_proportion")
 
 # Same threshold as 03-donor_spd_RESCUE_composition.R: donor x domain
 # combinations with fewer spots are excluded from the across-donor summary
@@ -24,7 +24,7 @@ glia_classes <- c("Astro", "Oligo", "OPC", "Micro")
 # Load data ----
 ## Slim key-indexed RESCUE proportions, from 01-merge_RESCUE_to_spe.R ----
 prop_df <- readRDS(
-  here("processed-data/rds/18_rescue", "RESCUE_prop_df.rds")
+  here("processed-data/rds/18_rescue_cell_type_proportion", "RESCUE_prop_df.rds")
 )
 
 ct_cols <- setdiff(

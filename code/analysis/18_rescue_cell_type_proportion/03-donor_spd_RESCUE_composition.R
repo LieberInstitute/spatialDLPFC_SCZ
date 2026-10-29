@@ -5,11 +5,11 @@ suppressPackageStartupMessages({
   library(sessioninfo)
 })
 
-source(here("code/analysis/18_rescue/rescue_plot_utils.R"))
+source(here("code/analysis/18_rescue_cell_type_proportion/rescue_plot_utils.R"))
 
 
 # Config ----
-fld_plot <- here("plots/18_rescue")
+fld_plot <- here("plots/18_rescue_cell_type_proportion")
 dir.create(fld_plot, showWarnings = FALSE, recursive = TRUE)
 
 # Donor x domain combinations with fewer spots than this are excluded from
@@ -20,7 +20,7 @@ min_spots <- 10
 # Load data ----
 ## Slim key-indexed RESCUE proportions, from 01-merge_RESCUE_to_spe.R ----
 prop_df <- readRDS(
-  here("processed-data/rds/18_rescue", "RESCUE_prop_df.rds")
+  here("processed-data/rds/18_rescue_cell_type_proportion", "RESCUE_prop_df.rds")
 )
 
 ct_cols <- setdiff(
@@ -74,7 +74,7 @@ stopifnot(
 
 write_csv(
   donor_spd_fine,
-  here("processed-data/rds/18_rescue", "RESCUE_donor_spd_mean_prop.csv")
+  here("processed-data/rds/18_rescue_cell_type_proportion", "RESCUE_donor_spd_mean_prop.csv")
 )
 
 ## Drop sparse donor x domain combinations from all plots below ----

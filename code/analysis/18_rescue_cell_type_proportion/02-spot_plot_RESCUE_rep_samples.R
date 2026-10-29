@@ -9,18 +9,18 @@ suppressPackageStartupMessages({
   library(sessioninfo)
 })
 
-source(here("code/analysis/18_rescue/rescue_plot_utils.R"))
+source(here("code/analysis/18_rescue_cell_type_proportion/rescue_plot_utils.R"))
 
 
 # Config ----
-fld_plot <- here("plots/18_rescue")
+fld_plot <- here("plots/18_rescue_cell_type_proportion")
 dir.create(fld_plot, showWarnings = FALSE, recursive = TRUE)
 
 
 # Load Data ----
 spe <- readRDS(
   here(
-    "processed-data/rds/18_rescue",
+    "processed-data/rds/18_rescue_cell_type_proportion",
     "fnl_spe_kept_spots_only_w_RESCUE.rds"
   )
 )

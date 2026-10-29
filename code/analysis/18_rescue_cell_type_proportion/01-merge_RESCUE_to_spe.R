@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
 
 
 # Config ----
-fld_out <- here("processed-data/rds/18_rescue")
+fld_out <- here("processed-data/rds/18_rescue_cell_type_proportion")
 dir.create(fld_out, showWarnings = FALSE, recursive = TRUE)
 
 # Non-proportion (metadata) columns of the RESCUE spot-level output; every

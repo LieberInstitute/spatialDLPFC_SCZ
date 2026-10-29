@@ -135,30 +135,30 @@ domain labels agree for every matched spot.
 
 ## Outputs
 
-* `processed-data/rds/18_rescue/fnl_spe_kept_spots_only_w_RESCUE.rds`:
+* `processed-data/rds/18_rescue_cell_type_proportion/fnl_spe_kept_spots_only_w_RESCUE.rds`:
   finalized `spe` with RESCUE columns added to `colData`
-* `processed-data/rds/18_rescue/RESCUE_prop_df.rds`: slim data frame
+* `processed-data/rds/18_rescue_cell_type_proportion/RESCUE_prop_df.rds`: slim data frame
   (`key`, `sample_id`, `brnum`, `dx`, `spd_label`, `RESCUE_*`)
-* `processed-data/rds/18_rescue/RESCUE_merge_qc_summary.csv`
-* `processed-data/rds/18_rescue/RESCUE_merge_qc_per_sample.csv`
-* `processed-data/rds/18_rescue/RESCUE_neuron_glia_ratio_donor_spd.csv`:
+* `processed-data/rds/18_rescue_cell_type_proportion/RESCUE_merge_qc_summary.csv`
+* `processed-data/rds/18_rescue_cell_type_proportion/RESCUE_merge_qc_per_sample.csv`
+* `processed-data/rds/18_rescue_cell_type_proportion/RESCUE_neuron_glia_ratio_donor_spd.csv`:
   per donor x domain mean neuronal / glial proportions, ratio, `n_spots`,
   and `pass_min_spots`
-* `processed-data/rds/18_rescue/RESCUE_neuron_glia_ratio_spd_summary.csv`:
+* `processed-data/rds/18_rescue_cell_type_proportion/RESCUE_neuron_glia_ratio_spd_summary.csv`:
   per-domain median, Q1, Q3, and IQR across donors
-* `processed-data/rds/18_rescue/RESCUE_donor_spd_mean_prop.csv`: donor x
+* `processed-data/rds/18_rescue_cell_type_proportion/RESCUE_donor_spd_mean_prop.csv`: donor x
   domain x cell type mean proportions, with `n_spots`
-* `plots/18_rescue/spot_plot_RESCUE_broad_class_rep_samples.pdf` (1 page
+* `plots/18_rescue_cell_type_proportion/spot_plot_RESCUE_broad_class_rep_samples.pdf` (1 page
   per broad class)
-* `plots/18_rescue/spot_plot_RESCUE_celltype_rep_samples.pdf` (1 page per
+* `plots/18_rescue_cell_type_proportion/spot_plot_RESCUE_celltype_rep_samples.pdf` (1 page per
   cell type)
-* `plots/18_rescue/RESCUE_broad_class_by_spd_rep_samples{,_excl_unattributed}.pdf`
-* `plots/18_rescue/RESCUE_celltype_by_spd_heatmap_rep_samples.pdf`
-* `plots/18_rescue/RESCUE_broad_class_by_spd{,_excl_unattributed}.pdf`:
+* `plots/18_rescue_cell_type_proportion/RESCUE_broad_class_by_spd_rep_samples{,_excl_unattributed}.pdf`
+* `plots/18_rescue_cell_type_proportion/RESCUE_celltype_by_spd_heatmap_rep_samples.pdf`
+* `plots/18_rescue_cell_type_proportion/RESCUE_broad_class_by_spd{,_excl_unattributed}.pdf`:
   overall composition per spatial domain, diagnoses pooled
-* `plots/18_rescue/RESCUE_broad_class_by_spd_dx{,_excl_unattributed}.pdf`
-* `plots/18_rescue/RESCUE_broad_class_by_donor_spd{,_excl_unattributed}.pdf`
-* `plots/18_rescue/RESCUE_celltype_by_spd_heatmap_dx.pdf`
-* `plots/18_rescue/RESCUE_celltype_by_spd_heatmap_dx_row_scaled.pdf`
-* `plots/18_rescue/RESCUE_donor_prop_by_spd_dx_boxplot.pdf` (page 1 =
+* `plots/18_rescue_cell_type_proportion/RESCUE_broad_class_by_spd_dx{,_excl_unattributed}.pdf`
+* `plots/18_rescue_cell_type_proportion/RESCUE_broad_class_by_donor_spd{,_excl_unattributed}.pdf`
+* `plots/18_rescue_cell_type_proportion/RESCUE_celltype_by_spd_heatmap_dx.pdf`
+* `plots/18_rescue_cell_type_proportion/RESCUE_celltype_by_spd_heatmap_dx_row_scaled.pdf`
+* `plots/18_rescue_cell_type_proportion/RESCUE_donor_prop_by_spd_dx_boxplot.pdf` (page 1 =
   broad classes; then 1 page per broad class with >1 fine type)
