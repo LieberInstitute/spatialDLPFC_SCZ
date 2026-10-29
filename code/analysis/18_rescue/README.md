@@ -26,7 +26,8 @@ the representative samples and across spatial domains and donors.
 | `01-merge_RESCUE_to_spe.R` | Runs the merge QC checks (below) and stops on any misalignment. Adds the RESCUE columns to `colData(spe)`, matched on `key` (= RESCUE `spot_id`), and saves the new `spe` plus a slim, `key`-indexed data frame. |
 | `02-spot_plot_RESCUE_rep_samples.R` | For the representative samples Br8667 (`V13M06-342_D1`, NTC) and Br5973 (`V13M06-343_D1`, SCZ): `escheR` spot plots for every broad class and every fine cell type (fill = proportion, white = 0 to black = max; border = `spd_label`), plus each sample's mean composition per spatial domain (broad-class stacked bars, with and without unattributed; fine cell type heatmap). |
 | `03-donor_spd_RESCUE_composition.R` | Donor-level summaries from the slim data frame (no `spe` load needed): broad-class composition by spatial domain (diagnoses pooled), by spatial domain x diagnosis, and per donor stratified by spatial domain (each with and without unattributed), fine cell type x domain heatmaps (absolute and row-scaled), and boxplots of donor x domain mean proportions by diagnosis. |
-| `rescue_plot_utils.R` | Shared helpers sourced by `02`/`03`: broad-class mapping, order and colors, the conditional-composition helper, and the representative sample IDs. |
+| `04-neuron_glia_ratio.R` | Neuron-to-glia ratio for each donor x spatial domain (and donor overall), plus the median and IQR across donors for each domain. |
+| `rescue_plot_utils.R` | Shared helpers sourced by `02`-`04`: broad-class mapping, order and colors, the conditional-composition helper, and the representative sample IDs. |
 
 Each `.R` script has a matching `.sh` SLURM wrapper (JHPCE, `conda_R/devel`).
 
@@ -66,6 +67,45 @@ Each `.R` script has a matching `.sh` SLURM wrapper (JHPCE, `conda_R/devel`).
   all in `SpD04-WM`, with 1-8 spots each). They remain in the saved csv
   together with `n_spots`.
 
+## Neuron-to-glia ratio
+
+`04-neuron_glia_ratio.R` defines two compartments from the broad classes:
+
+* **Neuronal** = Excit (`Excit_01-15`) + Inhib (`Inhib_01-06`)
+* **Glial** = Astro + Oligo (`Oligo_01-03`) + OPC + Micro
+
+EndoMural and Unattributed belong to neither. For each donor x domain
+combination (and for each donor across all spots), the ratio is a ratio of
+mean proportions:
+
+```
+ratio = mean(neuron_prop) / mean(glia_prop)
+```
+
+Many spots have glial proportion near zero, which makes per-spot ratios
+unstable or infinite, so spot-level ratios are not averaged. Unattributed
+expression cancels in the ratio, so the result is the same whether or not
+proportions are renormalized to attributed signal.
+
+The median and IQR are then taken across donors for each domain. As in
+`03`, donor x domain combinations with fewer than 10 spots are excluded (7,
+all in `SpD04-WM`; they remain in the donor-level csv, flagged by
+`pass_min_spots`). `SpD04-WM` is therefore summarized over 53 donors: 3
+donors have no WM spots, and 7 have fewer than 10.
+
+Results from the current run:
+
+| Spatial domain | n donors | Median | Q1 | Q3 | IQR |
+| --- | --- | --- | --- | --- | --- |
+| SpD07-L1 | 63 | 3.21 | 1.82 | 4.99 | 3.17 |
+| SpD06-L2/3 | 63 | 20.0 | 14.2 | 31.6 | 17.3 |
+| SpD02-L3/4 | 63 | 15.6 | 11.3 | 26.0 | 14.7 |
+| SpD05-L5 | 63 | 19.2 | 14.3 | 28.9 | 14.6 |
+| SpD03-L6 | 63 | 12.0 | 10.0 | 15.3 | 5.29 |
+| SpD01-WMtz | 63 | 2.31 | 1.82 | 2.79 | 0.97 |
+| SpD04-WM | 53 | 0.97 | 0.74 | 1.21 | 0.47 |
+| All spots | 63 | 7.00 | 6.32 | 7.71 | 1.39 |
+
 ## Merge QC
 
 `01-merge_RESCUE_to_spe.R` writes every check to
@@ -101,6 +141,11 @@ domain labels agree for every matched spot.
   (`key`, `sample_id`, `brnum`, `dx`, `spd_label`, `RESCUE_*`)
 * `processed-data/rds/18_rescue/RESCUE_merge_qc_summary.csv`
 * `processed-data/rds/18_rescue/RESCUE_merge_qc_per_sample.csv`
+* `processed-data/rds/18_rescue/RESCUE_neuron_glia_ratio_donor_spd.csv`:
+  per donor x domain mean neuronal / glial proportions, ratio, `n_spots`,
+  and `pass_min_spots`
+* `processed-data/rds/18_rescue/RESCUE_neuron_glia_ratio_spd_summary.csv`:
+  per-domain median, Q1, Q3, and IQR across donors
 * `processed-data/rds/18_rescue/RESCUE_donor_spd_mean_prop.csv`: donor x
   domain x cell type mean proportions, with `n_spots`
 * `plots/18_rescue/spot_plot_RESCUE_broad_class_rep_samples.pdf` (1 page

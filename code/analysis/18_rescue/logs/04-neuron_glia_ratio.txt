@@ -1,0 +1,83 @@
+Neuronal cell types: Excit_01 Excit_02 Excit_03 Excit_04 Excit_05 Excit_06 Excit_07 Excit_08 Excit_09 Excit_10 Excit_11 Excit_12 Excit_13 Excit_14 Excit_15 Inhib_01 Inhib_02 Inhib_03 Inhib_04 Inhib_05 Inhib_06 
+Glial cell types: Astro Micro Oligo_01 Oligo_02 Oligo_03 OPC 
+Donor x domain combinations with < 10 spots (excluded from summary): 7
+# A tibble: 7 x 8
+  brnum  dx    spd_label n_spots mean_neuron_prop mean_glia_prop
+  <chr>  <fct> <fct>       <int>            <dbl>          <dbl>
+1 Br5400 ntc   SpD04-WM        3           0.0381        0.303  
+2 Br5588 scz   SpD04-WM        2           0.0775        0.378  
+3 Br5636 scz   SpD04-WM        2           0.0453        0.00315
+4 Br5789 scz   SpD04-WM        2           0.278         0.358  
+5 Br6032 scz   SpD04-WM        8           0.241         0.404  
+6 Br6369 scz   SpD04-WM        2           0.148         0.206  
+7 Br6560 scz   SpD04-WM        1           0.229         0.389  
+# i 2 more variables: neuron_glia_ratio <dbl>, pass_min_spots <lgl>
+# A tibble: 8 x 6
+  spd_label  n_donors median_ratio q1_ratio q3_ratio iqr_ratio
+  <fct>         <int>        <dbl>    <dbl>    <dbl>     <dbl>
+1 SpD07-L1         63        3.21     1.82      4.99     3.17 
+2 SpD06-L2/3       63       20.0     14.2      31.6     17.3  
+3 SpD02-L3/4       63       15.6     11.3      26.0     14.7  
+4 SpD05-L5         63       19.2     14.3      28.9     14.6  
+5 SpD03-L6         63       12.0     10.0      15.3      5.29 
+6 SpD01-WMtz       63        2.31     1.82      2.79     0.969
+7 SpD04-WM         53        0.973    0.739     1.21     0.474
+8 All spots        63        7.00     6.32      7.71     1.39 
+[1] "Finished computing RESCUE neuron-to-glia ratios per donor and spatial domain"
+- Session info ---------------------------------------------------------------
+ setting  value
+ version  R version 4.4.2 (2024-10-31)
+ os       macOS Sonoma 14.6.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  C
+ ctype    C
+ tz       America/Denver
+ date     2026-10-29
+ pandoc   3.1.12.1 @ /opt/homebrew/bin/pandoc
+
+- Packages -------------------------------------------------------------------
+ package     * version date (UTC) lib source
+ bit           4.5.0.1 2024-12-03 [1] CRAN (R 4.4.1)
+ bit64         4.6.0-1 2025-01-16 [1] CRAN (R 4.4.1)
+ cli           3.6.3   2024-06-21 [1] CRAN (R 4.4.0)
+ colorspace    2.1-1   2024-07-26 [1] CRAN (R 4.4.0)
+ crayon        1.5.3   2024-06-20 [1] CRAN (R 4.4.0)
+ dplyr       * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+ forcats     * 1.0.0   2023-01-29 [1] CRAN (R 4.4.0)
+ generics      0.1.3   2022-07-05 [1] CRAN (R 4.4.0)
+ ggplot2     * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+ glue          1.8.0   2024-09-30 [1] CRAN (R 4.4.1)
+ gtable        0.3.6   2024-10-25 [1] CRAN (R 4.4.1)
+ here        * 1.0.1   2020-12-13 [1] CRAN (R 4.4.0)
+ hms           1.1.3   2023-03-21 [1] CRAN (R 4.4.0)
+ lifecycle     1.0.4   2023-11-07 [1] CRAN (R 4.4.0)
+ lubridate   * 1.9.4   2024-12-08 [1] CRAN (R 4.4.1)
+ magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.4.0)
+ munsell       0.5.1   2024-04-01 [1] CRAN (R 4.4.0)
+ pillar        1.10.1  2025-01-07 [1] CRAN (R 4.4.1)
+ pkgconfig     2.0.3   2019-09-22 [1] CRAN (R 4.4.0)
+ purrr       * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
+ R6            2.5.1   2021-08-19 [1] CRAN (R 4.4.0)
+ readr       * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
+ rlang         1.1.5   2025-01-17 [1] CRAN (R 4.4.1)
+ rprojroot     2.0.4   2023-11-05 [1] CRAN (R 4.4.0)
+ scales        1.3.0   2023-11-28 [1] CRAN (R 4.4.0)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.4.0)
+ stringi       1.8.4   2024-05-06 [1] CRAN (R 4.4.0)
+ stringr     * 1.5.1   2023-11-14 [1] CRAN (R 4.4.0)
+ tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+ tidyr       * 1.3.1   2024-01-24 [1] CRAN (R 4.4.0)
+ tidyselect    1.2.1   2024-03-11 [1] CRAN (R 4.4.0)
+ tidyverse   * 2.0.0   2023-02-22 [1] CRAN (R 4.4.0)
+ timechange    0.3.0   2024-01-18 [1] CRAN (R 4.4.0)
+ tzdb          0.4.0   2023-05-12 [1] CRAN (R 4.4.0)
+ utf8          1.2.4   2023-10-22 [1] CRAN (R 4.4.0)
+ vctrs         0.6.5   2023-12-01 [1] CRAN (R 4.4.0)
+ vroom         1.6.5   2023-12-05 [1] CRAN (R 4.4.0)
+ withr         3.0.2   2024-10-28 [1] CRAN (R 4.4.1)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+
+------------------------------------------------------------------------------
