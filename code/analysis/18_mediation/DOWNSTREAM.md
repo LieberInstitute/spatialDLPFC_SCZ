@@ -127,6 +127,11 @@ results, significant results, mapping/universe/annotation tables, overlap tables
 and provenance. `report/GO_background_comparison.tsv` summarizes both analyses.
 `GO_eligible_universes.tsv` lists the selected background in each directory;
 `background_mode` in provenance and group summaries identifies which one.
+Gene names for the 11 significant all-tested-background associations are listed
+in the [gene table](../../../processed-data/18_mediation/run_2026-10-08_limma/report/GO_term_genes_all_tested_BH05.md),
+with association-level and gene-level CSV exports. Regenerate these reporting-only
+exports with `export_go_gene_tables.py --source-run <run>`; the exporter checks gene
+membership against the saved candidate list, mapping and GO annotation snapshots.
 The committed `primary/all_pairs.tsv.gz` contains aggregate fitted statistics
 needed to reproduce the selection and backgrounds; it contains no donor-level rows.
 Its archived `screen_hit` flags describe the previous FDR screen, not the nominal

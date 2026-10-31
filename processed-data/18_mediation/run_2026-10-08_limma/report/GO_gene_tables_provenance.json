@@ -1,0 +1,54 @@
+{
+  "background": "all_tested",
+  "selection": "p_adjust < 0.05 within each screen/ontology",
+  "statistics": "unchanged source results",
+  "associations": 11,
+  "distinct_go_terms": 10,
+  "distinct_candidate_genes": [
+    "AGT",
+    "BCL6",
+    "CCDC102B",
+    "FAM107A",
+    "GAP43",
+    "MT1G",
+    "MT1M",
+    "MT3",
+    "NAIP",
+    "PLEC"
+  ],
+  "gene_screen_term_rows": 44,
+  "fgf_neuropil_shared_genes": [
+    "AGT",
+    "BCAP29",
+    "BCL6",
+    "BRSK1",
+    "C2orf80",
+    "CHGB",
+    "DYNLL1",
+    "FAM107A",
+    "GAP43",
+    "HINT1",
+    "MT1G",
+    "MT3",
+    "MTRNR2L8",
+    "PITPNC1",
+    "SLC24A2",
+    "SLC6A8"
+  ],
+  "inputs_sha256": {
+    "downstream_nominal_all_tested/GO_significant_BH05.tsv": "adab05911090218c0196d27916d66b0425cf5320e0dc901b1e5b5b09136dacb3",
+    "downstream_nominal_all_tested/GO_results_all.tsv.gz": "0128a6c3ed22bfdcef27dcaab223a0d7d99f285e61f18209a0eb37616a7fb2eb",
+    "downstream_nominal_all_tested/GO_gene_mapping.tsv": "466873dbb9e85678e39de4fade5ff357b9bdd922bda00826dd8203b397714c56",
+    "downstream_nominal_all_tested/GO_annotation_snapshot.tsv.gz": "0001b9cacc16a0a5057eac74908d928236cac0a191e0048033035238b55baf6f",
+    "downstream_nominal_all_tested/GO_term_snapshot.tsv": "8b06b6a830dca82a501ac0dca4afb180bfd5577262006bfb3b428f6fc308ddb7",
+    "report/mediation_hits_nominal_p05.csv": "2cffd2573ec1d3e08dbfb39d60d965aa3db4dba6e1ff72ec75afc9468ca2986f",
+    "downstream_nominal/gene_overlap_intersections.tsv": "bad76ad05fcc60af3d729244e2cc38269153c969066c0cb73554323f341762fb",
+    "downstream_nominal/gene_overlap_membership.tsv": "3446969914fe4c40776e62d880c5d9003344d6ffad14aa448c5580e31d1da01c",
+    "downstream_nominal/GO_significant_BH05.tsv": "329d7a18665b495c1b113205756ad3d4be3d0b33dd12a70c7ead0a6bd2917ae0"
+  },
+  "outputs_sha256": {
+    "GO_term_genes_all_tested_BH05.csv": "0daee488b82cb9126d331f130e1386148145f63b7723b0f019bbd36ee37c271c",
+    "GO_gene_term_membership_all_tested_BH05.csv": "41305aa76500ba257344c000939caf95abf675dbbaafd3e9f47d4467aa1770a4",
+    "GO_term_genes_all_tested_BH05.md": "8073e7d9132f143ee732cdbff273ad7996b7edc97d22eed3847c99635271e293"
+  }
+}
