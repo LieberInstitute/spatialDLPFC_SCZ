@@ -132,6 +132,9 @@ in the [gene table](../../../processed-data/18_mediation/run_2026-10-08_limma/re
 with association-level and gene-level CSV exports. Regenerate these reporting-only
 exports with `export_go_gene_tables.py --source-run <run>`; the exporter checks gene
 membership against the saved candidate list, mapping and GO annotation snapshots.
+The [Excel attachment](../../../processed-data/18_mediation/run_2026-10-08_limma/report/GO_and_FGF_gene_tables.xlsx)
+combines both GO views with the 31 FGF-associated outcome genes and five exact
+FGF overlap categories. It presents the existing tables without new statistical tests.
 The committed `primary/all_pairs.tsv.gz` contains aggregate fitted statistics
 needed to reproduce the selection and backgrounds; it contains no donor-level rows.
 Its archived `screen_hit` flags describe the previous FDR screen, not the nominal
