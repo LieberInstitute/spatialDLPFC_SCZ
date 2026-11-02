@@ -1,0 +1,797 @@
+set,go,cluster,parent,score,size,term,parentTerm,termUniqueness,termUniquenessWithinCluster,termDispensability
+all,GO:0002181,9,GO:0002181,8.064991972458172,165,cytoplasmic translation,cytoplasmic translation,0.9270628140703517,0.7195,0
+all,GO:1902600,5,GO:1902600,8.064991972458172,195,proton transmembrane transport,proton transmembrane transport,0.9530251256281408,0.4646,0
+all,GO:0010257,6,GO:0010257,8.064991972458172,62,NADH dehydrogenase complex assembly,NADH dehydrogenase complex assembly,0.931356783919598,0.46287500000000004,0
+all,GO:0032981,6,GO:0010257,8.064991972458172,62,mitochondrial respiratory chain complex I assembly,NADH dehydrogenase complex assembly,0.9118844221105528,0.41974999999999996,0.999
+all,GO:0033108,4,GO:0033108,8.064991972458172,103,mitochondrial respiratory chain complex assembly,mitochondrial respiratory chain complex assembly,0.9097261306532664,0.3976666666666666,0
+all,GO:0097250,4,GO:0033108,8.064991972458172,114,mitochondrial respirasome assembly,mitochondrial respiratory chain complex assembly,0.9092713567839196,0.3944444444444445,0.761
+all,GO:0072521,3,GO:0072521,8.064991972458172,577,purine-containing compound metabolic process,purine-containing compound metabolic process,0.9402060301507537,0.33024999999999993,0
+all,GO:0007005,4,GO:0033108,8.064991972458172,452,mitochondrion organization,mitochondrial respiratory chain complex assembly,0.9130929648241206,0.3296111111111111,0.86
+all,GO:1901137,7,GO:1901137,8.064991972458172,613,carbohydrate derivative biosynthetic process,carbohydrate derivative biosynthetic process,0.928680904522613,0.30999999999999994,0
+all,GO:0009152,3,GO:0072521,8.064991972458172,156,purine ribonucleotide biosynthetic process,purine-containing compound metabolic process,0.8781557788944722,0.2985,0.873
+all,GO:0140053,8,GO:0140053,8.064991972458172,169,mitochondrial gene expression,mitochondrial gene expression,0.9286608040201004,0.29480000000000006,0
+all,GO:0072522,3,GO:0072521,8.064991972458172,263,purine-containing compound biosynthetic process,purine-containing compound metabolic process,0.9307261306532665,0.2905,0.917
+all,GO:0006164,3,GO:0072521,8.064991972458172,197,purine nucleotide biosynthetic process,purine-containing compound metabolic process,0.8795753768844222,0.29025,0.889
+all,GO:0032543,8,GO:0140053,8.064991972458172,131,mitochondrial translation,mitochondrial gene expression,0.9250427135678393,0.2884,0.971
+all,GO:0090407,2,GO:0090407,8.064991972458172,611,organophosphate biosynthetic process,organophosphate biosynthetic process,0.892786432160804,0.25595,0
+all,GO:0009150,7,GO:1901137,8.064991972458172,348,purine ribonucleotide metabolic process,carbohydrate derivative biosynthetic process,0.8790753768844219,0.23016666666666663,0.799
+all,GO:0006163,2,GO:0090407,8.064991972458172,440,purine nucleotide metabolic process,organophosphate biosynthetic process,0.8800979899497487,0.22860000000000003,0.808
+all,GO:0009260,7,GO:1901137,8.064991972458172,171,ribonucleotide biosynthetic process,carbohydrate derivative biosynthetic process,0.88056783919598,0.22416666666666663,0.859
+all,GO:0046390,7,GO:1901137,8.064991972458172,178,ribose phosphate biosynthetic process,carbohydrate derivative biosynthetic process,0.8963065326633165,0.22366666666666668,0.861
+all,GO:0019693,7,GO:1901137,8.064991972458172,376,ribose phosphate metabolic process,carbohydrate derivative biosynthetic process,0.8999849246231155,0.22316666666666662,0.811
+all,GO:0009259,7,GO:1901137,8.064991972458172,368,ribonucleotide metabolic process,carbohydrate derivative biosynthetic process,0.882140703517588,0.22283333333333333,0.81
+all,GO:0009117,2,GO:0090407,8.064991972458172,500,nucleotide metabolic process,organophosphate biosynthetic process,0.8825376884422111,0.22160000000000002,0.826
+all,GO:0006123,1,GO:0006123,8.064991972458172,24,"mitochondrial electron transport, cytochrome c to oxygen","mitochondrial electron transport, cytochrome c to oxygen",0.9298517587939699,0.2188461538461538,0
+all,GO:0006753,2,GO:0090407,8.064991972458172,656,nucleoside phosphate metabolic process,organophosphate biosynthetic process,0.8813618090452261,0.21814999999999996,0.853
+all,GO:0006091,1,GO:0006123,8.064991972458172,490,generation of precursor metabolites and energy,"mitochondrial electron transport, cytochrome c to oxygen",0.9177613065326634,0.21369230769230774,0.748
+all,GO:0009165,2,GO:0090407,8.064991972458172,233,nucleotide biosynthetic process,organophosphate biosynthetic process,0.8814145728643213,0.21289999999999998,0.905
+all,GO:0042776,2,GO:0090407,8.064991972458172,68,proton motive force-driven mitochondrial ATP synthesis,organophosphate biosynthetic process,0.8631482412060302,0.20930000000000004,0.775
+all,GO:1901293,2,GO:0090407,8.064991972458172,321,nucleoside phosphate biosynthetic process,organophosphate biosynthetic process,0.8801155778894473,0.20835000000000004,0.935
+all,GO:0015980,1,GO:0006123,8.064991972458172,356,energy derivation by oxidation of organic compounds,"mitochondrial electron transport, cytochrome c to oxygen",0.9184195979899499,0.19100000000000006,0.779
+all,GO:0015986,2,GO:0090407,8.064991972458172,77,proton motive force-driven ATP synthesis,organophosphate biosynthetic process,0.8812964824120603,0.18774999999999997,0.8
+all,GO:0009144,2,GO:0090407,8.064991972458172,259,purine nucleoside triphosphate metabolic process,organophosphate biosynthetic process,0.8871658291457285,0.18679999999999997,0.754
+all,GO:0009199,2,GO:0090407,8.064991972458172,258,ribonucleoside triphosphate metabolic process,organophosphate biosynthetic process,0.8867688442211056,0.18635000000000002,0.758
+all,GO:0009205,2,GO:0090407,8.064991972458172,252,purine ribonucleoside triphosphate metabolic process,organophosphate biosynthetic process,0.8872688442211054,0.18615000000000004,0.752
+all,GO:0009141,2,GO:0090407,8.064991972458172,274,nucleoside triphosphate metabolic process,organophosphate biosynthetic process,0.8863140703517588,0.18579999999999997,0.764
+all,GO:0009145,2,GO:0090407,8.064991972458172,112,purine nucleoside triphosphate biosynthetic process,organophosphate biosynthetic process,0.8866231155778894,0.18305000000000005,0.823
+all,GO:0009206,2,GO:0090407,8.064991972458172,111,purine ribonucleoside triphosphate biosynthetic process,organophosphate biosynthetic process,0.8865804020100502,0.18184999999999996,0.822
+all,GO:0009142,2,GO:0090407,8.064991972458172,124,nucleoside triphosphate biosynthetic process,organophosphate biosynthetic process,0.8852989949748743,0.17964999999999998,0.839
+all,GO:0009201,2,GO:0090407,8.064991972458172,116,ribonucleoside triphosphate biosynthetic process,organophosphate biosynthetic process,0.8855829145728642,0.1795,0.835
+all,GO:0046034,2,GO:0090407,8.064991972458172,228,ATP metabolic process,organophosphate biosynthetic process,0.8793718592964823,0.17855,0.747
+all,GO:0022900,1,GO:0006123,8.064991972458172,135,electron transport chain,"mitochondrial electron transport, cytochrome c to oxygen",0.9229371859296482,0.17761538461538462,0.877
+all,GO:0006120,1,GO:0006123,8.064991972458172,51,"mitochondrial electron transport, NADH to ubiquinone","mitochondrial electron transport, cytochrome c to oxygen",0.9259723618090453,0.17730769230769228,0.872
+all,GO:0045333,1,GO:0006123,8.064991972458172,249,cellular respiration,"mitochondrial electron transport, cytochrome c to oxygen",0.9191005025125627,0.17538461538461536,0.806
+all,GO:0006754,2,GO:0090407,8.064991972458172,100,ATP biosynthetic process,organophosphate biosynthetic process,0.879251256281407,0.17489999999999994,0.817
+all,GO:0009060,1,GO:0006123,8.064991972458172,200,aerobic respiration,"mitochondrial electron transport, cytochrome c to oxygen",0.919711055276382,0.17084615384615387,0.823
+all,GO:0006119,1,GO:0006123,8.064991972458172,149,oxidative phosphorylation,"mitochondrial electron transport, cytochrome c to oxygen",0.9211582914572863,0.16692307692307695,0.858
+all,GO:0022904,1,GO:0006123,8.064991972458172,125,respiratory electron transport chain,"mitochondrial electron transport, cytochrome c to oxygen",0.9220276381909549,0.1491538461538462,0.882
+all,GO:0019646,1,GO:0006123,8.064991972458172,93,aerobic electron transport chain,"mitochondrial electron transport, cytochrome c to oxygen",0.9229396984924625,0.14792307692307693,0.906
+all,GO:0042775,1,GO:0006123,8.064991972458172,101,mitochondrial ATP synthesis coupled electron transport,"mitochondrial electron transport, cytochrome c to oxygen",0.9223844221105526,0.14292307692307693,0.899
+all,GO:0042773,1,GO:0006123,8.064991972458172,101,ATP synthesis coupled electron transport,"mitochondrial electron transport, cytochrome c to oxygen",0.9223140703517589,0.14223076923076927,0.897
+all,GO:0042254,10,GO:0042254,7.59493309000997,317,ribosome biogenesis,ribosome biogenesis,0.9230929648241206,0.3612857142857143,0
+all,GO:0022613,10,GO:0042254,6.536837548492634,492,ribonucleoprotein complex biogenesis,ribosome biogenesis,0.9213341708542714,0.37328571428571433,0.957
+all,GO:0007006,4,GO:0033108,5.811465479412785,120,mitochondrial membrane organization,mitochondrial respiratory chain complex assembly,0.9166683417085427,0.3508888888888889,0.767
+all,GO:0006839,11,GO:0006839,5.195635494760683,188,mitochondrial transport,mitochondrial transport,0.9622261306532665,0.597,0
+all,GO:0017004,6,GO:0010257,5.101994250015822,41,cytochrome complex assembly,NADH dehydrogenase complex assembly,0.9309547738693468,0.411875,0.544
+all,GO:0061614,12,GO:0061614,4.599612689239555,77,miRNA transcription,miRNA transcription,0.9153316582914574,0.42352941176470593,0
+all,GO:2000628,12,GO:0061614,4.52920828636504,92,regulation of miRNA metabolic process,miRNA transcription,0.9087814070351758,0.4003529411764706,0.959
+all,GO:0071363,13,GO:0071363,4.414037986694403,761,cellular response to growth factor stimulus,cellular response to growth factor stimulus,0.9589748743718592,0.23340000000000005,0
+all,GO:0006122,1,GO:0006123,4.305704141312783,14,"mitochondrial electron transport, ubiquinol to cytochrome c","mitochondrial electron transport, cytochrome c to oxygen",0.9318090452261307,0.24,0.808
+all,GO:0048729,14,GO:0048729,4.251535483069593,617,tissue morphogenesis,tissue morphogenesis,0.8791859296482413,0.3539230769230769,0
+all,GO:1902893,12,GO:0061614,4.137263697931232,76,regulation of miRNA transcription,miRNA transcription,0.8944497487437186,0.39917647058823524,0.999
+all,GO:0010586,12,GO:0061614,4.132341056827318,110,miRNA metabolic process,miRNA transcription,0.9301105527638192,0.4205882352941177,0.974
+all,GO:0031507,15,GO:0031507,4.095669303574484,161,heterochromatin formation,heterochromatin formation,0.8557110552763819,0.3418333333333333,0
+all,GO:0045814,15,GO:0031507,4.0794589850550596,192,"negative regulation of gene expression, epigenetic",heterochromatin formation,0.8529145728643217,0.3320000000000001,0.978
+all,GO:0070848,13,GO:0071363,3.85714731772857,794,response to growth factor,cellular response to growth factor stimulus,0.9591256281407035,0.23440000000000005,0.988
+all,GO:0042274,10,GO:0042254,3.7548218000515443,108,ribosomal small subunit biogenesis,ribosome biogenesis,0.9294723618090452,0.40542857142857147,0.9
+all,GO:0008535,6,GO:0010257,3.7517946645007796,29,respiratory chain complex IV assembly,NADH dehydrogenase complex assembly,0.9327211055276382,0.41825,0.529
+all,GO:0072009,16,GO:0072009,3.7391518229605363,123,nephron epithelium development,nephron epithelium development,0.8632236180904522,0.30859259259259253,0
+all,GO:0001503,17,GO:0001503,3.7391518229605363,456,ossification,ossification,0.9405603015075377,0.2954,0
+all,GO:0006364,12,GO:0061614,3.7049097374291877,225,rRNA processing,miRNA transcription,0.8555929648241205,0.6070588235294118,0.362
+all,GO:0031163,10,GO:0042254,3.6547441273579313,29,metallo-sulfur cluster assembly,ribosome biogenesis,0.9366582914572864,0.5452857142857143,0.462
+all,GO:0016226,10,GO:0042254,3.6547441273579313,29,iron-sulfur cluster assembly,ribosome biogenesis,0.9366582914572864,0.5452857142857143,0.462
+all,GO:0060562,14,GO:0048729,3.6401315095324027,331,epithelial tube morphogenesis,tissue morphogenesis,0.8604522613065327,0.3423076923076923,0.917
+all,GO:0002009,14,GO:0048729,3.6386515518309093,500,morphogenesis of an epithelium,tissue morphogenesis,0.8761206030150753,0.31607692307692314,0.965
+all,GO:0007169,18,GO:0007169,3.618432918251189,662,cell surface receptor protein tyrosine kinase signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9279045226130653,0.4171,0
+all,GO:0016072,12,GO:0061614,3.6115973116336253,268,rRNA metabolic process,miRNA transcription,0.9348517587939698,0.6205294117647059,0.352
+all,GO:0061326,16,GO:0072009,3.5936912868483457,105,renal tubule development,nephron epithelium development,0.8664447236180906,0.3524814814814815,0.801
+all,GO:2000630,12,GO:0061614,3.589439928994335,67,positive regulation of miRNA metabolic process,miRNA transcription,0.9042788944723619,0.40341176470588236,0.935
+all,GO:0007007,4,GO:0033108,3.589439928994335,45,inner mitochondrial membrane organization,mitochondrial respiratory chain complex assembly,0.9205829145728643,0.3762777777777778,0.727
+all,GO:0033617,6,GO:0010257,3.5514517988635124,25,mitochondrial cytochrome c oxidase assembly,NADH dehydrogenase complex assembly,0.9149045226130653,0.38025,0.523
+all,GO:0007423,19,GO:0007423,3.4523269399230836,616,sensory organ development,sensory organ development,0.9004924623115578,0.47624999999999995,0
+all,GO:1902895,12,GO:0061614,3.45086897828827,56,positive regulation of miRNA transcription,miRNA transcription,0.8899447236180904,0.40247058823529414,0.974
+all,GO:0072080,16,GO:0072009,3.25721722493337,101,nephron tubule development,nephron epithelium development,0.8593417085427135,0.3027777777777778,0.977
+all,GO:0048732,19,GO:0007423,3.2311048007876804,450,gland development,sensory organ development,0.906859296482412,0.48062499999999997,0.517
+all,GO:0042273,10,GO:0042254,3.1721840433533965,64,ribosomal large subunit biogenesis,ribosome biogenesis,0.9324824120603015,0.4277142857142857,0.856
+all,GO:1990542,11,GO:0006839,3.1283553224578196,104,mitochondrial transmembrane transport,mitochondrial transport,0.9494899497487437,0.55275,0.954
+all,GO:0007507,20,GO:0007507,3.090817388566588,627,heart development,heart development,0.8758994974874371,0.3179090909090909,0
+all,GO:1903599,21,GO:1903599,3.0342854957251455,27,positive regulation of autophagy of mitochondrion,positive regulation of autophagy of mitochondrion,0.9079698492462311,0.268,0
+all,GO:0060541,16,GO:0072009,3.02297142453935,225,respiratory system development,nephron epithelium development,0.9059195979899497,0.6594814814814816,0.354
+all,GO:0043588,19,GO:0007423,3.02297142453935,324,skin development,sensory organ development,0.9080427135678392,0.54375,0.492
+all,GO:0090151,22,GO:0090151,3.02297142453935,34,establishment of protein localization to mitochondrial membrane,establishment of protein localization to mitochondrial membrane,0.8806331658291457,0.39373684210526316,0
+all,GO:0021782,24,GO:0021782,3.02297142453935,136,glial cell development,glial cell development,0.8882286432160804,0.3325555555555555,0
+all,GO:0006458,23,GO:0006458,3.02297142453935,49,'de novo' protein folding,'de novo' protein folding,0.9289371859296484,0.30062500000000003,0
+all,GO:0030278,17,GO:0001503,2.996335703030721,125,regulation of ossification,ossification,0.9240829145728643,0.35319999999999996,0.875
+all,GO:0061138,25,GO:0061138,2.9726004942650497,190,morphogenesis of a branching epithelium,morphogenesis of a branching epithelium,0.8769045226130653,0.401,0
+all,GO:0045669,17,GO:0001503,2.9515194367424558,77,positive regulation of osteoblast differentiation,ossification,0.8843442211055277,0.3146,0.833
+all,GO:0051084,23,GO:0006458,2.9505425194991473,44,'de novo' post-translational protein folding,'de novo' protein folding,0.9295125628140704,0.30362500000000003,0.991
+all,GO:0001708,26,GO:0001708,2.8917225430480578,110,cell fate specification,cell fate specification,0.9209824120603015,0.43999999999999995,0
+all,GO:0001763,25,GO:0061138,2.8720833819071476,207,morphogenesis of a branching structure,morphogenesis of a branching epithelium,0.9048743718592964,0.40225,0.992
+all,GO:0061448,14,GO:0048729,2.840496672147715,290,connective tissue development,tissue morphogenesis,0.9051633165829146,0.4604615384615385,0.624
+all,GO:0043114,27,GO:0043114,2.8281581773972846,50,regulation of vascular permeability,regulation of vascular permeability,0.9225502512562814,0.44699999999999995,0
+all,GO:0045667,17,GO:0001503,2.8281581773972846,156,regulation of osteoblast differentiation,ossification,0.8862763819095477,0.2872,0.882
+all,GO:0072073,16,GO:0072009,2.8063410108958617,153,kidney epithelium development,nephron epithelium development,0.8613793969849246,0.3108518518518518,0.976
+all,GO:0045116,9,GO:0002181,2.7939518889157213,29,protein neddylation,cytoplasmic translation,0.9510879396984924,0.607,0.342
+all,GO:0072655,22,GO:0090151,2.724480346207498,125,establishment of protein localization to mitochondrion,establishment of protein localization to mitochondrial membrane,0.9408341708542713,0.3615263157894737,0.917
+all,GO:0006605,22,GO:0090151,2.640106337315547,335,protein targeting,establishment of protein localization to mitochondrial membrane,0.9420979899497487,0.42015789473684206,0.595
+all,GO:0048754,25,GO:0061138,2.637997981803711,158,branching morphogenesis of an epithelial tube,morphogenesis of a branching epithelium,0.8679673366834171,0.40975000000000006,0.974
+all,GO:0008637,4,GO:0033108,2.627655967188773,108,apoptotic mitochondrial changes,mitochondrial respiratory chain complex assembly,0.9190427135678392,0.3642777777777778,0.757
+all,GO:0030335,28,GO:0030335,2.614611547206553,601,positive regulation of cell migration,positive regulation of cell migration,0.9410201005025126,0.2626666666666667,0
+all,GO:1901526,21,GO:1903599,2.614611547206553,24,positive regulation of mitophagy,positive regulation of autophagy of mitochondrion,0.9085477386934673,0.261625,0.992
+all,GO:0051216,14,GO:0048729,2.612318528215373,209,cartilage development,tissue morphogenesis,0.8798693467336683,0.4709230769230769,0.608
+all,GO:0042255,10,GO:0042254,2.612318528215373,58,ribosome assembly,ribosome biogenesis,0.9266507537688442,0.43514285714285716,0.834
+all,GO:0061077,23,GO:0006458,2.6059014361545634,76,chaperone-mediated protein folding,'de novo' protein folding,0.9270427135678392,0.31799999999999995,0.782
+all,GO:0030150,22,GO:0090151,2.5979490129333844,20,protein import into mitochondrial matrix,establishment of protein localization to mitochondrial membrane,0.9373844221105527,0.38721052631578945,0.799
+all,GO:0010453,26,GO:0001708,2.5610023071859747,48,regulation of cell fate commitment,cell fate specification,0.9033592964824121,0.41900000000000004,0.787
+all,GO:0001501,16,GO:0072009,2.5552598141917553,537,skeletal system development,nephron epithelium development,0.897997487437186,0.6162222222222222,0.38
+all,GO:0072006,16,GO:0072009,2.5552598141917553,160,nephron development,nephron epithelium development,0.877751256281407,0.3143703703703704,0.967
+all,GO:0001667,29,GO:0001667,2.5517379082394247,241,ameboidal-type cell migration,ameboidal-type cell migration,0.9801381909547738,0.5826666666666667,0
+all,GO:0001944,20,GO:0007507,2.5517379082394247,856,vasculature development,heart development,0.8847839195979899,0.23263636363636364,0.835
+all,GO:0007204,30,GO:0007204,2.5514897500121427,170,positive regulation of cytosolic calcium ion concentration,positive regulation of cytosolic calcium ion concentration,0.9655251256281406,0.522888888888889,0
+all,GO:0007044,31,GO:0007044,2.5514897500121427,96,cell-substrate junction assembly,cell-substrate junction assembly,0.9242412060301508,0.37676923076923075,0
+all,GO:0034728,15,GO:0031507,2.5514897500121427,140,nucleosome organization,heterochromatin formation,0.9315251256281407,0.3703333333333334,0.711
+all,GO:0090090,18,GO:0007169,2.5393044038318204,149,negative regulation of canonical Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9224346733668342,0.346,0.525
+all,GO:0044743,22,GO:0090151,2.5104708622596847,39,protein transmembrane import into intracellular organelle,establishment of protein localization to mitochondrial membrane,0.940680904522613,0.4,0.696
+all,GO:0071806,22,GO:0090151,2.4854179725505925,74,protein transmembrane transport,establishment of protein localization to mitochondrial membrane,0.943103015075377,0.46147368421052626,0.542
+all,GO:1902930,32,GO:1902930,2.4428131694582067,58,regulation of alcohol biosynthetic process,regulation of alcohol biosynthetic process,0.9049472361809046,0.3586666666666667,0
+all,GO:0043010,16,GO:0072009,2.4340322851643226,362,camera-type eye development,nephron epithelium development,0.8849371859296482,0.5017037037037038,0.438
+all,GO:0042060,34,GO:0042060,2.4122667894205327,444,wound healing,wound healing,0.9751482412060302,0.5553333333333333,0
+all,GO:0009611,34,GO:0042060,2.4122667894205327,583,response to wounding,wound healing,0.9746859296482412,0.5529999999999999,0.971
+all,GO:0070585,22,GO:0090151,2.4122667894205327,133,protein localization to mitochondrion,establishment of protein localization to mitochondrial membrane,0.9435628140703518,0.406,0.91
+all,GO:0030178,18,GO:0007169,2.4122667894205327,181,negative regulation of Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9211909547738694,0.348,0.538
+all,GO:0006457,23,GO:0006458,2.4122667894205327,231,protein folding,'de novo' protein folding,0.9199874371859296,0.28425,0.859
+all,GO:0042633,33,GO:0042633,2.4122667894205327,120,hair cycle,hair cycle,0.9434246231155778,0.2086,0
+all,GO:0042303,33,GO:0042633,2.4122667894205327,120,molting cycle,hair cycle,0.9434246231155778,0.2086,0.999
+all,GO:0001568,20,GO:0007507,2.4080414430266464,822,blood vessel development,heart development,0.8854070351758795,0.22918181818181815,0.827
+all,GO:0051604,23,GO:0006458,2.403575385007757,612,protein maturation,'de novo' protein folding,0.9151959798994975,0.315875,0.771
+all,GO:0006626,22,GO:0090151,2.39834707963164,106,protein targeting to mitochondrion,establishment of protein localization to mitochondrial membrane,0.9404673366834171,0.34878947368421054,0.909
+all,GO:0150115,31,GO:0007044,2.3742114315150804,103,cell-substrate junction organization,cell-substrate junction assembly,0.9341457286432161,0.3941538461538462,0.994
+all,GO:0042063,24,GO:0021782,2.370617452907146,355,gliogenesis,glial cell development,0.8790628140703517,0.3396666666666667,0.898
+all,GO:0061333,16,GO:0072009,2.368603068505127,82,renal tubule morphogenesis,nephron epithelium development,0.859751256281407,0.35877777777777775,0.78
+all,GO:0072088,16,GO:0072009,2.3668596486366518,80,nephron epithelium morphogenesis,nephron epithelium development,0.8564195979899497,0.3052222222222222,0.963
+all,GO:0072175,35,GO:0072175,2.349329895268436,128,epithelial tube formation,epithelial tube formation,0.87021608040201,0.4086923076923077,0
+all,GO:1905564,36,GO:1905564,2.3386392267979113,27,positive regulation of vascular endothelial cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9556256281407035,0.44200000000000006,0
+all,GO:0048598,35,GO:0072175,2.3064822059757315,621,embryonic morphogenesis,epithelial tube formation,0.8823517587939699,0.36561538461538456,0.497
+all,GO:0048514,20,GO:0007507,2.298131507401949,728,blood vessel morphogenesis,heart development,0.8630477386934674,0.22863636363636364,0.813
+all,GO:0010591,37,GO:0010591,2.263605320135287,41,regulation of lamellipodium assembly,regulation of lamellipodium assembly,0.912711055276382,0.3101666666666667,0
+all,GO:0006334,15,GO:0031507,2.2552059518499545,120,nucleosome assembly,heterochromatin formation,0.9247286432160804,0.376,0.702
+all,GO:0001654,16,GO:0072009,2.252577782751258,411,eye development,nephron epithelium development,0.8834145728643217,0.4969259259259259,0.444
+all,GO:0008544,14,GO:0048729,2.242233455377435,393,epidermis development,tissue morphogenesis,0.8986130653266332,0.375,0.643
+all,GO:0007178,18,GO:0007169,2.226303698423298,425,cell surface receptor protein serine/threonine kinase signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9294321608040201,0.4487,0.845
+all,GO:0043487,12,GO:0061614,2.2207740621409515,285,regulation of RNA stability,miRNA transcription,0.8713693467336683,0.5318235294117647,0.354
+all,GO:0035148,35,GO:0072175,2.2207740621409515,142,tube formation,epithelial tube formation,0.8887361809045227,0.40830769230769226,0.991
+all,GO:0070972,22,GO:0090151,2.217515513880917,83,protein localization to endoplasmic reticulum,establishment of protein localization to mitochondrial membrane,0.947429648241206,0.4495789473684211,0.609
+all,GO:0030324,35,GO:0072175,2.2146945553249617,198,lung development,epithelial tube formation,0.8816608040201006,0.4900769230769231,0.618
+all,GO:0014037,24,GO:0021782,2.197298556675131,49,Schwann cell differentiation,glial cell development,0.896,0.3428888888888889,0.809
+all,GO:0021915,35,GO:0072175,2.197298556675131,151,neural tube development,epithelial tube formation,0.870005025125628,0.32600000000000007,0.595
+all,GO:0051085,23,GO:0006458,2.197298556675131,32,chaperone cofactor-dependent protein refolding,'de novo' protein folding,0.930356783919598,0.2925,0.973
+all,GO:0072078,16,GO:0072009,2.188095681892837,78,nephron tubule morphogenesis,nephron epithelium development,0.8513165829145728,0.2931111111111111,0.951
+all,GO:0040029,15,GO:0031507,2.1484747202319077,295,epigenetic regulation of gene expression,heterochromatin formation,0.8598743718592965,0.3268333333333333,0.943
+all,GO:0045047,22,GO:0090151,2.137985258735936,46,protein targeting to ER,establishment of protein localization to mitochondrial membrane,0.9443517587939698,0.39021052631578945,0.691
+all,GO:0030336,28,GO:0030335,2.137985258735936,383,negative regulation of cell migration,positive regulation of cell migration,0.9393366834170854,0.2603333333333333,0.826
+all,GO:0006399,12,GO:0061614,2.1192935821966947,203,tRNA metabolic process,miRNA transcription,0.9336256281407036,0.6209411764705882,0.353
+all,GO:0022405,33,GO:0042633,2.1180184020000734,99,hair cycle process,hair cycle,0.9439195979899497,0.20620000000000005,0.987
+all,GO:0022404,33,GO:0042633,2.1180184020000734,99,molting cycle process,hair cycle,0.9439195979899497,0.20620000000000005,0.987
+all,GO:0001942,33,GO:0042633,2.1085697356608875,96,hair follicle development,hair cycle,0.8773090452261306,0.20799999999999996,0.984
+all,GO:0061061,38,GO:0061061,2.106340386056191,722,muscle structure development,muscle structure development,0.9216884422110553,0.596,0
+all,GO:0070849,13,GO:0071363,2.106340386056191,48,response to epidermal growth factor,cellular response to growth factor stimulus,0.9670577889447236,0.3557,0.732
+all,GO:0010001,24,GO:0021782,2.106340386056191,267,glial cell differentiation,glial cell development,0.8818140703517588,0.3245555555555556,0.93
+all,GO:0072028,16,GO:0072009,2.106340386056191,82,nephron morphogenesis,nephron epithelium development,0.8726030150753769,0.3181481481481482,0.915
+all,GO:2000147,28,GO:0030335,2.1051566782328277,631,positive regulation of cell motility,positive regulation of cell migration,0.9409497487437186,0.2616666666666667,0.989
+all,GO:0071294,39,GO:0071294,2.0774338236474064,24,cellular response to zinc ion,cellular response to zinc ion,0.9633366834170854,0.47324999999999995,0
+all,GO:0030323,35,GO:0072175,2.074301977310636,202,respiratory tube development,epithelial tube formation,0.885,0.4889230769230769,0.619
+all,GO:0045765,20,GO:0007507,2.0682576889512436,360,regulation of angiogenesis,heart development,0.8457839195979899,0.2512727272727273,0.733
+all,GO:0030509,13,GO:0071363,2.065609889351945,172,BMP signaling pathway,cellular response to growth factor stimulus,0.9201457286432161,0.26280000000000003,0.854
+all,GO:0038083,2,GO:0090407,2.060426137047756,17,peptidyl-tyrosine autophosphorylation,organophosphate biosynthetic process,0.9257336683417086,0.55825,0.483
+all,GO:0021762,40,GO:0021762,2.052566737277894,46,substantia nigra development,substantia nigra development,0.9042336683417085,0.5145,0
+all,GO:1902745,37,GO:0010591,2.0440564052735257,36,positive regulation of lamellipodium organization,regulation of lamellipodium assembly,0.916248743718593,0.28800000000000003,0.958
+all,GO:0051036,30,GO:0007204,2.036226159034646,13,regulation of endosome size,positive regulation of cytosolic calcium ion concentration,0.9321683417085427,0.6781111111111111,0.386
+all,GO:0042659,26,GO:0001708,2.025726246171775,24,regulation of cell fate specification,cell fate specification,0.9074170854271357,0.3836666666666667,0.893
+all,GO:0043410,41,GO:0043410,2.0075480826691794,472,positive regulation of MAPK cascade,positive regulation of MAPK cascade,0.9285577889447236,0.688,0
+all,GO:0060216,42,GO:0060216,2.005776814523022,20,definitive hemopoiesis,definitive hemopoiesis,0.9274597989949749,1,0
+all,GO:0061013,12,GO:0061614,2.005776814523022,289,regulation of mRNA catabolic process,miRNA transcription,0.8735603015075377,0.4979411764705882,0.355
+all,GO:0048562,35,GO:0072175,2.0017573920344613,300,embryonic organ morphogenesis,epithelial tube formation,0.8770954773869346,0.3760769230769231,0.46
+all,GO:0031069,14,GO:0048729,1.9974120474052746,33,hair follicle morphogenesis,tissue morphogenesis,0.8762889447236181,0.3669230769230769,0.731
+all,GO:0001838,35,GO:0072175,1.9910953546227954,115,embryonic epithelial tube formation,epithelial tube formation,0.8670175879396985,0.2770769230769231,0.989
+all,GO:0043488,12,GO:0061614,1.9840603887654769,273,regulation of mRNA stability,miRNA transcription,0.8613341708542713,0.4940588235294118,0.353
+all,GO:0071280,39,GO:0071294,1.9820795066494075,25,cellular response to copper ion,cellular response to zinc ion,0.9632587939698493,0.41025,0.75
+all,GO:0048880,16,GO:0072009,1.965864181322824,422,sensory system development,nephron epithelium development,0.8965477386934674,0.5409259259259259,0.368
+all,GO:0035036,43,GO:0035036,1.964508338164301,51,sperm-egg recognition,sperm-egg recognition,0.9838969849246231,0.4635,0
+all,GO:0098883,31,GO:0007044,1.964508338164301,15,synapse pruning,cell-substrate junction assembly,0.9401708542713568,0.4162307692307693,0.572
+all,GO:0001823,16,GO:0072009,1.964508338164301,105,mesonephros development,nephron epithelium development,0.8837663316582914,0.34518518518518515,0.806
+all,GO:0014044,24,GO:0021782,1.9613860177060216,42,Schwann cell development,glial cell development,0.8966482412060301,0.33466666666666667,0.914
+all,GO:0061734,21,GO:1903599,1.9613860177060216,16,type 2 mitophagy,positive regulation of autophagy of mitochondrion,0.9392336683417085,0.301125,0.78
+all,GO:0009408,44,GO:0009408,1.9521612135954391,106,response to heat,response to heat,0.9741356783919598,0.45599999999999996,0
+all,GO:0060402,30,GO:0007204,1.94229252427356,29,calcium ion transport into cytosol,positive regulation of cytosolic calcium ion concentration,0.9320829145728643,0.5401111111111111,0.885
+all,GO:0040017,28,GO:0030335,1.9391057998062888,647,positive regulation of locomotion,positive regulation of cell migration,0.9567236180904523,0.2646666666666667,0.982
+all,GO:0071560,13,GO:0071363,1.9391057998062888,306,cellular response to transforming growth factor beta stimulus,cellular response to growth factor stimulus,0.9614849246231156,0.2569,0.888
+all,GO:0071772,13,GO:0071363,1.9364368200862494,184,response to BMP,cellular response to growth factor stimulus,0.9624346733668342,0.2669,0.855
+all,GO:0071773,13,GO:0071363,1.9364368200862494,184,cellular response to BMP stimulus,cellular response to growth factor stimulus,0.9622010050251256,0.26469999999999994,0.861
+all,GO:0010821,4,GO:0033108,1.9341553595942576,114,regulation of mitochondrion organization,mitochondrial respiratory chain complex assembly,0.899002512562814,0.37722222222222224,0.756
+all,GO:0001836,4,GO:0033108,1.932759016485176,54,release of cytochrome c from mitochondria,mitochondrial respiratory chain complex assembly,0.8853768844221106,0.38155555555555554,0.721
+all,GO:1901342,20,GO:0007507,1.9191501363234182,369,regulation of vasculature development,heart development,0.8681934673366833,0.2682727272727272,0.736
+all,GO:0085029,45,GO:0085029,1.9173382969357053,56,extracellular matrix assembly,extracellular matrix assembly,0.932967336683417,0.354,0
+all,GO:0001941,31,GO:0007044,1.914637929602774,42,postsynaptic membrane organization,cell-substrate junction assembly,0.9274396984924623,0.35007692307692306,0.623
+all,GO:0001525,20,GO:0007507,1.9120318676660184,637,angiogenesis,heart development,0.864927135678392,0.23518181818181816,0.795
+all,GO:0061005,16,GO:0072009,1.9035744918773296,58,cell differentiation involved in kidney development,nephron epithelium development,0.8781105527638191,0.39481481481481484,0.766
+all,GO:0030879,19,GO:0007423,1.8888238453434356,136,mammary gland development,sensory organ development,0.9156155778894473,0.521,0.461
+all,GO:0042182,21,GO:1903599,1.8798673011027598,15,ketone catabolic process,positive regulation of autophagy of mitochondrion,0.9250879396984925,0.5720000000000001,0.479
+all,GO:0062125,8,GO:0140053,1.8781875992465755,34,regulation of mitochondrial gene expression,mitochondrial gene expression,0.9165804020100503,0.2672,0.869
+all,GO:0099173,31,GO:0007044,1.8766682940279138,246,postsynapse organization,cell-substrate junction assembly,0.9273768844221105,0.2988461538461539,0.697
+all,GO:0010592,37,GO:0010591,1.8766558861811133,28,positive regulation of lamellipodium assembly,regulation of lamellipodium assembly,0.9079246231155779,0.29166666666666674,0.976
+all,GO:0009612,44,GO:0009408,1.8754977018227568,222,response to mechanical stimulus,response to heat,0.9745577889447236,0.5335,0.654
+all,GO:0051881,30,GO:0007204,1.8694086478387664,73,regulation of mitochondrial membrane potential,positive regulation of cytosolic calcium ion concentration,0.9696281407035177,0.6441111111111111,0.436
+all,GO:0007188,46,GO:0007188,1.863510447602096,274,adenylate cyclase-modulating G protein-coupled receptor signaling pathway,adenylate cyclase-modulating G protein-coupled receptor signaling pathway,0.9404949748743718,0.5306666666666666,0
+all,GO:0042407,4,GO:0033108,1.8611195753669314,20,cristae formation,mitochondrial respiratory chain complex assembly,0.9256206030150753,0.4140555555555555,0.678
+all,GO:1901699,47,GO:1901699,1.8469212642646162,657,cellular response to nitrogen compound,cellular response to nitrogen compound,0.9546683417085428,0.40280000000000005,0
+all,GO:0030111,18,GO:0007169,1.8395846332498353,349,regulation of Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9295075376884422,0.32630000000000003,0.573
+all,GO:1903320,9,GO:0002181,1.8306243274038951,248,regulation of protein modification by small protein conjugation or removal,cytoplasmic translation,0.9172236180904523,0.499,0.39
+all,GO:0043583,19,GO:0007423,1.830034917150809,229,ear development,sensory organ development,0.908786432160804,0.51225,0.898
+all,GO:0106118,32,GO:1902930,1.830034917150809,30,regulation of sterol biosynthetic process,regulation of alcohol biosynthetic process,0.9260929648241206,0.4013333333333333,0.735
+all,GO:0045540,32,GO:1902930,1.830034917150809,30,regulation of cholesterol biosynthetic process,regulation of alcohol biosynthetic process,0.9050703517587939,0.32833333333333337,0.959
+all,GO:0140527,48,GO:0140527,1.8294499462597047,60,reciprocal homologous recombination,reciprocal homologous recombination,0.9429396984924624,0.5005,0
+all,GO:0007131,48,GO:0140527,1.8294499462597047,60,reciprocal meiotic recombination,reciprocal homologous recombination,0.8818040201005025,0.5005,0.999
+all,GO:0000423,21,GO:1903599,1.8294499462597047,95,mitophagy,positive regulation of autophagy of mitochondrion,0.9320728643216081,0.25787499999999997,0.874
+all,GO:0150063,16,GO:0072009,1.8190215154822065,415,visual system development,nephron epithelium development,0.8966206030150754,0.541037037037037,0.368
+all,GO:1901873,9,GO:0002181,1.8190215154822065,253,regulation of post-translational protein modification,cytoplasmic translation,0.9171180904522613,0.5005,0.39
+all,GO:0046777,2,GO:0090407,1.8190215154822065,180,protein autophosphorylation,organophosphate biosynthetic process,0.9124874371859298,0.48114999999999997,0.585
+all,GO:0060828,18,GO:0007169,1.8190215154822065,276,regulation of canonical Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.931,0.32830000000000004,0.554
+all,GO:1903311,12,GO:0061614,1.8142380086361816,406,regulation of mRNA metabolic process,miRNA transcription,0.9047487437185929,0.5232941176470589,0.365
+all,GO:1905710,30,GO:0007204,1.7931409553968471,49,positive regulation of membrane permeability,positive regulation of cytosolic calcium ion concentration,0.9674120603015075,0.5192222222222223,0.423
+all,GO:0060993,16,GO:0072009,1.7931409553968471,99,kidney morphogenesis,nephron epithelium development,0.8721884422110553,0.32640740740740737,0.814
+all,GO:0007179,13,GO:0071363,1.7931409553968471,250,transforming growth factor beta receptor signaling pathway,cellular response to growth factor stimulus,0.9189572864321608,0.26049999999999995,0.872
+all,GO:0008286,47,GO:1901699,1.791497223888444,130,insulin receptor signaling pathway,cellular response to nitrogen compound,0.9208316582914573,0.399,0.852
+all,GO:0022408,49,GO:0022408,1.7853790588765177,207,negative regulation of cell-cell adhesion,negative regulation of cell-cell adhesion,0.9449472361809045,0.28814285714285715,0
+all,GO:0040013,28,GO:0030335,1.7751300683806848,416,negative regulation of locomotion,positive regulation of cell migration,0.9541030150753769,0.263,0.809
+all,GO:1905330,14,GO:0048729,1.770149362901139,65,regulation of morphogenesis of an epithelium,tissue morphogenesis,0.8727361809045227,0.41838461538461535,0.788
+all,GO:0009792,35,GO:0072175,1.7695104464381999,685,embryo development ending in birth or egg hatching,epithelial tube formation,0.896324120603015,0.3889230769230769,0.329
+all,GO:0048009,18,GO:0007169,1.7693178145726431,53,insulin-like growth factor receptor signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9416206030150753,0.5227999999999999,0.77
+all,GO:0045040,4,GO:0033108,1.7693178145726431,14,protein insertion into mitochondrial outer membrane,mitochondrial respiratory chain complex assembly,0.8845025125628141,0.4275,0.648
+all,GO:0007008,4,GO:0033108,1.7693178145726431,14,outer mitochondrial membrane organization,mitochondrial respiratory chain complex assembly,0.9282663316582914,0.4275,0.648
+all,GO:0071875,46,GO:0007188,1.769038092978387,35,adrenergic receptor signaling pathway,adenylate cyclase-modulating G protein-coupled receptor signaling pathway,0.9492412060301507,0.634,0.598
+all,GO:0044057,27,GO:0043114,1.7595994823401666,585,regulation of system process,regulation of vascular permeability,0.9128743718592964,0.4621428571428572,0.537
+all,GO:0010594,29,GO:0001667,1.757802255552971,235,regulation of endothelial cell migration,ameboidal-type cell migration,0.9524849246231156,0.4673333333333334,0.62
+all,GO:1905562,36,GO:1905564,1.7546239316492365,52,regulation of vascular endothelial cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9611381909547739,0.4235,0.957
+all,GO:0010975,37,GO:0010591,1.7452714310903914,452,regulation of neuron projection development,regulation of lamellipodium assembly,0.8110276381909548,0.406,0.753
+all,GO:0048730,14,GO:0048729,1.7452714310903914,37,epidermis morphogenesis,tissue morphogenesis,0.8975728643216081,0.3630769230769231,0.741
+all,GO:0046661,43,GO:0035036,1.740111849222696,175,male sex differentiation,sperm-egg recognition,0.9105477386934673,0.58175,0.533
+all,GO:0016050,4,GO:0033108,1.740111849222696,386,vesicle organization,mitochondrial respiratory chain complex assembly,0.9286733668341709,0.5667222222222222,0.446
+all,GO:0099118,22,GO:0090151,1.740111849222696,14,microtubule-based protein transport,establishment of protein localization to mitochondrial membrane,0.9512085427135679,0.5303157894736842,0.477
+all,GO:0098840,22,GO:0090151,1.740111849222696,14,protein transport along microtubule,establishment of protein localization to mitochondrial membrane,0.949213567839196,0.5303157894736842,0.477
+all,GO:0071496,50,GO:0071496,1.740111849222696,75,cellular response to external stimulus,cellular response to external stimulus,0.9794447236180904,0.5005,0
+all,GO:0071260,50,GO:0071496,1.740111849222696,74,cellular response to mechanical stimulus,cellular response to external stimulus,0.9617889447236181,0.5005,0.999
+all,GO:0043116,27,GO:0043114,1.740111849222696,20,negative regulation of vascular permeability,regulation of vascular permeability,0.9275603015075377,0.4771428571428572,0.938
+all,GO:1902514,5,GO:1902600,1.740111849222696,19,regulation of calcium ion transmembrane transport via high voltage-gated calcium channel,proton transmembrane transport,0.9385929648241206,0.4456,0.57
+all,GO:0072599,22,GO:0090151,1.740111849222696,50,establishment of protein localization to endoplasmic reticulum,establishment of protein localization to mitochondrial membrane,0.9451633165829145,0.4068947368421053,0.694
+all,GO:1904861,31,GO:0007044,1.740111849222696,41,excitatory synapse assembly,cell-substrate junction assembly,0.8481030150753769,0.3779230769230769,0.694
+all,GO:1903038,49,GO:0022408,1.7335089774058063,153,negative regulation of leukocyte cell-cell adhesion,negative regulation of cell-cell adhesion,0.9457638190954774,0.2888571428571428,0.978
+all,GO:0007032,4,GO:0033108,1.7256131457782762,99,endosome organization,mitochondrial respiratory chain complex assembly,0.9363994974874372,0.6097222222222223,0.395
+all,GO:0060041,16,GO:0072009,1.7191548338593337,174,retina development in camera-type eye,nephron epithelium development,0.8915075376884423,0.5256296296296297,0.411
+all,GO:0007160,49,GO:0022408,1.7191548338593337,241,cell-matrix adhesion,negative regulation of cell-cell adhesion,0.9794346733668342,0.4185714285714286,0.621
+all,GO:0035909,20,GO:0007507,1.7191548338593337,38,aorta morphogenesis,heart development,0.8938316582914573,0.37090909090909097,0.594
+all,GO:0090596,19,GO:0007423,1.716641222884375,285,sensory organ morphogenesis,sensory organ development,0.8909145728643215,0.47687500000000005,0.913
+all,GO:0071826,6,GO:0010257,1.716641222884375,234,protein-RNA complex organization,NADH dehydrogenase complex assembly,0.9326758793969849,0.452125,0.582
+all,GO:0097428,23,GO:0006458,1.716641222884375,17,protein maturation by iron-sulfur cluster transfer,'de novo' protein folding,0.9345628140703518,0.44875,0.602
+all,GO:0000422,21,GO:1903599,1.716641222884375,115,autophagy of mitochondrion,positive regulation of autophagy of mitochondrion,0.9309497487437186,0.26012499999999994,0.891
+all,GO:0050821,30,GO:0007204,1.7099497524613854,236,protein stabilization,positive regulation of cytosolic calcium ion concentration,0.9670678391959799,0.6192222222222222,0.475
+all,GO:0060070,18,GO:0007169,1.7099497524613854,332,canonical Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9309020100502512,0.3356,0.573
+all,GO:0150146,31,GO:0007044,1.696131289863902,28,cell junction disassembly,cell-substrate junction assembly,0.9393693467336683,0.43253846153846154,0.591
+all,GO:0072164,16,GO:0072009,1.696131289863902,101,mesonephric tubule development,nephron epithelium development,0.8614999999999999,0.32466666666666666,0.928
+all,GO:0072163,16,GO:0072009,1.696131289863902,101,mesonephric epithelium development,nephron epithelium development,0.8668115577889447,0.3243703703703704,0.928
+all,GO:0032011,41,GO:0043410,1.6919121856910082,21,ARF protein signal transduction,positive regulation of MAPK cascade,0.9510804020100503,0.525,0.425
+all,GO:0032012,41,GO:0043410,1.6919121856910082,21,regulation of ARF protein signal transduction,positive regulation of MAPK cascade,0.9491532663316583,0.4963333333333333,0.511
+all,GO:0007339,43,GO:0035036,1.6919121856910082,38,binding of sperm to zona pellucida,sperm-egg recognition,0.9841608040201005,0.46950000000000003,0.981
+all,GO:1902894,12,GO:0061614,1.6919121856910082,28,negative regulation of miRNA transcription,miRNA transcription,0.8934849246231156,0.4215882352941176,0.924
+all,GO:0097688,31,GO:0007044,1.6911392695763101,10,glutamate receptor clustering,cell-substrate junction assembly,0.9114798994974874,0.42938461538461536,0.555
+all,GO:0097113,31,GO:0007044,1.6911392695763101,10,AMPA glutamate receptor clustering,cell-substrate junction assembly,0.9051005025125628,0.3765384615384615,0.555
+all,GO:0035845,24,GO:0021782,1.6764675705167138,13,photoreceptor cell outer segment organization,glial cell development,0.8744045226130653,0.6301111111111111,0.442
+all,GO:0001678,51,GO:0001678,1.66974330050621,170,intracellular glucose homeostasis,intracellular glucose homeostasis,0.9960979899497487,0.5195000000000001,0
+all,GO:0016055,18,GO:0007169,1.6691830702152153,476,Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9283190954773869,0.32720000000000005,0.605
+all,GO:0046688,39,GO:0071294,1.6684199733652254,37,response to copper ion,cellular response to zinc ion,0.9751884422110553,0.41700000000000004,0.696
+all,GO:0035455,47,GO:1901699,1.667889902080429,20,response to interferon-alpha,cellular response to nitrogen compound,0.9797085427135678,0.7132000000000001,0.377
+all,GO:0034605,44,GO:0009408,1.667889902080429,69,cellular response to heat,response to heat,0.9616231155778895,0.46499999999999997,0.969
+all,GO:0033002,36,GO:1905564,1.6640629098814388,252,muscle cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9799020100502512,0.44099999999999995,0.488
+all,GO:0061577,5,GO:1902600,1.6627540910570409,21,calcium ion transmembrane transport via high voltage-gated calcium channel,proton transmembrane transport,0.957570351758794,0.4416,0.576
+all,GO:0030856,14,GO:0048729,1.6596401308705508,172,regulation of epithelial cell differentiation,tissue morphogenesis,0.8477261306532663,0.42130769230769227,0.588
+all,GO:0022618,6,GO:0010257,1.644566188367318,225,protein-RNA complex assembly,NADH dehydrogenase complex assembly,0.9199949748743719,0.43525,0.605
+all,GO:0101023,36,GO:1905564,1.644566188367318,53,vascular endothelial cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9810804020100503,0.4295,0.954
+all,GO:0060675,16,GO:0072009,1.644566188367318,68,ureteric bud morphogenesis,nephron epithelium development,0.8528467336683417,0.2895185185185185,0.934
+all,GO:0072171,16,GO:0072009,1.644566188367318,69,mesonephric tubule morphogenesis,nephron epithelium development,0.8520577889447236,0.28588888888888886,0.939
+all,GO:0003013,27,GO:0043114,1.6384444361330848,619,circulatory system process,regulation of vascular permeability,0.9369798994974874,0.394,0.748
+all,GO:0051017,4,GO:0033108,1.6326621765296347,164,actin filament bundle assembly,mitochondrial respiratory chain complex assembly,0.9235829145728643,0.5645555555555555,0.478
+all,GO:0097150,52,GO:0097150,1.6208839635122647,25,neuronal stem cell population maintenance,neuronal stem cell population maintenance,0.9398894472361808,1,0
+all,GO:0002064,14,GO:0048729,1.6208839635122647,219,epithelial cell development,tissue morphogenesis,0.88421608040201,0.41484615384615386,0.597
+all,GO:0071559,13,GO:0071363,1.6073581825632655,313,response to transforming growth factor beta,cellular response to growth factor stimulus,0.9616633165829146,0.2582,0.884
+all,GO:1903146,21,GO:1903599,1.6073581825632655,51,regulation of autophagy of mitochondrion,positive regulation of autophagy of mitochondrion,0.9111105527638191,0.25312500000000004,0.96
+all,GO:0014897,27,GO:0043114,1.6052160655995316,105,striated muscle hypertrophy,regulation of vascular permeability,0.9475577889447236,0.49357142857142855,0.461
+all,GO:0001963,53,GO:0001963,1.6049770646365156,30,"synaptic transmission, dopaminergic","synaptic transmission, dopaminergic",0.9649346733668341,1,0
+all,GO:0048645,25,GO:0061138,1.6049770646365156,70,animal organ formation,morphogenesis of a branching epithelium,0.9042738693467336,0.6795,0.43
+all,GO:0032292,24,GO:0021782,1.6049770646365156,29,peripheral nervous system axon ensheathment,glial cell development,0.9088869346733668,0.5958888888888889,0.393
+all,GO:0061572,4,GO:0033108,1.6049770646365156,168,actin filament bundle organization,mitochondrial respiratory chain complex assembly,0.9326909547738693,0.5712222222222223,0.411
+all,GO:0010522,30,GO:0007204,1.6049770646365156,20,regulation of calcium ion transport into cytosol,positive regulation of cytosolic calcium ion concentration,0.9237964824120604,0.5505555555555556,0.858
+all,GO:0097345,30,GO:0007204,1.6049770646365156,33,mitochondrial outer membrane permeabilization,positive regulation of cytosolic calcium ion concentration,0.8518994974874372,0.5254444444444444,0.413
+all,GO:0097553,5,GO:1902600,1.6049770646365156,189,calcium ion transmembrane import into cytosol,proton transmembrane transport,0.9505829145728643,0.4548,0.694
+all,GO:0048568,35,GO:0072175,1.6049770646365156,458,embryonic organ development,epithelial tube formation,0.887110552763819,0.4127692307692308,0.321
+all,GO:0097107,31,GO:0007044,1.6049770646365156,29,postsynaptic density assembly,cell-substrate junction assembly,0.845464824120603,0.34099999999999997,0.673
+all,GO:0072001,16,GO:0072009,1.6049770646365156,332,renal system development,nephron epithelium development,0.8805075376884423,0.32277777777777783,0.896
+all,GO:0022011,24,GO:0021782,1.6049770646365156,29,myelination in peripheral nervous system,glial cell development,0.8974824120603015,0.2761111111111111,0.892
+all,GO:2000146,28,GO:0030335,1.6049770646365156,398,negative regulation of cell motility,positive regulation of cell migration,0.9393366834170854,0.26,0.818
+all,GO:0030216,14,GO:0048729,1.6025856168508816,178,keratinocyte differentiation,tissue morphogenesis,0.8724698492462312,0.34453846153846157,0.588
+all,GO:0001649,17,GO:0001503,1.5985565038259333,262,osteoblast differentiation,ossification,0.9048190954773869,0.2792,0.933
+all,GO:2000629,12,GO:0061614,1.571524311790244,30,negative regulation of miRNA metabolic process,miRNA transcription,0.9075100502512563,0.4306470588235294,0.882
+all,GO:0000966,54,GO:0000966,1.5687469597390786,38,RNA 5'-end processing,RNA 5'-end processing,0.9271834170854272,0.685,0
+all,GO:0003407,16,GO:0072009,1.5687469597390786,88,neural retina development,nephron epithelium development,0.8968241206030151,0.5478148148148148,0.391
+all,GO:0043542,29,GO:0001667,1.5687469597390786,287,endothelial cell migration,ameboidal-type cell migration,0.9787085427135679,0.4633333333333334,0.632
+all,GO:0009913,14,GO:0048729,1.5687469597390786,251,epidermal cell differentiation,tissue morphogenesis,0.8801055276381909,0.3294615384615385,0.609
+all,GO:0031589,49,GO:0022408,1.5628367196565043,361,cell-substrate adhesion,negative regulation of cell-cell adhesion,0.9787437185929648,0.40142857142857147,0.645
+all,GO:0042130,49,GO:0022408,1.5515044690308972,74,negative regulation of T cell proliferation,negative regulation of cell-cell adhesion,0.8965175879396985,0.3245714285714286,0.916
+all,GO:0006720,55,GO:0006720,1.547396328197226,120,isoprenoid metabolic process,isoprenoid metabolic process,0.9422437185929647,1,0
+all,GO:1990874,36,GO:1905564,1.547396328197226,96,vascular associated smooth muscle cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9808015075376885,0.44466666666666665,0.457
+all,GO:0071375,47,GO:1901699,1.5432361639461196,321,cellular response to peptide hormone stimulus,cellular response to nitrogen compound,0.9444422110552764,0.36519999999999997,0.925
+all,GO:0032414,11,GO:0006839,1.5421625963020524,75,positive regulation of ion transmembrane transporter activity,mitochondrial transport,0.9267964824120603,0.54025,0.328
+all,GO:0033122,56,GO:0033122,1.5421625963020524,19,negative regulation of purine nucleotide catabolic process,negative regulation of purine nucleotide catabolic process,0.8679949748743719,0.35540000000000005,0
+all,GO:0030812,56,GO:0033122,1.5421625963020524,19,negative regulation of nucleotide catabolic process,negative regulation of purine nucleotide catabolic process,0.8714422110552764,0.35540000000000005,1
+all,GO:0045820,56,GO:0033122,1.5421625963020524,19,negative regulation of glycolytic process,negative regulation of purine nucleotide catabolic process,0.8437738693467336,0.24260000000000004,1
+all,GO:0042743,57,GO:0042743,1.5420951370442242,55,hydrogen peroxide metabolic process,hydrogen peroxide metabolic process,0.9502361809045226,1,0
+all,GO:0014741,27,GO:0043114,1.5375606875733419,37,negative regulation of muscle hypertrophy,regulation of vascular permeability,0.9200276381909548,0.49271428571428566,0.428
+all,GO:0006081,58,GO:0006081,1.5346554814666957,76,cellular aldehyde metabolic process,cellular aldehyde metabolic process,0.9489271356783919,1,0
+all,GO:0045445,38,GO:0061061,1.5339160172242727,115,myoblast differentiation,muscle structure development,0.9186306532663316,0.596,0.808
+all,GO:0035904,20,GO:0007507,1.5330921669709405,67,aorta development,heart development,0.9087060301507538,0.35545454545454547,0.623
+all,GO:0060173,59,GO:0060173,1.5290235999919355,189,limb development,limb development,0.9133341708542714,0.501,0
+all,GO:0048736,59,GO:0060173,1.5290235999919355,189,appendage development,limb development,0.9133341708542714,0.501,0.998
+all,GO:0035850,16,GO:0072009,1.5229781216097094,49,epithelial cell differentiation involved in kidney development,nephron epithelium development,0.8649120603015075,0.4052592592592592,0.752
+all,GO:0008015,27,GO:0043114,1.5229781216097094,535,blood circulation,regulation of vascular permeability,0.9374472361809045,0.39342857142857146,0.759
+all,GO:1902743,37,GO:0010591,1.5229781216097094,53,regulation of lamellipodium organization,regulation of lamellipodium assembly,0.9212261306532663,0.30633333333333335,0.982
+all,GO:0070131,8,GO:0140053,1.5229781216097094,17,positive regulation of mitochondrial translation,mitochondrial gene expression,0.9051457286432161,0.2732,0.833
+all,GO:0000289,12,GO:0061614,1.5195291436613463,32,nuclear-transcribed mRNA poly(A) tail shortening,miRNA transcription,0.875213567839196,0.5461176470588236,0.303
+all,GO:0050868,49,GO:0022408,1.5195291436613463,134,negative regulation of T cell activation,negative regulation of cell-cell adhesion,0.8978442211055276,0.29114285714285715,0.971
+all,GO:0048705,16,GO:0072009,1.5179551786951362,232,skeletal system morphogenesis,nephron epithelium development,0.8829723618090451,0.5423703703703704,0.421
+all,GO:0034643,60,GO:0034643,1.5164086077281749,28,"establishment of mitochondrion localization, microtubule-mediated","establishment of mitochondrion localization, microtubule-mediated",0.9572788944723618,0.30600000000000005,0
+all,GO:0047497,60,GO:0034643,1.5164086077281749,28,mitochondrion transport along microtubule,"establishment of mitochondrion localization, microtubule-mediated",0.9508844221105528,0.29100000000000004,1
+all,GO:0001841,35,GO:0072175,1.5152552599765765,94,neural tube formation,epithelial tube formation,0.8613793969849246,0.2375384615384616,0.972
+all,GO:0090200,4,GO:0033108,1.4981375885107262,21,positive regulation of release of cytochrome c from mitochondria,mitochondrial respiratory chain complex assembly,0.8818241206030151,0.40422222222222226,0.672
+all,GO:0030155,49,GO:0022408,1.497713494491918,821,regulation of cell adhesion,negative regulation of cell-cell adhesion,0.9517939698492462,0.32385714285714284,0.852
+all,GO:0060324,61,GO:0060324,1.4905914549216042,53,face development,face development,0.938464824120603,1,0
+all,GO:1902905,37,GO:0010591,1.4760304444584738,177,positive regulation of supramolecular fiber organization,regulation of lamellipodium assembly,0.9093417085427136,0.5461666666666667,0.47
+all,GO:0008033,12,GO:0061614,1.4733811005412336,135,tRNA processing,miRNA transcription,0.9167085427135678,0.614,0.356
+all,GO:0033500,51,GO:0001678,1.4733811005412336,266,carbohydrate homeostasis,intracellular glucose homeostasis,0.9963241206030151,0.5195000000000001,0.961
+all,GO:0062014,56,GO:0033122,1.4733191713145963,125,negative regulation of small molecule metabolic process,negative regulation of purine nucleotide catabolic process,0.900140703517588,0.3982,0.868
+all,GO:0070129,8,GO:0140053,1.4733191713145963,26,regulation of mitochondrial translation,mitochondrial gene expression,0.9095427135678392,0.26080000000000003,0.853
+all,GO:0032411,11,GO:0006839,1.473193717304572,84,positive regulation of transporter activity,mitochondrial transport,0.9423341708542713,0.59,0.33
+all,GO:0042069,32,GO:1902930,1.473193717304572,18,regulation of catecholamine metabolic process,regulation of alcohol biosynthetic process,0.9349271356783919,0.4451666666666667,0.6
+all,GO:0042053,32,GO:1902930,1.473193717304572,18,regulation of dopamine metabolic process,regulation of alcohol biosynthetic process,0.9349271356783919,0.4451666666666667,0.6
+all,GO:0098698,31,GO:0007044,1.473193717304572,36,postsynaptic specialization assembly,cell-substrate junction assembly,0.8440402010050252,0.3539230769230769,0.682
+all,GO:0040034,62,GO:0040034,1.4690018793422395,13,"regulation of development, heterochronic","regulation of development, heterochronic",0.9273517587939699,1,0
+all,GO:1903318,23,GO:0006458,1.4690018793422395,32,negative regulation of protein maturation,'de novo' protein folding,0.9013266331658292,0.436125,0.617
+all,GO:0097401,5,GO:1902600,1.4637254243451046,18,synaptic vesicle lumen acidification,proton transmembrane transport,0.8586407035175879,0.5198,0.837
+all,GO:0022612,19,GO:0007423,1.4637254243451046,127,gland morphogenesis,sensory organ development,0.9003869346733668,0.49375,0.459
+all,GO:2000811,63,GO:2000811,1.460489811539271,19,negative regulation of anoikis,negative regulation of anoikis,0.9564974874371859,1,0
+all,GO:1901950,60,GO:0034643,1.459120329562075,12,dense core granule transport,"establishment of mitochondrion localization, microtubule-mediated",0.955675879396985,0.4318333333333333,0.604
+all,GO:0099519,60,GO:0034643,1.459120329562075,12,dense core granule cytoskeletal transport,"establishment of mitochondrion localization, microtubule-mediated",0.9546658291457286,0.4021666666666667,0.604
+all,GO:0098773,19,GO:0007423,1.4493891739140432,132,skin epidermis development,sensory organ development,0.8902010050251257,0.571,0.45
+all,GO:0031032,4,GO:0033108,1.448762264326232,216,actomyosin structure organization,mitochondrial respiratory chain complex assembly,0.9330954773869347,0.5790555555555555,0.42
+all,GO:1905089,21,GO:1903599,1.4457961878772172,12,regulation of type 2 mitophagy,positive regulation of autophagy of mitochondrion,0.9182211055276381,0.27037500000000003,0.88
+all,GO:0034405,34,GO:0042060,1.4412194762002981,36,response to fluid shear stress,wound healing,0.9806959798994975,0.7556666666666667,0.363
+all,GO:1902932,32,GO:1902930,1.4412194762002981,30,positive regulation of alcohol biosynthetic process,regulation of alcohol biosynthetic process,0.9027185929648242,0.3793333333333333,0.954
+all,GO:0043434,47,GO:1901699,1.4399152559016004,446,response to peptide hormone,cellular response to nitrogen compound,0.9590678391959799,0.38780000000000003,0.832
+all,GO:0090199,4,GO:0033108,1.436850347700561,40,regulation of release of cytochrome c from mitochondria,mitochondrial respiratory chain complex assembly,0.88445226130653265,0.3843888888888889,0.697
+all,GO:0019896,60,GO:0034643,1.4366380985527618,18,axonal transport of mitochondrion,"establishment of mitochondrion localization, microtubule-mediated",0.952211055276382,0.3055,0.973
+all,GO:0038127,18,GO:0007169,1.4323253870002473,136,ERBB signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9367613065326633,0.48460000000000003,0.846
+all,GO:0048738,20,GO:0007507,1.4263927216353118,252,cardiac muscle tissue development,heart development,0.8738668341708542,0.3892727272727273,0.861
+all,GO:0072594,22,GO:0090151,1.4256614812981565,462,establishment of protein localization to organelle,establishment of protein localization to mitochondrial membrane,0.9380628140703517,0.35178947368421054,0.811
+all,GO:0051654,60,GO:0034643,1.4256614812981565,34,establishment of mitochondrion localization,"establishment of mitochondrion localization, microtubule-mediated",0.9662562814070352,0.3085,0.983
+all,GO:0045912,56,GO:0033122,1.4198357536073531,67,negative regulation of carbohydrate metabolic process,negative regulation of purine nucleotide catabolic process,0.9245628140703518,0.5932,0.355
+all,GO:0090672,22,GO:0090151,1.4197468949124195,19,telomerase RNA localization,establishment of protein localization to mitochondrial membrane,0.9651984924623116,0.5608947368421053,0.381
+all,GO:0090685,22,GO:0090151,1.4197468949124195,19,RNA localization to nucleus,establishment of protein localization to mitochondrial membrane,0.964035175879397,0.5408947368421053,0.387
+all,GO:0090670,22,GO:0090151,1.4197468949124195,19,RNA localization to Cajal body,establishment of protein localization to mitochondrial membrane,0.964035175879397,0.5408947368421053,0.387
+all,GO:0090671,22,GO:0090151,1.4197468949124195,19,telomerase RNA localization to Cajal body,establishment of protein localization to mitochondrial membrane,0.963781407035176,0.5312105263157895,0.381
+all,GO:0048857,40,GO:0021762,1.4175682238374792,69,neural nucleus development,substantia nigra development,0.9362185929648241,0.5145,0.971
+all,GO:0090150,22,GO:0090151,1.4149133691296358,280,establishment of protein localization to membrane,establishment of protein localization to mitochondrial membrane,0.9427236180904522,0.45042105263157894,0.856
+all,GO:0045766,20,GO:0007507,1.407178148115272,189,positive regulation of angiogenesis,heart development,0.8463467336683417,0.29054545454545455,0.686
+all,GO:1904705,36,GO:1905564,1.4031907293592256,94,regulation of vascular associated smooth muscle cell proliferation,positive regulation of vascular endothelial cell proliferation,0.959819095477387,0.43366666666666664,0.492
+all,GO:0106070,46,GO:0007188,1.397827010677066,21,regulation of adenylate cyclase-activating G protein-coupled receptor signaling pathway,adenylate cyclase-modulating G protein-coupled receptor signaling pathway,0.9485502512562813,0.5633333333333332,0.81
+all,GO:0060020,24,GO:0021782,1.3968071915333695,11,Bergmann glial cell differentiation,glial cell development,0.9069472361809046,0.4471111111111111,0.729
+all,GO:0050807,31,GO:0007044,1.3968071915333695,312,regulation of synapse organization,cell-substrate junction assembly,0.8901557788944723,0.3338461538461539,0.709
+all,GO:0014020,35,GO:0072175,1.3934774435895585,87,primary neural tube formation,epithelial tube formation,0.8620879396984925,0.24130769230769233,0.967
+all,GO:0010224,44,GO:0009408,1.3851165465873017,21,response to UV-B,response to heat,0.9795577889447237,0.5825,0.553
+all,GO:0051131,6,GO:0010257,1.3842615031218535,24,chaperone-mediated protein complex assembly,NADH dehydrogenase complex assembly,0.936786432160804,0.545875,0.515
+all,GO:1902110,30,GO:0007204,1.3842615031218535,40,positive regulation of mitochondrial membrane permeability involved in apoptotic process,positive regulation of cytosolic calcium ion concentration,0.8724849246231156,0.521,0.418
+all,GO:1902275,15,GO:0031507,1.3842615031218535,35,regulation of chromatin organization,heterochromatin formation,0.9236683417085427,0.485,0.615
+all,GO:0043062,45,GO:0085029,1.3842615031218535,340,extracellular structure organization,extracellular matrix assembly,0.9374020100502513,0.45199999999999996,0.861
+all,GO:0045229,45,GO:0085029,1.3842615031218535,341,external encapsulating structure organization,extracellular matrix assembly,0.9374145728643216,0.45175,0.861
+all,GO:0071364,13,GO:0071363,1.3842615031218535,43,cellular response to epidermal growth factor stimulus,cellular response to growth factor stimulus,0.9670653266331658,0.35729999999999995,0.732
+all,GO:0030198,45,GO:0085029,1.3842615031218535,339,extracellular matrix organization,extracellular matrix assembly,0.9357663316582915,0.28625,0.862
+all,GO:1903046,43,GO:0035036,1.3833944556922644,222,meiotic cell cycle process,sperm-egg recognition,0.9823743718592964,0.53325,0.632
+all,GO:0006388,54,GO:0000966,1.3833944556922644,13,"tRNA splicing, via endonucleolytic cleavage and ligation",RNA 5'-end processing,0.9278065326633166,0.512,0.471
+all,GO:0000394,54,GO:0000966,1.3833944556922644,14,"RNA splicing, via endonucleolytic cleavage and ligation",RNA 5'-end processing,0.929319095477387,0.511,0.474
+all,GO:0043009,35,GO:0072175,1.3833944556922644,663,chordate embryonic development,epithelial tube formation,0.8965954773869347,0.3891538461538462,0.329
+all,GO:0050808,31,GO:0007044,1.3833944556922644,568,synapse organization,cell-substrate junction assembly,0.9229748743718593,0.2966153846153846,0.757
+all,GO:0097501,39,GO:0071294,1.381681287874736,21,stress response to metal ion,cellular response to zinc ion,0.9748140703517588,0.5025,0.661
+up,GO:0061614,1,GO:0061614,4.599612689239555,77,miRNA transcription,miRNA transcription,0.9456528925619835,0.35561538461538467,0
+up,GO:2000628,1,GO:0061614,4.52920828636504,92,regulation of miRNA metabolic process,miRNA transcription,0.9283347107438017,0.3241538461538461,0.959
+up,GO:0071363,2,GO:0071363,4.414037986694403,761,cellular response to growth factor stimulus,cellular response to growth factor stimulus,0.9367603305785124,0.23340000000000005,0
+up,GO:0048729,3,GO:0048729,4.251535483069593,617,tissue morphogenesis,tissue morphogenesis,0.8043429752066116,0.3539230769230769,0
+up,GO:1902893,1,GO:0061614,4.137263697931232,76,regulation of miRNA transcription,miRNA transcription,0.9204132231404959,0.32361538461538464,0.999
+up,GO:0010586,1,GO:0061614,4.132341056827318,110,miRNA metabolic process,miRNA transcription,0.9541570247933884,0.3524615384615385,0.974
+up,GO:0031507,4,GO:0031507,4.095669303574484,161,heterochromatin formation,heterochromatin formation,0.8878636363636364,0.3418333333333333,0
+up,GO:0045814,4,GO:0031507,4.0794589850550596,192,"negative regulation of gene expression, epigenetic",heterochromatin formation,0.8857272727272727,0.3320000000000001,0.978
+up,GO:0070848,2,GO:0071363,3.85714731772857,794,response to growth factor,cellular response to growth factor stimulus,0.9370247933884298,0.23440000000000005,0.988
+up,GO:0072009,5,GO:0072009,3.7391518229605363,123,nephron epithelium development,nephron epithelium development,0.7783388429752066,0.30859259259259253,0
+up,GO:0001503,6,GO:0001503,3.7391518229605363,456,ossification,ossification,0.9030661157024793,0.2954,0
+up,GO:0060562,3,GO:0048729,3.6401315095324027,331,epithelial tube morphogenesis,tissue morphogenesis,0.7735537190082645,0.3423076923076923,0.917
+up,GO:0002009,3,GO:0048729,3.6386515518309093,500,morphogenesis of an epithelium,tissue morphogenesis,0.7992314049586776,0.31607692307692314,0.965
+up,GO:0007169,7,GO:0007169,3.618432918251189,662,cell surface receptor protein tyrosine kinase signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9071735537190083,0.4171,0
+up,GO:0061326,5,GO:0072009,3.5936912868483457,105,renal tubule development,nephron epithelium development,0.7833305785123967,0.3524814814814815,0.801
+up,GO:2000630,1,GO:0061614,3.589439928994335,67,positive regulation of miRNA metabolic process,miRNA transcription,0.9232851239669422,0.3251538461538461,0.935
+up,GO:0007423,8,GO:0007423,3.4523269399230836,616,sensory organ development,sensory organ development,0.840004132231405,0.47624999999999995,0
+up,GO:1902895,1,GO:0061614,3.45086897828827,56,positive regulation of miRNA transcription,miRNA transcription,0.9153347107438017,0.32492307692307687,0.974
+up,GO:0072080,5,GO:0072009,3.25721722493337,101,nephron tubule development,nephron epithelium development,0.7718925619834711,0.3027777777777778,0.977
+up,GO:0048732,8,GO:0007423,3.2311048007876804,450,gland development,sensory organ development,0.8503925619834711,0.48062499999999997,0.517
+up,GO:0007507,9,GO:0007507,3.090817388566588,627,heart development,heart development,0.799690082644628,0.3179090909090909,0
+up,GO:0060541,5,GO:0072009,3.02297142453935,225,respiratory system development,nephron epithelium development,0.848400826446281,0.6594814814814816,0.354
+up,GO:0043588,8,GO:0007423,3.02297142453935,324,skin development,sensory organ development,0.8522066115702479,0.54375,0.492
+up,GO:0021782,10,GO:0021782,3.02297142453935,136,glial cell development,glial cell development,0.828297520661157,0.3416,0
+up,GO:0030278,6,GO:0001503,2.996335703030721,125,regulation of ossification,ossification,0.88414049586776855,0.35319999999999996,0.875
+up,GO:0061138,11,GO:0061138,2.9726004942650497,190,morphogenesis of a branching epithelium,morphogenesis of a branching epithelium,0.800297520661157,0.401,0
+up,GO:0045669,6,GO:0001503,2.9515194367424558,77,positive regulation of osteoblast differentiation,ossification,0.8336528925619835,0.3146,0.833
+up,GO:0001708,12,GO:0001708,2.8917225430480578,110,cell fate specification,cell fate specification,0.8811280991735537,0.43999999999999995,0
+up,GO:0001763,11,GO:0061138,2.8720833819071476,207,morphogenesis of a branching structure,morphogenesis of a branching epithelium,0.8463140495867769,0.40225,0.992
+up,GO:0061448,3,GO:0048729,2.840496672147715,290,connective tissue development,tissue morphogenesis,0.8468429752066116,0.4604615384615385,0.624
+up,GO:0043114,13,GO:0043114,2.8281581773972846,50,regulation of vascular permeability,regulation of vascular permeability,0.8886239669421487,0.44699999999999995,0
+up,GO:0045667,6,GO:0001503,2.8281581773972846,156,regulation of osteoblast differentiation,ossification,0.8326694214876034,0.2872,0.882
+up,GO:0072073,5,GO:0072009,2.8063410108958617,153,kidney epithelium development,nephron epithelium development,0.7753719008264464,0.3108518518518518,0.976
+up,GO:0048754,11,GO:0061138,2.637997981803711,158,branching morphogenesis of an epithelial tube,morphogenesis of a branching epithelium,0.7857272727272727,0.40975000000000006,0.974
+up,GO:0030335,14,GO:0030335,2.614611547206553,601,positive regulation of cell migration,positive regulation of cell migration,0.9286280991735537,0.2626666666666667,0
+up,GO:0051216,3,GO:0048729,2.612318528215373,209,cartilage development,tissue morphogenesis,0.8057892561983472,0.4709230769230769,0.608
+up,GO:0010453,12,GO:0001708,2.5610023071859747,48,regulation of cell fate commitment,cell fate specification,0.8593677685950414,0.41900000000000004,0.787
+up,GO:0001501,5,GO:0072009,2.5552598141917553,537,skeletal system development,nephron epithelium development,0.8355743801652893,0.6162222222222222,0.38
+up,GO:0072006,5,GO:0072009,2.5552598141917553,160,nephron development,nephron epithelium development,0.8023223140495869,0.3143703703703704,0.967
+up,GO:0001667,15,GO:0001667,2.5517379082394247,241,ameboidal-type cell migration,ameboidal-type cell migration,0.9764876033057851,0.5826666666666667,0
+up,GO:0001944,9,GO:0007507,2.5517379082394247,856,vasculature development,heart development,0.8140041322314049,0.23263636363636364,0.835
+up,GO:0007204,16,GO:0007204,2.5514897500121427,170,positive regulation of cytosolic calcium ion concentration,positive regulation of cytosolic calcium ion concentration,0.9598719008264462,0.41900000000000004,0
+up,GO:0034728,4,GO:0031507,2.5514897500121427,140,nucleosome organization,heterochromatin formation,0.9537355371900826,0.3703333333333334,0.711
+up,GO:0007044,17,GO:0007044,2.5514897500121427,96,cell-substrate junction assembly,cell-substrate junction assembly,0.9446239669421488,0.36918181818181817,0
+up,GO:0090090,7,GO:0007169,2.5393044038318204,149,negative regulation of canonical Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.8951446280991735,0.346,0.525
+up,GO:1902930,18,GO:1902930,2.4428131694582067,58,regulation of alcohol biosynthetic process,regulation of alcohol biosynthetic process,0.939004132231405,0.3380000000000001,0
+up,GO:0043010,5,GO:0072009,2.4340322851643226,362,camera-type eye development,nephron epithelium development,0.8142355371900826,0.5017037037037038,0.438
+up,GO:0042060,20,GO:0042060,2.4122667894205327,444,wound healing,wound healing,0.9649669421487603,0.5553333333333333,0
+up,GO:0009611,20,GO:0042060,2.4122667894205327,583,response to wounding,wound healing,0.9643223140495868,0.5529999999999999,0.971
+up,GO:0030178,7,GO:0007169,2.4122667894205327,181,negative regulation of Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.8935289256198347,0.348,0.538
+up,GO:0042633,19,GO:0042633,2.4122667894205327,120,hair cycle,hair cycle,0.9076900826446281,0.2086,0
+up,GO:0042303,19,GO:0042633,2.4122667894205327,120,molting cycle,hair cycle,0.9076900826446281,0.2086,0.999
+up,GO:0001568,9,GO:0007507,2.4080414430266464,822,blood vessel development,heart development,0.815004132231405,0.22918181818181815,0.827
+up,GO:0150115,17,GO:0007044,2.3742114315150804,103,cell-substrate junction organization,cell-substrate junction assembly,0.9476570247933884,0.3902727272727273,0.994
+up,GO:0042063,10,GO:0021782,2.370617452907146,355,gliogenesis,glial cell development,0.8143760330578512,0.3416,0.898
+up,GO:0061333,5,GO:0072009,2.368603068505127,82,renal tubule morphogenesis,nephron epithelium development,0.7722479338842976,0.35877777777777775,0.78
+up,GO:0072088,5,GO:0072009,2.3668596486366518,80,nephron epithelium morphogenesis,nephron epithelium development,0.7670454545454545,0.3052222222222222,0.963
+up,GO:0072175,21,GO:0072175,2.349329895268436,128,epithelial tube formation,epithelial tube formation,0.7893636363636364,0.4086923076923077,0
+up,GO:1905564,22,GO:1905564,2.3386392267979113,27,positive regulation of vascular endothelial cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9471363636363637,0.44200000000000006,0
+up,GO:0048598,21,GO:0072175,2.3064822059757315,621,embryonic morphogenesis,epithelial tube formation,0.8097479338842974,0.36561538461538456,0.497
+up,GO:0048514,9,GO:0007507,2.298131507401949,728,blood vessel morphogenesis,heart development,0.7781900826446281,0.22863636363636364,0.813
+up,GO:0006334,4,GO:0031507,2.2552059518499545,120,nucleosome assembly,heterochromatin formation,0.9499462809917355,0.376,0.702
+up,GO:0001654,5,GO:0072009,2.252577782751258,411,eye development,nephron epithelium development,0.8117768595041321,0.4969259259259259,0.444
+up,GO:0008544,3,GO:0048729,2.242233455377435,393,epidermis development,tissue morphogenesis,0.8361363636363637,0.375,0.643
+up,GO:0007178,7,GO:0007169,2.226303698423298,425,cell surface receptor protein serine/threonine kinase signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9091570247933884,0.4487,0.845
+up,GO:0043487,1,GO:0061614,2.2207740621409515,285,regulation of RNA stability,miRNA transcription,0.912305785123967,0.5082307692307693,0.354
+up,GO:0035148,21,GO:0072175,2.2207740621409515,142,tube formation,epithelial tube formation,0.8198429752066115,0.40830769230769226,0.991
+up,GO:0030324,21,GO:0072175,2.2146945553249617,198,lung development,epithelial tube formation,0.8087314049586776,0.4900769230769231,0.618
+up,GO:0014037,10,GO:0021782,2.197298556675131,49,Schwann cell differentiation,glial cell development,0.8402190082644628,0.35540000000000005,0.809
+up,GO:0021915,21,GO:0072175,2.197298556675131,151,neural tube development,epithelial tube formation,0.7896198347107438,0.32600000000000007,0.595
+up,GO:0072078,5,GO:0072009,2.188095681892837,78,nephron tubule morphogenesis,nephron epithelium development,0.7586157024793388,0.2931111111111111,0.951
+up,GO:0040029,4,GO:0031507,2.1484747202319077,295,epigenetic regulation of gene expression,heterochromatin formation,0.901305785123967,0.3268333333333333,0.943
+up,GO:0030336,14,GO:0030335,2.137985258735936,383,negative regulation of cell migration,positive regulation of cell migration,0.918995867768595,0.2603333333333333,0.826
+up,GO:0022405,19,GO:0042633,2.1180184020000734,99,hair cycle process,hair cycle,0.908495867768595,0.20620000000000005,0.987
+up,GO:0022404,19,GO:0042633,2.1180184020000734,99,molting cycle process,hair cycle,0.908495867768595,0.20620000000000005,0.987
+up,GO:0001942,19,GO:0042633,2.1085697356608875,96,hair follicle development,hair cycle,0.8013595041322313,0.20799999999999996,0.984
+up,GO:0061061,23,GO:0061061,2.106340386056191,722,muscle structure development,muscle structure development,0.8742561983471074,0.596,0
+up,GO:0070849,2,GO:0071363,2.106340386056191,48,response to epidermal growth factor,cellular response to growth factor stimulus,0.9491818181818182,0.3557,0.732
+up,GO:0010001,10,GO:0021782,2.106340386056191,267,glial cell differentiation,glial cell development,0.8185867768595041,0.32999999999999996,0.93
+up,GO:0072028,5,GO:0072009,2.106340386056191,82,nephron morphogenesis,nephron epithelium development,0.7936983471074381,0.3181481481481482,0.915
+up,GO:2000147,14,GO:0030335,2.1051566782328277,631,positive regulation of cell motility,positive regulation of cell migration,0.9286157024793389,0.2616666666666667,0.989
+up,GO:0071294,24,GO:0071294,2.0774338236474064,24,cellular response to zinc ion,cellular response to zinc ion,0.9518801652892562,0.47324999999999995,0
+up,GO:0030323,21,GO:0072175,2.074301977310636,202,respiratory tube development,epithelial tube formation,0.8142314049586776,0.4889230769230769,0.619
+up,GO:0045765,9,GO:0007507,2.0682576889512436,360,regulation of angiogenesis,heart development,0.7584628099173554,0.2512727272727273,0.733
+up,GO:0030509,2,GO:0071363,2.065609889351945,172,BMP signaling pathway,cellular response to growth factor stimulus,0.8918099173553719,0.26280000000000003,0.854
+up,GO:0038083,25,GO:0038083,2.060426137047756,17,peptidyl-tyrosine autophosphorylation,peptidyl-tyrosine autophosphorylation,0.9713429752066116,0.579,0
+up,GO:0042659,12,GO:0001708,2.025726246171775,24,regulation of cell fate specification,cell fate specification,0.8652479338842975,0.3836666666666667,0.893
+up,GO:0043410,26,GO:0043410,2.0075480826691794,472,positive regulation of MAPK cascade,positive regulation of MAPK cascade,0.9124669421487603,0.688,0
+up,GO:0060216,27,GO:0060216,2.005776814523022,20,definitive hemopoiesis,definitive hemopoiesis,0.890698347107438,1,0
+up,GO:0061013,1,GO:0061614,2.005776814523022,289,regulation of mRNA catabolic process,miRNA transcription,0.9046900826446281,0.46453846153846157,0.355
+up,GO:0048562,21,GO:0072175,2.0017573920344613,300,embryonic organ morphogenesis,epithelial tube formation,0.801301652892562,0.3760769230769231,0.46
+up,GO:0031069,3,GO:0048729,1.9974120474052746,33,hair follicle morphogenesis,tissue morphogenesis,0.7994504132231406,0.3669230769230769,0.731
+up,GO:0001838,21,GO:0072175,1.9910953546227954,115,embryonic epithelial tube formation,epithelial tube formation,0.7840743801652893,0.2770769230769231,0.989
+up,GO:0043488,1,GO:0061614,1.9840603887654769,273,regulation of mRNA stability,miRNA transcription,0.8954752066115703,0.45853846153846156,0.353
+up,GO:0071280,24,GO:0071294,1.9820795066494075,25,cellular response to copper ion,cellular response to zinc ion,0.9515371900826446,0.41025,0.75
+up,GO:0048880,5,GO:0072009,1.965864181322824,422,sensory system development,nephron epithelium development,0.833099173553719,0.5409259259259259,0.368
+up,GO:0001823,5,GO:0072009,1.964508338164301,105,mesonephros development,nephron epithelium development,0.8120578512396694,0.34518518518518515,0.806
+up,GO:0014044,10,GO:0021782,1.9613860177060216,42,Schwann cell development,glial cell development,0.8411404958677686,0.3488,0.914
+up,GO:0060402,16,GO:0007204,1.94229252427356,29,calcium ion transport into cytosol,positive regulation of cytosolic calcium ion concentration,0.9456115702479339,0.381,0.885
+up,GO:0040017,14,GO:0030335,1.9391057998062888,647,positive regulation of locomotion,positive regulation of cell migration,0.9439545454545455,0.2646666666666667,0.982
+up,GO:0071560,2,GO:0071363,1.9391057998062888,306,cellular response to transforming growth factor beta stimulus,cellular response to growth factor stimulus,0.9405454545454546,0.2569,0.888
+up,GO:0071772,2,GO:0071363,1.9364368200862494,184,response to BMP,cellular response to growth factor stimulus,0.9420165289256198,0.2669,0.855
+up,GO:0071773,2,GO:0071363,1.9364368200862494,184,cellular response to BMP stimulus,cellular response to growth factor stimulus,0.9416322314049587,0.26469999999999994,0.861
+up,GO:1901342,9,GO:0007507,1.9191501363234182,369,regulation of vasculature development,heart development,0.7953553719008264,0.2682727272727272,0.736
+up,GO:0085029,28,GO:0085029,1.9173382969357053,56,extracellular matrix assembly,extracellular matrix assembly,0.9542892561983471,0.354,0
+up,GO:0001941,17,GO:0007044,1.914637929602774,42,postsynaptic membrane organization,cell-substrate junction assembly,0.946198347107438,0.3386363636363636,0.623
+up,GO:0001525,9,GO:0007507,1.9120318676660184,637,angiogenesis,heart development,0.7812231404958677,0.23518181818181816,0.795
+up,GO:0061005,5,GO:0072009,1.9035744918773296,58,cell differentiation involved in kidney development,nephron epithelium development,0.8109545454545455,0.39481481481481484,0.766
+up,GO:0030879,8,GO:0007423,1.8888238453434356,136,mammary gland development,sensory organ development,0.8644876033057851,0.521,0.461
+up,GO:0099173,17,GO:0007044,1.8766682940279138,246,postsynapse organization,cell-substrate junction assembly,0.9410454545454545,0.28954545454545455,0.697
+up,GO:0009612,29,GO:0009612,1.8754977018227568,222,response to mechanical stimulus,response to mechanical stimulus,0.9659173553719008,0.7105,0
+up,GO:0007188,30,GO:0007188,1.863510447602096,274,adenylate cyclase-modulating G protein-coupled receptor signaling pathway,adenylate cyclase-modulating G protein-coupled receptor signaling pathway,0.9259710743801652,0.5306666666666666,0
+up,GO:1901699,31,GO:1901699,1.8469212642646162,657,cellular response to nitrogen compound,cellular response to nitrogen compound,0.940892561983471,0.40280000000000005,0
+up,GO:0030111,7,GO:0007169,1.8395846332498353,349,regulation of Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9084132231404959,0.32630000000000003,0.573
+up,GO:0043583,8,GO:0007423,1.830034917150809,229,ear development,sensory organ development,0.8533677685950413,0.51225,0.898
+up,GO:0106118,18,GO:1902930,1.830034917150809,30,regulation of sterol biosynthetic process,regulation of alcohol biosynthetic process,0.946793388429752,0.39050000000000007,0.735
+up,GO:0045540,18,GO:1902930,1.830034917150809,30,regulation of cholesterol biosynthetic process,regulation of alcohol biosynthetic process,0.9379752066115703,0.281,0.959
+up,GO:0046777,25,GO:0038083,1.8190215154822065,180,protein autophosphorylation,peptidyl-tyrosine autophosphorylation,0.9669338842975207,0.579,0.842
+up,GO:0150063,5,GO:0072009,1.8190215154822065,415,visual system development,nephron epithelium development,0.8332190082644628,0.541037037037037,0.368
+up,GO:0060828,7,GO:0007169,1.8190215154822065,276,regulation of canonical Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9102644628099174,0.32830000000000004,0.554
+up,GO:1903311,1,GO:0061614,1.8142380086361816,406,regulation of mRNA metabolic process,miRNA transcription,0.9329504132231405,0.5013076923076922,0.365
+up,GO:0060993,5,GO:0072009,1.7931409553968471,99,kidney morphogenesis,nephron epithelium development,0.7930454545454545,0.32640740740740737,0.814
+up,GO:0007179,2,GO:0071363,1.7931409553968471,250,transforming growth factor beta receptor signaling pathway,cellular response to growth factor stimulus,0.8902768595041323,0.26049999999999995,0.872
+up,GO:0008286,31,GO:1901699,1.791497223888444,130,insulin receptor signaling pathway,cellular response to nitrogen compound,0.8921280991735537,0.399,0.852
+up,GO:0022408,32,GO:0022408,1.7853790588765177,207,negative regulation of cell-cell adhesion,negative regulation of cell-cell adhesion,0.927409090909091,0.28814285714285715,0
+up,GO:0040013,14,GO:0030335,1.7751300683806848,416,negative regulation of locomotion,positive regulation of cell migration,0.9335661157024794,0.263,0.809
+up,GO:1905330,3,GO:0048729,1.770149362901139,65,regulation of morphogenesis of an epithelium,tissue morphogenesis,0.801206611570248,0.41838461538461535,0.788
+up,GO:0009792,21,GO:0072175,1.7695104464381999,685,embryo development ending in birth or egg hatching,epithelial tube formation,0.832694214876033,0.3889230769230769,0.329
+up,GO:0048009,7,GO:0007169,1.7693178145726431,53,insulin-like growth factor receptor signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9249586776859504,0.5227999999999999,0.77
+up,GO:0071875,30,GO:0007188,1.769038092978387,35,adrenergic receptor signaling pathway,adenylate cyclase-modulating G protein-coupled receptor signaling pathway,0.937103305785124,0.634,0.598
+up,GO:0044057,13,GO:0043114,1.7595994823401666,585,regulation of system process,regulation of vascular permeability,0.8671157024793388,0.4621428571428572,0.537
+up,GO:0010594,15,GO:0001667,1.757802255552971,235,regulation of endothelial cell migration,ameboidal-type cell migration,0.9400206611570248,0.4673333333333334,0.62
+up,GO:1905562,22,GO:1905564,1.7546239316492365,52,regulation of vascular endothelial cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9521280991735537,0.4235,0.957
+up,GO:0010975,10,GO:0021782,1.7452714310903914,452,regulation of neuron projection development,glial cell development,0.767698347107438,0.5121,0.577
+up,GO:0048730,3,GO:0048729,1.7452714310903914,37,epidermis morphogenesis,tissue morphogenesis,0.8339628099173554,0.3630769230769231,0.741
+up,GO:0046661,36,GO:0046661,1.740111849222696,175,male sex differentiation,male sex differentiation,0.8649421487603306,0.7953333333333333,0
+up,GO:0099118,34,GO:0099118,1.740111849222696,14,microtubule-based protein transport,microtubule-based protein transport,0.9783966942148761,0.591,0
+up,GO:0071496,35,GO:0071496,1.740111849222696,75,cellular response to external stimulus,cellular response to external stimulus,0.9696446280991736,0.5005,0
+up,GO:0071260,35,GO:0071496,1.740111849222696,74,cellular response to mechanical stimulus,cellular response to external stimulus,0.9534132231404958,0.5005,0.999
+up,GO:0043116,13,GO:0043114,1.740111849222696,20,negative regulation of vascular permeability,regulation of vascular permeability,0.8958677685950414,0.4771428571428572,0.938
+up,GO:0098840,34,GO:0099118,1.740111849222696,14,protein transport along microtubule,microtubule-based protein transport,0.9764380165289256,0.47250000000000003,1
+up,GO:1902514,33,GO:1902514,1.740111849222696,19,regulation of calcium ion transmembrane transport via high voltage-gated calcium channel,regulation of calcium ion transmembrane transport via high voltage-gated calcium channel,0.9517479338842976,0.42933333333333334,0
+up,GO:1904861,17,GO:0007044,1.740111849222696,41,excitatory synapse assembly,cell-substrate junction assembly,0.8179462809917355,0.3688181818181818,0.694
+up,GO:1903038,32,GO:0022408,1.7335089774058063,153,negative regulation of leukocyte cell-cell adhesion,negative regulation of cell-cell adhesion,0.9284421487603306,0.2888571428571428,0.978
+up,GO:0060041,5,GO:0072009,1.7191548338593337,174,retina development in camera-type eye,nephron epithelium development,0.8248553719008265,0.5256296296296297,0.411
+up,GO:0007160,32,GO:0022408,1.7191548338593337,241,cell-matrix adhesion,negative regulation of cell-cell adhesion,0.9754421487603305,0.4185714285714286,0.621
+up,GO:0035909,9,GO:0007507,1.7191548338593337,38,aorta morphogenesis,heart development,0.8280991735537191,0.37090909090909097,0.594
+up,GO:0090596,8,GO:0007423,1.716641222884375,285,sensory organ morphogenesis,sensory organ development,0.8240206611570248,0.47687500000000005,0.913
+up,GO:0060070,7,GO:0007169,1.7099497524613854,332,canonical Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9107190082644628,0.3356,0.573
+up,GO:0072164,5,GO:0072009,1.696131289863902,101,mesonephric tubule development,nephron epithelium development,0.7754214876033056,0.32466666666666666,0.928
+up,GO:0072163,5,GO:0072009,1.696131289863902,101,mesonephric epithelium development,nephron epithelium development,0.7841611570247935,0.3243703703703704,0.928
+up,GO:0032011,26,GO:0043410,1.6919121856910082,21,ARF protein signal transduction,positive regulation of MAPK cascade,0.9390206611570248,0.525,0.425
+up,GO:0032012,26,GO:0043410,1.6919121856910082,21,regulation of ARF protein signal transduction,positive regulation of MAPK cascade,0.9358512396694215,0.4963333333333333,0.511
+up,GO:1902894,1,GO:0061614,1.6919121856910082,28,negative regulation of miRNA transcription,miRNA transcription,0.911603305785124,0.34407692307692306,0.924
+up,GO:0097688,17,GO:0007044,1.6911392695763101,10,glutamate receptor clustering,cell-substrate junction assembly,0.9424132231404958,0.42172727272727273,0.555
+up,GO:0097113,17,GO:0007044,1.6911392695763101,10,AMPA glutamate receptor clustering,cell-substrate junction assembly,0.9395743801652893,0.3592727272727273,0.555
+up,GO:0035845,10,GO:0021782,1.6764675705167138,13,photoreceptor cell outer segment organization,glial cell development,0.8415909090909091,0.6101,0.442
+up,GO:0001678,37,GO:0001678,1.66974330050621,170,intracellular glucose homeostasis,intracellular glucose homeostasis,0.9960289256198347,0.5195000000000001,0
+up,GO:0016055,7,GO:0007169,1.6691830702152153,476,Wnt signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9075371900826447,0.32720000000000005,0.605
+up,GO:0046688,24,GO:0071294,1.6684199733652254,37,response to copper ion,cellular response to zinc ion,0.9625578512396694,0.41700000000000004,0.696
+up,GO:0035455,31,GO:1901699,1.667889902080429,20,response to interferon-alpha,cellular response to nitrogen compound,0.9698347107438017,0.7132000000000001,0.377
+up,GO:0033002,22,GO:1905564,1.6640629098814388,252,muscle cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9761694214876033,0.44099999999999995,0.488
+up,GO:0061577,33,GO:1902514,1.6627540910570409,21,calcium ion transmembrane transport via high voltage-gated calcium channel,regulation of calcium ion transmembrane transport via high voltage-gated calcium channel,0.97549173553719,0.42633333333333334,0.99
+up,GO:0030856,3,GO:0048729,1.6596401308705508,172,regulation of epithelial cell differentiation,tissue morphogenesis,0.7700371900826446,0.42130769230769227,0.588
+up,GO:0101023,22,GO:1905564,1.644566188367318,53,vascular endothelial cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9770454545454546,0.4295,0.954
+up,GO:0060675,5,GO:0072009,1.644566188367318,68,ureteric bud morphogenesis,nephron epithelium development,0.7610826446280992,0.2895185185185185,0.934
+up,GO:0072171,5,GO:0072009,1.644566188367318,69,mesonephric tubule morphogenesis,nephron epithelium development,0.7598016528925621,0.28588888888888886,0.939
+up,GO:0003013,13,GO:0043114,1.6384444361330848,619,circulatory system process,regulation of vascular permeability,0.8972190082644628,0.394,0.748
+up,GO:0051017,38,GO:0051017,1.6326621765296347,164,actin filament bundle assembly,actin filament bundle assembly,0.9522190082644628,0.39175000000000004,0
+up,GO:0097150,39,GO:0097150,1.6208839635122647,25,neuronal stem cell population maintenance,neuronal stem cell population maintenance,0.9033677685950413,1,0
+up,GO:0002064,3,GO:0048729,1.6208839635122647,219,epithelial cell development,tissue morphogenesis,0.8213264462809917,0.41484615384615386,0.597
+up,GO:0071559,2,GO:0071363,1.6073581825632655,313,response to transforming growth factor beta,cellular response to growth factor stimulus,0.9408471074380166,0.2582,0.884
+up,GO:0014897,13,GO:0043114,1.6052160655995316,105,striated muscle hypertrophy,regulation of vascular permeability,0.9144834710743802,0.49357142857142855,0.461
+up,GO:0048645,11,GO:0061138,1.6049770646365156,70,animal organ formation,morphogenesis of a branching epithelium,0.8456611570247934,0.6795,0.43
+up,GO:0032292,10,GO:0021782,1.6049770646365156,29,peripheral nervous system axon ensheathment,glial cell development,0.8610289256198347,0.5933999999999999,0.393
+up,GO:0097553,33,GO:1902514,1.6049770646365156,189,calcium ion transmembrane import into cytosol,regulation of calcium ion transmembrane transport via high voltage-gated calcium channel,0.9726280991735538,0.5156666666666667,0.722
+up,GO:0048568,21,GO:0072175,1.6049770646365156,458,embryonic organ development,epithelial tube formation,0.8178884297520661,0.4127692307692308,0.321
+up,GO:0061572,38,GO:0051017,1.6049770646365156,168,actin filament bundle organization,actin filament bundle assembly,0.9555867768595041,0.391,0.997
+up,GO:0010522,16,GO:0007204,1.6049770646365156,20,regulation of calcium ion transport into cytosol,positive regulation of cytosolic calcium ion concentration,0.9384545454545454,0.39,0.858
+up,GO:0072001,5,GO:0072009,1.6049770646365156,332,renal system development,nephron epithelium development,0.8067685950413224,0.32277777777777783,0.896
+up,GO:0097107,17,GO:0007044,1.6049770646365156,29,postsynaptic density assembly,cell-substrate junction assembly,0.8196900826446281,0.3223636363636364,0.673
+up,GO:0022011,10,GO:0021782,1.6049770646365156,29,myelination in peripheral nervous system,glial cell development,0.8422727272727273,0.2975,0.892
+up,GO:2000146,14,GO:0030335,1.6049770646365156,398,negative regulation of cell motility,positive regulation of cell migration,0.9190371900826446,0.26,0.818
+up,GO:0030216,3,GO:0048729,1.6025856168508816,178,keratinocyte differentiation,tissue morphogenesis,0.8024793388429752,0.34453846153846157,0.588
+up,GO:0001649,6,GO:0001503,1.5985565038259333,262,osteoblast differentiation,ossification,0.8552190082644628,0.2792,0.933
+up,GO:2000629,1,GO:0061614,1.571524311790244,30,negative regulation of miRNA metabolic process,miRNA transcription,0.919698347107438,0.3543076923076923,0.882
+up,GO:0003407,5,GO:0072009,1.5687469597390786,88,neural retina development,nephron epithelium development,0.8334545454545454,0.5478148148148148,0.391
+up,GO:0043542,15,GO:0001667,1.5687469597390786,287,endothelial cell migration,ameboidal-type cell migration,0.9744586776859504,0.4633333333333334,0.632
+up,GO:0009913,3,GO:0048729,1.5687469597390786,251,epidermal cell differentiation,tissue morphogenesis,0.8147190082644629,0.3294615384615385,0.609
+up,GO:0031589,32,GO:0022408,1.5628367196565043,361,cell-substrate adhesion,negative regulation of cell-cell adhesion,0.9746611570247934,0.40142857142857147,0.645
+up,GO:0042130,32,GO:0022408,1.5515044690308972,74,negative regulation of T cell proliferation,negative regulation of cell-cell adhesion,0.8471528925619835,0.3245714285714286,0.916
+up,GO:1990874,22,GO:1905564,1.547396328197226,96,vascular associated smooth muscle cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9770082644628099,0.44466666666666665,0.457
+up,GO:0071375,31,GO:1901699,1.5432361639461196,321,cellular response to peptide hormone stimulus,cellular response to nitrogen compound,0.9231859504132232,0.36519999999999997,0.925
+up,GO:0033122,40,GO:0033122,1.5421625963020524,19,negative regulation of purine nucleotide catabolic process,negative regulation of purine nucleotide catabolic process,0.9135537190082644,0.403,0
+up,GO:0030812,40,GO:0033122,1.5421625963020524,19,negative regulation of nucleotide catabolic process,negative regulation of purine nucleotide catabolic process,0.9135537190082644,0.403,1
+up,GO:0045820,40,GO:0033122,1.5421625963020524,19,negative regulation of glycolytic process,negative regulation of purine nucleotide catabolic process,0.9112231404958677,0.30899999999999994,1
+up,GO:0014741,13,GO:0043114,1.5375606875733419,37,negative regulation of muscle hypertrophy,regulation of vascular permeability,0.8767644628099174,0.49271428571428566,0.428
+up,GO:0045445,23,GO:0061061,1.5339160172242727,115,myoblast differentiation,muscle structure development,0.8773429752066115,0.596,0.808
+up,GO:0035904,9,GO:0007507,1.5330921669709405,67,aorta development,heart development,0.8526611570247934,0.35545454545454547,0.623
+up,GO:0060173,36,GO:0046661,1.5290235999919355,189,limb development,male sex differentiation,0.8603842975206611,0.565,0.307
+up,GO:0048736,36,GO:0046661,1.5290235999919355,189,appendage development,male sex differentiation,0.8603842975206611,0.565,0.307
+up,GO:0035850,5,GO:0072009,1.5229781216097094,49,epithelial cell differentiation involved in kidney development,nephron epithelium development,0.7890289256198347,0.4052592592592592,0.752
+up,GO:0008015,13,GO:0043114,1.5229781216097094,535,blood circulation,regulation of vascular permeability,0.8979793388429752,0.39342857142857146,0.759
+up,GO:0000289,1,GO:0061614,1.5195291436613463,32,nuclear-transcribed mRNA poly(A) tail shortening,miRNA transcription,0.9038057851239669,0.5083076923076923,0.303
+up,GO:0050868,32,GO:0022408,1.5195291436613463,134,negative regulation of T cell activation,negative regulation of cell-cell adhesion,0.8502727272727273,0.29114285714285715,0.971
+up,GO:0048705,5,GO:0072009,1.5179551786951362,232,skeletal system morphogenesis,nephron epithelium development,0.8108842975206612,0.5423703703703704,0.421
+up,GO:0001841,21,GO:0072175,1.5152552599765765,94,neural tube formation,epithelial tube formation,0.7753099173553719,0.2375384615384616,0.972
+up,GO:0030155,32,GO:0022408,1.497713494491918,821,regulation of cell adhesion,negative regulation of cell-cell adhesion,0.9409917355371901,0.32385714285714284,0.852
+up,GO:0060324,41,GO:0060324,1.4905914549216042,53,face development,face development,0.9028223140495868,1,0
+up,GO:1902905,38,GO:0051017,1.4760304444584738,177,positive regulation of supramolecular fiber organization,actin filament bundle assembly,0.9226157024793389,0.5715,0.705
+up,GO:0033500,37,GO:0001678,1.4733811005412336,266,carbohydrate homeostasis,intracellular glucose homeostasis,0.9960289256198347,0.5195000000000001,0.961
+up,GO:0062014,40,GO:0033122,1.4733191713145963,125,negative regulation of small molecule metabolic process,negative regulation of purine nucleotide catabolic process,0.9252024793388429,0.4338333333333333,0.868
+up,GO:0098698,17,GO:0007044,1.473193717304572,36,postsynaptic specialization assembly,cell-substrate junction assembly,0.8183429752066116,0.33890909090909094,0.682
+up,GO:0040034,42,GO:0040034,1.4690018793422395,13,"regulation of development, heterochronic","regulation of development, heterochronic",0.889797520661157,1,0
+up,GO:1903318,40,GO:0033122,1.4690018793422395,32,negative regulation of protein maturation,negative regulation of purine nucleotide catabolic process,0.9290165289256198,0.6941666666666666,0.359
+up,GO:0022612,8,GO:0007423,1.4637254243451046,127,gland morphogenesis,sensory organ development,0.8394256198347108,0.49375,0.459
+up,GO:2000811,43,GO:2000811,1.460489811539271,19,negative regulation of anoikis,negative regulation of anoikis,0.9524380165289256,1,0
+up,GO:1901950,34,GO:0099118,1.459120329562075,12,dense core granule transport,microtubule-based protein transport,0.9782809917355372,0.55975,0.318
+up,GO:0099519,34,GO:0099118,1.459120329562075,12,dense core granule cytoskeletal transport,microtubule-based protein transport,0.9773553719008264,0.50375,0.318
+up,GO:0098773,8,GO:0007423,1.4493891739140432,132,skin epidermis development,sensory organ development,0.8226280991735537,0.571,0.45
+up,GO:0031032,38,GO:0051017,1.448762264326232,216,actomyosin structure organization,actin filament bundle assembly,0.9575950413223141,0.55825,0.731
+up,GO:0034405,20,GO:0042060,1.4412194762002981,36,response to fluid shear stress,wound healing,0.9730578512396694,0.7556666666666667,0.363
+up,GO:1902932,18,GO:1902930,1.4412194762002981,30,positive regulation of alcohol biosynthetic process,regulation of alcohol biosynthetic process,0.9350785123966943,0.35650000000000004,0.954
+up,GO:0043434,31,GO:1901699,1.4399152559016004,446,response to peptide hormone,cellular response to nitrogen compound,0.9366694214876033,0.38780000000000003,0.832
+up,GO:0038127,7,GO:0007169,1.4323253870002473,136,ERBB signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9186942148760331,0.48460000000000003,0.846
+up,GO:0048738,9,GO:0007507,1.4263927216353118,252,cardiac muscle tissue development,heart development,0.7959834710743802,0.3892727272727273,0.861
+up,GO:0045912,40,GO:0033122,1.4198357536073531,67,negative regulation of carbohydrate metabolic process,negative regulation of purine nucleotide catabolic process,0.9358512396694215,0.5993333333333333,0.355
+up,GO:0045766,9,GO:0007507,1.407178148115272,189,positive regulation of angiogenesis,heart development,0.7638677685950412,0.29054545454545455,0.686
+up,GO:1904705,22,GO:1905564,1.4031907293592256,94,regulation of vascular associated smooth muscle cell proliferation,positive regulation of vascular endothelial cell proliferation,0.9507438016528925,0.43366666666666664,0.492
+up,GO:0106070,30,GO:0007188,1.397827010677066,21,regulation of adenylate cyclase-activating G protein-coupled receptor signaling pathway,adenylate cyclase-modulating G protein-coupled receptor signaling pathway,0.9351652892561984,0.5633333333333332,0.81
+up,GO:0060020,10,GO:0021782,1.3968071915333695,11,Bergmann glial cell differentiation,glial cell development,0.8577727272727272,0.45489999999999997,0.729
+up,GO:0050807,17,GO:0007044,1.3968071915333695,312,regulation of synapse organization,cell-substrate junction assembly,0.8996652892561984,0.3328181818181818,0.709
+up,GO:0014020,21,GO:0072175,1.3934774435895585,87,primary neural tube formation,epithelial tube formation,0.7764586776859503,0.24130769230769233,0.967
+up,GO:0010224,29,GO:0009612,1.3851165465873017,21,response to UV-B,response to mechanical stimulus,0.9729793388429753,0.7105,0.579
+up,GO:1902275,4,GO:0031507,1.3842615031218535,35,regulation of chromatin organization,heterochromatin formation,0.9338801652892562,0.485,0.615
+up,GO:0043062,28,GO:0085029,1.3842615031218535,340,extracellular structure organization,extracellular matrix assembly,0.955599173553719,0.45199999999999996,0.861
+up,GO:0045229,28,GO:0085029,1.3842615031218535,341,external encapsulating structure organization,extracellular matrix assembly,0.9556074380165289,0.45175,0.861
+up,GO:0071364,2,GO:0071363,1.3842615031218535,43,cellular response to epidermal growth factor stimulus,cellular response to growth factor stimulus,0.9491694214876033,0.35729999999999995,0.732
+up,GO:0030198,28,GO:0085029,1.3842615031218535,339,extracellular matrix organization,extracellular matrix assembly,0.9528760330578512,0.28625,0.862
+up,GO:0043009,21,GO:0072175,1.3833944556922644,663,chordate embryonic development,epithelial tube formation,0.8331280991735537,0.3891538461538462,0.329
+up,GO:0050808,17,GO:0007044,1.3833944556922644,568,synapse organization,cell-substrate junction assembly,0.9389421487603306,0.2959090909090909,0.757
+up,GO:0097501,24,GO:0071294,1.381681287874736,21,stress response to metal ion,cellular response to zinc ion,0.9632066115702479,0.5025,0.661
+down,GO:0002181,9,GO:0002181,8.064991972458172,165,cytoplasmic translation,cytoplasmic translation,0.867948717948718,0.7195,0
+down,GO:1902600,5,GO:1902600,8.064991972458172,195,proton transmembrane transport,proton transmembrane transport,0.9212692307692307,0.5815,0
+down,GO:0010257,6,GO:0010257,8.064991972458172,62,NADH dehydrogenase complex assembly,NADH dehydrogenase complex assembly,0.8906666666666667,0.46287500000000004,0
+down,GO:0032981,6,GO:0010257,8.064991972458172,62,mitochondrial respiratory chain complex I assembly,NADH dehydrogenase complex assembly,0.842474358974359,0.41974999999999996,0.999
+down,GO:0033108,4,GO:0033108,8.064991972458172,103,mitochondrial respiratory chain complex assembly,mitochondrial respiratory chain complex assembly,0.8401089743589744,0.3644666666666667,0
+down,GO:0097250,4,GO:0033108,8.064991972458172,114,mitochondrial respirasome assembly,mitochondrial respiratory chain complex assembly,0.8393653846153846,0.36106666666666665,0.761
+down,GO:0072521,3,GO:0072521,8.064991972458172,577,purine-containing compound metabolic process,purine-containing compound metabolic process,0.8813397435897437,0.33024999999999993,0
+down,GO:1901137,7,GO:1901137,8.064991972458172,613,carbohydrate derivative biosynthetic process,carbohydrate derivative biosynthetic process,0.8596602564102565,0.30999999999999994,0
+down,GO:0009152,3,GO:0072521,8.064991972458172,156,purine ribonucleotide biosynthetic process,purine-containing compound metabolic process,0.766474358974359,0.2985,0.873
+down,GO:0140053,8,GO:0140053,8.064991972458172,169,mitochondrial gene expression,mitochondrial gene expression,0.8685064102564103,0.29480000000000006,0
+down,GO:0072522,3,GO:0072521,8.064991972458172,263,purine-containing compound biosynthetic process,purine-containing compound metabolic process,0.8656282051282052,0.2905,0.917
+down,GO:0006164,3,GO:0072521,8.064991972458172,197,purine nucleotide biosynthetic process,purine-containing compound metabolic process,0.7709935897435898,0.29025,0.889
+down,GO:0007005,4,GO:0033108,8.064991972458172,452,mitochondrion organization,mitochondrial respiratory chain complex assembly,0.8486858974358975,0.2898666666666667,0.86
+down,GO:0032543,8,GO:0140053,8.064991972458172,131,mitochondrial translation,mitochondrial gene expression,0.8607756410256411,0.2884,0.971
+down,GO:0090407,2,GO:0090407,8.064991972458172,611,organophosphate biosynthetic process,organophosphate biosynthetic process,0.7905384615384615,0.2326111111111111,0
+down,GO:0009150,7,GO:1901137,8.064991972458172,348,purine ribonucleotide metabolic process,carbohydrate derivative biosynthetic process,0.770147435897436,0.23016666666666663,0.799
+down,GO:0009260,7,GO:1901137,8.064991972458172,171,ribonucleotide biosynthetic process,carbohydrate derivative biosynthetic process,0.773423076923077,0.22416666666666663,0.859
+down,GO:0046390,7,GO:1901137,8.064991972458172,178,ribose phosphate biosynthetic process,carbohydrate derivative biosynthetic process,0.7948205128205128,0.22366666666666668,0.861
+down,GO:0019693,7,GO:1901137,8.064991972458172,376,ribose phosphate metabolic process,carbohydrate derivative biosynthetic process,0.800826923076923,0.22316666666666662,0.811
+down,GO:0009259,7,GO:1901137,8.064991972458172,368,ribonucleotide metabolic process,carbohydrate derivative biosynthetic process,0.7784551282051282,0.22283333333333333,0.81
+down,GO:0006123,1,GO:0006123,8.064991972458172,24,"mitochondrial electron transport, cytochrome c to oxygen","mitochondrial electron transport, cytochrome c to oxygen",0.8586474358974359,0.2188461538461538,0
+down,GO:0006091,1,GO:0006123,8.064991972458172,490,generation of precursor metabolites and energy,"mitochondrial electron transport, cytochrome c to oxygen",0.8379551282051283,0.21369230769230774,0.748
+down,GO:0006163,2,GO:0090407,8.064991972458172,440,purine nucleotide metabolic process,organophosphate biosynthetic process,0.7742435897435898,0.20033333333333336,0.808
+down,GO:0009117,2,GO:0090407,8.064991972458172,500,nucleotide metabolic process,organophosphate biosynthetic process,0.7815064102564102,0.1935555555555556,0.826
+down,GO:0006753,2,GO:0090407,8.064991972458172,656,nucleoside phosphate metabolic process,organophosphate biosynthetic process,0.779724358974359,0.19122222222222218,0.853
+down,GO:0015980,1,GO:0006123,8.064991972458172,356,energy derivation by oxidation of organic compounds,"mitochondrial electron transport, cytochrome c to oxygen",0.838397435897436,0.19100000000000006,0.779
+down,GO:0009165,2,GO:0090407,8.064991972458172,233,nucleotide biosynthetic process,organophosphate biosynthetic process,0.7770256410256411,0.18061111111111106,0.905
+down,GO:0022900,1,GO:0006123,8.064991972458172,135,electron transport chain,"mitochondrial electron transport, cytochrome c to oxygen",0.8459294871794871,0.17761538461538462,0.877
+down,GO:0006120,1,GO:0006123,8.064991972458172,51,"mitochondrial electron transport, NADH to ubiquinone","mitochondrial electron transport, cytochrome c to oxygen",0.8508205128205129,0.17730769230769228,0.872
+down,GO:1901293,2,GO:0090407,8.064991972458172,321,nucleoside phosphate biosynthetic process,organophosphate biosynthetic process,0.7749551282051282,0.17700000000000005,0.935
+down,GO:0045333,1,GO:0006123,8.064991972458172,249,cellular respiration,"mitochondrial electron transport, cytochrome c to oxygen",0.8390833333333334,0.17538461538461536,0.806
+down,GO:0009060,1,GO:0006123,8.064991972458172,200,aerobic respiration,"mitochondrial electron transport, cytochrome c to oxygen",0.8399294871794871,0.17084615384615387,0.823
+down,GO:0042776,2,GO:0090407,8.064991972458172,68,proton motive force-driven mitochondrial ATP synthesis,organophosphate biosynthetic process,0.7219358974358974,0.17005555555555552,0.775
+down,GO:0006119,1,GO:0006123,8.064991972458172,149,oxidative phosphorylation,"mitochondrial electron transport, cytochrome c to oxygen",0.8422371794871795,0.16692307692307695,0.858
+down,GO:0009144,2,GO:0090407,8.064991972458172,259,purine nucleoside triphosphate metabolic process,organophosphate biosynthetic process,0.7877820512820513,0.1507777777777778,0.754
+down,GO:0009199,2,GO:0090407,8.064991972458172,258,ribonucleoside triphosphate metabolic process,organophosphate biosynthetic process,0.7870961538461538,0.15055555555555555,0.758
+down,GO:0009141,2,GO:0090407,8.064991972458172,274,nucleoside triphosphate metabolic process,organophosphate biosynthetic process,0.7863397435897436,0.15022222222222226,0.764
+down,GO:0009205,2,GO:0090407,8.064991972458172,252,purine ribonucleoside triphosphate metabolic process,organophosphate biosynthetic process,0.7879102564102564,0.14994444444444444,0.752
+down,GO:0022904,1,GO:0006123,8.064991972458172,125,respiratory electron transport chain,"mitochondrial electron transport, cytochrome c to oxygen",0.8434102564102564,0.1491538461538462,0.882
+down,GO:0019646,1,GO:0006123,8.064991972458172,93,aerobic electron transport chain,"mitochondrial electron transport, cytochrome c to oxygen",0.8447884615384615,0.14792307692307693,0.906
+down,GO:0015986,2,GO:0090407,8.064991972458172,77,proton motive force-driven ATP synthesis,organophosphate biosynthetic process,0.7701025641025642,0.1473888888888889,0.8
+down,GO:0009145,2,GO:0090407,8.064991972458172,112,purine nucleoside triphosphate biosynthetic process,organophosphate biosynthetic process,0.7845961538461538,0.1433333333333333,0.823
+down,GO:0042775,1,GO:0006123,8.064991972458172,101,mitochondrial ATP synthesis coupled electron transport,"mitochondrial electron transport, cytochrome c to oxygen",0.8436858974358974,0.14292307692307693,0.899
+down,GO:0042773,1,GO:0006123,8.064991972458172,101,ATP synthesis coupled electron transport,"mitochondrial electron transport, cytochrome c to oxygen",0.8435448717948718,0.14223076923076927,0.897
+down,GO:0009206,2,GO:0090407,8.064991972458172,111,purine ribonucleoside triphosphate biosynthetic process,organophosphate biosynthetic process,0.7844871794871795,0.14194444444444443,0.822
+down,GO:0046034,2,GO:0090407,8.064991972458172,228,ATP metabolic process,organophosphate biosynthetic process,0.7681794871794871,0.14122222222222225,0.747
+down,GO:0009142,2,GO:0090407,8.064991972458172,124,nucleoside triphosphate biosynthetic process,organophosphate biosynthetic process,0.7822692307692308,0.1403888888888889,0.839
+down,GO:0009201,2,GO:0090407,8.064991972458172,116,ribonucleoside triphosphate biosynthetic process,organophosphate biosynthetic process,0.7827628205128205,0.14,0.835
+down,GO:0006754,2,GO:0090407,8.064991972458172,100,ATP biosynthetic process,organophosphate biosynthetic process,0.7661410256410256,0.13394444444444442,0.817
+down,GO:0042254,10,GO:0042254,7.59493309000997,317,ribosome biogenesis,ribosome biogenesis,0.8751538461538462,0.3612857142857143,0
+down,GO:0022613,10,GO:0042254,6.536837548492634,492,ribonucleoprotein complex biogenesis,ribosome biogenesis,0.873025641025641,0.37328571428571433,0.957
+down,GO:0007006,4,GO:0033108,5.811465479412785,120,mitochondrial membrane organization,mitochondrial respiratory chain complex assembly,0.8547820512820513,0.30500000000000005,0.767
+down,GO:0006839,11,GO:0006839,5.195635494760683,188,mitochondrial transport,mitochondrial transport,0.924397435897436,0.597,0
+down,GO:0017004,6,GO:0010257,5.101994250015822,41,cytochrome complex assembly,NADH dehydrogenase complex assembly,0.888948717948718,0.411875,0.544
+down,GO:0006122,1,GO:0006123,4.305704141312783,14,"mitochondrial electron transport, ubiquinol to cytochrome c","mitochondrial electron transport, cytochrome c to oxygen",0.862596153846154,0.24,0.808
+down,GO:0042274,10,GO:0042254,3.7548218000515443,108,ribosomal small subunit biogenesis,ribosome biogenesis,0.8852371794871795,0.40542857142857147,0.9
+down,GO:0008535,6,GO:0010257,3.7517946645007796,29,respiratory chain complex IV assembly,NADH dehydrogenase complex assembly,0.891525641025641,0.41825,0.529
+down,GO:0006364,12,GO:0006364,3.7049097374291877,225,rRNA processing,rRNA processing,0.7450576923076924,0.48357142857142854,0
+down,GO:0031163,10,GO:0042254,3.6547441273579313,29,metallo-sulfur cluster assembly,ribosome biogenesis,0.9000897435897436,0.5452857142857143,0.462
+down,GO:0016226,10,GO:0042254,3.6547441273579313,29,iron-sulfur cluster assembly,ribosome biogenesis,0.9000897435897436,0.5452857142857143,0.462
+down,GO:0016072,12,GO:0006364,3.6115973116336253,268,rRNA metabolic process,rRNA processing,0.8823910256410257,0.6095714285714285,0.98
+down,GO:0007007,4,GO:0033108,3.589439928994335,45,inner mitochondrial membrane organization,mitochondrial respiratory chain complex assembly,0.86125,0.3308,0.727
+down,GO:0033617,6,GO:0010257,3.5514517988635124,25,mitochondrial cytochrome c oxidase assembly,NADH dehydrogenase complex assembly,0.8467564102564102,0.38025,0.523
+down,GO:0042273,10,GO:0042254,3.1721840433533965,64,ribosomal large subunit biogenesis,ribosome biogenesis,0.8900064102564103,0.4277142857142857,0.856
+down,GO:1990542,11,GO:0006839,3.1283553224578196,104,mitochondrial transmembrane transport,mitochondrial transport,0.9086153846153846,0.55275,0.954
+down,GO:1903599,13,GO:1903599,3.0342854957251455,27,positive regulation of autophagy of mitochondrion,positive regulation of autophagy of mitochondrion,0.8676858974358974,0.268,0
+down,GO:0090151,14,GO:0090151,3.02297142453935,34,establishment of protein localization to mitochondrial membrane,establishment of protein localization to mitochondrial membrane,0.7799038461538461,0.3785294117647059,0
+down,GO:0006458,15,GO:0006458,3.02297142453935,49,'de novo' protein folding,'de novo' protein folding,0.8685833333333333,0.2888571428571428,0
+down,GO:0051084,15,GO:0006458,2.9505425194991473,44,'de novo' post-translational protein folding,'de novo' protein folding,0.8696410256410256,0.2915714285714286,0.991
+down,GO:0045116,9,GO:0002181,2.7939518889157213,29,protein neddylation,cytoplasmic translation,0.9078076923076923,0.607,0.342
+down,GO:0072655,14,GO:0090151,2.724480346207498,125,establishment of protein localization to mitochondrion,establishment of protein localization to mitochondrial membrane,0.8871089743589743,0.346764705882353,0.917
+down,GO:0006605,14,GO:0090151,2.640106337315547,335,protein targeting,establishment of protein localization to mitochondrial membrane,0.8927371794871795,0.4158235294117647,0.595
+down,GO:0008637,4,GO:0033108,2.627655967188773,108,apoptotic mitochondrial changes,mitochondrial respiratory chain complex assembly,0.8582115384615385,0.31986666666666663,0.757
+down,GO:1901526,13,GO:1903599,2.614611547206553,24,positive regulation of mitophagy,positive regulation of autophagy of mitochondrion,0.8682115384615384,0.261625,0.992
+down,GO:0042255,10,GO:0042254,2.612318528215373,58,ribosome assembly,ribosome biogenesis,0.8784038461538461,0.43514285714285716,0.834
+down,GO:0061077,15,GO:0006458,2.6059014361545634,76,chaperone-mediated protein folding,'de novo' protein folding,0.8656858974358974,0.31185714285714283,0.782
+down,GO:0030150,14,GO:0090151,2.5979490129333844,20,protein import into mitochondrial matrix,establishment of protein localization to mitochondrial membrane,0.8790448717948718,0.3717058823529412,0.799
+down,GO:0044743,14,GO:0090151,2.5104708622596847,39,protein transmembrane import into intracellular organelle,establishment of protein localization to mitochondrial membrane,0.8905000000000001,0.39011764705882357,0.696
+down,GO:0071806,14,GO:0090151,2.4854179725505925,74,protein transmembrane transport,establishment of protein localization to mitochondrial membrane,0.8977692307692308,0.46035294117647063,0.542
+down,GO:0070585,14,GO:0090151,2.4122667894205327,133,protein localization to mitochondrion,establishment of protein localization to mitochondrial membrane,0.8927948717948717,0.38835294117647057,0.91
+down,GO:0006457,15,GO:0006458,2.4122667894205327,231,protein folding,'de novo' protein folding,0.8530833333333333,0.28200000000000003,0.859
+down,GO:0051604,15,GO:0006458,2.403575385007757,612,protein maturation,'de novo' protein folding,0.8454615384615385,0.3255714285714285,0.771
+down,GO:0006626,14,GO:0090151,2.39834707963164,106,protein targeting to mitochondrion,establishment of protein localization to mitochondrial membrane,0.8858525641025641,0.33205882352941174,0.909
+down,GO:0010591,16,GO:0010591,2.263605320135287,41,regulation of lamellipodium assembly,regulation of lamellipodium assembly,0.8811410256410256,0.271,0
+down,GO:0070972,14,GO:0090151,2.217515513880917,83,protein localization to endoplasmic reticulum,establishment of protein localization to mitochondrial membrane,0.9011666666666667,0.4350588235294117,0.609
+down,GO:0051085,15,GO:0006458,2.197298556675131,32,chaperone cofactor-dependent protein refolding,'de novo' protein folding,0.8709102564102564,0.27728571428571425,0.973
+down,GO:0045047,14,GO:0090151,2.137985258735936,46,protein targeting to ER,establishment of protein localization to mitochondrial membrane,0.8937051282051283,0.37517647058823533,0.691
+down,GO:0006399,12,GO:0006364,2.1192935821966947,203,tRNA metabolic process,rRNA processing,0.879301282051282,0.5418571428571428,0.389
+down,GO:0021762,17,GO:0021762,2.052566737277894,46,substantia nigra development,substantia nigra development,0.9926410256410256,0.5145,0
+down,GO:1902745,16,GO:0010591,2.0440564052735257,36,positive regulation of lamellipodium organization,regulation of lamellipodium assembly,0.8941217948717949,0.271,0.958
+down,GO:0051036,18,GO:0051036,2.036226159034646,13,regulation of endosome size,regulation of endosome size,0.9169487179487179,0.6961666666666666,0
+down,GO:0098883,19,GO:0098883,1.964508338164301,15,synapse pruning,synapse pruning,0.9234743589743589,0.5145,0
+down,GO:0035036,20,GO:0035036,1.964508338164301,51,sperm-egg recognition,sperm-egg recognition,0.9736794871794872,0.4623333333333334,0
+down,GO:0061734,13,GO:1903599,1.9613860177060216,16,type 2 mitophagy,positive regulation of autophagy of mitochondrion,0.8888589743589743,0.301125,0.78
+down,GO:0009408,21,GO:0009408,1.9521612135954391,106,response to heat,response to heat,0.9901666666666666,0.5155000000000001,0
+down,GO:0010821,4,GO:0033108,1.9341553595942576,114,regulation of mitochondrion organization,mitochondrial respiratory chain complex assembly,0.8494038461538461,0.33540000000000003,0.756
+down,GO:0001836,4,GO:0033108,1.932759016485176,54,release of cytochrome c from mitochondria,mitochondrial respiratory chain complex assembly,0.8523397435897436,0.33653333333333335,0.721
+down,GO:0042182,13,GO:1903599,1.8798673011027598,15,ketone catabolic process,positive regulation of autophagy of mitochondrion,0.8615512820512821,0.5720000000000001,0.479
+down,GO:0062125,8,GO:0140053,1.8781875992465755,34,regulation of mitochondrial gene expression,mitochondrial gene expression,0.8697628205128205,0.2672,0.869
+down,GO:0010592,16,GO:0010591,1.8766558861811133,28,positive regulation of lamellipodium assembly,regulation of lamellipodium assembly,0.8781089743589744,0.27025,0.976
+down,GO:0051881,18,GO:0051036,1.8694086478387664,73,regulation of mitochondrial membrane potential,regulation of endosome size,0.9783205128205128,0.6665,0.367
+down,GO:0042407,4,GO:0033108,1.8611195753669314,20,cristae formation,mitochondrial respiratory chain complex assembly,0.8698525641025641,0.3706666666666667,0.678
+down,GO:1903320,9,GO:0002181,1.8306243274038951,248,regulation of protein modification by small protein conjugation or removal,cytoplasmic translation,0.8781730769230769,0.499,0.39
+down,GO:0140527,22,GO:0140527,1.8294499462597047,60,reciprocal homologous recombination,reciprocal homologous recombination,0.8951153846153846,0.5005,0
+down,GO:0007131,22,GO:0140527,1.8294499462597047,60,reciprocal meiotic recombination,reciprocal homologous recombination,0.7970384615384616,0.5005,0.999
+down,GO:0000423,13,GO:1903599,1.8294499462597047,95,mitophagy,positive regulation of autophagy of mitochondrion,0.8763205128205128,0.25787499999999997,0.874
+down,GO:1901873,9,GO:0002181,1.8190215154822065,253,regulation of post-translational protein modification,cytoplasmic translation,0.878051282051282,0.5005,0.39
+down,GO:1905710,18,GO:0051036,1.7931409553968471,49,positive regulation of membrane permeability,regulation of endosome size,0.9711474358974359,0.47383333333333333,0.358
+down,GO:0045040,4,GO:0033108,1.7693178145726431,14,protein insertion into mitochondrial outer membrane,mitochondrial respiratory chain complex assembly,0.7850833333333334,0.3835333333333333,0.648
+down,GO:0007008,4,GO:0033108,1.7693178145726431,14,outer mitochondrial membrane organization,mitochondrial respiratory chain complex assembly,0.8739935897435898,0.3835333333333333,0.648
+down,GO:0016050,4,GO:0033108,1.740111849222696,386,vesicle organization,mitochondrial respiratory chain complex assembly,0.8867692307692308,0.5721333333333334,0.446
+down,GO:0072599,14,GO:0090151,1.740111849222696,50,establishment of protein localization to endoplasmic reticulum,establishment of protein localization to mitochondrial membrane,0.8958974358974359,0.3940588235294118,0.694
+down,GO:0007032,4,GO:0033108,1.7256131457782762,99,endosome organization,mitochondrial respiratory chain complex assembly,0.8986025641025641,0.6129333333333333,0.395
+down,GO:0097428,15,GO:0006458,1.716641222884375,17,protein maturation by iron-sulfur cluster transfer,'de novo' protein folding,0.880724358974359,0.4542857142857143,0.602
+down,GO:0071826,6,GO:0010257,1.716641222884375,234,protein-RNA complex organization,NADH dehydrogenase complex assembly,0.8938910256410256,0.452125,0.582
+down,GO:0000422,13,GO:1903599,1.716641222884375,115,autophagy of mitochondrion,positive regulation of autophagy of mitochondrion,0.8745064102564103,0.26012499999999994,0.891
+down,GO:0050821,18,GO:0051036,1.7099497524613854,236,protein stabilization,regulation of endosome size,0.9768141025641025,0.6458333333333333,0.394
+down,GO:0150146,19,GO:0098883,1.696131289863902,28,cell junction disassembly,synapse pruning,0.9212307692307693,0.5145,0.971
+down,GO:0007339,20,GO:0035036,1.6919121856910082,38,binding of sperm to zona pellucida,sperm-egg recognition,0.974051282051282,0.46699999999999997,0.981
+down,GO:0034605,21,GO:0009408,1.667889902080429,69,cellular response to heat,response to heat,0.9760897435897435,0.5155000000000001,0.969
+down,GO:0022618,6,GO:0010257,1.644566188367318,225,protein-RNA complex assembly,NADH dehydrogenase complex assembly,0.868525641025641,0.43525,0.605
+down,GO:1903146,13,GO:1903599,1.6073581825632655,51,regulation of autophagy of mitochondrion,positive regulation of autophagy of mitochondrion,0.868423076923077,0.25312500000000004,0.96
+down,GO:0001963,23,GO:0001963,1.6049770646365156,30,"synaptic transmission, dopaminergic","synaptic transmission, dopaminergic",0.9741282051282052,1,0
+down,GO:0097345,18,GO:0051036,1.6049770646365156,33,mitochondrial outer membrane permeabilization,regulation of endosome size,0.7912115384615385,0.4786666666666667,0.35
+down,GO:0000966,12,GO:0006364,1.5687469597390786,38,RNA 5'-end processing,rRNA processing,0.8701858974358975,0.6095714285714285,0.56
+down,GO:0006720,24,GO:0006720,1.547396328197226,120,isoprenoid metabolic process,isoprenoid metabolic process,0.8991025641025641,1,0
+down,GO:0032414,11,GO:0006839,1.5421625963020524,75,positive regulation of ion transmembrane transporter activity,mitochondrial transport,0.9063076923076923,0.54025,0.328
+down,GO:0042743,25,GO:0042743,1.5420951370442242,55,hydrogen peroxide metabolic process,hydrogen peroxide metabolic process,0.9098525641025641,1,0
+down,GO:0006081,26,GO:0006081,1.5346554814666957,76,cellular aldehyde metabolic process,cellular aldehyde metabolic process,0.9074615384615384,1,0
+down,GO:0070131,8,GO:0140053,1.5229781216097094,17,positive regulation of mitochondrial translation,mitochondrial gene expression,0.8579038461538462,0.2732,0.833
+down,GO:1902743,16,GO:0010591,1.5229781216097094,53,regulation of lamellipodium organization,regulation of lamellipodium assembly,0.8974615384615384,0.27125,0.982
+down,GO:0047497,27,GO:0047497,1.5164086077281749,28,mitochondrion transport along microtubule,mitochondrion transport along microtubule,0.9150064102564103,0.261,0
+down,GO:0034643,27,GO:0047497,1.5164086077281749,28,"establishment of mitochondrion localization, microtubule-mediated",mitochondrion transport along microtubule,0.9266538461538462,0.261,1
+down,GO:0090200,4,GO:0033108,1.4981375885107262,21,positive regulation of release of cytochrome c from mitochondria,mitochondrial respiratory chain complex assembly,0.8490512820512821,0.3582666666666666,0.672
+down,GO:0008033,12,GO:0006364,1.4733811005412336,135,tRNA processing,rRNA processing,0.8497179487179487,0.4455714285714286,0.628
+down,GO:0070129,8,GO:0140053,1.4733191713145963,26,regulation of mitochondrial translation,mitochondrial gene expression,0.860897435897436,0.26080000000000003,0.853
+down,GO:0032411,11,GO:0006839,1.473193717304572,84,positive regulation of transporter activity,mitochondrial transport,0.9257564102564102,0.59,0.33
+down,GO:0042069,28,GO:0042069,1.473193717304572,18,regulation of catecholamine metabolic process,regulation of catecholamine metabolic process,0.911923076923077,0.5,0
+down,GO:0042053,28,GO:0042069,1.473193717304572,18,regulation of dopamine metabolic process,regulation of catecholamine metabolic process,0.911923076923077,0.5,1
+down,GO:0097401,5,GO:1902600,1.4637254243451046,18,synaptic vesicle lumen acidification,proton transmembrane transport,0.8495448717948718,0.5815,0.837
+down,GO:1905089,13,GO:1903599,1.4457961878772172,12,regulation of type 2 mitophagy,positive regulation of autophagy of mitochondrion,0.8778974358974359,0.27037500000000003,0.88
+down,GO:0090199,4,GO:0033108,1.436850347700561,40,regulation of release of cytochrome c from mitochondria,mitochondrial respiratory chain complex assembly,0.8503653846153846,0.3372666666666667,0.697
+down,GO:0019896,27,GO:0047497,1.4366380985527618,18,axonal transport of mitochondrion,mitochondrion transport along microtubule,0.9172564102564102,0.27425,0.973
+down,GO:0072594,14,GO:0090151,1.4256614812981565,462,establishment of protein localization to organelle,establishment of protein localization to mitochondrial membrane,0.8836410256410256,0.3411764705882353,0.811
+down,GO:0051654,27,GO:0047497,1.4256614812981565,34,establishment of mitochondrion localization,mitochondrion transport along microtubule,0.9362371794871794,0.26925,0.983
+down,GO:0090672,14,GO:0090151,1.4197468949124195,19,telomerase RNA localization,establishment of protein localization to mitochondrial membrane,0.9304871794871794,0.5507647058823529,0.381
+down,GO:0090685,14,GO:0090151,1.4197468949124195,19,RNA localization to nucleus,establishment of protein localization to mitochondrial membrane,0.9278076923076924,0.5289999999999999,0.387
+down,GO:0090670,14,GO:0090151,1.4197468949124195,19,RNA localization to Cajal body,establishment of protein localization to mitochondrial membrane,0.9278076923076924,0.529,0.387
+down,GO:0090671,14,GO:0090151,1.4197468949124195,19,telomerase RNA localization to Cajal body,establishment of protein localization to mitochondrial membrane,0.9268717948717949,0.5175882352941177,0.381
+down,GO:0048857,17,GO:0021762,1.4175682238374792,69,neural nucleus development,substantia nigra development,0.9926089743589743,0.5145,0.971
+down,GO:0090150,14,GO:0090151,1.4149133691296358,280,establishment of protein localization to membrane,establishment of protein localization to mitochondrial membrane,0.8966089743589744,0.4491764705882353,0.856
+down,GO:0051131,6,GO:0010257,1.3842615031218535,24,chaperone-mediated protein complex assembly,NADH dehydrogenase complex assembly,0.9002051282051282,0.545875,0.515
+down,GO:1902110,18,GO:0051036,1.3842615031218535,40,positive regulation of mitochondrial membrane permeability involved in apoptotic process,regulation of endosome size,0.793076923076923,0.4743333333333333,0.354
+down,GO:1903046,20,GO:0035036,1.3833944556922644,222,meiotic cell cycle process,sperm-egg recognition,0.9720641025641026,0.5833333333333333,0.632
+down,GO:0000394,12,GO:0006364,1.3833944556922644,14,"RNA splicing, via endonucleolytic cleavage and ligation",rRNA processing,0.8729871794871795,0.5482857142857143,0.531
+down,GO:0006388,12,GO:0006364,1.3833944556922644,13,"tRNA splicing, via endonucleolytic cleavage and ligation",rRNA processing,0.8687179487179487,0.4352857142857143,0.527
