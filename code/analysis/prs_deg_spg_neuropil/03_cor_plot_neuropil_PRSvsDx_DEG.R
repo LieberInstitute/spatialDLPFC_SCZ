@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 ## Neuropil Dx-DEG results ----
 dx_deg_df <- read_csv(
   here(
-    "code/analysis/dx_deg_spg_neun",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neun",
     "neun-dx_DEG-GM.csv"
   )
 )

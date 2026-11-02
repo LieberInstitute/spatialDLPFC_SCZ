@@ -169,8 +169,7 @@ session_info()
 # write_csv(
 #   dx_res |> arrange(fdr_scz),
 #   here(
-#     # TODO: create a results specific folder latter
-#     "code/analysis/dx_deg_spg_neuropil",
+##     "processed-data/20_dx_deg_spg/dx_deg_spg_neuropil",
 #     "neuropil-dx_DEG-GM.csv"
 #   )
 # )
@@ -178,7 +177,7 @@ session_info()
 # write_csv(
 #   dx_res |> arrange(fdr_scz) |> filter(fdr_scz < 0.05),
 #   here(
-#     "code/analysis/dx_deg_spg_neuropil",
+#     "processed-data/20_dx_deg_spg/dx_deg_spg_neuropil",
 #     "neuropil-dx_DEG-GM_fdr_05.csv"
 #   )
 # )

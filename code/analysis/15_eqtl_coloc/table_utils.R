@@ -65,9 +65,9 @@ get_deg_file_paths <- function(project_root = here::here(), rdsdir = file.path(p
   list(
     spd = file.path(rdsdir, "10_dx_deg_adjust_spd", "dx-deg_PRECAST07.csv"),
     spg = list(
-      neun = file.path(project_root, "code", "analysis", "dx_deg_spg_neun", "neun-dx_DEG-GM.csv"),
-      neuropil = file.path(project_root, "code", "analysis", "dx_deg_spg_neuropil", "neuropil-dx_DEG-GM.csv"),
-      pnn = file.path(project_root, "code", "analysis", "dx_deg_spg_pnn", "pnn-dx_DEG-GM.csv"),
+      neun = file.path(project_root, "processed-data", "20_dx_deg_spg", "dx_deg_spg_neun", "neun-dx_DEG-GM.csv"),
+      neuropil = file.path(project_root, "processed-data", "20_dx_deg_spg", "dx_deg_spg_neuropil", "neuropil-dx_DEG-GM.csv"),
+      pnn = file.path(project_root, "processed-data", "20_dx_deg_spg", "dx_deg_spg_pnn", "pnn-dx_DEG-GM.csv"),
       vasc = file.path(project_root, "processed-data", "spg_pb_de", "test_SPD_pseudo_vasc_pos.csv")
     )
   )
