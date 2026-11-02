@@ -1,0 +1,179 @@
+            
+             Affected Unaffected
+  05-21-2021       10         10
+  05-28-2021       10          9
+  09-02-2021       10         10
+59 donors in 3 batches
+Loading 24 libraries from batches 05-21-2021, 05-28-2021, 09-02-2021
+Genes: 40456 in union, 31755 shared by all
+10076 of 373705 nuclei have no joint metadata entry and are dropped
+[1] TRUE
+BA46_05-21-2021_rxn1: 20515 nuclei, 81657957 non-zero counts
+BA46_05-21-2021_rxn2: 17941 nuclei, 79413828 non-zero counts
+BA46_05-21-2021_rxn3: 19683 nuclei, 78934371 non-zero counts
+BA46_05-21-2021_rxn4: 19761 nuclei, 79622845 non-zero counts
+BA46_05-21-2021_rxn5: 19652 nuclei, 85395801 non-zero counts
+BA46_05-21-2021_rxn6: 17074 nuclei, 70899041 non-zero counts
+BA46_05-21-2021_rxn7: 18661 nuclei, 79461558 non-zero counts
+BA46_05-21-2021_rxn8: 18999 nuclei, 79983739 non-zero counts
+BA46_05-28-2021_rxn1: 15820 nuclei, 65702886 non-zero counts
+BA46_05-28-2021_rxn2: 13034 nuclei, 58978660 non-zero counts
+BA46_05-28-2021_rxn3: 16083 nuclei, 65984165 non-zero counts
+BA46_05-28-2021_rxn4: 14248 nuclei, 58497258 non-zero counts
+BA46_05-28-2021_rxn5: 15145 nuclei, 63335682 non-zero counts
+BA46_05-28-2021_rxn6: 13934 nuclei, 67499096 non-zero counts
+BA46_05-28-2021_rxn7: 15484 nuclei, 68161464 non-zero counts
+BA46_05-28-2021_rxn8: 15998 nuclei, 61239106 non-zero counts
+BA46_09-02-2021_rxn1: 11457 nuclei, 45009411 non-zero counts
+BA46_09-02-2021_rxn2: 11142 nuclei, 48547202 non-zero counts
+BA46_09-02-2021_rxn3: 11618 nuclei, 55020731 non-zero counts
+BA46_09-02-2021_rxn4: 11528 nuclei, 46079048 non-zero counts
+BA46_09-02-2021_rxn5: 11545 nuclei, 44580425 non-zero counts
+BA46_09-02-2021_rxn6: 11517 nuclei, 47926773 non-zero counts
+BA46_09-02-2021_rxn7: 11320 nuclei, 49962197 non-zero counts
+BA46_09-02-2021_rxn8: 11470 nuclei, 32281429 non-zero counts
+class: SingleCellExperiment 
+dim: 40456 363629 
+metadata(1): source
+assays(1): counts
+rownames(40456): A1BG A1BG-AS1 ... snoZ196 snosnR66
+rowData names(1): gene_name
+colnames(363629): BA46_05-21-2021_rxn1_AATGCCACACCCTTAC
+  BA46_05-21-2021_rxn1_GACATCACAGCCGGTT ...
+  BA46_09-02-2021_rxn8_AAGTTCGAGTAGAGTT
+  BA46_09-02-2021_rxn8_AGAGAGCTCTGCCCTA
+colData names(42): library barcode ... Batch_10 Batch_11
+reducedDimNames(0):
+mainExpName: NULL
+altExpNames(0):
+            
+               NTC   SCZ
+  05-21-2021 90852 61434
+  05-28-2021 57037 62709
+  09-02-2021 45241 46356
+                 
+                    NTC   SCZ
+  astrocyte       25192 24980
+  endothelia       3342  2997
+  gabaergic       41889 36019
+  glutamatergic   91082 71021
+  microglia        7129  8461
+  oligodendrocyte 12491 15807
+  polydendrocyte  10149  9778
+  <NA>             1856  1436
+# A tibble: 12 x 4
+   batch      dx    Sex        n
+   <fct>      <fct> <chr>  <int>
+ 1 05-21-2021 NTC   Female     5
+ 2 05-21-2021 NTC   Male       5
+ 3 05-21-2021 SCZ   Female     5
+ 4 05-21-2021 SCZ   Male       5
+ 5 05-28-2021 NTC   Female     5
+ 6 05-28-2021 NTC   Male       4
+ 7 05-28-2021 SCZ   Female     5
+ 8 05-28-2021 SCZ   Male       5
+ 9 09-02-2021 NTC   Female     4
+10 09-02-2021 NTC   Male       6
+11 09-02-2021 SCZ   Female     4
+12 09-02-2021 SCZ   Male       6
+- Session info ---------------------------------------------------------------
+ setting  value
+ version  R version 4.4.2 (2024-10-31)
+ os       macOS Sonoma 14.6.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  C
+ ctype    C
+ tz       America/Denver
+ date     2026-10-19
+ pandoc   3.1.12.1 @ /opt/homebrew/bin/pandoc
+
+- Packages -------------------------------------------------------------------
+ package              * version date (UTC) lib source
+ abind                * 1.4-8   2024-09-12 [1] CRAN (R 4.4.1)
+ Biobase              * 2.66.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ BiocGenerics         * 0.52.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ bit                    4.5.0.1 2024-12-03 [1] CRAN (R 4.4.1)
+ bit64                  4.6.0-1 2025-01-16 [1] CRAN (R 4.4.1)
+ cli                    3.6.3   2024-06-21 [1] CRAN (R 4.4.0)
+ colorspace             2.1-1   2024-07-26 [1] CRAN (R 4.4.0)
+ crayon                 1.5.3   2024-06-20 [1] CRAN (R 4.4.0)
+ DelayedArray         * 0.32.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ dplyr                * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+ forcats              * 1.0.0   2023-01-29 [1] CRAN (R 4.4.0)
+ generics               0.1.3   2022-07-05 [1] CRAN (R 4.4.0)
+ GenomeInfoDb         * 1.42.1  2024-11-28 [1] Bioconductor 3.20 (R 4.4.2)
+ GenomeInfoDbData       1.2.13  2025-01-19 [1] Bioconductor
+ GenomicRanges        * 1.58.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ ggplot2              * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+ glue                   1.8.0   2024-09-30 [1] CRAN (R 4.4.1)
+ gtable                 0.3.6   2024-10-25 [1] CRAN (R 4.4.1)
+ HDF5Array            * 1.34.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ here                 * 1.0.1   2020-12-13 [1] CRAN (R 4.4.0)
+ hms                    1.1.3   2023-03-21 [1] CRAN (R 4.4.0)
+ httr                   1.4.7   2023-08-15 [1] CRAN (R 4.4.0)
+ IRanges              * 2.40.1  2024-12-05 [1] Bioconductor 3.20 (R 4.4.2)
+ jsonlite               1.8.9   2024-09-20 [1] CRAN (R 4.4.1)
+ lattice                0.22-6  2024-03-20 [1] CRAN (R 4.4.2)
+ lifecycle              1.0.4   2023-11-07 [1] CRAN (R 4.4.0)
+ lubridate            * 1.9.4   2024-12-08 [1] CRAN (R 4.4.1)
+ magrittr               2.0.3   2022-03-30 [1] CRAN (R 4.4.0)
+ Matrix               * 1.7-1   2024-10-18 [1] CRAN (R 4.4.2)
+ MatrixGenerics       * 1.18.1  2025-01-09 [1] Bioconductor 3.20 (R 4.4.2)
+ matrixStats          * 1.5.0   2025-01-07 [1] CRAN (R 4.4.1)
+ munsell                0.5.1   2024-04-01 [1] CRAN (R 4.4.0)
+ pillar                 1.10.1  2025-01-07 [1] CRAN (R 4.4.1)
+ pkgconfig              2.0.3   2019-09-22 [1] CRAN (R 4.4.0)
+ purrr                * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
+ R6                     2.5.1   2021-08-19 [1] CRAN (R 4.4.0)
+ readr                * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
+ rhdf5                * 2.50.2  2025-01-09 [1] Bioconductor 3.20 (R 4.4.2)
+ rhdf5filters           1.18.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ Rhdf5lib               1.28.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ rlang                  1.1.5   2025-01-17 [1] CRAN (R 4.4.1)
+ rprojroot              2.0.4   2023-11-05 [1] CRAN (R 4.4.0)
+ S4Arrays             * 1.6.0   2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ S4Vectors            * 0.44.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ scales                 1.3.0   2023-11-28 [1] CRAN (R 4.4.0)
+ sessioninfo          * 1.2.2   2021-12-06 [1] CRAN (R 4.4.0)
+ SingleCellExperiment * 1.28.1  2024-11-23 [1] Bioconductor 3.20 (R 4.4.2)
+ SparseArray          * 1.6.0   2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ stringi                1.8.4   2024-05-06 [1] CRAN (R 4.4.0)
+ stringr              * 1.5.1   2023-11-14 [1] CRAN (R 4.4.0)
+ SummarizedExperiment * 1.36.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ tibble               * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+ tidyr                * 1.3.1   2024-01-24 [1] CRAN (R 4.4.0)
+ tidyselect             1.2.1   2024-03-11 [1] CRAN (R 4.4.0)
+ tidyverse            * 2.0.0   2023-02-22 [1] CRAN (R 4.4.0)
+ timechange             0.3.0   2024-01-18 [1] CRAN (R 4.4.0)
+ tzdb                   0.4.0   2023-05-12 [1] CRAN (R 4.4.0)
+ UCSC.utils             1.2.0   2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ utf8                   1.2.4   2023-10-22 [1] CRAN (R 4.4.0)
+ vctrs                  0.6.5   2023-12-01 [1] CRAN (R 4.4.0)
+ vroom                  1.6.5   2023-12-05 [1] CRAN (R 4.4.0)
+ withr                  3.0.2   2024-10-28 [1] CRAN (R 4.4.1)
+ XVector                0.46.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+ zlibbioc               1.52.0  2024-11-08 [1] Bioconductor 3.20 (R 4.4.1)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+
+------------------------------------------------------------------------------
+      475.60 real       423.07 user        52.12 sys
+          9175384064  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             5089169  page reclaims
+                1285  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                4611  voluntary context switches
+               74364  involuntary context switches
+       2753190669794  instructions retired
+       1270830983284  cycles elapsed
+          5328772224  peak memory footprint
