@@ -1,0 +1,153 @@
+set,go,cluster,parent,score,size,term,parentTerm,termUniqueness,termUniquenessWithinCluster,termDispensability
+all,GO:1902600,2,GO:1902600,7.44156962485606,195,proton transmembrane transport,proton transmembrane transport,0.9251447368421053,0.33471428571428574,0
+all,GO:0015980,1,GO:0015980,7.44156962485606,356,energy derivation by oxidation of organic compounds,energy derivation by oxidation of organic compounds,0.7479868421052632,0.19100000000000006,0
+all,GO:0022900,1,GO:0015980,7.44156962485606,135,electron transport chain,energy derivation by oxidation of organic compounds,0.7570394736842105,0.17761538461538462,0.841
+all,GO:0045333,1,GO:0015980,7.44156962485606,249,cellular respiration,energy derivation by oxidation of organic compounds,0.7476578947368422,0.17538461538461536,0.969
+all,GO:0009060,1,GO:0015980,7.44156962485606,200,aerobic respiration,energy derivation by oxidation of organic compounds,0.7483421052631578,0.17084615384615387,0.951
+all,GO:0006119,1,GO:0015980,7.44156962485606,149,oxidative phosphorylation,energy derivation by oxidation of organic compounds,0.7506973684210526,0.16692307692307695,0.917
+all,GO:0022904,1,GO:0015980,7.44156962485606,125,respiratory electron transport chain,energy derivation by oxidation of organic compounds,0.7515526315789474,0.1491538461538462,0.892
+all,GO:0019646,1,GO:0015980,7.44156962485606,93,aerobic electron transport chain,energy derivation by oxidation of organic compounds,0.7526842105263158,0.14792307692307693,0.869
+all,GO:0042775,1,GO:0015980,7.44156962485606,101,mitochondrial ATP synthesis coupled electron transport,energy derivation by oxidation of organic compounds,0.7510526315789474,0.14292307692307693,0.876
+all,GO:0042773,1,GO:0015980,7.44156962485606,101,ATP synthesis coupled electron transport,energy derivation by oxidation of organic compounds,0.7508157894736842,0.14223076923076927,0.878
+all,GO:0006091,1,GO:0015980,7.3793328949695836,490,generation of precursor metabolites and energy,energy derivation by oxidation of organic compounds,0.749171052631579,0.21369230769230774,0.963
+all,GO:0009145,3,GO:0009145,7.222978781460979,112,purine nucleoside triphosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.6495657894736842,0.14477777777777778,0
+all,GO:0009206,3,GO:0009145,7.222978781460979,111,purine ribonucleoside triphosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.6493157894736842,0.1433888888888889,0.999
+all,GO:0009201,3,GO:0009145,7.222978781460979,116,ribonucleoside triphosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.6468552631578948,0.14149999999999996,0.978
+all,GO:0006754,3,GO:0009145,7.202464937151999,100,ATP biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.603578947368421,0.1353888888888889,0.993
+all,GO:0015986,3,GO:0009145,7.033418200067008,77,proton motive force-driven ATP synthesis,purine nucleoside triphosphate biosynthetic process,0.6104868421052632,0.14883333333333337,0.975
+all,GO:0042776,3,GO:0009145,6.411262555219231,68,proton motive force-driven mitochondrial ATP synthesis,purine nucleoside triphosphate biosynthetic process,0.5096578947368422,0.1714444444444444,0.949
+all,GO:0009142,3,GO:0009145,6.356687911495188,124,nucleoside triphosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.6462368421052631,0.14188888888888884,0.982
+all,GO:0097250,4,GO:0097250,6.290022638357485,114,mitochondrial respirasome assembly,mitochondrial respirasome assembly,0.907578947368421,0.511,0
+all,GO:0071280,5,GO:0071280,6.217996639182253,25,cellular response to copper ion,cellular response to copper ion,0.9412236842105264,0.38180000000000003,0
+all,GO:0006123,1,GO:0015980,6.149899222610845,24,"mitochondrial electron transport, cytochrome c to oxygen",energy derivation by oxidation of organic compounds,0.7749342105263158,0.2188461538461538,0.779
+all,GO:0033108,4,GO:0097250,5.764659020686356,103,mitochondrial respiratory chain complex assembly,mitochondrial respirasome assembly,0.90775,0.513,0.761
+all,GO:0007005,4,GO:0097250,5.507474312375614,452,mitochondrion organization,mitochondrial respirasome assembly,0.9168552631578948,0.47375,0.865
+all,GO:0046390,6,GO:0046390,5.3295098507514025,178,ribose phosphate biosynthetic process,ribose phosphate biosynthetic process,0.6556578947368421,0.2336666666666667,0
+all,GO:0006164,7,GO:0006164,5.317253740446008,197,purine nucleotide biosynthetic process,purine nucleotide biosynthetic process,0.6266447368421053,0.29025,0
+all,GO:0009165,3,GO:0009145,5.2086901666360514,233,nucleotide biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.6410789473684211,0.1821111111111111,0.858
+all,GO:0009199,3,GO:0009145,5.198689072262283,258,ribonucleoside triphosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.6506973684210526,0.14449999999999996,0.912
+all,GO:0009260,6,GO:0046390,5.119556235251673,171,ribonucleotide biosynthetic process,ribose phosphate biosynthetic process,0.6234210526315789,0.23433333333333328,0.995
+all,GO:0009141,3,GO:0009145,5.045387220259358,274,nucleoside triphosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.649578947368421,0.14411111111111108,0.918
+all,GO:0009205,3,GO:0009145,4.950395773824797,252,purine ribonucleoside triphosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.6517368421052632,0.14394444444444443,0.928
+all,GO:0009152,7,GO:0006164,4.768570823259765,156,purine ribonucleotide biosynthetic process,purine nucleotide biosynthetic process,0.6080000000000001,0.2985,0.981
+all,GO:1901293,3,GO:0009145,4.768570823259765,321,nucleoside phosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.6392105263157895,0.1785,0.882
+all,GO:0046034,3,GO:0009145,4.768570823259765,228,ATP metabolic process,purine nucleoside triphosphate biosynthetic process,0.6025263157894736,0.1353333333333333,0.923
+all,GO:0072522,7,GO:0006164,4.7100742511875024,263,purine-containing compound biosynthetic process,purine nucleotide biosynthetic process,0.7950394736842106,0.2905,0.969
+all,GO:0046688,5,GO:0071280,4.650472754680784,37,response to copper ion,cellular response to copper ion,0.95475,0.38060000000000005,0.958
+all,GO:0009144,3,GO:0009145,4.650472754680784,259,purine nucleoside triphosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.651578947368421,0.14477777777777778,0.93
+all,GO:0006753,3,GO:0009145,4.497866626869688,656,nucleoside phosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.6435263157894737,0.18422222222222218,0.809
+all,GO:0072521,7,GO:0006164,4.106348873074745,577,purine-containing compound metabolic process,purine nucleotide biosynthetic process,0.8119868421052632,0.33024999999999993,0.889
+all,GO:0009117,3,GO:0009145,4.001552246343896,500,nucleotide metabolic process,purine nucleoside triphosphate biosynthetic process,0.6449473684210527,0.1868333333333333,0.788
+all,GO:0009259,6,GO:0046390,3.9340044997934602,368,ribonucleotide metabolic process,ribose phosphate biosynthetic process,0.6273026315789474,0.21550000000000002,0.937
+all,GO:0006120,1,GO:0015980,3.9074657584098396,51,"mitochondrial electron transport, NADH to ubiquinone",energy derivation by oxidation of organic compounds,0.7623552631578947,0.17730769230769228,0.828
+all,GO:0019693,6,GO:0046390,3.8299000106008303,376,ribose phosphate metabolic process,ribose phosphate biosynthetic process,0.6615394736842105,0.21566666666666667,0.938
+all,GO:0055086,3,GO:0009145,3.739341179132629,682,nucleobase-containing small molecule metabolic process,purine nucleoside triphosphate biosynthetic process,0.6907763157894736,0.1955,0.797
+all,GO:0009150,6,GO:0046390,3.656250139633983,348,purine ribonucleotide metabolic process,ribose phosphate biosynthetic process,0.6095,0.22283333333333333,0.927
+all,GO:0006163,3,GO:0009145,3.587913761702108,440,purine nucleotide metabolic process,purine nucleoside triphosphate biosynthetic process,0.6284342105263158,0.1938333333333333,0.773
+all,GO:1901137,8,GO:1901137,3.4523236738559864,613,carbohydrate derivative biosynthetic process,carbohydrate derivative biosynthetic process,0.7795526315789474,0.5365,0
+all,GO:0010257,9,GO:0010257,3.45062791719123,62,NADH dehydrogenase complex assembly,NADH dehydrogenase complex assembly,0.9236315789473684,0.481,0
+all,GO:0032981,9,GO:0010257,3.45062791719123,62,mitochondrial respiratory chain complex I assembly,NADH dehydrogenase complex assembly,0.9025263157894737,0.41200000000000003,0.999
+all,GO:0071294,5,GO:0071280,3.234067235929019,24,cellular response to zinc ion,cellular response to copper ion,0.9406052631578947,0.37860000000000005,0.75
+all,GO:0006882,10,GO:0006882,3.1553265529410455,37,intracellular zinc ion homeostasis,intracellular zinc ion homeostasis,1,1,0
+all,GO:0098662,2,GO:1902600,3.0189490570694737,879,inorganic cation transmembrane transport,proton transmembrane transport,0.9246973684210527,0.35842857142857143,0.801
+all,GO:0098660,2,GO:1902600,2.905352192935897,972,inorganic ion transmembrane transport,proton transmembrane transport,0.92425,0.3551428571428571,0.787
+all,GO:0007169,11,GO:0007169,2.8897261664442473,662,cell surface receptor protein tyrosine kinase signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9454342105263158,0.599,0
+all,GO:1901135,8,GO:1901137,2.8491373129061577,1001,carbohydrate derivative metabolic process,carbohydrate derivative biosynthetic process,0.7985657894736842,0.5365,0.927
+all,GO:0006812,2,GO:1902600,2.8491373129061577,1088,monoatomic cation transport,proton transmembrane transport,0.9391842105263158,0.33971428571428575,0.761
+all,GO:0034220,2,GO:1902600,2.8491373129061577,1067,monoatomic ion transmembrane transport,proton transmembrane transport,0.913921052631579,0.24471428571428577,0.776
+all,GO:0006811,2,GO:1902600,2.7781498951139443,1295,monoatomic ion transport,proton transmembrane transport,0.9392763157894737,0.34071428571428575,0.733
+all,GO:0098655,2,GO:1902600,2.6496075174249016,899,monoatomic cation transmembrane transport,proton transmembrane transport,0.91425,0.2451428571428571,0.799
+all,GO:0048167,11,GO:0007169,2.4464109081468006,220,regulation of synaptic plasticity,cell surface receptor protein tyrosine kinase signaling pathway,0.9605,0.6065,0.324
+all,GO:0032543,12,GO:0032543,2.400208739821337,131,mitochondrial translation,mitochondrial translation,0.8449605263157894,0.5145,0
+all,GO:0007167,11,GO:0007169,2.2516655804809473,1055,enzyme-linked receptor protein signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.9431052631578947,0.589,0.924
+all,GO:0008535,9,GO:0010257,2.0902411034350368,29,respiratory chain complex IV assembly,NADH dehydrogenase complex assembly,0.9198026315789474,0.3962,0.529
+all,GO:0019637,6,GO:0046390,1.874442891295269,1066,organophosphate metabolic process,ribose phosphate biosynthetic process,0.6697894736842105,0.30800000000000005,0.801
+all,GO:0140053,12,GO:0032543,1.8244165237254732,169,mitochondrial gene expression,mitochondrial translation,0.8468684210526316,0.5145,0.971
+all,GO:0010043,5,GO:0071280,1.794483719230135,52,response to zinc ion,cellular response to copper ion,0.9545526315789473,0.37860000000000005,0.694
+all,GO:0033617,9,GO:0010257,1.698583956980679,25,mitochondrial cytochrome c oxidase assembly,NADH dehydrogenase complex assembly,0.9003552631578947,0.3316,0.523
+all,GO:0032945,13,GO:0032945,1.6628642479074995,92,negative regulation of mononuclear cell proliferation,negative regulation of mononuclear cell proliferation,0.96975,1,0
+all,GO:0050808,4,GO:0097250,1.5397076924824171,568,synapse organization,mitochondrial respirasome assembly,0.9433157894736842,0.74075,0.33
+all,GO:0017004,9,GO:0010257,1.5397076924824171,41,cytochrome complex assembly,NADH dehydrogenase complex assembly,0.9185263157894736,0.39559999999999995,0.544
+all,GO:0006122,1,GO:0015980,1.5397076924824171,14,"mitochondrial electron transport, ubiquinol to cytochrome c",energy derivation by oxidation of organic compounds,0.7813026315789473,0.24,0.754
+all,GO:0050804,11,GO:0007169,1.4865955399029218,518,modulation of chemical synaptic transmission,cell surface receptor protein tyrosine kinase signaling pathway,0.9579210526315789,0.5895,0.356
+all,GO:0035278,14,GO:0035278,1.4496307327292137,99,miRNA-mediated gene silencing by inhibition of translation,miRNA-mediated gene silencing by inhibition of translation,0.8432236842105263,0.6356666666666666,0
+all,GO:0010586,15,GO:0010586,1.432259301059261,110,miRNA metabolic process,miRNA metabolic process,0.8588947368421053,1,0
+all,GO:0045814,14,GO:0035278,1.4235809385503946,192,"negative regulation of gene expression, epigenetic",miRNA-mediated gene silencing by inhibition of translation,0.7994078947368422,0.49,0.552
+all,GO:0046686,5,GO:0071280,1.4235809385503946,51,response to cadmium ion,cellular response to copper ion,0.9581578947368421,0.4328000000000001,0.689
+all,GO:0031507,14,GO:0035278,1.3789747953657636,161,heterochromatin formation,miRNA-mediated gene silencing by inhibition of translation,0.8031973684210526,0.4936666666666667,0.541
+up,GO:0071280,1,GO:0071280,6.217996639182253,25,cellular response to copper ion,cellular response to copper ion,0.7705625,0.38180000000000003,0
+up,GO:0046688,1,GO:0071280,4.650472754680784,37,response to copper ion,cellular response to copper ion,0.7850625,0.38060000000000005,0.958
+up,GO:0071294,1,GO:0071280,3.234067235929019,24,cellular response to zinc ion,cellular response to copper ion,0.768875,0.37860000000000005,0.75
+up,GO:0006882,2,GO:0006882,3.1553265529410455,37,intracellular zinc ion homeostasis,intracellular zinc ion homeostasis,1,1,0
+up,GO:0007169,3,GO:0007169,2.8897261664442473,662,cell surface receptor protein tyrosine kinase signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.8078125,0.599,0
+up,GO:0048167,3,GO:0007169,2.4464109081468006,220,regulation of synaptic plasticity,cell surface receptor protein tyrosine kinase signaling pathway,0.871875,0.6065,0.324
+up,GO:0007167,3,GO:0007169,2.2516655804809473,1055,enzyme-linked receptor protein signaling pathway,cell surface receptor protein tyrosine kinase signaling pathway,0.8007500000000001,0.589,0.924
+up,GO:0010043,1,GO:0071280,1.794483719230135,52,response to zinc ion,cellular response to copper ion,0.7841250000000001,0.37860000000000005,0.694
+up,GO:0032945,4,GO:0032945,1.6628642479074995,92,negative regulation of mononuclear cell proliferation,negative regulation of mononuclear cell proliferation,0.9119375,1,0
+up,GO:0050808,5,GO:0050808,1.5397076924824171,568,synapse organization,synapse organization,0.9476249999999999,1,0
+up,GO:0050804,3,GO:0007169,1.4865955399029218,518,modulation of chemical synaptic transmission,cell surface receptor protein tyrosine kinase signaling pathway,0.8651249999999999,0.5895,0.356
+up,GO:0035278,6,GO:0035278,1.4496307327292137,99,miRNA-mediated gene silencing by inhibition of translation,miRNA-mediated gene silencing by inhibition of translation,0.8715625,0.6356666666666666,0
+up,GO:0010586,7,GO:0010586,1.432259301059261,110,miRNA metabolic process,miRNA metabolic process,0.965625,1,0
+up,GO:0045814,6,GO:0035278,1.4235809385503946,192,"negative regulation of gene expression, epigenetic",miRNA-mediated gene silencing by inhibition of translation,0.8191875,0.49,0.552
+up,GO:0046686,1,GO:0071280,1.4235809385503946,51,response to cadmium ion,cellular response to copper ion,0.80125,0.4328000000000001,0.689
+up,GO:0031507,6,GO:0035278,1.3789747953657636,161,heterochromatin formation,miRNA-mediated gene silencing by inhibition of translation,0.821625,0.4936666666666667,0.541
+down,GO:1902600,2,GO:1902600,7.44156962485606,195,proton transmembrane transport,proton transmembrane transport,0.90841666666666665,0.33471428571428574,0
+down,GO:0015980,1,GO:0015980,7.44156962485606,356,energy derivation by oxidation of organic compounds,energy derivation by oxidation of organic compounds,0.6962666666666666,0.19100000000000006,0
+down,GO:0022900,1,GO:0015980,7.44156962485606,135,electron transport chain,energy derivation by oxidation of organic compounds,0.70635,0.17761538461538462,0.841
+down,GO:0045333,1,GO:0015980,7.44156962485606,249,cellular respiration,energy derivation by oxidation of organic compounds,0.69545,0.17538461538461536,0.969
+down,GO:0009060,1,GO:0015980,7.44156962485606,200,aerobic respiration,energy derivation by oxidation of organic compounds,0.6960833333333334,0.17084615384615387,0.951
+down,GO:0006119,1,GO:0015980,7.44156962485606,149,oxidative phosphorylation,energy derivation by oxidation of organic compounds,0.6985833333333333,0.16692307692307695,0.917
+down,GO:0022904,1,GO:0015980,7.44156962485606,125,respiratory electron transport chain,energy derivation by oxidation of organic compounds,0.6993,0.1491538461538462,0.892
+down,GO:0019646,1,GO:0015980,7.44156962485606,93,aerobic electron transport chain,energy derivation by oxidation of organic compounds,0.7004166666666667,0.14792307692307693,0.869
+down,GO:0042775,1,GO:0015980,7.44156962485606,101,mitochondrial ATP synthesis coupled electron transport,energy derivation by oxidation of organic compounds,0.6984333333333334,0.14292307692307693,0.876
+down,GO:0042773,1,GO:0015980,7.44156962485606,101,ATP synthesis coupled electron transport,energy derivation by oxidation of organic compounds,0.6981666666666666,0.14223076923076927,0.878
+down,GO:0006091,1,GO:0015980,7.3793328949695836,490,generation of precursor metabolites and energy,energy derivation by oxidation of organic compounds,0.6981833333333334,0.21369230769230774,0.963
+down,GO:0009145,3,GO:0009145,7.222978781460979,112,purine nucleoside triphosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.5748,0.14477777777777778,0
+down,GO:0009206,3,GO:0009145,7.222978781460979,111,purine ribonucleoside triphosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.5744833333333333,0.1433888888888889,0.999
+down,GO:0009201,3,GO:0009145,7.222978781460979,116,ribonucleoside triphosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.5715833333333333,0.14149999999999996,0.978
+down,GO:0006754,3,GO:0009145,7.202464937151999,100,ATP biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.5164333333333333,0.1353888888888889,0.993
+down,GO:0015986,3,GO:0009145,7.033418200067008,77,proton motive force-driven ATP synthesis,purine nucleoside triphosphate biosynthetic process,0.5248166666666667,0.14883333333333337,0.975
+down,GO:0042776,3,GO:0009145,6.411262555219231,68,proton motive force-driven mitochondrial ATP synthesis,purine nucleoside triphosphate biosynthetic process,0.39664999999999995,0.1714444444444444,0.949
+down,GO:0009142,3,GO:0009145,6.356687911495188,124,nucleoside triphosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.5708833333333333,0.14188888888888884,0.982
+down,GO:0097250,4,GO:0097250,6.290022638357485,114,mitochondrial respirasome assembly,mitochondrial respirasome assembly,0.90055,0.45799999999999996,0
+down,GO:0006123,1,GO:0015980,6.149899222610845,24,"mitochondrial electron transport, cytochrome c to oxygen",energy derivation by oxidation of organic compounds,0.72725,0.2188461538461538,0.779
+down,GO:0033108,4,GO:0097250,5.764659020686356,103,mitochondrial respiratory chain complex assembly,mitochondrial respirasome assembly,0.90065,0.45966666666666667,0.761
+down,GO:0007005,4,GO:0097250,5.507474312375614,452,mitochondrion organization,mitochondrial respirasome assembly,0.9148000000000001,0.42500000000000004,0.865
+down,GO:0046390,5,GO:0046390,5.3295098507514025,178,ribose phosphate biosynthetic process,ribose phosphate biosynthetic process,0.5809500000000001,0.2336666666666667,0
+down,GO:0006164,6,GO:0006164,5.317253740446008,197,purine nucleotide biosynthetic process,purine nucleotide biosynthetic process,0.5468999999999999,0.29025,0
+down,GO:0009165,3,GO:0009145,5.2086901666360514,233,nucleotide biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.5656666666666665,0.1821111111111111,0.858
+down,GO:0009199,3,GO:0009145,5.198689072262283,258,ribonucleoside triphosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.5751166666666667,0.14449999999999996,0.912
+down,GO:0009260,5,GO:0046390,5.119556235251673,171,ribonucleotide biosynthetic process,ribose phosphate biosynthetic process,0.5428166666666667,0.23433333333333328,0.995
+down,GO:0009141,3,GO:0009145,5.045387220259358,274,nucleoside triphosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.5738166666666666,0.14411111111111108,0.918
+down,GO:0009205,3,GO:0009145,4.950395773824797,252,purine ribonucleoside triphosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.5762833333333333,0.14394444444444443,0.928
+down,GO:0009152,6,GO:0006164,4.768570823259765,156,purine ribonucleotide biosynthetic process,purine nucleotide biosynthetic process,0.5229666666666666,0.2985,0.981
+down,GO:1901293,3,GO:0009145,4.768570823259765,321,nucleoside phosphate biosynthetic process,purine nucleoside triphosphate biosynthetic process,0.56385,0.1785,0.882
+down,GO:0046034,3,GO:0009145,4.768570823259765,228,ATP metabolic process,purine nucleoside triphosphate biosynthetic process,0.51385,0.1353333333333333,0.923
+down,GO:0072522,6,GO:0006164,4.7100742511875024,263,purine-containing compound biosynthetic process,purine nucleotide biosynthetic process,0.7554166666666666,0.2905,0.969
+down,GO:0009144,3,GO:0009145,4.650472754680784,259,purine nucleoside triphosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.5761666666666667,0.14477777777777778,0.93
+down,GO:0006753,3,GO:0009145,4.497866626869688,656,nucleoside phosphate metabolic process,purine nucleoside triphosphate biosynthetic process,0.5678833333333333,0.18422222222222218,0.809
+down,GO:0072521,6,GO:0006164,4.106348873074745,577,purine-containing compound metabolic process,purine nucleotide biosynthetic process,0.7722,0.33024999999999993,0.889
+down,GO:0009117,3,GO:0009145,4.001552246343896,500,nucleotide metabolic process,purine nucleoside triphosphate biosynthetic process,0.5691666666666666,0.1868333333333333,0.788
+down,GO:0009259,5,GO:0046390,3.9340044997934602,368,ribonucleotide metabolic process,ribose phosphate biosynthetic process,0.5462166666666667,0.21550000000000002,0.937
+down,GO:0006120,1,GO:0015980,3.9074657584098396,51,"mitochondrial electron transport, NADH to ubiquinone",energy derivation by oxidation of organic compounds,0.7120333333333333,0.17730769230769228,0.828
+down,GO:0019693,5,GO:0046390,3.8299000106008303,376,ribose phosphate metabolic process,ribose phosphate biosynthetic process,0.5867,0.21566666666666667,0.938
+down,GO:0055086,3,GO:0009145,3.739341179132629,682,nucleobase-containing small molecule metabolic process,purine nucleoside triphosphate biosynthetic process,0.6229,0.1955,0.797
+down,GO:0009150,5,GO:0046390,3.656250139633983,348,purine ribonucleotide metabolic process,ribose phosphate biosynthetic process,0.5234833333333333,0.22283333333333333,0.927
+down,GO:0006163,3,GO:0009145,3.587913761702108,440,purine nucleotide metabolic process,purine nucleoside triphosphate biosynthetic process,0.5478833333333333,0.1938333333333333,0.773
+down,GO:1901137,7,GO:1901137,3.4523236738559864,613,carbohydrate derivative biosynthetic process,carbohydrate derivative biosynthetic process,0.73725,0.5365,0
+down,GO:0010257,8,GO:0010257,3.45062791719123,62,NADH dehydrogenase complex assembly,NADH dehydrogenase complex assembly,0.9199166666666667,0.481,0
+down,GO:0032981,8,GO:0010257,3.45062791719123,62,mitochondrial respiratory chain complex I assembly,NADH dehydrogenase complex assembly,0.8931833333333333,0.41200000000000003,0.999
+down,GO:0098662,2,GO:1902600,3.0189490570694737,879,inorganic cation transmembrane transport,proton transmembrane transport,0.9084666666666666,0.35842857142857143,0.801
+down,GO:0098660,2,GO:1902600,2.905352192935897,972,inorganic ion transmembrane transport,proton transmembrane transport,0.90795,0.3551428571428571,0.787
+down,GO:1901135,7,GO:1901137,2.8491373129061577,1001,carbohydrate derivative metabolic process,carbohydrate derivative biosynthetic process,0.75595,0.5365,0.927
+down,GO:0006812,2,GO:1902600,2.8491373129061577,1088,monoatomic cation transport,proton transmembrane transport,0.9229666666666667,0.33971428571428575,0.761
+down,GO:0034220,2,GO:1902600,2.8491373129061577,1067,monoatomic ion transmembrane transport,proton transmembrane transport,0.8949166666666667,0.24471428571428577,0.776
+down,GO:0006811,2,GO:1902600,2.7781498951139443,1295,monoatomic ion transport,proton transmembrane transport,0.9230833333333333,0.34071428571428575,0.733
+down,GO:0098655,2,GO:1902600,2.6496075174249016,899,monoatomic cation transmembrane transport,proton transmembrane transport,0.89525,0.2451428571428571,0.799
+down,GO:0032543,9,GO:0032543,2.400208739821337,131,mitochondrial translation,mitochondrial translation,0.8290833333333334,0.5145,0
+down,GO:0008535,8,GO:0010257,2.0902411034350368,29,respiratory chain complex IV assembly,NADH dehydrogenase complex assembly,0.9144,0.3962,0.529
+down,GO:0019637,5,GO:0046390,1.874442891295269,1066,organophosphate metabolic process,ribose phosphate biosynthetic process,0.5989833333333334,0.30800000000000005,0.801
+down,GO:0140053,9,GO:0032543,1.8244165237254732,169,mitochondrial gene expression,mitochondrial translation,0.8254666666666667,0.5145,0.971
+down,GO:0033617,8,GO:0010257,1.698583956980679,25,mitochondrial cytochrome c oxidase assembly,NADH dehydrogenase complex assembly,0.8895833333333333,0.3316,0.523
+down,GO:0017004,8,GO:0010257,1.5397076924824171,41,cytochrome complex assembly,NADH dehydrogenase complex assembly,0.9132666666666667,0.39559999999999995,0.544
+down,GO:0006122,1,GO:0015980,1.5397076924824171,14,"mitochondrial electron transport, ubiquinol to cytochrome c",energy derivation by oxidation of organic compounds,0.7349666666666667,0.24,0.754
