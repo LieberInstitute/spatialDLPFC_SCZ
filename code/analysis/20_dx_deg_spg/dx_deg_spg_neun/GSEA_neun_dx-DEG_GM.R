@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 ## NeuN+ SCZ-DEG results (GM only) ----
 dx_res <- read_csv(
   here(
-    "code/analysis/dx_deg_spg_neun",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neun",
     "neun-dx_DEG-GM.csv"
   )
 )
@@ -61,7 +61,7 @@ ret_ego@result <- ret_ego@result |>
 write_csv(
   ret_ego@result,
   here(
-    "code/analysis/dx_deg_spg_neun",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neun",
     "gsea_neun-dx_DEG-GM.csv"
   )
 )
@@ -69,7 +69,7 @@ write_csv(
 saveRDS(
   ret_ego,
   here(
-    "code/analysis/dx_deg_spg_neun",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neun",
     "gsea_neun-dx_DEG-GM.rds"
   )
 )

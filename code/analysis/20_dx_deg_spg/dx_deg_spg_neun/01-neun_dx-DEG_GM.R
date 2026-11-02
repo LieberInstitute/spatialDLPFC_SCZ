@@ -1,6 +1,7 @@
 # Load library  ----
 suppressForeignCheck({
   library(here)
+  library(tidyverse)
   library(spatialLIBD)
   library(limma)
   library(readxl)
@@ -10,27 +11,27 @@ suppressForeignCheck({
 
 # Load data ----
 ## Load Pseudobulk data ----
-raw_pb_neuropil <- readRDS(
+raw_pb_neun <- readRDS(
   here(
     "processed-data/rds/PB_dx_spg",
-    "pseudo_neuropil_pos_donor_spd.rds"
+    "pseudo_neun_pos_donor_spd.rds"
   )
 )
 
 ## Subset to WM only ----
-pb_neuropil <- raw_pb_neuropil[
+pb_neun <- raw_pb_neun[
   ,
-  raw_pb_neuropil$registration_variable %in%
+  raw_pb_neun$registration_variable %in%
     sprintf("spd%02d", c(2, 3, 5, 6, 7))
 ]
 
-ncol(pb_neuropil)
+ncol(pb_neun)
 # [1] 315
 
 # DE analysis ----
 dx_mod <-
   registration_model(
-    pb_neuropil,
+    pb_neun,
     covars = c("age", "sex"),
     var_registration = "dx"
   )
@@ -38,7 +39,7 @@ dx_mod <-
 # 2025-04-14 11:45:46.326476 create model matrix
 
 dx_block_cor <- registration_block_cor(
-  pb_neuropil,
+  pb_neun,
   registration_model = dx_mod,
   var_sample_id = "sample_id"
 )
@@ -46,7 +47,7 @@ dx_block_cor <- registration_block_cor(
 # 2025-04-14 11:45:51.214688 run duplicateCorrelation()
 
 dx_res <- registration_stats_enrichment(
-  pb_neuropil,
+  pb_neun,
   block_cor = dx_block_cor,
   covars = c("age", "sex", "PRECAST_07"),
   var_registration = "dx",
@@ -56,6 +57,23 @@ dx_res <- registration_stats_enrichment(
 
 # 2025-04-14 11:47:44.999823 computing enrichment statistics
 # 2025-04-14 11:47:46.405967 extract and reformat enrichment results
+
+## Save results ----
+write_csv(
+  dx_res |> arrange(fdr_scz),
+  here(
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neun",
+    "neun-dx_DEG-GM.csv"
+  )
+)
+
+write_csv(
+  dx_res |> arrange(fdr_scz) |> filter(fdr_scz < 0.05),
+  here(
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neun",
+    "neun-dx_DEG-GM_fdr_05.csv"
+  )
+)
 
 # Exploratory analysis of test restuls ----
 ## Histogram of p-values ----
@@ -70,10 +88,10 @@ hist(
 ## Number of stat sig genes ----
 
 sum(dx_res$fdr_scz < 0.05)
-# 145
+# 16
 
 sum(dx_res$fdr_scz < 0.1)
-# 352
+# 90
 
 ## Volcano plot ----
 ggplot() +
@@ -92,23 +110,7 @@ dx_res |> arrange(desc(t_stat_scz)) |> head(10)
 dx_res |> arrange(desc(logFC_scz)) |> head(10)
 
 
-## Save results ----
-write_csv(
-  dx_res |> arrange(fdr_scz),
-  here(
-    # TODO: create a results specific folder latter
-    "code/analysis/dx_deg_spg_neuropil",
-    "neuropil-dx_DEG-GM.csv"
-  )
-)
 
-write_csv(
-  dx_res |> arrange(fdr_scz) |> filter(fdr_scz < 0.05),
-  here(
-    "code/analysis/dx_deg_spg_neuropil",
-    "neuropil-dx_DEG-GM_fdr_05.csv" 
-  )
-)
 
 
 ## Love lap with 172 dxDEGs ----
@@ -125,7 +127,7 @@ library(VennDiagram)
 venn.plot <- venn.diagram(
   x = list(
     `all` = dx_deg$ensembl,
-    `neuropil+` = dx_res |> filter(fdr_scz < 0.05) |> pull(ensembl)
+    `neun+` = dx_res |> filter(fdr_scz < 0.05) |> pull(ensembl)
   ),
   filename = NULL,
   diable_logging = TRUE,

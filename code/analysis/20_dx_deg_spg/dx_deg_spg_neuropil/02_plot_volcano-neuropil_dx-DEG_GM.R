@@ -10,7 +10,7 @@ suppressForeignCheck({
 ## Load DEG results ----
 dx_res <- read_csv(
   here(
-    "code/analysis/dx_deg_spg_neuropil",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neuropil",
     "neuropil-dx_DEG-GM.csv"
   )
 ) |>
@@ -92,7 +92,7 @@ ggplot(
 ## Save Plot ----
 ggsave(
   here(
-    "code/analysis/dx_deg_spg_neuropil",
+    "plots/20_dx_deg_spg/dx_deg_spg_neuropil",
     "volcano_plot_neuropil-dx_DEG-GM.pdf"
   )
 )

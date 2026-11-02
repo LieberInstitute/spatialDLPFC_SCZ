@@ -12,7 +12,7 @@ suppressForeignCheck({
 # Load data ----
 dx_res <- read_csv(
   here(
-    "code/analysis/dx_deg_spg_neuropil",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neuropil",
     "neuropil-dx_DEG-GM.csv"
   )
 ) |>
@@ -95,7 +95,7 @@ ggplot(
 
 ggsave(
   filename = here(
-  "code/analysis/dx_deg_spg_neuropil",
+  "plots/20_dx_deg_spg/dx_deg_spg_neuropil",
   "neuropil_dx_DEG_GM.pdf"
   ),
   width = 8,

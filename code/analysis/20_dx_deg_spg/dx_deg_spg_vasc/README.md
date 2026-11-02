@@ -8,7 +8,9 @@ seven spatial domains** (no GM/WM subsetting), followed by GO BP GSEA.
 
 ## Scripts
 
-Run from the repository root, in this order.
+Run from the repository root, in this order. CSV and `.rds` results are in
+`processed-data/20_dx_deg_spg/dx_deg_spg_vasc/`, and PDFs are in
+`plots/20_dx_deg_spg/dx_deg_spg_vasc/`. See `../README.md` for the overall layout.
 
 | Order | Script | Purpose | Output |
 |---|---|---|---|

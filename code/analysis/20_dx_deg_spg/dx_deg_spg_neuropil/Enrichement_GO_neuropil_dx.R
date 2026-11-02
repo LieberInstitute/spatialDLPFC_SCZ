@@ -14,7 +14,7 @@ suppressPackageStartupMessages()({
 # Load data ----
 dx_res <- read_csv(
   here(
-    "code/analysis/dx_deg_spg_neuropil",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neuropil",
     "neuropil-dx_DEG-GM.csv"
   )
 )
@@ -58,7 +58,7 @@ up_ego@result |>
     here(
       # TODO:
       # "processed-data/rds/10_dx_deg_adjust_spd",
-      "code/analysis/dx_deg_spg_neuropil",
+      "processed-data/20_dx_deg_spg/dx_deg_spg_neuropil",
       "GO_neuropil_GW_up_gene.csv"
     )
   )
@@ -81,7 +81,7 @@ down_ego@result |>
     here(
       # TODO:
       # "processed-data/rds/10_dx_deg_adjust_spd",
-      "code/analysis/dx_deg_spg_neuropil",
+      "processed-data/20_dx_deg_spg/dx_deg_spg_neuropil",
       "GO_neuropil_GW_down_gene.csv"
     )
   )
@@ -133,7 +133,7 @@ write_csv(
   here(
       # TODO:
       # "processed-data/rds/10_dx_deg_adjust_spd",
-      "code/analysis/dx_deg_spg_neuropil",
+      "processed-data/20_dx_deg_spg/dx_deg_spg_neuropil",
       "GSEA_neuropil_GW_down_gene.csv"
   )
 )

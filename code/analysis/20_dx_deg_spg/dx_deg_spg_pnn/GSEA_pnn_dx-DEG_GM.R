@@ -8,11 +8,11 @@ suppressPackageStartupMessages({
 })
 
 # Load Data ----
-## Neuropil+ SCZ-DEG results (GM only) ----
+## PNN+ SCZ-DEG results (GM only) ----
 dx_res <- read_csv(
   here(
-    "code/analysis/dx_deg_spg_neuropil",
-    "neuropil-dx_DEG-GM.csv"
+    "processed-data/20_dx_deg_spg/dx_deg_spg_pnn",
+    "pnn-dx_DEG-GM.csv"
   )
 )
 
@@ -61,16 +61,16 @@ ret_ego@result <- ret_ego@result |>
 write_csv(
   ret_ego@result,
   here(
-    "code/analysis/dx_deg_spg_neuropil",
-    "gsea_neuropil-dx_DEG-GM.csv"
+    "processed-data/20_dx_deg_spg/dx_deg_spg_pnn",
+    "gsea_pnn-dx_DEG-GM.csv"
   )
 )
 
 saveRDS(
   ret_ego,
   here(
-    "code/analysis/dx_deg_spg_neuropil",
-    "gsea_neuropil-dx_DEG-GM.rds"
+    "processed-data/20_dx_deg_spg/dx_deg_spg_pnn",
+    "gsea_pnn-dx_DEG-GM.rds"
   )
 )
 

@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 ## Claudin-5+ SCZ-DEG results (all SpDs) ----
 dx_res <- read_csv(
   here(
-    "code/analysis/dx_deg_spg_vasc",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_vasc",
     "vasc-dx_DEG-allSpD.csv"
   )
 )
@@ -61,7 +61,7 @@ ret_ego@result <- ret_ego@result |>
 write_csv(
   ret_ego@result,
   here(
-    "code/analysis/dx_deg_spg_vasc",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_vasc",
     "gsea_vasc-dx_DEG-allSpD.csv"
   )
 )
@@ -69,7 +69,7 @@ write_csv(
 saveRDS(
   ret_ego,
   here(
-    "code/analysis/dx_deg_spg_vasc",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_vasc",
     "gsea_vasc-dx_DEG-allSpD.rds"
   )
 )

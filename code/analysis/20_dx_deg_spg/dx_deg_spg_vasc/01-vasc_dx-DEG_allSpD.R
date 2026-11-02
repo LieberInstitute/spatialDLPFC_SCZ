@@ -52,8 +52,7 @@ dx_res <- registration_stats_enrichment(
 write_csv(
   dx_res |> arrange(fdr_scz),
   here(
-    # TODO: create a results specific folder latter
-    "code/analysis/dx_deg_spg_vasc",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_vasc",
     "vasc-dx_DEG-allSpD.csv"
   )
 )
@@ -61,7 +60,7 @@ write_csv(
 write_csv(
   dx_res |> arrange(fdr_scz) |> filter(fdr_scz < 0.05),
   here(
-    "code/analysis/dx_deg_spg_vasc",
+    "processed-data/20_dx_deg_spg/dx_deg_spg_vasc",
     "vasc-dx_DEG-allSpD_fdr_05.csv"
   )
 )

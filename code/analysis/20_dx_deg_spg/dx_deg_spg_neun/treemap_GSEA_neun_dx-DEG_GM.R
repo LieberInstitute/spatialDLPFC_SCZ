@@ -7,11 +7,11 @@ suppressPackageStartupMessages({
 })
 
 # Load data ----
-# NOTE: created in code/analysis/dx_deg_spg_pnn/GSEA_pnn_dx-DEG_GM.R
+# NOTE: created in code/analysis/20_dx_deg_spg/dx_deg_spg_neun/GSEA_neun_dx-DEG_GM.R
 raw_gsea_dx <- read_csv(
   here(
-    "code/analysis/dx_deg_spg_pnn",
-    "gsea_pnn-dx_DEG-GM.csv"
+    "processed-data/20_dx_deg_spg/dx_deg_spg_neun",
+    "gsea_neun-dx_DEG-GM.csv"
   )
 )
 
@@ -52,7 +52,7 @@ reduce_and_plot <- function(gsea_df, file_name, title = "") {
   )
 
   ## Create treemap ----
-  pdf(file = here("code/analysis/dx_deg_spg_pnn", file_name))
+  pdf(file = here("plots/20_dx_deg_spg/dx_deg_spg_neun", file_name))
   treemapPlot(reducedTerms, title = title)
   dev.off()
 
@@ -62,23 +62,23 @@ reduce_and_plot <- function(gsea_df, file_name, title = "") {
 # All terms together ----
 reduced_all <- reduce_and_plot(
   raw_gsea_dx,
-  "treemap_GO_pnn-dx_DEG-GM.pdf",
-  title = "PNN+ SCZ-DEG GSEA (GO BP): all terms"
+  "treemap_GO_neun-dx_DEG-GM.pdf",
+  title = "NeuN+ SCZ-DEG GSEA (GO BP): all terms"
 )
 
 # By direction of enrichment ----
 ## Positively enriched (higher expression in SCZ) ----
 reduced_up <- reduce_and_plot(
   raw_gsea_dx |> filter(NES > 0),
-  "treemap_GO_pnn-dx_DEG-GM_up.pdf",
-  title = "PNN+ SCZ-DEG GSEA (GO BP): NES > 0"
+  "treemap_GO_neun-dx_DEG-GM_up.pdf",
+  title = "NeuN+ SCZ-DEG GSEA (GO BP): NES > 0"
 )
 
 ## Negatively enriched (lower expression in SCZ) ----
 reduced_down <- reduce_and_plot(
   raw_gsea_dx |> filter(NES < 0),
-  "treemap_GO_pnn-dx_DEG-GM_down.pdf",
-  title = "PNN+ SCZ-DEG GSEA (GO BP): NES < 0"
+  "treemap_GO_neun-dx_DEG-GM_down.pdf",
+  title = "NeuN+ SCZ-DEG GSEA (GO BP): NES < 0"
 )
 
 # Save reduced terms (parent clusters) ----
@@ -90,8 +90,8 @@ bind_rows(
 ) |>
   write_csv(
     here(
-      "code/analysis/dx_deg_spg_pnn",
-      "rrvgo_reduced_terms_pnn-dx_DEG-GM.csv"
+      "processed-data/20_dx_deg_spg/dx_deg_spg_neun",
+      "rrvgo_reduced_terms_neun-dx_DEG-GM.csv"
     )
   )
 
