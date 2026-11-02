@@ -1,0 +1,71 @@
+    # 19 - RESCUE gene expression decomposition
+
+This directory works with RESCUE at the gene expression level. Folder
+[18_rescue_cell_type_proportion](/code/analysis/18_rescue_cell_type_proportion)
+covers spot-level cell type proportions. Here, the observed expression in
+each spot is split into cell-type-specific parts plus an unattributed part,
+and the directory holds the preliminary analyses of that decomposition.
+
+For spot `j` on the CPM scale, RESCUE models
+
+    y_j ~ sum_k alpha_kj * x_k + r_j
+
+where `x_k` is the reference profile of cell type `k`, `alpha_kj` is the
+estimated weight of cell type `k` in spot `j`, and `r_j` is the
+unattributed expression.
+
+## Data Inputs
+
+* `processed-data/RESCUE/rescue_out/rescue_<sample>.rds`: one RESCUE
+  output per capture area (63 samples). Each file is a list with:
+  * `genes`: `gene_id` (Ensembl; the rownames of all matrices) and `gene_name`
+  * `spots`: `spot_id`, `barcode`, `array_row`, `array_col`, `domain`
+    (`fnl_spd`), `nUMI`, `unattributed_ratio`
+  * `X`: genes x K reference profiles, CPM (each column sums to 1e6);
+    K = 29 (`cellType_hc`)
+  * `alpha.hat`: K x spots, estimated cell type weights
+  * `R.count`: genes x spots, unattributed expression, count scale
+  * `Y.count`: genes x spots, observed counts for the same genes and spots
+  * `contrib`: (K + 1) x spots, read contributions (the same proportions as
+    in `spot_level_results.csv`, used in folder 18)
+
+## Workflow
+
+| Script | Description |
+| --- | --- |
+| `rescue_decomposition_all.R` | Full spot-level decomposition. For each sample, writes one genes x spots matrix per cell type (`alpha_kj * x_k`) and one for the unattributed expression (`r_j`). Together these form a sample x gene x spot x (cell type + unattributed) object. The `scale` option sets the output scale: `"count"` (the same scale as `Y.count`) or `"cpm"` (the same scale as RESCUE's `L.hat` / `R.hat`). |
+| `astrocyte/01-astrocyte_specific_GE.R` | Astrocyte-specific expression for all 63 samples: `X[, "Astro"] * alpha.hat["Astro", ] * nUMI / 1e6` (count scale) as the sparse `counts` assay of the finalized `spe`, keeping all `colData` (incl. the RESCUE proportions from folder 18). Rows are the union of RESCUE genes across samples; a gene RESCUE did not use in a sample is 0 there. Adds `RESCUE_alpha_Astro` and `astro_sum_umi` to `colData` and `RESCUE_n_samples` to `rowData`. Output: `processed-data/rds/19_rescue_gene_expression/astrocyte/fnl_spe_kept_spots_only_astrocyte_specific_GE.rds`. |
+| _TBD_ | Preliminary analyses of the decomposed expression. |
+
+### Notes on `rescue_decomposition_all.R`
+
+* **Paths:** `in_dir` (default `./rescue_out`) must point to the folder of
+  `rescue_<sample>.rds` files. `out_dir` defaults to `decomposition`.
+* **Subset by default:** the loop currently runs on `files[1]` only. Edit
+  it to run more samples.
+* **Storage:** each matrix is dense, genes x spots x 8 bytes (for example,
+  18,000 x 4,400 is about 600 MB). One sample takes about 18 GB, depending
+  on its number of spots, and all 63 samples take about 1.1 TB. `out_dir`
+  needs that much free space, and reading one sample back as a full array
+  needs about 18 GB of memory.
+
+## Outputs
+
+`<out_dir>/<sample>/`:
+
+* `<cell type>.rds`: genes x spots, the expression attributed to that cell
+  type. Non-alphanumeric characters in the name are replaced with `_`.
+* `Unattributed.rds`: genes x spots, the unattributed expression.
+* `genes.csv`, `spots.csv`: gene and spot metadata, copied from the RESCUE
+  output.
+* `cell_types.csv`: maps each cell type name to its file name.
+
+Reading one sample back as a genes x spots x (K + 1) array:
+
+```r
+s   <- "V12D07-334_A1"
+ct  <- read.csv(file.path(out_dir, s, "cell_types.csv"))
+arr <- simplify2array(lapply(file.path(out_dir, s, ct$file),
+                             function(f) as.matrix(readRDS(f))))
+dimnames(arr)[[3]] <- ct$cell_type
+```
