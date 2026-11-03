@@ -4,7 +4,7 @@
 #SBATCH --time=6:00:00
 #SBATCH -n 1
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=bguo6@jhu.edu
+#SBATCH --mail-user=boyi.guo@utah.edu
 #SBATCH --output=logs/%x.txt
 #SBATCH --error=logs/%x.txt    # file to collect standard output
 

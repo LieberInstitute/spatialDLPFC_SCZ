@@ -6,7 +6,7 @@
 #SBATCH -c 4
 #SBATCH --array=1-63%20
 #SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=bguo6@jhu.edu
+#SBATCH --mail-user=boyi.guo@utah.edu
 #SBATCH --output=logs/%x_%a.txt
 #SBATCH --error=logs/%x_%a.txt    # file to collect standard output
 
