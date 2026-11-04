@@ -21,6 +21,10 @@ SAMPLE_LIST_NTC="${H5AD_DIR}/sample_list_ntc.txt"
 SAMPLE_LIST_SCZ="${H5AD_DIR}/sample_list_scz.txt"
 TRAITS_FILE="${CODE_DIR}/traits.tsv"              # trait_name <TAB> sumstats file
 
+# Existing full-dataset h5ad of fnl_spe_kept_spots_only.rds (written by
+# code/samui/spe_to_anndata.R; X = raw counts). Split per sample in step 01.
+SOURCE_H5AD="${REPO_ROOT}/processed-data/samui/spg_kept_only.h5ad"
+
 # Raw PGC3 SCZ GWAS (hg19), same file used in 15_eqtl_coloc
 PGC3_RAW="${REPO_ROOT}/processed-data/ref/PGC3_SCZ_wave3.european.autosome.public.v3.vcf.tsv.gz"
 
