@@ -29,7 +29,12 @@ import numpy as np
 import pandas as pd
 import scipy.sparse as sp
 
+if len(sys.argv) != 3 or not all(sys.argv[1:]):
+    sys.exit(f"Usage: python {sys.argv[0]} <source_h5ad> <h5ad_dir>; got {sys.argv[1:]}")
+
 source_h5ad, h5ad_dir = Path(sys.argv[1]), Path(sys.argv[2])
+if not source_h5ad.is_file():
+    sys.exit(f"Source h5ad is not a file: '{source_h5ad}'")
 h5ad_dir.mkdir(parents=True, exist_ok=True)
 
 keep_col = ["key", "sample_id", "brnum", "dx", "age", "sex", "spd_label"]
@@ -83,6 +88,18 @@ if getattr(X_all, "format", "csr") != "csr":
     print(f"X is stored as {X_all.format}; loading into memory as CSR")
     X_all = sp.csr_matrix(X_all[:, :])
 
+# zellkonverter stores obsm['spatial'] as a DataFrame (spatialCoords has column
+# names); convert to a plain (n_spots x 2) array so it can be row-indexed.
+spatial_all = adata_all.obsm["spatial"]
+if isinstance(spatial_all, pd.DataFrame):
+    print(f"obsm['spatial'] columns: {list(spatial_all.columns)}")
+    spatial_all = spatial_all.to_numpy()
+spatial_all = np.asarray(spatial_all, dtype=np.float64)
+
+# error prevention
+assert spatial_all.shape == (adata_all.n_obs, 2), spatial_all.shape
+assert np.isfinite(spatial_all).all()
+
 sample_of_spot = adata_all.obs["sample_id"].astype(str).to_numpy()
 n_spots_written = 0
 
@@ -106,7 +123,7 @@ for sample_id, out_file in zip(sample_ids, h5ad_files):
         obs=obs,
         var=pd.DataFrame(index=gene_symbols),
         layers={"count": counts.copy()},
-        obsm={"spatial": np.asarray(adata_all.obsm["spatial"][idx], dtype=np.float64)},
+        obsm={"spatial": spatial_all[idx]},
     )
     adata.write_h5ad(out_file, compression="gzip")
     n_spots_written += adata.n_obs

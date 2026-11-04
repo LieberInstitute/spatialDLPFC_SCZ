@@ -18,6 +18,15 @@ source gsMap_config.sh
 log_job_info
 activate_gsmap
 
+# error prevention: SOURCE_H5AD is defined in gsMap_config.sh
+if [ -z "${SOURCE_H5AD}" ] || [ ! -f "${SOURCE_H5AD}" ]; then
+  echo "Source h5ad not found: '${SOURCE_H5AD}'" >&2
+  echo "Check SOURCE_H5AD in gsMap_config.sh (is your copy up to date?)" >&2
+  exit 1
+fi
+echo "Source h5ad: ${SOURCE_H5AD}"
+echo "Output dir:  ${H5AD_DIR}"
+
 python 01-split_h5ad_by_sample.py "${SOURCE_H5AD}" "${H5AD_DIR}"
 
 log_job_end
