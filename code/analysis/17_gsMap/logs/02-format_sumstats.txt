@@ -1,0 +1,89 @@
+**** Job starts ****
+Tue Nov  3 10:23:21 PM EST 2026
+**** JHPCE info ****
+User: bguo
+Job id: 36853368
+Job name: 02-format_sumstats
+Hostname: jhpce3
+Task id: 
+gsMap version: 1.73.8
+Read 7,659,767 SNPs; median N_eff = 126,282
+Wrote /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/sumstats/SCZ_PGC3_clean.tsv.gz
+                                   ___  ___            
+                                   |  \/  |            
+                          __ _ ___ | .  . | __ _ _ __  
+                         / _` / __|| |\/| |/ _` | '_ \ 
+                        | (_| \__ \| |  | | (_| | |_) |
+                         \__, |___/\_|  |_/\__,_| .__/ 
+                          __/ |                 | |    
+                         |___/                  |_|
+                                Version: 1.73.8                                 
+================================================================================
+[2026-11-03 22:26:02,103] INFO | gsMap - Running format_sumstats...
+[2026-11-03 22:26:02,103] INFO | gsMap - Started at: 2026-11-03 22:26:02
+Using the following arguments for FormatSumstatsConfig:
+{   'OR': None,
+    'a1': 'A1',
+    'a2': 'A2',
+    'beta': 'BETA',
+    'chr': 'Chr',
+    'chunksize': 1000000.0,
+    'dbsnp': None,
+    'format': 'gsMap',
+    'frq': 'FRQ',
+    'info': 'INFO',
+    'info_min': 0.9,
+    'keep_chr_pos': False,
+    'maf_min': 0.01,
+    'n': 'N',
+    'out': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/sumstats/SCZ_PGC3',
+    'p': 'P',
+    'pos': 'Pos',
+    'se': 'SE',
+    'se_OR': None,
+    'snp': 'SNP',
+    'sumstats': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/sumstats/SCZ_PGC3_clean.tsv.gz',
+    'z': None}
+[2026-11-03 22:26:04,108] INFO | gsMap.format_sumstats - ------Formating gwas data for /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/sumstats/SCZ_PGC3_clean.tsv.gz...
+/users/bguo/.conda/envs/gsMap/lib/python3.11/site-packages/gsMap/format_sumstats.py:405: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  gwas = pd.read_csv(
+[2026-11-03 22:26:15,671] INFO | gsMap.format_sumstats - Read 7659767 SNPs from /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/sumstats/SCZ_PGC3_clean.tsv.gz.
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - 
+Iterpreting column names as follows:
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - SNP: Variant ID (e.g., rs number).
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - A1: Allele 1, interpreted as the effect allele for signed sumstat.
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - A2: Allele 2, interpreted as the non-effect allele for signed sumstat.
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - BETA: [linear/logistic] regression coefficient (0 → no effect; above 0 → A1 is trait/risk increasing).
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - SE: Standard error of the regression coefficient.
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - P: P-Value.
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - N: Sample size.
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - INFO: INFO score (imputation quality; higher → better imputation).
+[2026-11-03 22:26:15,674] INFO | gsMap.format_sumstats - FRQ: Allele frequency of A1.
+[2026-11-03 22:26:48,632] INFO | gsMap.format_sumstats - 
+Filtering SNPs as follows:
+[2026-11-03 22:26:50,444] INFO | gsMap.format_sumstats - Removed 0 SNPs with missing values.
+[2026-11-03 22:26:50,819] INFO | gsMap.format_sumstats - Removed 1243306 SNPs with INFO <= 0.9.
+[2026-11-03 22:26:51,230] INFO | gsMap.format_sumstats - Removed 0 SNPs with MAF <= 0.01.
+[2026-11-03 22:26:51,590] INFO | gsMap.format_sumstats - Removed 0 SNPs with out-of-bounds p-values.
+[2026-11-03 22:26:54,780] INFO | gsMap.format_sumstats - Removed 975540 variants that were not SNPs or were strand-ambiguous.
+[2026-11-03 22:26:58,767] INFO | gsMap.format_sumstats - Removed 0 SNPs with duplicated rs numbers.
+[2026-11-03 22:26:59,687] INFO | gsMap.format_sumstats - Removed 50044 SNPs with N < 84187.98338487289.
+[2026-11-03 22:26:59,757] INFO | gsMap.format_sumstats - 
+Summary of GWAS data:
+[2026-11-03 22:26:59,773] INFO | gsMap.format_sumstats - Mean chi^2 = 2.034
+[2026-11-03 22:26:59,855] INFO | gsMap.format_sumstats - Lambda GC = 1.711
+[2026-11-03 22:26:59,865] INFO | gsMap.format_sumstats - Max chi^2 = 174.822
+[2026-11-03 22:26:59,871] INFO | gsMap.format_sumstats - 17608 Genome-wide significant SNPs (some may have been removed by filtering).
+[2026-11-03 22:27:00,280] INFO | gsMap.format_sumstats - 
+Writing summary statistics for 5390877 SNPs to /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/sumstats/SCZ_PGC3.sumstats.gz.
+[2026-11-03 22:27:45,278] INFO | gsMap - Finished running format_sumstats at: 2026-11-03 22:27:45.
+[2026-11-03 22:27:45,779] INFO | gsMap - Resource usage summary:
+[2026-11-03 22:27:45,779] INFO | gsMap -   • Wall clock time: 1.73 minutes
+[2026-11-03 22:27:45,779] INFO | gsMap -   • CPU time: 1.69 minutes
+[2026-11-03 22:27:45,779] INFO | gsMap -   • Average CPU utilization: 98.3%
+[2026-11-03 22:27:45,779] INFO | gsMap -   • Peak memory usage: 3.20 GB
+SNP	A1	A2	Z	N
+rs62513865	C	T	0.699	126281.975
+rs79643588	G	A	-0.582	126281.975
+rs17396518	T	G	-0.235	126281.975
+rs983166	A	C	0.567	126281.975

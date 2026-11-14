@@ -1,0 +1,86 @@
+**** Job starts ****
+Tue Nov  3 07:58:12 PM EST 2026
+**** JHPCE info ****
+User: bguo
+Job id: 36851350
+Job name: 01-split_h5ad_by_sample
+Hostname: jhpce3
+Task id: 
+gsMap version: 1.73.8
+Source h5ad: /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/samui/spg_kept_only.h5ad
+Output dir:  /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad
+AnnData object with n_obs × n_vars = 279806 × 36601 backed at '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/samui/spg_kept_only.h5ad'
+    obs: 'sample_id', 'in_tissue', 'array_row', 'array_col', 'X10x_graphclust', 'X10x_kmeans_10_clusters', 'X10x_kmeans_2_clusters', 'X10x_kmeans_3_clusters', 'X10x_kmeans_4_clusters', 'X10x_kmeans_5_clusters', 'X10x_kmeans_6_clusters', 'X10x_kmeans_7_clusters', 'X10x_kmeans_8_clusters', 'X10x_kmeans_9_clusters', 'key', 'sum_umi', 'sum_gene', 'expr_chrM', 'expr_chrM_ratio', 'spg_NDAPI', 'spg_PDAPI', 'spg_IDAPI', 'spg_CNDAPI', 'spg_NNeuN', 'spg_PNeuN', 'spg_INeuN', 'spg_CNNeuN', 'spg_NWFA', 'spg_PWFA', 'spg_IWFA', 'spg_CNWFA', 'spg_NClaudin5', 'spg_PClaudin5', 'spg_IClaudin5', 'spg_CNClaudin5', 'BrNumbr', 'dx', 'DX', 'sex', 'age', 'rin', 'slide_id', 'lot_num', 'brnum', 'sample_label', 'outlier_cat', 'removed_spots', 'PRECAST_02', 'PRECAST_03', 'PRECAST_04', 'PRECAST_05', 'PRECAST_06', 'PRECAST_07', 'PRECAST_08', 'PRECAST_09', 'PRECAST_10', 'PRECAST_11', 'PRECAST_12', 'PRECAST_13', 'PRECAST_14', 'PRECAST_15', 'PRECAST_16', 'fnl_spd', 'spd_label', 'pnn_pos', 'neuropil_pos', 'neun_pos', 'vasc_pos', 'sizeFactor'
+    var: 'source', 'type', 'gene_id', 'gene_version', 'gene_name', 'gene_type', 'gene_search'
+    uns: 'X_name', 'dx_df'
+    obsm: '10x_pca', '10x_tsne', '10x_umap', 'spatial'
+    layers: 'logcounts'
+Dropping 10 genes with duplicated symbols; keeping 36591
+X is stored as csc; loading into memory as CSR
+obsm['spatial'] columns: ['pxl_col_in_fullres', 'pxl_row_in_fullres']
+V12D07-334_A1: 4370 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12D07-334_A1.h5ad
+V12D07-334_B1: 3911 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12D07-334_B1.h5ad
+V12D07-334_C1: 4342 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12D07-334_C1.h5ad
+V12D07-334_D1: 4370 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12D07-334_D1.h5ad
+V12F14-053_A1: 4977 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12F14-053_A1.h5ad
+V12F14-053_C1: 3717 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12F14-053_C1.h5ad
+V12F14-053_D1: 3252 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12F14-053_D1.h5ad
+V12F14-057_A1: 3123 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12F14-057_A1.h5ad
+V12F14-057_B1: 3820 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12F14-057_B1.h5ad
+V12F14-057_C1: 3374 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12F14-057_C1.h5ad
+V12F14-057_D1: 4133 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V12F14-057_D1.h5ad
+V13F27-293_A1: 4984 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-293_A1.h5ad
+V13F27-293_B1: 4928 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-293_B1.h5ad
+V13F27-293_C1: 4854 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-293_C1.h5ad
+V13F27-293_D1: 4711 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-293_D1.h5ad
+V13F27-294_A1: 3995 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-294_A1.h5ad
+V13F27-294_B1: 4579 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-294_B1.h5ad
+V13F27-294_C1: 4149 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-294_C1.h5ad
+V13F27-294_D1: 4343 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-294_D1.h5ad
+V13F27-295_A1: 4311 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-295_A1.h5ad
+V13F27-295_B1: 4508 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-295_B1.h5ad
+V13F27-295_C1: 3702 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-295_C1.h5ad
+V13F27-295_D1: 4405 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-295_D1.h5ad
+V13F27-296_A1: 4631 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-296_A1.h5ad
+V13F27-296_B1: 4463 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-296_B1.h5ad
+V13F27-296_C1: 4893 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-296_C1.h5ad
+V13F27-296_D1: 4910 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-296_D1.h5ad
+V13F27-336_A1: 4431 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-336_A1.h5ad
+V13F27-336_B1: 3954 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-336_B1.h5ad
+V13F27-336_C1: 4386 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-336_C1.h5ad
+V13F27-336_D1: 4926 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13F27-336_D1.h5ad
+V13M06-279_A1: 3909 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-279_A1.h5ad
+V13M06-279_B1: 4600 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-279_B1.h5ad
+V13M06-279_C1: 4593 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-279_C1.h5ad
+V13M06-279_D1: 4798 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-279_D1.h5ad
+V13M06-280_A1: 4587 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-280_A1.h5ad
+V13M06-280_B1: 4849 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-280_B1.h5ad
+V13M06-280_C1: 2477 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-280_C1.h5ad
+V13M06-280_D1: 4851 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-280_D1.h5ad
+V13M06-281_A1: 4625 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-281_A1.h5ad
+V13M06-281_B1: 3474 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-281_B1.h5ad
+V13M06-281_C1: 4790 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-281_C1.h5ad
+V13M06-281_D1: 4255 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-281_D1.h5ad
+V13M06-282_A1: 4418 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-282_A1.h5ad
+V13M06-282_B1: 4364 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-282_B1.h5ad
+V13M06-282_C1: 4776 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-282_C1.h5ad
+V13M06-282_D1: 4746 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-282_D1.h5ad
+V13M06-340_A1: 4825 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-340_A1.h5ad
+V13M06-340_B1: 4974 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-340_B1.h5ad
+V13M06-340_C1: 4656 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-340_C1.h5ad
+V13M06-340_D1: 4979 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-340_D1.h5ad
+V13M06-342_A1: 4979 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-342_A1.h5ad
+V13M06-342_B1: 4748 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-342_B1.h5ad
+V13M06-342_C1: 4922 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-342_C1.h5ad
+V13M06-342_D1: 4800 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-342_D1.h5ad
+V13M06-343_A1: 4221 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-343_A1.h5ad
+V13M06-343_B1: 4382 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-343_B1.h5ad
+V13M06-343_C1: 4981 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-343_C1.h5ad
+V13M06-343_D1: 4971 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-343_D1.h5ad
+V13M06-344_A1: 4605 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-344_A1.h5ad
+V13M06-344_B1: 4963 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-344_B1.h5ad
+V13M06-344_C1: 4680 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-344_C1.h5ad
+V13M06-344_D1: 4556 spots x 36591 genes -> /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/h5ad/V13M06-344_D1.h5ad
+Finished writing per-sample h5ad files for gsMap
+**** Job ends ****
+Tue Nov  3 08:02:15 PM EST 2026
