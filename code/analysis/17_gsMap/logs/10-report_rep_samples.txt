@@ -1,0 +1,117 @@
+**** Job starts ****
+Sat Nov 14 10:47:50 AM EST 2026
+**** JHPCE info ****
+User: bguo
+Job id: 37069018
+Job name: 10-report_rep_samples
+Hostname: jhpce3
+Task id: 
+gsMap version: 1.73.8
+---- sample V13M06-342_D1, trait SCZ_PGC3 ----
+                                   ___  ___            
+                                   |  \/  |            
+                          __ _ ___ | .  . | __ _ _ __  
+                         / _` / __|| |\/| |/ _` | '_ \ 
+                        | (_| \__ \| |  | | (_| | |_) |
+                         \__, |___/\_|  |_/\__,_| .__/ 
+                          __/ |                 | |    
+                         |___/                  |_|
+                                Version: 1.73.8                                 
+================================================================================
+[2026-11-14 10:47:51,240] INFO | gsMap - Running run_report...
+[2026-11-14 10:47:51,240] INFO | gsMap - Started at: 2026-11-14 10:47:51
+Using the following arguments for ReportConfig:
+{   'annotation': 'spd_label',
+    'fig_height': None,
+    'fig_style': 'light',
+    'fig_width': None,
+    'point_size': None,
+    'sample_name': 'V13M06-342_D1',
+    'selected_genes': None,
+    'sumstats_file': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/sumstats/SCZ_PGC3.sumstats.gz',
+    'top_corr_genes': 50,
+    'trait_name': 'SCZ_PGC3',
+    'workdir': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir'}
+[2026-11-14 10:47:54,937] INFO | gsMap.report - Running gsMap Diagnosis Module
+[2026-11-14 10:47:57,844] INFO | gsMap.diagnosis - Creating gsMap plot...
+[2026-11-14 10:48:03,653] INFO | gsMap.diagnosis - gsMap plot created and saved in /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-342_D1/report/SCZ_PGC3/gsMap_plot.
+[2026-11-14 10:48:03,654] INFO | gsMap.diagnosis - Loading and processing GWAS data...
+[2026-11-14 10:48:44,415] INFO | gsMap.diagnosis - Gene diagnostic information not found. Calculating gene diagnostic information...
+[2026-11-14 10:48:44,416] INFO | gsMap.diagnosis - Loading ST data and LDSC results...
+[2026-11-14 10:48:47,958] INFO | gsMap.diagnosis - Calculating correlation between gene marker scores and trait logp-values...
+[2026-11-14 10:48:57,808] INFO | gsMap.diagnosis - Gene diagnostic information saved to /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-342_D1/report/SCZ_PGC3/V13M06-342_D1_SCZ_PGC3_Gene_Diagnostic_Info.csv.
+[2026-11-14 10:49:01,530] INFO | gsMap.diagnosis - To reduce the number of SNPs to plot, only 100000 SNPs with the smallest P-values are plotted.
+[2026-11-14 10:49:04,049] INFO | gsMap.diagnosis - Creating Manhattan plot with 100000 SNPs
+[2026-11-14 10:49:04,051] INFO | gsMap.diagnosis - Chromosome column values: [ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22]
+/users/bguo/.conda/envs/gsMap/lib/python3.11/site-packages/gsMap/utils/manhattan_plot.py:164: UserWarning:
+
+Some genes don't contain any SNP to highlight: : {'NCOA1', 'SOGA3', 'SEPTIN11', 'PDS5B', 'CCDC186', 'CDC5L', 'PAK3', 'LRRFIP1', 'WBP11', 'DDX24', 'KIAA0408', 'DZIP3', 'MIA3', 'ZNF91', 'ERICH3', 'RAPGEF2', 'EPRS', 'RTF1', 'PPFIBP1', 'GCC2', 'CCDC91', 'DNM1L', 'SLU7', 'SLC4A7', 'CEP126', 'ZC3H15', 'SSB', 'C1orf21', 'ZNF106', 'CHMP3', 'EEA1', 'NSA2', 'NAP1L4', 'TOP2B', 'TLK1', 'RNMT'}
+
+[2026-11-14 10:49:04,715] INFO | gsMap.diagnosis - Diagnostic Manhattan Plot saved to /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-342_D1/report/SCZ_PGC3/manhattan_plot/V13M06-342_D1_SCZ_PGC3_Diagnostic_Manhattan_Plot.html.
+[2026-11-14 10:49:06,635] INFO | gsMap.diagnosis - Loading gene diagnostic information from /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-342_D1/report/SCZ_PGC3/V13M06-342_D1_SCZ_PGC3_Gene_Diagnostic_Info.csv...
+[2026-11-14 10:49:06,651] INFO | gsMap.diagnosis - Generating GSS & Expression distribution plot for top 50 correlated genes...
+[2026-11-14 10:52:46,399] INFO | gsMap.report - gsMap Diagnosis running successfully
+[2026-11-14 10:52:47,089] INFO | gsMap.report - Cauchy combination already done for trait SCZ_PGC3. Results saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-342_D1/cauchy_combination/V13M06-342_D1_SCZ_PGC3.Cauchy.csv.gz. Skipping...
+[2026-11-14 10:52:47,441] INFO | gsMap.report - Report generated successfully! Saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-342_D1/report/SCZ_PGC3/V13M06-342_D1_SCZ_PGC3_gsMap_Report.html.
+[2026-11-14 10:52:47,441] INFO | gsMap.report - Copy the report directory to your local PC and open the HTML report file in a web browser to view the report.
+[2026-11-14 10:52:47,443] INFO | gsMap - Finished running run_report at: 2026-11-14 10:52:47.
+[2026-11-14 10:52:47,528] INFO | gsMap - Resource usage summary:
+[2026-11-14 10:52:47,528] INFO | gsMap -   • Wall clock time: 4.94 minutes
+[2026-11-14 10:52:47,528] INFO | gsMap -   • CPU time: 1.29 minutes
+[2026-11-14 10:52:47,528] INFO | gsMap -   • Average CPU utilization: 22.7%
+[2026-11-14 10:52:47,528] INFO | gsMap -   • Peak memory usage: 4.31 GB
+---- sample V13M06-343_D1, trait SCZ_PGC3 ----
+                                   ___  ___            
+                                   |  \/  |            
+                          __ _ ___ | .  . | __ _ _ __  
+                         / _` / __|| |\/| |/ _` | '_ \ 
+                        | (_| \__ \| |  | | (_| | |_) |
+                         \__, |___/\_|  |_/\__,_| .__/ 
+                          __/ |                 | |    
+                         |___/                  |_|
+                                Version: 1.73.8                                 
+================================================================================
+[2026-11-14 10:52:48,773] INFO | gsMap - Running run_report...
+[2026-11-14 10:52:48,773] INFO | gsMap - Started at: 2026-11-14 10:52:48
+Using the following arguments for ReportConfig:
+{   'annotation': 'spd_label',
+    'fig_height': None,
+    'fig_style': 'light',
+    'fig_width': None,
+    'point_size': None,
+    'sample_name': 'V13M06-343_D1',
+    'selected_genes': None,
+    'sumstats_file': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/sumstats/SCZ_PGC3.sumstats.gz',
+    'top_corr_genes': 50,
+    'trait_name': 'SCZ_PGC3',
+    'workdir': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir'}
+[2026-11-14 10:52:52,524] INFO | gsMap.report - Running gsMap Diagnosis Module
+[2026-11-14 10:52:52,738] INFO | gsMap.diagnosis - Creating gsMap plot...
+[2026-11-14 10:52:56,312] INFO | gsMap.diagnosis - gsMap plot created and saved in /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-343_D1/report/SCZ_PGC3/gsMap_plot.
+[2026-11-14 10:52:56,313] INFO | gsMap.diagnosis - Loading and processing GWAS data...
+[2026-11-14 10:53:33,637] INFO | gsMap.diagnosis - Gene diagnostic information not found. Calculating gene diagnostic information...
+[2026-11-14 10:53:33,637] INFO | gsMap.diagnosis - Loading ST data and LDSC results...
+[2026-11-14 10:53:36,995] INFO | gsMap.diagnosis - Calculating correlation between gene marker scores and trait logp-values...
+[2026-11-14 10:53:46,104] INFO | gsMap.diagnosis - Gene diagnostic information saved to /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-343_D1/report/SCZ_PGC3/V13M06-343_D1_SCZ_PGC3_Gene_Diagnostic_Info.csv.
+[2026-11-14 10:53:49,518] INFO | gsMap.diagnosis - To reduce the number of SNPs to plot, only 100000 SNPs with the smallest P-values are plotted.
+[2026-11-14 10:53:51,714] INFO | gsMap.diagnosis - Creating Manhattan plot with 100000 SNPs
+[2026-11-14 10:53:51,715] INFO | gsMap.diagnosis - Chromosome column values: [ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22]
+/users/bguo/.conda/envs/gsMap/lib/python3.11/site-packages/gsMap/utils/manhattan_plot.py:164: UserWarning:
+
+Some genes don't contain any SNP to highlight: : {'SCN8A', 'FBXW7', 'MYH10', 'CHGB', 'BEX5', 'PEG3', 'ATCAY', 'FAIM2', 'STXBP1', 'AUXG01000058.1', 'CDKL5', 'CAP2', 'TMEM130', 'ZFAND5', 'TSPYL2', 'BEX1', 'TSPYL4', 'TSPYL1', 'TMEM59L', 'MAP7D2', 'GRIA2', 'SV2A', 'EPHB6', 'PHYHIP', 'GNAO1', 'CNKSR2', 'NPTN', 'PRKAR1B', 'DYNC1I1', 'GPI'}
+
+[2026-11-14 10:53:52,311] INFO | gsMap.diagnosis - Diagnostic Manhattan Plot saved to /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-343_D1/report/SCZ_PGC3/manhattan_plot/V13M06-343_D1_SCZ_PGC3_Diagnostic_Manhattan_Plot.html.
+[2026-11-14 10:53:54,004] INFO | gsMap.diagnosis - Loading gene diagnostic information from /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-343_D1/report/SCZ_PGC3/V13M06-343_D1_SCZ_PGC3_Gene_Diagnostic_Info.csv...
+[2026-11-14 10:53:54,021] INFO | gsMap.diagnosis - Generating GSS & Expression distribution plot for top 50 correlated genes...
+[2026-11-14 10:57:32,248] INFO | gsMap.report - gsMap Diagnosis running successfully
+[2026-11-14 10:57:32,578] INFO | gsMap.report - Cauchy combination already done for trait SCZ_PGC3. Results saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-343_D1/cauchy_combination/V13M06-343_D1_SCZ_PGC3.Cauchy.csv.gz. Skipping...
+[2026-11-14 10:57:32,948] INFO | gsMap.report - Report generated successfully! Saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-343_D1/report/SCZ_PGC3/V13M06-343_D1_SCZ_PGC3_gsMap_Report.html.
+[2026-11-14 10:57:32,948] INFO | gsMap.report - Copy the report directory to your local PC and open the HTML report file in a web browser to view the report.
+[2026-11-14 10:57:32,949] INFO | gsMap - Finished running run_report at: 2026-11-14 10:57:32.
+[2026-11-14 10:57:33,112] INFO | gsMap - Resource usage summary:
+[2026-11-14 10:57:33,112] INFO | gsMap -   • Wall clock time: 4.74 minutes
+[2026-11-14 10:57:33,112] INFO | gsMap -   • CPU time: 1.26 minutes
+[2026-11-14 10:57:33,112] INFO | gsMap -   • Average CPU utilization: 23.0%
+[2026-11-14 10:57:33,112] INFO | gsMap -   • Peak memory usage: 4.46 GB
+**** Job ends ****
+Sat Nov 14 10:57:34 AM EST 2026

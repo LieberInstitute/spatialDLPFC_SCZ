@@ -1,0 +1,43 @@
+**** Job starts ****
+Fri Nov 13 07:15:23 PM EST 2026
+**** JHPCE info ****
+User: bguo
+Job id: 37059291
+Job name: 08-cauchy_combination_per_sample
+Hostname: jhpce3
+Task id: 25
+gsMap version: 1.73.8
+Sample: V13F27-296_B1
+---- trait SCZ_PGC3 ----
+                                   ___  ___            
+                                   |  \/  |            
+                          __ _ ___ | .  . | __ _ _ __  
+                         / _` / __|| |\/| |/ _` | '_ \ 
+                        | (_| \__ \| |  | | (_| | |_) |
+                         \__, |___/\_|  |_/\__,_| .__/ 
+                          __/ |                 | |    
+                         |___/                  |_|
+                                Version: 1.73.8                                 
+================================================================================
+[2026-11-13 19:15:24,677] INFO | gsMap - Running run_cauchy_combination...
+[2026-11-13 19:15:24,677] INFO | gsMap - Started at: 2026-11-13 19:15:24
+Using the following arguments for CauchyCombinationConfig:
+{   'annotation': 'spd_label',
+    'output_file': None,
+    'sample_name': 'V13F27-296_B1',
+    'sample_name_list': None,
+    'trait_name': 'SCZ_PGC3',
+    'workdir': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir'}
+[2026-11-13 19:15:29,083] INFO | gsMap.cauchy_combination_test - ------Loading LDSC results for sample V13F27-296_B1...
+[2026-11-13 19:15:29,166] INFO | gsMap.cauchy_combination_test - ------Loading ST data for sample V13F27-296_B1...
+[2026-11-13 19:15:35,874] INFO | gsMap.cauchy_combination_test - Removed 1/622 outliers (median + 3IQR) for SpD06-L2/3.
+[2026-11-13 19:15:35,882] INFO | gsMap.cauchy_combination_test - Removed 6/206 outliers (median + 3IQR) for SpD01-WMtz.
+[2026-11-13 19:15:35,891] INFO | gsMap.cauchy_combination_test - Cauchy combination results saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13F27-296_B1/cauchy_combination/V13F27-296_B1_SCZ_PGC3.Cauchy.csv.gz.
+[2026-11-13 19:15:35,892] INFO | gsMap - Finished running run_cauchy_combination at: 2026-11-13 19:15:35.
+[2026-11-13 19:15:36,267] INFO | gsMap - Resource usage summary:
+[2026-11-13 19:15:36,267] INFO | gsMap -   • Wall clock time: 11.60 seconds
+[2026-11-13 19:15:36,267] INFO | gsMap -   • CPU time: 3.67 seconds
+[2026-11-13 19:15:36,267] INFO | gsMap -   • Average CPU utilization: 49.8%
+[2026-11-13 19:15:36,267] INFO | gsMap -   • Peak memory usage: 417.30 MB
+**** Job ends ****
+Fri Nov 13 07:15:36 PM EST 2026

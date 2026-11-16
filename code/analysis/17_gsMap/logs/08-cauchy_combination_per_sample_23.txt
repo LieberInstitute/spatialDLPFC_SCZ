@@ -1,0 +1,44 @@
+**** Job starts ****
+Fri Nov 13 07:15:23 PM EST 2026
+**** JHPCE info ****
+User: bguo
+Job id: 37059289
+Job name: 08-cauchy_combination_per_sample
+Hostname: jhpce3
+Task id: 23
+gsMap version: 1.73.8
+Sample: V13F27-295_D1
+---- trait SCZ_PGC3 ----
+                                   ___  ___            
+                                   |  \/  |            
+                          __ _ ___ | .  . | __ _ _ __  
+                         / _` / __|| |\/| |/ _` | '_ \ 
+                        | (_| \__ \| |  | | (_| | |_) |
+                         \__, |___/\_|  |_/\__,_| .__/ 
+                          __/ |                 | |    
+                         |___/                  |_|
+                                Version: 1.73.8                                 
+================================================================================
+[2026-11-13 19:15:24,678] INFO | gsMap - Running run_cauchy_combination...
+[2026-11-13 19:15:24,678] INFO | gsMap - Started at: 2026-11-13 19:15:24
+Using the following arguments for CauchyCombinationConfig:
+{   'annotation': 'spd_label',
+    'output_file': None,
+    'sample_name': 'V13F27-295_D1',
+    'sample_name_list': None,
+    'trait_name': 'SCZ_PGC3',
+    'workdir': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir'}
+[2026-11-13 19:15:29,701] INFO | gsMap.cauchy_combination_test - ------Loading LDSC results for sample V13F27-295_D1...
+[2026-11-13 19:15:29,763] INFO | gsMap.cauchy_combination_test - ------Loading ST data for sample V13F27-295_D1...
+[2026-11-13 19:15:32,490] INFO | gsMap.cauchy_combination_test - Removed 1/614 outliers (median + 3IQR) for SpD03-L6.
+[2026-11-13 19:15:32,501] INFO | gsMap.cauchy_combination_test - Removed 15/533 outliers (median + 3IQR) for SpD05-L5.
+[2026-11-13 19:15:32,505] INFO | gsMap.cauchy_combination_test - Removed 5/166 outliers (median + 3IQR) for SpD04-WM.
+[2026-11-13 19:15:32,523] INFO | gsMap.cauchy_combination_test - Cauchy combination results saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13F27-295_D1/cauchy_combination/V13F27-295_D1_SCZ_PGC3.Cauchy.csv.gz.
+[2026-11-13 19:15:32,523] INFO | gsMap - Finished running run_cauchy_combination at: 2026-11-13 19:15:32.
+[2026-11-13 19:15:32,710] INFO | gsMap - Resource usage summary:
+[2026-11-13 19:15:32,710] INFO | gsMap -   • Wall clock time: 8.04 seconds
+[2026-11-13 19:15:32,710] INFO | gsMap -   • CPU time: 3.53 seconds
+[2026-11-13 19:15:32,710] INFO | gsMap -   • Average CPU utilization: 44.7%
+[2026-11-13 19:15:32,710] INFO | gsMap -   • Peak memory usage: 412.77 MB
+**** Job ends ****
+Fri Nov 13 07:15:33 PM EST 2026

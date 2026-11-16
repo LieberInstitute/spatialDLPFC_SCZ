@@ -1,0 +1,42 @@
+**** Job starts ****
+Fri Nov 13 07:15:56 PM EST 2026
+**** JHPCE info ****
+User: bguo
+Job id: 37059329
+Job name: 08-cauchy_combination_per_sample
+Hostname: jhpce3
+Task id: 61
+gsMap version: 1.73.8
+Sample: V13M06-344_B1
+---- trait SCZ_PGC3 ----
+                                   ___  ___            
+                                   |  \/  |            
+                          __ _ ___ | .  . | __ _ _ __  
+                         / _` / __|| |\/| |/ _` | '_ \ 
+                        | (_| \__ \| |  | | (_| | |_) |
+                         \__, |___/\_|  |_/\__,_| .__/ 
+                          __/ |                 | |    
+                         |___/                  |_|
+                                Version: 1.73.8                                 
+================================================================================
+[2026-11-13 19:15:57,402] INFO | gsMap - Running run_cauchy_combination...
+[2026-11-13 19:15:57,402] INFO | gsMap - Started at: 2026-11-13 19:15:57
+Using the following arguments for CauchyCombinationConfig:
+{   'annotation': 'spd_label',
+    'output_file': None,
+    'sample_name': 'V13M06-344_B1',
+    'sample_name_list': None,
+    'trait_name': 'SCZ_PGC3',
+    'workdir': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir'}
+[2026-11-13 19:15:59,812] INFO | gsMap.cauchy_combination_test - ------Loading LDSC results for sample V13M06-344_B1...
+[2026-11-13 19:15:59,847] INFO | gsMap.cauchy_combination_test - ------Loading ST data for sample V13M06-344_B1...
+[2026-11-13 19:16:03,144] INFO | gsMap.cauchy_combination_test - Removed 1/276 outliers (median + 3IQR) for SpD03-L6.
+[2026-11-13 19:16:03,153] INFO | gsMap.cauchy_combination_test - Cauchy combination results saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13M06-344_B1/cauchy_combination/V13M06-344_B1_SCZ_PGC3.Cauchy.csv.gz.
+[2026-11-13 19:16:03,153] INFO | gsMap - Finished running run_cauchy_combination at: 2026-11-13 19:16:03.
+[2026-11-13 19:16:03,459] INFO | gsMap - Resource usage summary:
+[2026-11-13 19:16:03,459] INFO | gsMap -   • Wall clock time: 6.06 seconds
+[2026-11-13 19:16:03,459] INFO | gsMap -   • CPU time: 1.81 seconds
+[2026-11-13 19:16:03,459] INFO | gsMap -   • Average CPU utilization: 31.0%
+[2026-11-13 19:16:03,459] INFO | gsMap -   • Peak memory usage: 442.92 MB
+**** Job ends ****
+Fri Nov 13 07:16:03 PM EST 2026
