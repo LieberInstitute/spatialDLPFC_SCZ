@@ -1,8 +1,8 @@
 **** Job starts ****
-Fri Nov 13 07:15:23 PM EST 2026
+Mon Nov 16 07:48:42 PM EST 2026
 **** JHPCE info ****
 User: bguo
-Job id: 37059292
+Job id: 37106285
 Job name: 08-cauchy_combination_per_sample
 Hostname: jhpce3
 Task id: 26
@@ -19,8 +19,8 @@ Sample: V13F27-296_C1
                          |___/                  |_|
                                 Version: 1.73.8                                 
 ================================================================================
-[2026-11-13 19:15:25,191] INFO | gsMap - Running run_cauchy_combination...
-[2026-11-13 19:15:25,191] INFO | gsMap - Started at: 2026-11-13 19:15:25
+[2026-11-16 19:48:43,551] INFO | gsMap - Running run_cauchy_combination...
+[2026-11-16 19:48:43,551] INFO | gsMap - Started at: 2026-11-16 19:48:43
 Using the following arguments for CauchyCombinationConfig:
 {   'annotation': 'spd_label',
     'output_file': None,
@@ -28,18 +28,15 @@ Using the following arguments for CauchyCombinationConfig:
     'sample_name_list': None,
     'trait_name': 'SCZ_PGC3',
     'workdir': '/dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir'}
-[2026-11-13 19:15:29,828] INFO | gsMap.cauchy_combination_test - ------Loading LDSC results for sample V13F27-296_C1...
-[2026-11-13 19:15:29,915] INFO | gsMap.cauchy_combination_test - ------Loading ST data for sample V13F27-296_C1...
-[2026-11-13 19:15:32,434] INFO | gsMap.cauchy_combination_test - Removed 1/618 outliers (median + 3IQR) for SpD03-L6.
-[2026-11-13 19:15:32,450] INFO | gsMap.cauchy_combination_test - Removed 3/458 outliers (median + 3IQR) for SpD04-WM.
-[2026-11-13 19:15:32,454] INFO | gsMap.cauchy_combination_test - Removed 10/417 outliers (median + 3IQR) for SpD01-WMtz.
-[2026-11-13 19:15:32,458] INFO | gsMap.cauchy_combination_test - Removed 2/480 outliers (median + 3IQR) for SpD05-L5.
-[2026-11-13 19:15:32,466] INFO | gsMap.cauchy_combination_test - Cauchy combination results saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13F27-296_C1/cauchy_combination/V13F27-296_C1_SCZ_PGC3.Cauchy.csv.gz.
-[2026-11-13 19:15:32,466] INFO | gsMap - Finished running run_cauchy_combination at: 2026-11-13 19:15:32.
-[2026-11-13 19:15:32,772] INFO | gsMap - Resource usage summary:
-[2026-11-13 19:15:32,772] INFO | gsMap -   • Wall clock time: 7.59 seconds
-[2026-11-13 19:15:32,772] INFO | gsMap -   • CPU time: 3.73 seconds
-[2026-11-13 19:15:32,772] INFO | gsMap -   • Average CPU utilization: 50.6%
-[2026-11-13 19:15:32,772] INFO | gsMap -   • Peak memory usage: 389.38 MB
+[2026-11-16 19:48:47,789] INFO | gsMap.cauchy_combination_test - ------Loading LDSC results for sample V13F27-296_C1...
+[2026-11-16 19:48:47,830] INFO | gsMap.cauchy_combination_test - ------Loading ST data for sample V13F27-296_C1...
+[2026-11-16 19:48:50,041] INFO | gsMap.cauchy_combination_test - Removed 2/618 outliers (median + 3IQR) for SpD03-L6.
+[2026-11-16 19:48:50,058] INFO | gsMap.cauchy_combination_test - Cauchy combination results saved at /dcs04/lieber/marmaypag/spatialDLPFC_SCZ_LIBD4100/processed-data/17_gsMap/workdir/V13F27-296_C1/cauchy_combination/V13F27-296_C1_SCZ_PGC3.Cauchy.csv.gz.
+[2026-11-16 19:48:50,059] INFO | gsMap - Finished running run_cauchy_combination at: 2026-11-16 19:48:50.
+[2026-11-16 19:48:50,065] INFO | gsMap - Resource usage summary:
+[2026-11-16 19:48:50,065] INFO | gsMap -   • Wall clock time: 6.52 seconds
+[2026-11-16 19:48:50,065] INFO | gsMap -   • CPU time: 2.14 seconds
+[2026-11-16 19:48:50,065] INFO | gsMap -   • Average CPU utilization: 37.0%
+[2026-11-16 19:48:50,065] INFO | gsMap -   • Peak memory usage: 370.55 MB
 **** Job ends ****
-Fri Nov 13 07:15:33 PM EST 2026
+Mon Nov 16 07:48:50 PM EST 2026
