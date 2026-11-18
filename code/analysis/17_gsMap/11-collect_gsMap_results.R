@@ -24,6 +24,11 @@ trait_names <- read_tsv(
 
 cat("Traits:", trait_names, "\n")
 
+# gsMap (run_find_latent_representation, step 04) silently drops every spot
+# whose annotation (spd_label) has < 30 spots in that sample, so those
+# sample x domain combinations have no gsMap results by design.
+min_domain_spots <- 30
+
 
 # Load data ----
 ## Spot-level metadata from the finalized spe ----
@@ -60,24 +65,50 @@ spot_raw_df <- expand_grid(sample_id = sample_ids, trait = trait_names) |>
   }) |>
   list_rbind()
 
+## Spots gsMap is expected to keep: domains with >= min_domain_spots spots ----
+spot_meta <- spot_meta |>
+  add_count(sample_id, spd_label, name = "n_domain_spots") |>
+  mutate(gsmap_kept = n_domain_spots >= min_domain_spots)
+
+dropped_domain_df <- spot_meta |>
+  filter(!gsmap_kept) |>
+  count(sample_id, brnum, dx, spd_label, name = "n_spots_dropped")
+
+cat(sprintf(
+  "gsMap drops %d spots in %d sample x domain combinations with < %d spots:\n",
+  sum(!spot_meta$gsmap_kept), nrow(dropped_domain_df), min_domain_spots
+))
+print(as.data.frame(dropped_domain_df))
+write_csv(dropped_domain_df, file.path(fld_out, "gsMap_dropped_small_domains.csv"))
+
 ## Diagnose spot matching per sample x trait before joining ----
-## (an LDSC file can miss spots, repeat spots, or carry keys not in spe)
+## Each LDSC file must contain exactly the expected (kept) spots of its
+## sample: no missing, duplicated or unrecognized keys, and no NA p-values.
+kept_keys <- spot_meta$key[spot_meta$gsmap_kept]
+
 spot_check_df <- spot_raw_df |>
   group_by(file_sample, trait) |>
   summarize(
     n_rows = n(),
     n_dup_keys = sum(duplicated(key)),
     n_unmatched_keys = sum(!key %in% spot_meta$key),
+    n_unexpected_small_domain = sum(key %in% spot_meta$key & !key %in% kept_keys),
     example_unmatched = paste(head(key[!key %in% spot_meta$key], 2), collapse = "; "),
     n_na_p = sum(is.na(p)),
     .groups = "drop"
   ) |>
   left_join(
-    spot_meta |> count(sample_id, name = "n_spe_spots"),
+    spot_meta |>
+      group_by(sample_id) |>
+      summarize(
+        n_spe_spots = n(),
+        n_expected = sum(gsmap_kept),
+        .groups = "drop"
+      ),
     by = c("file_sample" = "sample_id")
   ) |>
-  mutate(ok = n_rows == n_spe_spots & n_dup_keys == 0 &
-    n_unmatched_keys == 0 & n_na_p == 0)
+  mutate(ok = n_rows == n_expected & n_dup_keys == 0 &
+    n_unmatched_keys == 0 & n_unexpected_small_domain == 0 & n_na_p == 0)
 
 cat(sprintf(
   "Spot check: %d / %d sample x trait files OK\n",
@@ -89,16 +120,19 @@ if (!all(spot_check_df$ok)) {
     as.data.frame() |>
     print()
   write_csv(spot_check_df, file.path(fld_out, "gsMap_spot_check_FAILED.csv"))
-  stop("Spot-level LDSC results do not match spe spots; see table above")
+  stop("Spot-level LDSC results do not match expected spe spots; see table above")
 }
 
 spot_res_df <- spot_raw_df |>
   select(-file_sample) |>
   mutate(neg_log10_p = -log10(p)) |>
-  inner_join(spot_meta, by = "key", relationship = "many-to-one")
+  inner_join(
+    spot_meta |> select(-n_domain_spots, -gsmap_kept),
+    by = "key", relationship = "many-to-one"
+  )
 
-# error prevention: every spot has a result for every trait
-stopifnot(nrow(spot_res_df) == nrow(spot_meta) * length(trait_names))
+# error prevention: every kept spot has a result for every trait
+stopifnot(nrow(spot_res_df) == length(kept_keys) * length(trait_names))
 stopifnot(!anyNA(spot_res_df$p))
 
 

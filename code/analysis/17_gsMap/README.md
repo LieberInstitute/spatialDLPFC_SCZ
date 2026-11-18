@@ -18,6 +18,8 @@ Questions addressed:
 
 ## Data Inputs
 
+* `processed-data/samui/spg_kept_only.h5ad`: the finalized `spe` below as a single
+  h5ad (raw counts in `X`), split per sample in step 01.
 * `processed-data/rds/01_build_spe/fnl_spe_kept_spots_only.rds`: finalized
   Visium `spe` (63 donors, QC-passed spots, `spd_label` annotated), produced
   in [01_build_spe](/code/analysis/01_build_spe).
@@ -37,6 +39,7 @@ Questions addressed:
 | Cross-sample comparability | `gsmap create_slice_mean` over all 63 samples, passed as `--gM_slices` | gsMap's recommended approach for multiple slices/replicates: gene specificity scores share a common reference across samples, so donors can be compared. |
 | Annotation | `spd_label` (PRECAST-07 spatial domains) | Supervises the GNN latent representation and defines the groups for the Cauchy combination. |
 | Expression input | Raw UMI counts in `layers['count']` (`--data_layer count`) | gsMap normalizes and selects HVGs internally from counts. |
+| h5ad input | Split the existing `spg_kept_only.h5ad` per sample in Python; no R export, no zellkonverter | That file was already written from the same `fnl_spe_kept_spots_only.rds` (checked: 279,806 spots × 36,601 genes, 63 samples, identical spot keys) with raw counts in `X`. Reusing it avoids zellkonverter, whose basilisk backend on `conda_R/devel` tries to compile Python from source and failed on JHPCE compute nodes. |
 | Gene identifiers | Gene symbols (`rowData(spe)$gene_name`), first occurrence kept for duplicated symbols | gsMap links genes to SNPs by matching symbols to its GTF. |
 | SNP-to-gene mapping | TSS ± 50 kb ("TSS only" strategy) | gsMap default. The enhancer-linked strategies (ABC/Roadmap) are possible later sensitivity analyses. |
 | GWAS sample size | Per-SNP N_eff = 4 / (1/NCAS + 1/NCON), computed from case/control counts | The standard effective N for case-control LDSC, computed explicitly rather than relying on the PGC3 `NEFF` column. |
@@ -51,7 +54,7 @@ where task *N* processes line *N* of `sample_list.txt`.
 | Step | Script | Type | Description |
 | --- | --- | --- | --- |
 | 00 | `00-setup_gsMap_env.sh` | interactive, once | Create conda env (`gsMap==1.73.8`, Python 3.11), record `pip freeze`, download and check gsMap resources. |
-| 01 | `01-export_spe_to_h5ad.R` / `.sh` | single job | Export `spe` to one h5ad per sample: `layers['count']`, `obsm['spatial']`, `obs` (`key`, `brnum`, `dx`, `age`, `sex`, `spd_label`), with `obs_names = key` and gene symbols as `var_names`. Writes `sample_list*.txt` (all / NTC / SCZ) and `h5ad_list.txt`. |
+| 01 | `01-split_h5ad_by_sample.py` / `.sh` | single job | Split the existing full-dataset h5ad (`processed-data/samui/spg_kept_only.h5ad`, written from `fnl_spe_kept_spots_only.rds` by [`code/samui/spe_to_anndata.R`](/code/samui/spe_to_anndata.R)) into one h5ad per sample: raw counts in `X` and `layers['count']`, `obsm['spatial']`, `obs` (`key`, `brnum`, `dx`, `age`, `sex`, `spd_label`), `obs_names = key`, gene symbols as `var_names`. Also writes `sample_list*.txt` (all / NTC / SCZ), `h5ad_list.txt` and `sample_dx.csv`. Runs in the step 00 env. |
 | 02 | `02-prep_PGC3_sumstats.py`, `02-format_sumstats.sh` | single job | Clean PGC3 (drop `##` header, compute N_eff), then `gsmap format_sumstats` (INFO ≥ 0.9, MAF ≥ 0.01) to produce `SCZ_PGC3.sumstats.gz`. |
 | 03 | `03-create_slice_mean.sh` | single job | `gsmap create_slice_mean` over all 63 samples, producing `spe_slice_mean.parquet`. |
 | 04 | `04-find_latent_representations.sh` | array | `gsmap run_find_latent_representations`: GNN-VAE latent embedding (`latent_GVAE`). |
@@ -76,7 +79,7 @@ cd code/analysis/17_gsMap
 bash 00-setup_gsMap_env.sh
 
 # recommended: first test one sample end-to-end to tune resources, e.g.
-#   sbatch 01-export_spe_to_h5ad.sh; sbatch 02-format_sumstats.sh; sbatch 03-create_slice_mean.sh
+#   sbatch 01-split_h5ad_by_sample.sh; sbatch 02-format_sumstats.sh; sbatch 03-create_slice_mean.sh
 #   then 04-08 with --array=1
 #   (sbatch --array=1 04-find_latent_representations.sh, etc.)
 
@@ -90,6 +93,23 @@ bash run_all.sh 07
 `run_all.sh` chains the per-sample array steps (04 → 05 → 06 → 07 → 08) with
 `aftercorr`, so each sample advances to the next step as soon as its own
 previous task succeeds. Logs are written to `logs/`.
+
+### Downloading gsMap resources
+
+The resource archive is only served from
+`https://yanglab.westlake.edu.cn/data/gsMap/gsMap_resource.tar.gz`, and that
+server runs a browser bot-check. A command-line `wget`/`curl` may get a ~1 KB
+HTML page instead of the archive. This shows up as
+`gzip: stdin: not in gzip format` from `tar`. `00-setup_gsMap_env.sh` checks
+the archive before extracting and stops with an explanation if this happens.
+
+Workaround:
+
+1. Open the URL in a web browser on your laptop and let the download finish.
+2. Copy it to the cluster, e.g.
+   `rsync -avP gsMap_resource.tar.gz <user>@<transfer-node>:<repo>/processed-data/17_gsMap/`
+3. Re-run `bash 00-setup_gsMap_env.sh`. It finds the archive, checks it,
+   extracts it, and skips the conda steps that already finished.
 
 ### Adding a trait
 
@@ -133,6 +153,13 @@ Plots under `plots/17_gsMap/`:
   reflect differences in expression programs, not genotype, and should be
   treated as exploratory. For donor genotype-based analyses see
   [14_prs_deg](/code/analysis/14_prs_deg).
+* **Small domains are dropped by gsMap.** In step 04, gsMap removes every spot
+  whose `spd_label` has fewer than 30 spots in that sample (without logging
+  it). In our data this drops 71 spots (0.03%) in 10 sample × domain
+  combinations across 9 samples, mostly sparse `SpD04-WM`. Those combinations
+  have no gsMap result. Step 11 checks that the missing spots are exactly
+  these and lists them in `gsMap_dropped_small_domains.csv`. Step 12's spot
+  plots would show them in light blue.
 * **Cauchy p-values depend on spot counts.** A per-sample Cauchy p-value
   becomes more significant as a domain contains more spots. The donor-level
   test therefore uses the mean spot-level −log10(p) instead.

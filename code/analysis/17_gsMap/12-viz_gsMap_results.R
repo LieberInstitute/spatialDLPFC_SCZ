@@ -67,8 +67,13 @@ plot_gsmap_spot <- function(spe, trait) {
   trait_df <- spot_res_df |> filter(trait == !!trait)
   spe$neg_log10_p <- trait_df$neg_log10_p[match(spe$key, trait_df$key)]
 
-  # error prevention
-  stopifnot(!anyNA(spe$neg_log10_p))
+  # Spots in sample x domain combinations with < 30 spots have no gsMap
+  # result (dropped by gsMap; see 11-collect_gsMap_results.R) and are shown
+  # with the NA colour below.
+  n_na <- sum(is.na(spe$neg_log10_p))
+  if (n_na > 0) {
+    cat(sprintf("%s: %d spots without gsMap result (small domains)\n", trait, n_na))
+  }
 
   plot_list <- unique(spe$sample_label) |>
     set_names() |>
@@ -86,8 +91,10 @@ plot_gsmap_spot <- function(spe, trait) {
   ## Shared color scale (grayscale: white = min, black = max) ----
   fill_scale <- scale_fill_gradient(
     name = paste0(trait, "\n-log10(p)"),
-    limits = range(spe$neg_log10_p),
-    low = "white", high = "black"
+    limits = range(spe$neg_log10_p, na.rm = TRUE),
+    low = "white", high = "black",
+    # grey50 (the default) would blend into the grayscale; use a distinct colour
+    na.value = "lightskyblue"
   )
 
   plot_list <- plot_list |> lapply(FUN = function(.p) {

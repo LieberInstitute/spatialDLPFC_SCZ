@@ -31,7 +31,7 @@ dep() {
   fi
 }
 
-j01=$(submit 01 "" 01-export_spe_to_h5ad.sh)
+j01=$(submit 01 "" 01-split_h5ad_by_sample.sh)
 j02=$(submit 02 "" 02-format_sumstats.sh)
 j03=$(submit 03 "$(dep afterok "${j01}")" 03-create_slice_mean.sh)
 j04=$(submit 04 "$(dep afterok "${j01}")" 04-find_latent_representations.sh)
