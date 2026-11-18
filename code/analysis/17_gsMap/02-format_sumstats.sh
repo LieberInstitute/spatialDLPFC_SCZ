@@ -39,7 +39,9 @@ gsmap format_sumstats \
 
 # error prevention
 test -s "${SUMSTATS_DIR}/SCZ_PGC3.sumstats.gz"
-zcat "${SUMSTATS_DIR}/SCZ_PGC3.sumstats.gz" | head -n 5
+# `|| true`: head closing the pipe early makes zcat exit non-zero (SIGPIPE),
+# which `set -o pipefail` would otherwise treat as a job failure.
+zcat "${SUMSTATS_DIR}/SCZ_PGC3.sumstats.gz" | head -n 5 || true
 
 # Additional traits ----
 # Format any extra GWAS listed in traits.tsv here, e.g. a height negative

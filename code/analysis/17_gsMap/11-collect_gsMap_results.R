@@ -54,9 +54,46 @@ read_spot_ldsc <- function(.smp, .trait) {
     mutate(key = as.character(key), trait = .trait, .after = key)
 }
 
-spot_res_df <- expand_grid(sample_id = sample_ids, trait = trait_names) |>
-  pmap(.f = function(sample_id, trait) read_spot_ldsc(sample_id, trait)) |>
-  list_rbind() |>
+spot_raw_df <- expand_grid(sample_id = sample_ids, trait = trait_names) |>
+  pmap(.f = function(sample_id, trait) {
+    read_spot_ldsc(sample_id, trait) |> mutate(file_sample = sample_id)
+  }) |>
+  list_rbind()
+
+## Diagnose spot matching per sample x trait before joining ----
+## (an LDSC file can miss spots, repeat spots, or carry keys not in spe)
+spot_check_df <- spot_raw_df |>
+  group_by(file_sample, trait) |>
+  summarize(
+    n_rows = n(),
+    n_dup_keys = sum(duplicated(key)),
+    n_unmatched_keys = sum(!key %in% spot_meta$key),
+    example_unmatched = paste(head(key[!key %in% spot_meta$key], 2), collapse = "; "),
+    n_na_p = sum(is.na(p)),
+    .groups = "drop"
+  ) |>
+  left_join(
+    spot_meta |> count(sample_id, name = "n_spe_spots"),
+    by = c("file_sample" = "sample_id")
+  ) |>
+  mutate(ok = n_rows == n_spe_spots & n_dup_keys == 0 &
+    n_unmatched_keys == 0 & n_na_p == 0)
+
+cat(sprintf(
+  "Spot check: %d / %d sample x trait files OK\n",
+  sum(spot_check_df$ok), nrow(spot_check_df)
+))
+if (!all(spot_check_df$ok)) {
+  spot_check_df |>
+    filter(!ok) |>
+    as.data.frame() |>
+    print()
+  write_csv(spot_check_df, file.path(fld_out, "gsMap_spot_check_FAILED.csv"))
+  stop("Spot-level LDSC results do not match spe spots; see table above")
+}
+
+spot_res_df <- spot_raw_df |>
+  select(-file_sample) |>
   mutate(neg_log10_p = -log10(p)) |>
   inner_join(spot_meta, by = "key", relationship = "many-to-one")
 

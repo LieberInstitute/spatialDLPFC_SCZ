@@ -50,7 +50,7 @@ bonf_line <- -log10(0.05 / length(spd_levels))
 # Spatial domain color palette ----
 spd_palette <- set_names(
   Polychrome::palette36.colors(length(spd_levels)),
-  spd_levels
+  sort(spd_levels) # assign by SpD number, not laminar order
 )
 
 

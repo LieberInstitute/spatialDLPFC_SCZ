@@ -8,6 +8,7 @@
 #SBATCH --output=logs/%x.txt
 #SBATCH --error=logs/%x.txt    # file to collect standard output
 
+set -eo pipefail
 mkdir -p logs
 source gsMap_config.sh
 log_job_info

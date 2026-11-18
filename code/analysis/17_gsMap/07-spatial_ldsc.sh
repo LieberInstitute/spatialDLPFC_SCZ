@@ -26,6 +26,17 @@ activate_gsmap
 sample_id=$(get_sample_id "${SLURM_ARRAY_TASK_ID}")
 echo "Sample: ${sample_id}"
 
+# error prevention: step 06 finished all 22 chromosomes for this sample.
+# gsMap otherwise runs silently on whatever LD scores exist (e.g. after a
+# step 06 time-out), giving results that omit the missing chromosomes.
+n_chrom=$(find "${WORKDIR}/${sample_id}/generate_ldscore/w_ld" \
+  -name 'weights.*.l2.ldscore*' 2>/dev/null | wc -l)
+if [ "${n_chrom}" -ne 22 ]; then
+  echo "Only ${n_chrom}/22 chromosomes of LD scores for ${sample_id}." >&2
+  echo "Re-run step 06 for this sample: sbatch --array=${SLURM_ARRAY_TASK_ID} 06-generate_ldscore.sh" >&2
+  exit 1
+fi
+
 for trait in $(get_trait_names); do
   sumstats_file=$(get_sumstats_file "${trait}")
   echo "---- trait ${trait}: ${sumstats_file} ----"
