@@ -1,0 +1,155 @@
+New names:
+* `` -> `...1`
+# A tibble: 26 x 3
+   ranking         dir   n_deg
+   <chr>           <chr> <int>
+ 1 Domain-adjusted down     99
+ 2 Domain-adjusted up       73
+ 3 NeuN            down     72
+ 4 NeuN            up       18
+ 5 Neuropil        down    266
+ 6 Neuropil        up       86
+ 7 PNN             down      0
+ 8 PNN             up        0
+ 9 PRS             down    240
+10 PRS             up      114
+11 SpD01-WMtz      down     10
+12 SpD01-WMtz      up       20
+13 SpD02-L3/4      down      0
+14 SpD02-L3/4      up        0
+15 SpD03-L6        down      0
+16 SpD03-L6        up        0
+17 SpD04-WM        down    250
+18 SpD04-WM        up      644
+19 SpD05-L5        down      1
+20 SpD05-L5        up        0
+21 SpD06-L2/3      down      2
+22 SpD06-L2/3      up        0
+23 SpD07-L1/M      down     15
+24 SpD07-L1/M      up        2
+25 Vasc            down      9
+26 Vasc            up       10
+ =>-----------------------------    4% |  ETA:  1m
+ ===>---------------------------    9% |  ETA:  1m
+ ==============>----------------   47% |  ETA: 10s
+ ===============>---------------   51% |  ETA: 12s
+ ================>--------------   54% |  ETA: 13s
+ ================>--------------   55% |  ETA: 15s
+ =================>-------------   55% |  ETA: 17s
+ =================>-------------   56% |  ETA: 19s
+ =================>-------------   57% |  ETA: 20s
+ =================>-------------   58% |  ETA: 22s
+ =================>-------------   58% |  ETA: 24s
+ ==================>------------   59% |  ETA: 25s
+ ==================>------------   60% |  ETA: 26s
+ ==================>------------   60% |  ETA: 27s
+ ==================>------------   61% |  ETA: 28s
+ ===================>-----------   64% |  ETA: 27s
+ ====================>----------   67% |  ETA: 26s
+ =====================>---------   69% |  ETA: 24s
+ =====================>---------   70% |  ETA: 24s
+ =====================>---------   71% |  ETA: 24s
+ ======================>--------   73% |  ETA: 24s
+ ======================>--------   74% |  ETA: 24s
+ ======================>--------   75% |  ETA: 23s
+ =======================>-------   75% |  ETA: 23s
+ ==========================>----   85% |  ETA: 13s
+ ============================>--   93% |  ETA:  6s
+ ============================>--   95% |  ETA:  4s
+ =============================>-   97% |  ETA:  3s
+ =============================>-   98% |  ETA:  2s
+Warning messages:
+1: In fgseaMultilevel(pathways = pathways, stats = stats, minSize = minSize,  :
+  There were 1 pathways for which P-values were not calculated properly due to unbalanced (positive and negative) gene-level statistic values. For such pathways pval, padj, NES, log2err are set to NA. You can try to increase the value of the argument nPermSimple (for example set it nPermSimple = 10000)
+2: In fgseaMultilevel(pathways = pathways, stats = stats, minSize = minSize,  :
+  There were 1 pathways for which P-values were not calculated properly due to unbalanced (positive and negative) gene-level statistic values. For such pathways pval, padj, NES, log2err are set to NA. You can try to increase the value of the argument nPermSimple (for example set it nPermSimple = 100000)
+3: In fgseaMultilevel(pathways = pathways, stats = stats, minSize = minSize,  :
+  There were 1 pathways for which P-values were not calculated properly due to unbalanced (positive and negative) gene-level statistic values. For such pathways pval, padj, NES, log2err are set to NA. You can try to increase the value of the argument nPermSimple (for example set it nPermSimple = 10000)
+fgsea elapsed: 1.498537 mins
+# A tibble: 18 x 8
+   family          ranking   dir   n_set n_tests n_fdr05 n_fdr05_neg n_fdr05_pos
+   <chr>           <chr>     <chr> <int>   <int>   <int>       <int>       <int>
+ 1 domain_adjusted Domain-a~ down     99      96      46          36          10
+ 2 domain_adjusted Domain-a~ up       73      96       2           1           1
+ 3 per_domain      SpD01-WM~ down     10       0       0           0           0
+ 4 per_domain      SpD01-WM~ up       20      95       0           0           0
+ 5 per_domain      SpD04-WM  down    250      96      11          10           1
+ 6 per_domain      SpD04-WM  up      644      96      13           9           4
+ 7 per_domain      SpD05-L5  down      1       0       0           0           0
+ 8 per_domain      SpD06-L2~ down      2       0       0           0           0
+ 9 per_domain      SpD07-L1~ down     15       0       0           0           0
+10 per_domain      SpD07-L1~ up        2       0       0           0           0
+11 prs             PRS       down    240      96      52          44           8
+12 prs             PRS       up      114      96      26          23           3
+13 spg             NeuN      down     72      96      22          18           4
+14 spg             NeuN      up       18       0       0           0           0
+15 spg             Neuropil  down    266      96      71          67           4
+16 spg             Neuropil  up       86      96       3           1           2
+17 spg             Vasc      down      9       0       0           0           0
+18 spg             Vasc      up       10       0       0           0           0
+- Session info ---------------------------------------------------------------
+ setting  value
+ version  R version 4.4.2 (2024-10-31)
+ os       macOS Sonoma 14.6.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  C
+ ctype    C
+ tz       America/Denver
+ date     2026-11-18
+ pandoc   3.1.12.1 @ /opt/homebrew/bin/pandoc
+
+- Packages -------------------------------------------------------------------
+ package      * version date (UTC) lib source
+ BiocParallel * 1.40.0  2024-11-23 [1] Bioconductor 3.20 (R 4.4.2)
+ bit            4.5.0.1 2024-12-03 [1] CRAN (R 4.4.1)
+ bit64          4.6.0-1 2025-01-16 [1] CRAN (R 4.4.1)
+ cli            3.6.3   2024-06-21 [1] CRAN (R 4.4.0)
+ codetools      0.2-20  2024-03-31 [1] CRAN (R 4.4.2)
+ colorspace     2.1-1   2024-07-26 [1] CRAN (R 4.4.0)
+ cowplot        1.1.3   2024-01-22 [1] CRAN (R 4.4.0)
+ crayon         1.5.3   2024-06-20 [1] CRAN (R 4.4.0)
+ data.table     1.16.4  2024-12-06 [1] CRAN (R 4.4.1)
+ dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+ fastmatch      1.1-6   2024-12-23 [1] CRAN (R 4.4.1)
+ fgsea        * 1.32.2  2024-12-19 [1] Bioconductor 3.20 (R 4.4.1)
+ forcats      * 1.0.0   2023-01-29 [1] CRAN (R 4.4.0)
+ generics       0.1.3   2022-07-05 [1] CRAN (R 4.4.0)
+ ggplot2      * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+ glue           1.8.0   2024-09-30 [1] CRAN (R 4.4.1)
+ gtable         0.3.6   2024-10-25 [1] CRAN (R 4.4.1)
+ here         * 1.0.1   2020-12-13 [1] CRAN (R 4.4.0)
+ hms            1.1.3   2023-03-21 [1] CRAN (R 4.4.0)
+ lattice        0.22-6  2024-03-20 [1] CRAN (R 4.4.2)
+ lifecycle      1.0.4   2023-11-07 [1] CRAN (R 4.4.0)
+ lubridate    * 1.9.4   2024-12-08 [1] CRAN (R 4.4.1)
+ magrittr       2.0.3   2022-03-30 [1] CRAN (R 4.4.0)
+ Matrix         1.7-1   2024-10-18 [1] CRAN (R 4.4.2)
+ munsell        0.5.1   2024-04-01 [1] CRAN (R 4.4.0)
+ pillar         1.10.1  2025-01-07 [1] CRAN (R 4.4.1)
+ pkgconfig      2.0.3   2019-09-22 [1] CRAN (R 4.4.0)
+ purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
+ R6             2.5.1   2021-08-19 [1] CRAN (R 4.4.0)
+ Rcpp           1.0.14  2025-01-12 [1] CRAN (R 4.4.1)
+ readr        * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
+ rlang          1.1.5   2025-01-17 [1] CRAN (R 4.4.1)
+ rprojroot      2.0.4   2023-11-05 [1] CRAN (R 4.4.0)
+ scales         1.3.0   2023-11-28 [1] CRAN (R 4.4.0)
+ sessioninfo  * 1.2.2   2021-12-06 [1] CRAN (R 4.4.0)
+ stringi        1.8.4   2024-05-06 [1] CRAN (R 4.4.0)
+ stringr      * 1.5.1   2023-11-14 [1] CRAN (R 4.4.0)
+ tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+ tidyr        * 1.3.1   2024-01-24 [1] CRAN (R 4.4.0)
+ tidyselect     1.2.1   2024-03-11 [1] CRAN (R 4.4.0)
+ tidyverse    * 2.0.0   2023-02-22 [1] CRAN (R 4.4.0)
+ timechange     0.3.0   2024-01-18 [1] CRAN (R 4.4.0)
+ tzdb           0.4.0   2023-05-12 [1] CRAN (R 4.4.0)
+ utf8           1.2.4   2023-10-22 [1] CRAN (R 4.4.0)
+ vctrs          0.6.5   2023-12-01 [1] CRAN (R 4.4.0)
+ vroom          1.6.5   2023-12-05 [1] CRAN (R 4.4.0)
+ withr          3.0.2   2024-10-28 [1] CRAN (R 4.4.1)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+
+------------------------------------------------------------------------------
